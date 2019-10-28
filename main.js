@@ -132,7 +132,13 @@ ipcMain.on('view-user', (event, empNo) => {
     modal: true,
     show: false
   })
-  winTwo.loadURL(`file://${__dirname}/dist/index.html#/employee/info?empno=${empNo}`)
+  winTwo.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/employee/info?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winTwo.once('ready-to-show', () => {
     winTwo.show()
     // winTwo.webContents.openDevTools()
@@ -151,7 +157,13 @@ ipcMain.on('view-document', (event, documentId) => {
     modal: true,
     show: false
   })
-  winThree.loadURL(`file://${__dirname}/dist/index.html#/document?id=${documentId}`)
+  winThree.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/document?id=${documentId}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winThree.once('ready-to-show', () => {
     winThree.show()
     //winThree.webContents.openDevTools()
@@ -170,7 +182,13 @@ ipcMain.on('view-report', (event, empNo) => {
     modal: true,
     show: false
   })
-  winReport.loadURL(`file://${__dirname}/dist/index.html#/report/transfer?empno=${empNo}`)
+  winReport.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/transfer?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winReport.once('ready-to-show', () => {
     winReport.show()
   })
@@ -188,7 +206,13 @@ ipcMain.on('view-payslip', (event, payrollCycleId, siteId) => {
     modal: true,
     show: false
   })
-  winPayslip.loadURL(`file://${__dirname}/dist/index.html#/report/payslip?payrollcycleid=${payrollCycleId}&siteid=${siteId}`)
+  winPayslip.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/payslip?payrollcycleid=${payrollCycleId}&siteid=${siteId}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winPayslip.once('ready-to-show', () => {
     winPayslip.show()
   })
@@ -206,7 +230,13 @@ ipcMain.on('view-employee-profile', (event, empNo) => {
     modal: true,
     show: false
   })
-  winEmployee.loadURL(`file://${__dirname}/dist/index.html#/report/employeeprofile?empno=${empNo}`)
+  winEmployee.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/employeeprofile?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winEmployee.once('ready-to-show', () => {
     winEmployee.show()
   })
@@ -224,7 +254,13 @@ ipcMain.on('view-employee-profile-mini', (event, empNo) => {
     modal: true,
     show: false
   })
-  winEmployeeMini.loadURL(`file://${__dirname}/dist/index.html#/report/employeeprofilemini?empno=${empNo}`)
+  winEmployeeMini.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/employeeprofilemini?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winEmployeeMini.once('ready-to-show', () => {
     winEmployeeMini.show()
   })
@@ -242,7 +278,14 @@ ipcMain.on('view-license', (event, empNo) => {
     modal: true,
     show: false
   })
-  winLicense.loadURL(`file://${__dirname}/dist/index.html#/report/license?empno=${empNo}`)
+  winLicense.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/license?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
+  
   winLicense.once('ready-to-show', () => {
     winLicense.show()
   })
@@ -260,7 +303,14 @@ ipcMain.on('view-employee-card', (event, empNo) => {
     modal: true,
     show: false
   })
-  winEmployeeCard.loadURL(`file://${__dirname}/dist/index.html#/report/employeecard?empno=${empNo}`)
+  winEmployeeCard.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/employeecard?empno=${empNo}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
+
   winEmployeeCard.once('ready-to-show', () => {
     winEmployeeCard.show()
   })
@@ -278,7 +328,13 @@ ipcMain.on('view-working-site-report', (event, siteId, year, month) => {
     modal: true,
     show: false
   })
-  winWorkingSiteReport.loadURL(`file://${__dirname}/dist/index.html#/report/workingsite?siteId=${siteId}&year=${year}&month=${month}`)
+  winWorkingSiteReport.loadURL(
+    url.format({
+      pathname: path.join(__dirname, `/dist/index.html#/report/workingsite?siteId=${siteId}&year=${year}&month=${month}`),
+      protocol: "file:",
+      slashes: true
+    })
+  )
   winWorkingSiteReport.once('ready-to-show', () => {
     winWorkingSiteReport.show()
   })
@@ -316,6 +372,10 @@ ipcMain.on('print-to-pdf-landscape', (event) => {
 
 ipcMain.on('navigate-main-to-edit-employee', (event, empNo) => {
   const employeeUrl = '/employee';
-  win.loadURL(`file://${__dirname}/dist/index.html#/employee/edit/${empNo}?backUrl=${employeeUrl}`);
+  win.loadURL(url.format({
+    pathname: path.join(__dirname, `/dist/index.html#/employee/edit/${empNo}?backUrl=${employeeUrl}`),
+    protocol: "file:",
+    slashes: true
+  }));
   win.show();
 })
