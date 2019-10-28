@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="151" height="196" viewBox="0 0 151 196">
+    <defs>
+        <path id="b" d="M38.862 139.016v11.159L73.76 123.79v-17.553l-9.258-3.487v17.263z"/>
+        <filter id="a" width="337.8%" height="275%" x="-118.9%" y="-70.6%" filterUnits="objectBoundingBox">
+            <feOffset dy="8" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="12.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.290221632 0 0 0 0 0.290175289 0 0 0 0 0.290237457 0 0 0 0.201964447 0"/>
+        </filter>
+        <filter id="c" width="271.9%" height="226.5%" x="-86%" y="-46.4%" filterUnits="objectBoundingBox">
+            <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="5"/>
+            <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+            <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.607892215 0 0 0 0 0.607803345 0 0 0 0 0.607922554 0 0 0 0.398380888 0"/>
+        </filter>
+        <path id="e" d="M38.883 41.994l-.02-11.169 34.07 26.346.033 17.57-9.02 3.508-.032-17.28z"/>
+        <filter id="d" width="343.4%" height="275%" x="-121.7%" y="-70.6%" filterUnits="objectBoundingBox">
+            <feOffset dy="8" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="12.5"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0.290221632 0 0 0 0 0.290175289 0 0 0 0 0.290237457 0 0 0 0.201964447 0"/>
+        </filter>
+        <filter id="f" width="275.9%" height="226.5%" x="-88%" y="-46.4%" filterUnits="objectBoundingBox">
+            <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="5"/>
+            <feOffset in="shadowBlurInner1" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+            <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.607892215 0 0 0 0 0.607803345 0 0 0 0 0.607922554 0 0 0 0.502887228 0"/>
+        </filter>
+        <path id="g" d="M0 10.535l11.897-3.421-.358 167.563L0 171.557z"/>
+        <filter id="h" width="251.3%" height="110.7%" x="-75.7%" y="-5.4%" filterUnits="objectBoundingBox">
+            <feGaussianBlur in="SourceAlpha" result="shadowBlurInner1" stdDeviation="8"/>
+            <feOffset dy="2" in="shadowBlurInner1" result="shadowOffsetInner1"/>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" k2="-1" k3="1" operator="arithmetic" result="shadowInnerInner1"/>
+            <feColorMatrix in="shadowInnerInner1" values="0 0 0 0 0.925490196 0 0 0 0 0.925490196 0 0 0 0 0.925490196 0 0 0 1 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#4B74FF" d="M54.828 185.81L66.74 190 127 143.217v-20.948l-9.109-4.888v20.948l-53.254 39.8V80.374l-9.81-4.19z"/>
+        <g transform="translate(35 9)">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#4B74FF" xlink:href="#b"/>
+            <use fill="#000" filter="url(#c)" xlink:href="#b"/>
+        </g>
+        <path fill="#4B74FF" d="M66.712 9l-11.884 4.21.206 109.607 9.787-4.207-.185-97.738 53.24 39.695.04 20.944L127 76.606l-.038-20.943z"/>
+        <g transform="translate(35 9)">
+            <use fill="#000" filter="url(#d)" xlink:href="#e"/>
+            <use fill="#4B74FF" xlink:href="#e"/>
+            <use fill="#000" filter="url(#f)" xlink:href="#e"/>
+        </g>
+        <path fill="#4B74FF" d="M57.207 19.535l11.896-3.421-.357 167.563-11.54-3.12z"/>
+        <g transform="translate(35 9)">
+            <use fill="#4B74FF" xlink:href="#g"/>
+            <use fill="#000" filter="url(#h)" xlink:href="#g"/>
+        </g>
+        <path d="M0 0h151v196H0z"/>
+    </g>
+</svg>
