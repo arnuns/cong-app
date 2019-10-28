@@ -1,0 +1,59 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="default" color="#000" type="line-scale" [fullScreen]="true">
+  <p style="color: white"> Loading... </p>
+</ngx-spinner>
+<div class="wrapper">
+  <nav class="sidebar">
+    <div class="d-flex flex-column justify-content-center align-items-center w-100 logo-container">
+      <div>
+        <img src="assets/img/logo-small-white.svg" class="logo" alt="Logo">
+      </div>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <div class="sidebar--add-button">
+        <a class="btn btn-primary button__add" routerLink="/employee/add" role="button">
+          <small><i class="fa fa-plus" aria-hidden="true"></i> เพิ่มพนักงาน</small>
+        </a>
+      </div>
+    </div>
+    <ul class="nav-menu">
+      <li>
+        <a class="nav-link" [routerLink]="['/home']" [routerLinkActive]="['active']">
+          <div class="d-flex align-items-center h-100">
+            <div class="nav-icon"><i class="fa fa-home" aria-hidden="true"></i></div>
+            <div class="ml-3 menu-text">หน้าหลัก</div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/employee']" [routerLinkActive]="['active']">
+          <div class="d-flex align-items-center h-100">
+            <div class="nav-icon"><i class="fa fa-users" aria-hidden="true"></i></div>
+            <div class="ml-3 menu-text">พนักงาน</div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <nav class="topnavbar sticky-top">
+    <div class="d-flex align-items-center h-100 w-100">
+      <div class="ml-auto">
+        <div class="dropdown-profile">
+          <span dropdown>
+            <a href dropdownToggle (click)="false" aria-controls="topnavbar-link-dropdown" class="topnavbar-link">
+              {{ user.firstname + ' ' + user.lastname }} <i class="fa fa-user-circle" aria-hidden="true"></i>
+            </a>
+            <ul id="topnavbar-link-dropdown" *dropdownMenu class="dropdown-menu" role="menu">
+              <li>
+                <a class="dropdown-item" (click)="onLogout()">
+                  <i class="fa fa-sign-out" aria-hidden="true"></i> ออกจากระบบ</a>
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

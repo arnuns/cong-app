@@ -1,0 +1,99 @@
+.wrapper {
+  background-color: #eaeaea;
+}
+
+.sidebar {
+  background-color: #333333;
+  float: left;
+  position: fixed;
+  width: 218px;
+  height: 100%;
+
+}
+
+.sidebar>div.logo-container {
+  margin-top: 15px;
+}
+
+.logo {
+  width: 122px;
+}
+
+.content {
+  background-color: #fbfbfb;
+  margin-left: 218px;
+  min-height: calc(100vh);
+  padding: 10px 20px;
+}
+
+.topnavbar {
+  background-color: #ffffff;
+  margin-left: 218px;
+  height: 60px;
+  padding: 14px 30px;
+}
+
+.topnavbar>* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+}
+
+.topnavbar-link {
+  text-decoration: none;
+}
+
+.dropdown-profile {
+  position: relative;
+}
+
+.dropdown-menu {
+  right: 0;
+  left: auto;
+}
+
+.sidebar--add-button {
+  margin-top: 48px;
+  margin-bottom: 38px;
+}
+
+.button__add {
+  width: 140px;
+  height: 38px;
+  border-radius: 17px;
+}
+
+.nav-menu {
+  padding: 9px;
+  margin: 0;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.nav-link {
+  cursor: pointer;
+  color: #a8b7c7;
+  height: 44px;
+}
+
+.nav-link:hover {
+  opacity: .8;
+}
+
+.nav-link.active {
+  background-color: #4b74ff;
+  color: #ffffff;
+}
+
+.nav-icon {
+  width: 28px;
+}
+
+.nav-icon>i {
+  font-size: 1.2em;
+}

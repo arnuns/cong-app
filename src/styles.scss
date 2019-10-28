@@ -1,1 +1,92 @@
 /* You can add global styles to this file, and also import other style files */
+$primary-color: #4b74ff;
+
+@import "fonts.scss";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~ngx-bootstrap/datepicker/bs-datepicker.css";
+
+* {
+  letter-spacing: .05em;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  background-color: #f4f8f9;
+}
+
+.form-control {
+  height: 48px;
+}
+
+.form-control:focus {
+  border-color: $primary-color;
+  box-shadow: none;
+}
+
+.btn {
+  height: 48px;
+}
+
+.btn-primary {
+  background-color: $primary-color;
+  border: 0;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: #05ca9d;
+  border-color: #05ca9d;
+}
+
+.btn:focus,
+.btn.focus {
+  box-shadow: none;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
+  box-shadow: none;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show>.btn-primary.dropdown-toggle {
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+a,
+a:hover {
+  color: #000000;
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #fbfbfb;
+}

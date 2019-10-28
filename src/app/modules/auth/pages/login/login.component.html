@@ -1,0 +1,68 @@
+<div class="tower" [style.background-image]="loginBackgroundStyle">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-sm-12 col-12">
+        <div class="form-card px-3 py-4 my-5">
+          <div class="d-flex justify-content-center mb-4">
+            <img [src]="defaultImagePath + '/img/logo.svg'" class="gmg-logo" alt="">
+          </div>
+          <div class="d-flex justify-content-center w-100 my-3">
+            <form [formGroup]="loginForm" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+              <div class="d-flex flex-column w-100">
+                <div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="ชื่อผู้ใช้" maxlength="7" formControlName="username"
+                      required>
+                  </div>
+                </div>
+                <div>
+                  <div class="form-group">
+                    <input type="password" class="form-control" placeholder="รหัสผ่าน" formControlName="password"
+                      required>
+                  </div>
+                </div>
+                <div>
+                  <div class="alert alert-danger validation-message" *ngIf="f.submitted && !f.form.valid">
+                    <div *ngIf="loginForm.get('username').hasError('required')">
+                      <small>* กรุณากรอกชื่อผู้ใช้</small>
+                    </div>
+                    <div *ngIf="loginForm.get('username').hasError('pattern')">
+                      <small>* กรุณากรอกรหัสพนักงาน (7หลัก)</small>
+                    </div>
+                    <div *ngIf="loginForm.get('password').hasError('required')">
+                      <small>* กรุณากรอกรหัสผ่าน</small>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <button type="submit" class="btn btn-primary btn-block" [disabled]="loading">
+                    <div *ngIf="loading">
+                      <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                      <span class="sr-only">กรุณารอสักครู่...</span> กรุณารอสักครู่...
+                    </div>
+                    <span *ngIf="loading == false">เข้าสู่ระบบ</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="d-flex flex-column align-items-center information-text">
+            <div>
+              <img [src]="defaultImagePath + '/img/cong-logo.svg'" class="cong-logo" alt="">
+            </div>
+            <div>
+              <strong>Cong Version:</strong> {{ appVersion }}
+            </div>
+            <div>
+              <strong>Release Date:</strong> {{ releaseDate }}
+            </div>
+            <div>
+              <small class="text-secondary">Copyright (C) 2018 - {{ nowYear }} <a href="http://www.ubakong.com"
+                  target="_blank">Ubakong co.,ltd.</a> All rights reserved</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
