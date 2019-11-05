@@ -1,1 +1,41 @@
-<p>home works!</p>
+<div class="row menu-title">
+  <div class="col px-0">
+    <h3 class="title noselect">หน้าหลัก</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-6 my-sm-2">
+    <div class="card noselect">
+      <div class="card-body">
+        <h4 class="card-title text-success">
+          <i class="fa fa-user-circle" aria-hidden="true"></i>
+          <div class="ml-2 loading" *ngIf="userLoading; else showTotalUser">
+            <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+          </div>
+          <ng-template #showTotalUser>
+            <span class="ml-2">{{ totalUser | number }}</span> คน
+          </ng-template>
+        </h4>
+        <p class="card-text">จำนวนพนักงานทั้งหมดในระบบ</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-6 my-sm-2">
+    <div class="card noselect">
+      <div class="card-body">
+        <h4 class="card-title text-primary">
+          <i class="fa fa-building" aria-hidden="true"></i>
+          <div class="ml-2 loading" *ngIf="siteLoading; else showTotalSite">
+            <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+          </div>
+          <ng-template #showTotalSite>
+            <span class="ml-2">{{ totalSite | number }}</span> แห่ง
+          </ng-template>
+        </h4>
+        <p class="card-text">จำนวนไซต์ลูกค้าทั้งหมดในระบบ</p>
+      </div>
+    </div>
+  </div>
+</div>

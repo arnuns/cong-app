@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, throwError, of } from 'rxjs';
-import { catchError, retryWhen, take, delay, concatMap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retryWhen, concatMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 
@@ -14,7 +15,8 @@ export class TokenInterceptor implements HttpInterceptor {
         if (currentUser && currentUser.token) {
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${currentUser.token}`
+                    'Authorization': `Bearer ${currentUser.token}`,
+                    'api-version': environment.apiVersion
                 }
             });
         }

@@ -1,13 +1,15 @@
 import { Inventory } from './inventory';
 import { DatePicker } from './datepicker';
+import { Site } from './site';
 
 export interface User {
     empNo: number;
     password: string;
     company: string;
-    site: string;
     siteId: number;
+    site: Site;
     roleId: string;
+    role: Role;
     roleName: string;
     idCardNumber: string;
     dateIssued: string;
@@ -17,8 +19,8 @@ export interface User {
     birthdate: string;
     birthdatePicker: DatePicker;
     title: string;
-    firstname: string;
-    lastname: string;
+    firstName: string;
+    lastName: string;
     titleEn: string;
     firstnameEn: string;
     lastnameEn: string;

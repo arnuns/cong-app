@@ -6,7 +6,7 @@ import { CacheService } from './cache/cache.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends BaseService {
+export class SiteService extends BaseService {
 
   constructor(
     private cacheService: CacheService,
@@ -15,7 +15,7 @@ export class UserService extends BaseService {
     super();
   }
 
-  getCountUser() {
-    return this.cacheService.get('user_count', this.http.get<number>(`${this.serviceUrl}/user/count`));
+  getCountSite() {
+    return this.cacheService.get('site_count', this.http.get<number>(`${this.serviceUrl}/site/count`));
   }
 }

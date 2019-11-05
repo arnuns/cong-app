@@ -32,13 +32,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     this.loading = true;
-    this.authService.login(this.loginForm.get('username').value, this.loginForm.get('password').value).subscribe(result => {
-      this.loading = false;
-      this.router.navigate([this.authService.getRedirectUrl()]);
-    }, error => {
-      this.loading = false;
-      console.log(error);
-    });
+    this.authService.login(Number(this.loginForm.get('username').value),
+      this.loginForm.get('password').value).subscribe(result => {
+        this.loading = false;
+        this.router.navigate([this.authService.getRedirectUrl()]);
+      }, error => {
+        this.loading = false;
+        this.authService.logoutUser();
+      });
   }
 
   ngOnInit() {

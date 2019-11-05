@@ -47,7 +47,7 @@ export class AuthService extends BaseService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(empNo: string, password: string) {
+  login(empNo: number, password: string) {
     return this.http.post<User>(`${this.serviceUrl}/authen`, { empNo, password }, {
       headers: new HttpHeaders(
         {
