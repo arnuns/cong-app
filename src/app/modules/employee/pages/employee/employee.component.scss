@@ -1,0 +1,27 @@
+::ng-deep {
+  .employee-table .dataTables_empty {
+    display: none;
+  }
+}
+
+.employee-table td {
+  font-size: 14px;
+  letter-spacing: 1;
+}
+
+.img-profile {
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 34px;
+  height: 34px;
+}
+
+.site-select {
+  width: 500px;
+  height: 42px;
+}
+
+.filter-select {
+  width: 120px;
+  height: 42px;
+}

@@ -2,13 +2,16 @@
   background-color: #eaeaea;
 }
 
+.hidden {
+  display: none;
+}
+
 .sidebar {
   background-color: #333333;
   float: left;
   position: fixed;
   width: 218px;
   height: 100%;
-
 }
 
 .sidebar>div.logo-container {
@@ -19,11 +22,15 @@
   width: 122px;
 }
 
+.container {
+  background-color: #ffffff;
+}
+
 .content {
   background-color: #fbfbfb;
   margin-left: 218px;
   min-height: calc(100vh - 60px);
-  padding: 10px 20px;
+  padding: 10px 20px 180px 20px;
 }
 
 .topnavbar {
@@ -72,7 +79,7 @@
   margin: 0;
   height: 100vh;
   max-height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .nav-link {
@@ -96,4 +103,50 @@
 
 .nav-icon>i {
   font-size: 1.2em;
+}
+
+.close-icon {
+  font-size: 1.25em;
+}
+
+.close-icon:hover {
+  opacity: .8;
+}
+
+.has-search .form-control::placeholder {
+  font-size: 14px;
+}
+
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search input.form-control {
+  font-size: 14px;
+  height: 32px;
+  width: calc(40vw);
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.result-group {
+  position: absolute;
+  width: calc(40vw);
+  box-shadow: 5px 5px 10px -5px #dedede;
+}
+
+.result-group .list-group-item {
+  font-size: 12px;
+  padding: .5em 3em;
+  border: 1px solid #efefef;
 }

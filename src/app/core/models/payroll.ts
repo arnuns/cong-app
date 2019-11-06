@@ -1,11 +1,3 @@
-export interface AvailableBank {
-    id: number;
-    name: string;
-    status: boolean;
-    createOn: Date;
-    createBy: string;
-}
-
 export interface PayrollCycle {
     id: number;
     start: string;
@@ -292,15 +284,6 @@ export interface SitePayrollCycleSalary {
     totalAmount: number;
     status: string;
     payDay: string;
-}
-
-export interface Hospital {
-    id: number;
-    name: string;
-    nameEn: string;
-    provinceId: number;
-    status: boolean;
-    createOn: Date;
 }
 
 export interface SocialSecurityHistory {

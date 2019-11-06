@@ -1,11 +1,13 @@
 import { Inventory } from './inventory';
 import { DatePicker } from './datepicker';
 import { Site } from './site';
+import { Company } from './company';
 
 export interface User {
     empNo: number;
     password: string;
-    company: string;
+    companyId: string;
+    company: Company;
     siteId: number;
     site: Site;
     roleId: string;

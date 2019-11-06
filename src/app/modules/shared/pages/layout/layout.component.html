@@ -2,7 +2,7 @@
   <p style="color: white"> Loading... </p>
 </ngx-spinner>
 <div class="wrapper">
-  <nav class="sidebar">
+  <nav class="sidebar" [class.hidden]="isHiddenLeftMenu">
     <div class="d-flex flex-column justify-content-center align-items-center w-100 logo-container">
       <div>
         <img src="assets/img/logo-small-white.svg" class="logo" alt="Logo">
@@ -34,8 +34,32 @@
       </li>
     </ul>
   </nav>
-  <nav class="topnavbar sticky-top">
+  <nav class="topnavbar sticky-top" [class.m-0]="isHiddenLeftMenu">
     <div class="d-flex align-items-center h-100 w-100">
+      <div *ngIf="isHiddenLeftMenu">
+        <a [routerLink]="previousRoute" class="close-icon">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+      </div>
+      <div>
+        <form [formGroup]="searchForm">
+          <div class="form-group mb-0 has-search">
+            <span class="fa fa-search form-control-feedback"></span>
+            <input type="text" class="form-control" autocomplete="off"
+              placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน, รหัสพนักงาน, หน่วยงาน" formControlName="search">
+          </div>
+        </form>
+        <div class="list-group result-group" *ngIf="searchResults.length > 0">
+          <a href="#" class="list-group-item list-group-item-action" *ngFor="let result of searchResults">
+            <div class="d-flex w-100">
+              <div><strong>{{ result.firstName }} {{ result.lastName }}</strong></div>
+              <div class="ml-auto">
+                {{ result.site ? result.site.name : '-' }}
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
       <div class="ml-auto">
         <div class="dropdown-profile">
           <span dropdown>
@@ -53,7 +77,12 @@
       </div>
     </div>
   </nav>
-  <div class="content">
+  <div class="container" *ngIf="isHiddenLeftMenu; else elseShowLeftMenu">
     <router-outlet></router-outlet>
   </div>
+  <ng-template #elseShowLeftMenu>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </ng-template>
 </div>

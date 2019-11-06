@@ -1,1 +1,160 @@
-<p>employee works!</p>
+<div class="row menu-title">
+  <div class="col px-0">
+    <h3 class="title noselect">พนักงาน ({{ totalUsers | number }})</h3>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="userForm">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <div class="form-group mb-1">
+            <ng-select class="site-select" [items]="sites" [multiple]="true" [closeOnSelect]="false"
+              [searchable]="false" (change)="onSiteSelectionChange()" bindLabel="name" placeholder="เลือกหน่วยงาน"
+              formControlName="site_array">
+              <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
+                <div class="ng-value" *ngFor="let item of items | slice:0:5">
+                  <span class="ng-value-label">{{item.code}}</span>
+                  <span class="ng-value-icon right" (click)="clear(item)" aria-hidden="true">×</span>
+                </div>
+                <div class="ng-value" *ngIf="items.length > 5">
+                  <span class="ng-value-label">{{items.length - 5}} more...</span>
+                </div>
+              </ng-template>
+
+            </ng-select>
+          </div>
+        </div>
+        <div class="ml-2">
+          <div class="form-group mb-1">
+            <ng-select placeholder="ทั้งหมด" class="filter-select" formControlName="user_status"
+              (change)="onUserStatusSelectionChange()" [searchable]="false">
+              <ng-option [value]="true">ทำงาน</ng-option>
+              <ng-option [value]="false">ลาออก</ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <table datatable [dtOptions]="dtOptions" class="table table-hover employee-table">
+      <thead>
+        <tr>
+          <th>รหัส</th>
+          <th></th>
+          <th>ชื่อ - สกุล</th>
+          <th>บริษัท</th>
+          <th>ตำแหน่ง</th>
+          <th>โทรศัพท์</th>
+          <th>หน่วยงาน</th>
+          <th>สถานะ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users; let i = index">
+          <td>{{ user.empNo }}</td>
+          <td>
+            <img *ngIf="user.imageProfile != null; else elseNoProfileImage" [src]="user.imageProfile" alt=""
+              class="rounded-circle img-profile">
+            <ng-template #elseNoProfileImage>
+              <img *ngIf="user.imageProfile == null" [src]="defaultImagePath + '/img/img-default.svg'" alt=""
+                class="img-profile">
+            </ng-template>
+          </td>
+          <td>{{ user.firstName }} {{ user.lastName }}</td>
+          <td>{{ user.company?.name }}</td>
+          <td><span class="user--role-name">{{ user.role.nameTH }}</span></td>
+          <td>{{ user.phoneNo ? user.phoneNo : '-' }}</td>
+          <td>{{ user.site.name }}</td>
+          <td>
+            <span *ngIf="user.status">
+              <small>
+                <i class="fa fa-circle active" aria-hidden="true"></i>
+              </small> ทำงาน</span>
+            <span *ngIf="!user.status">
+              <small>
+                <i class="fa fa-circle terminate" aria-hidden="true"></i>
+              </small> ลาออก</span>
+          </td>
+          <td>
+            <span dropdown class="action--dropdown">
+              <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+              </a>
+              <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
+                aria-labelledby="basic-link">
+                <li *ngIf="HasEmployeePermission">
+                  <a class="dropdown-item" (click)="editUserInfo(user.empNo)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">แก้ไขข้อมูล</div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" (click)="viewUserInfo(user.empNo)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-address-book" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">ดูประวัติ</div>
+                    </div>
+                  </a>
+                </li>
+                <li role="menuitem" dropdown triggers="mouseover" placement="right">
+                  <a dropdownToggle class="dropdown-item dropdown-toggle" (click)="false">พิมพ์เอกสาร <span
+                      class="caret"></span></a>
+                  <ul *dropdownMenu class="dropdown-menu dropdown-submenu" role="menu">
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewTransferReport(user.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบส่งตัว</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeProfileReport(user.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i> พิมพ์ประวัติแบบเต็ม</a></li>
+                    <li role="menuitem"><a class="dropdown-item"
+                        (click)="previewEmployeeProfileMiniReport(user.empNo)"><i class="fa fa-print"
+                          aria-hidden="true"></i> พิมพ์ประวัติแบบย่อ</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeLicense(user.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบอนุญาต</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeCard(user.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i> พิมพ์บัตรพนักงาน</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </span>
+
+            <!-- <div class="dropdown">
+          <a class="action-menu dropdown-toggle" id="actionDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="actionDropdownMenuLink">
+            <a *ngIf="HasEmployeePermission" class="action-menu dropdown-item" (click)="editUserInfo(user.empNo)">
+              <i class="fa fa-pencil" aria-hidden="true"></i> แก้ไขข้อมูล</a>
+            <a class="action-menu dropdown-item" (click)="viewUserInfo(user.empNo)">
+              <i class="fa fa-address-book" aria-hidden="true"></i> ดูประวัติ</a>
+            <a class="dropdown-submenu">
+              <i class="fa fa-caret-left" aria-hidden="true"></i> พิมพ์เอกสาร
+              <div class="dropdown-menu">
+                <a class="action-menu dropdown-item" (click)="previewTransferReport(user.empNo)">
+                  <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบส่งตัว</a>
+                <a class="action-menu dropdown-item" (click)="previewEmployeeProfileReport(user.empNo)">
+                  <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ประวัติแบบเต็ม</a>
+                <a class="action-menu dropdown-item" (click)="previewEmployeeProfileMiniReport(user.empNo)">
+                  <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ประวัติแบบย่อ</a>
+                <a class="action-menu dropdown-item" (click)="previewEmployeeLicense(user.empNo)">
+                  <i class="fa fa-print" aria-hidden="true"></i> พิมพ์ใบอนุญาต</a>
+                <a class="action-menu dropdown-item" (click)="previewEmployeeCard(user.empNo)">
+                  <i class="fa fa-print" aria-hidden="true"></i> พิมพ์บัตรพนักงาน</a>
+              </div>
+            </a>
+          </div>
+        </div> -->
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>

@@ -18,12 +18,6 @@ const mainMenuTemplate = [
     label: 'File',
     submenu: [
       {
-        label: 'About CONG',
-        click() {
-          win.loadURL(`file://${__dirname}/dist/index.html#/about`)
-        }
-      },
-      {
         label: 'Quit',
         accelerator: process.platform == 'darwin' ? 'Command+Q' : 'Ctrl+Q',
         click() {

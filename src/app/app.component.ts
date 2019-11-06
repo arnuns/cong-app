@@ -1,5 +1,6 @@
 import { Component, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { RoutingStateService } from './core/services/routing-state.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,9 @@ export class AppComponent {
   title = 'Cong App';
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object) {
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private routingStateService: RoutingStateService) {
+    this.routingStateService.loadRouting();
   }
 
   onActivate(event: any) {
