@@ -41,7 +41,7 @@
           <i class="fa fa-times" aria-hidden="true"></i>
         </a>
       </div>
-      <div>
+      <div *ngIf="!isHiddenSearch">
         <form [formGroup]="searchForm">
           <div class="form-group mb-0 has-search">
             <span class="fa fa-search form-control-feedback"></span>
