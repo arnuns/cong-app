@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'http://gmgroup.ubakong.com',
+  apiUrl: 'https://api.congapps.com',
   apiVersion: '1.0',
   basePath: '../dist/assets',
   companyFullName: 'บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด',

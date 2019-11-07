@@ -78,13 +78,12 @@
         <div class="col-md-3">
           <div class="d-flex flex-column text-right mr-4">
             <div>
-              <img [src]="defaultImagePath + '/img/img-profile.svg'" alt="" class="img-profile"
-                id="previewImageProfileUrl">
+              <img [src]="defaultImagePath + '/img/img-profile.svg'" alt="" class="img-profile" #previewImageProfileUrl>
             </div>
             <div>
               <div class="upload-btn-wrapper">
-                <input type="file" id="imageProfile" name="imageProfile" (change)="imageProfileChange($event)"
-                  accept="image/x-png,image/jpeg" #imageProfile />
+                <input type="file" (change)="imageProfileChange($event)"
+                  accept="image/x-png,image/jpeg" #imageProfileUpload />
                 <button type="button" class="btn btn-outline-secondary capture-profile">
                   <i class="fa fa-camera" aria-hidden="true"></i> ถ่ายรูป</button>
               </div>
@@ -264,12 +263,6 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="age">อายุ</label>
-              <input type="text" class="form-control" formControlName="age" />
-            </div>
-          </div>
         </div>
         <div class="row px-2">
           <div class="col-md-2">
@@ -294,12 +287,12 @@
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="ethicity">เชื้อชาติ
+              <label for="ethnicity">เชื้อชาติ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="ethicity" />
+              <input type="text" class="form-control" formControlName="ethnicity" />
             </div>
           </div>
           <div class="col-md-2">
@@ -1319,7 +1312,7 @@
             <strong>ERROR!</strong> {{ serverError }}
           </alert>
         </p>
-        <button class="btn btn-primary btn-save" type="submit">บันทึกข้อมูล</button>
+        <button class="btn btn-primary btn-save" type="submit" [disabled]="!addForm.form.valid">บันทึกข้อมูล</button>
       </div>
     </form>
   </div>

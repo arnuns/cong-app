@@ -14,6 +14,8 @@ import { SafePipe } from 'src/app/core/pipes/safe.pipe';
 import { NgxElectronModule } from 'ngx-electron';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { thLocale } from 'ngx-bootstrap/locale';
+import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,10 @@ import { thLocale } from 'ngx-bootstrap/locale';
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    MomentHelper,
+    SpinnerHelper,
+  ],
   exports: [
     FormsModule,
     ReactiveFormsModule,

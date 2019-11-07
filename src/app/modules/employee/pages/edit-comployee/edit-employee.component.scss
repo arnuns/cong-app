@@ -1,0 +1,97 @@
+.bgno {
+    background-color: #eaeaea;
+  }
+  
+  .temporary-select {
+    width: 200px;
+  }
+  
+  .company-select {
+    width: 120px;
+  }
+  
+  .site-select {
+    width: 100%;
+  }
+  
+  .role-select {
+    width: 300px;
+  }
+  
+  .line {
+    border: 1px dashed #efefef;
+    margin: 30px 0;
+  }
+  
+  .title {
+    font-size: 20px;
+    font-weight: normal;
+    letter-spacing: normal;
+    color: #4a4a4a;
+  }
+  
+  .form-control {
+    height: 36px;
+  }
+  
+  .form-control--date {
+    width: 200px;
+  }
+  
+  .title-select {
+    width: 100%;
+  }
+  
+  .label--mini {
+    font-size: 14px;
+  }
+  
+  
+  .subtitle {
+    font-size: 18px;
+  }
+  
+  .upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+  
+  .upload-btn-wrapper input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  
+  .img-profile {
+    width: 150px;
+    height: 192px;
+    object-fit: contain;
+  }
+  
+  .capture-profile {
+    margin-top: 10px;
+    width: 150px;
+    height: 36px;
+    border-radius: 50px;
+  }
+  
+  .btn-readcard {
+    height: 36px;
+    border-radius: 50px;
+  }
+  
+  .btn-save {
+    width: 160px;
+    height: 36px;
+    border-radius: 24px;
+    font-size: 14px;
+  }
+  
+  .custom-file-label {
+    font-size: 13px;
+    overflow: hidden;
+  }
+  

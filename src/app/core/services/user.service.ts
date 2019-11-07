@@ -58,4 +58,16 @@ export class UserService extends BaseService {
   getHospitals() {
     return this.cacheService.get('hospitals', this.http.get<Hospital[]>(`${this.serviceUrl}/user/hospitals`));
   }
+
+  createUser(formData) {
+    return this.http.post<User>(`${this.serviceUrl}/user`, formData);
+  }
+
+  updateUser(empNo: number, formData) {
+    return this.http.put<User>(`${this.serviceUrl}/user/${empNo}`, formData);
+  }
+
+  getUser(empNo: number) {
+    return this.http.get<User>(`${this.serviceUrl}/user/${empNo}`);
+  }
 }
