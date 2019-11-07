@@ -610,6 +610,12 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('bank_account')) {
       formData.append('bankAccount', getValue('bank_account'));
     }
+
+    formData.append('copyOfBookBankFile', getValue('copy_of_book_bank'));
+    formData.append('copyOfIdCardNumberFile', getValue('copy_of_idcard_no'));
+    formData.append('copyOfHouseRegistrationFile', getValue('copy_of_house_registration'));
+    formData.append('copyOfTranscriptFile', getValue('copy_of_transcript'));
+
     if (getValue('license_no')) {
       formData.append('licenseNo', getValue('license_no'));
     }
