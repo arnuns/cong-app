@@ -16,6 +16,8 @@ import { defineLocale } from 'ngx-bootstrap/chronos';
 import { thLocale } from 'ngx-bootstrap/locale';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
     DataTablesModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    PdfViewerModule
   ],
   providers: [
     MomentHelper,
@@ -51,7 +55,9 @@ import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
     NgxElectronModule,
     DataTablesModule,
     BsDatepickerModule,
-    BsDropdownModule
+    BsDropdownModule,
+    TabsModule,
+    PdfViewerModule
   ]
 })
 export class SharedModule {

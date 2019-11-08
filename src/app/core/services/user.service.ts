@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
-import { User, Role } from '../models/user';
+import { User, Role, Document } from '../models/user';
 import { Company } from '../models/company';
 import { Hospital } from '../models/hospital';
 
@@ -69,5 +69,9 @@ export class UserService extends BaseService {
 
   getUser(empNo: number) {
     return this.http.get<User>(`${this.serviceUrl}/user/${empNo}`);
+  }
+
+  getDocument(empNo: number, documentId: number) {
+    return this.http.get<Document>(`${this.serviceUrl}/user/${empNo}/document/${documentId}`);
   }
 }

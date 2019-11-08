@@ -16,6 +16,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   user: User;
   isHiddenLeftMenu = false;
   isHiddenSearch = false;
+  isHiddenTopMenu = false;
   searchForm = this.fb.group({
     search: ['']
   });
@@ -62,6 +63,9 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     });
     this.applicationStateService.IsHiddenSearch.subscribe(isHiddenSearch => {
       this.isHiddenSearch = isHiddenSearch;
+    });
+    this.applicationStateService.IsHiddenTopMenu.subscribe(isHiddenTopMenu => {
+      this.isHiddenTopMenu = isHiddenTopMenu;
     });
   }
 

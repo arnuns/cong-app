@@ -128,7 +128,7 @@ ipcMain.on('view-user', (event, empNo) => {
   })
   winTwo.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/employee/info?empno=${empNo}`),
+      pathname: path.join(__dirname, `/dist/index.html#/employee/detail/${empNo}`),
       protocol: "file:",
       slashes: true
     })
@@ -139,7 +139,7 @@ ipcMain.on('view-user', (event, empNo) => {
   })
 })
 
-ipcMain.on('view-document', (event, documentId) => {
+ipcMain.on('view-document', (event, empNo, documentId) => {
   winThree = new BrowserWindow({
     width: 1024,
     height: 1024,
@@ -153,7 +153,7 @@ ipcMain.on('view-document', (event, documentId) => {
   })
   winThree.loadURL(
     url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/document?id=${documentId}`),
+      pathname: path.join(__dirname, `/dist/index.html#/employee/${empNo}/document/${documentId}`),
       protocol: "file:",
       slashes: true
     })

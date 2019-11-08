@@ -1,0 +1,315 @@
+  <div class="card">
+    <div class="card-body p-0">
+      <tabset #staticTabs>
+        <tab heading="ข้อมูล">
+          <div class="tab-layout">
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col">
+                    <h5>
+                      {{ user?.company.name.toUpperCase() + user?.empNo }}
+                      <br />
+                      <small>{{ user?.site.name }}</small>
+                    </h5>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      ตำแหน่ง
+                    </span>
+                    <p>
+                      {{ user?.role.nameTH }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เลขที่ใบอนุญาต
+                    </span>
+                    <p>
+                      {{ user?.licenseNo }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      ชื่อ-สกุล
+                    </span>
+                    <p>
+                      {{ user?.title }} {{ user?.firstName }} {{ user?.lastName }}
+                      <br /> {{ capitalizeFirstLetter(user?.titleEn) }}. {{ user?.firstnameEn }}
+                      {{ user?.lastnameEn }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เพศ
+                    </span>
+                    <p *ngIf="user?.gender == 'male'; else genderElseBlock">
+                      ชาย
+                    </p>
+                    <ng-template #genderElseBlock>
+                      <p>หญิง</p>
+                    </ng-template>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      สัญชาติ
+                    </span>
+                    <p>
+                      {{ user?.nationality }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      ศาสนา
+                    </span>
+                    <p>
+                      {{ user?.religion }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-8">
+                    <span class="label-title d-block">
+                      วันเกิด
+                    </span>
+                    <p>
+                      {{ user?.birthdate | date: 'dd/MM/yyyy' }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      อายุ
+                    </span>
+                    <p>
+                      {{ convertToAge(user?.birthdate) }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-8">
+                    <span class="label-title d-block">
+                      ส่วนสูง (ซม.)
+                    </span>
+                    <p>
+                      {{ user?.height }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      น้ำหนัก (กก.)
+                    </span>
+                    <p>
+                      {{ user?.weight }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      เลขที่บัตรประจำตัวประชาชน
+                    </span>
+                    <p>
+                      {{ user?.idCardNumber }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="d-flex flex-column">
+                  <div class="p-2">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt=""
+                      class="img-profile">
+                    <ng-template #elseNoProfileImage>
+                      <img *ngIf="user?.imageProfile == null" [src]="defaultImagePath + '/img/img-default.svg'" alt=""
+                        class="img-profile">
+                    </ng-template>
+                  </div>
+                  <div class="p-2">
+                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                      <small>
+                        <i class="fa fa-circle active" aria-hidden="true"></i>
+                      </small> ทำงาน</span>
+                    <span *ngIf="user?.status == true && user?.isComplete == false">
+                      <small>
+                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
+                      </small> เอกสารไม่ครบ</span>
+                    <span *ngIf="user?.status == false">
+                      <small>
+                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                      </small> ลาออก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      เบอร์โทรศัพท์
+                    </span>
+                    <p>
+                      {{ user?.phoneNo }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      ที่อยู่
+                    </span>
+                    <p>
+                      {{ user?.currentAddress }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col-md-8">
+                    <span class="label-title d-block">
+                      ระดับการศึกษา
+                    </span>
+                    <p>
+                      {{ user?.education }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      สาขา/สถาบันที่จบ
+                    </span>
+                    <p>
+                      {{ user?.graduateSchool }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      บุคคลอ้างอิง
+                    </span>
+                    <p>{{ user?.refName_1 }}</p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-8">
+                    <span class="label-title d-block">
+                      ความสัมพันธ์
+                    </span>
+                    <p>
+                      {{ user?.refRelation_1 }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เบอร์โทรศัพท์
+                    </span>
+                    <p>
+                      {{ user?.refPhoneNo_1 }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab heading="เอกสารสมัครงาน">
+          <div class="tab-layout">
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col">
+                    <h5>
+                      {{ user?.company.name.toUpperCase() + user?.empNo }}
+                      <br />
+                      <small>{{ user?.site.name }}</small>
+                    </h5>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      ตำแหน่ง
+                    </span>
+                    <p>
+                      {{ user?.role.nameTH }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เลขที่ใบอนุญาต
+                    </span>
+                    <p>
+                      {{ user?.licenseNo }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      ชื่อ-สกุล
+                    </span>
+                    <p>
+                      {{ user?.title }} {{ user?.firstName }} {{ user?.lastName }}
+                      <br /> {{ user?.titleEn }}. {{ user?.firstnameEn }} {{ user?.lastnameEn }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="d-flex flex-column">
+                  <div class="p-2">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile"
+                      alt="" class="img-profile">
+                    <ng-template #elseNoProfileImage>
+                      <img *ngIf="user?.imageProfile == null" [src]="defaultImagePath" alt="" class="img-profile">
+                    </ng-template>
+                  </div>
+                  <div class="p-2">
+                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                      <small>
+                        <i class="fa fa-circle active" aria-hidden="true"></i>
+                      </small> ทำงาน</span>
+                    <span *ngIf="user?.status == true && user?.isComplete == false">
+                      <small>
+                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
+                      </small> เอกสารไม่ครบ</span>
+                    <span *ngIf="user?.status == false">
+                      <small>
+                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                      </small> ลาออก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-left">
+                <h5 class="mb-0">เอกสารสมัครงาน</h5>
+                <hr />
+              </div>
+            </div>
+            <div class="row p-2">
+              <div class="col-md-2 px-1 py-2 mx-2 my-1 text-center border pointer"
+                *ngFor="let document of user?.documents" (click)="viewUserDococuments(document.id)">
+                <img class="img-view" [src]="defaultImagePath + '/img/img-view@2x.png'" alt="">
+                <br />
+                <small>{{ convertDocumentTypeName(document.type) }}</small>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab heading="บันทึกเวลาเข้างาน">Static content 2</tab>
+        <tab heading="ประวัติการทำงาน">Static content 3</tab>
+      </tabset>
+    </div>
+  </div>

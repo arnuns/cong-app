@@ -1,0 +1,130 @@
+::ng-deep {
+  .nav-tabs {
+    background-color: #4b74ff;
+  }
+
+  .nav-tabs .nav-link {
+    border-radius: 0;
+    border: 0;
+    font-size: 14px;
+    color: #ffffff;
+  }
+
+  .nav-tabs .nav-link.active {
+    color: #000000;
+  }
+}
+
+.tab-layout {
+  padding: 20px 50px;
+}
+
+.label-title {
+  color: #a8b7c7;
+  font-size: 14px;
+}
+
+.img-profile {
+  width: 150px;
+  height: 192px;
+  object-fit: contain;
+}
+
+.timeline-block {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -moz-box-pack: justify;
+  justify-content: space-between;
+  clear: both;
+  padding: 10px 23.5px 0px 26.5px;
+}
+
+.timeline-block-right {
+  float: right;
+}
+
+.marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ca9d;
+  margin-top: 10px;
+  z-index: 9999
+}
+
+.marker.exit {
+  background: #f25c62;
+}
+
+.timeline-title {
+  width: 150px;
+  height: 24px;
+  border-radius: 100px;
+  background-color: #CCD1D9;
+  font-size: 12px;
+  padding: 5px 30px;
+  color: #fff;
+  position: absolute;
+  z-index: 2;
+}
+
+.timeline-content {
+  width: 95%;
+  color: #666
+}
+
+.timeline-content h5 {
+  margin-bottom: .1rem;
+  color: #000;
+}
+
+.timeline-content span {
+  font-size: 14px;
+  color: #9b99a9;
+}
+
+.timeline-content div>p {
+  font-size: 15px;
+  color: #87878d;
+  margin-bottom: 0;
+}
+
+.action-menu {
+  cursor: pointer;
+}
+
+.rounded-badge {
+  border-radius: 50px;
+  min-width: 172px;
+  height: 32px;
+}
+
+.rounded-badge.exit {
+  background: #f25c62;
+}
+
+@media screen and (max-width: 768px) {
+  .container:before {
+    left: 8px;
+    width: 2px;
+  }
+
+  .timeline-block {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .timeline-block-right {
+    float: none;
+  }
+}
+
+.img-view {
+  max-width: 45px;
+  max-height: 45px;
+}

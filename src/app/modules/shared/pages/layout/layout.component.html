@@ -34,7 +34,7 @@
       </li>
     </ul>
   </nav>
-  <nav class="topnavbar sticky-top" [class.m-0]="isHiddenLeftMenu">
+  <nav class="topnavbar sticky-top" [class.m-0]="isHiddenLeftMenu" [class.hidden]="isHiddenTopMenu">
     <div class="d-flex align-items-center h-100 w-100">
       <div *ngIf="isHiddenLeftMenu">
         <a [routerLink]="previousRoute" class="close-icon">
@@ -77,11 +77,11 @@
       </div>
     </div>
   </nav>
-  <div class="container" *ngIf="isHiddenLeftMenu; else elseShowLeftMenu">
+  <div class="container" *ngIf="isHiddenLeftMenu && !isHiddenTopMenu; else elseShowLeftMenu">
     <router-outlet></router-outlet>
   </div>
   <ng-template #elseShowLeftMenu>
-    <div class="content">
+    <div class="content" [class.full-width]="isHiddenTopMenu">
       <router-outlet></router-outlet>
     </div>
   </ng-template>
