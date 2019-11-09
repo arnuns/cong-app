@@ -4,21 +4,27 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retryWhen, concatMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(private router: Router) { }
+    constructor(
+        private cookieService: CookieService,
+        private router: Router) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const currentUser = JSON.parse(sessionStorage.getItem('user'));
-        if (currentUser && currentUser.token) {
-            request = request.clone({
-                setHeaders: {
-                    'Authorization': `Bearer ${currentUser.token}`,
-                    'api-version': environment.apiVersion
-                }
-            });
+        const userCookie = this.cookieService.get('user');
+        if (userCookie) {
+            const currentUser = JSON.parse(userCookie);
+            if (currentUser && currentUser.token) {
+                request = request.clone({
+                    setHeaders: {
+                        'Authorization': `Bearer ${currentUser.token}`,
+                        'api-version': environment.apiVersion
+                    }
+                });
+            }
         }
         return next.handle(request)
             .pipe(

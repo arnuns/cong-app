@@ -5,6 +5,7 @@ import { CacheService } from './cache/cache.service';
 import { User, Role, Document } from '../models/user';
 import { Company } from '../models/company';
 import { Hospital } from '../models/hospital';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,10 @@ export class UserService extends BaseService {
 
   constructor(
     private cacheService: CacheService,
-    private http: HttpClient
+    private http: HttpClient,
+    cookieService: CookieService
   ) {
-    super();
+    super(cookieService);
   }
 
   getCountUser() {

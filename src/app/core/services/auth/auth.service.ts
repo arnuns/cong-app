@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,14 +36,17 @@ export class AuthService extends BaseService {
 
   logoutUser(): void {
     this.currentUserSubject.next(null);
+    this.cookieService.deleteAll();
     sessionStorage.clear();
+    localStorage.clear();
     this.router.navigate([this.getLoginUrl()]);
   }
 
   constructor(
     public http: HttpClient,
-    public router: Router) {
-    super();
+    public router: Router,
+    cookieService: CookieService) {
+    super(cookieService);
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(this.userDataStorage));
     this.currentUser = this.currentUserSubject.asObservable();
   }

@@ -18,6 +18,7 @@ import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
   providers: [
     MomentHelper,
     SpinnerHelper,
+    CookieService
   ],
   exports: [
     FormsModule,

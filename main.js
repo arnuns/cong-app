@@ -126,13 +126,7 @@ ipcMain.on('view-user', (event, empNo) => {
     modal: true,
     show: false
   })
-  winTwo.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/employee/detail/${empNo}`),
-      protocol: "file:",
-      slashes: true
-    })
-  )
+  winTwo.loadURL(`file://${__dirname}/dist/index.html#/employee/detail/${empNo}`)
   winTwo.once('ready-to-show', () => {
     winTwo.show()
     // winTwo.webContents.openDevTools()
@@ -151,13 +145,7 @@ ipcMain.on('view-document', (event, empNo, documentId) => {
     modal: true,
     show: false
   })
-  winThree.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/employee/${empNo}/document/${documentId}`),
-      protocol: "file:",
-      slashes: true
-    })
-  )
+  winThree.loadURL(`file://${__dirname}/dist/index.html#/employee/${empNo}/document/${documentId}`)
   winThree.once('ready-to-show', () => {
     winThree.show()
     //winThree.webContents.openDevTools()
@@ -176,13 +164,7 @@ ipcMain.on('view-report', (event, empNo) => {
     modal: true,
     show: false
   })
-  winReport.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/report/transfer?empno=${empNo}`),
-      protocol: "file:",
-      slashes: true
-    })
-  )
+  winReport.loadURL(`file://${__dirname}/dist/index.html#/report/transfer/${empNo}`)
   winReport.once('ready-to-show', () => {
     winReport.show()
   })
