@@ -1,0 +1,71 @@
+<div class="d-flex">
+        <div class="employee-card front" style="background-image:url('./assets/img/bg-employee-card.png')">
+          <div class="d-flex flex-column">
+            <div class="text-center">
+              <img [src]="baseImagePath + '/img/gmg-logo.svg'" alt="Logo" class="gmg-logo">
+            </div>
+            <div class="company-name text-center text-white pt-1">
+              <strong>{{ companyReportHeader.FullName }}</strong>
+            </div>
+            <div class="text-center logo-box mb-1">
+              <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="Profile" class="img-profile">
+              <ng-template #elseNoProfileImage>
+                <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt="" class="img-profile">
+              </ng-template>
+            </div>
+            <div class="text-center name-info">
+              <strong>{{ user?.firstName + ' ' + user?.lastName }}</strong>
+              <br/> {{ user?.role.nameTH }}
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="align-self-center">
+                  <ngx-qrcode [qrc-element-type]="'value'" [qrc-value]="empNoString" qrc-class="qrcode"></ngx-qrcode>
+                </div>
+                <div class="align-self-center">
+                  <div class="d-flex flex-column card-info">
+                    <div>รหัสพนักงาน:
+                      <strong>{{ user?.company.name.toUpperCase() + user?.empNo }}</strong>
+                    </div>
+                    <div>วันหมดอายุบัตร:
+                      <strong>{{ expiryDateString }}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="employee-card back text-white rule-info">
+          <div class="d-flex flex-column ">
+            <div class="text-center">
+              <img [src]="baseImagePath + '/img/gmg-logo.svg'" alt="Logo" class="gmg-logo">
+            </div>
+            <div class="company-name text-center text-white pt-1">
+              <strong>{{ companyReportHeader.FullName }}</strong>
+            </div>
+            <div class="px-2 py-1">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i> ต้องติดบัตรตลอดเวลาขณะปฏิบัติหน้าที่</div>
+            <div class="px-2 py-1">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i> บัตรนี้เป็นกรรมสิทธิ์ของบริษัทฯ จะต้องคืนฝ่ายทรัพยากรบุคคลทันทีเมื่อพ้นสภาพการเป็นพนักงานบริษัทฯ</div>
+            <div class="px-2 py-1">
+              <i class="fa fa-dot-circle-o" aria-hidden="true"></i> กรณีบัตรชำรุดหรือสูญหายจะต้องแจ้งฝ่ายทรัพยากรบุคคลทราบทันทีเพื่อทำบัตรใหม่</div>
+            <div class="px-2 py-1">
+              หากผู้ใดเก็บบัตรได้ กรุณาส่งคืน
+            </div>
+            <div class="px-2">
+              <hr class="my-1 style6">
+            </div>
+            <div class="px-2 py-1 address-info">
+              {{ companyReportHeader.Address2 }}
+            </div>
+            <div class="px-2 address-info">โทรศัพท์: {{ companyReportHeader.Tel }}</div>
+            <div class="px-2 address-info">มือถือ: {{ companyReportHeader.Mobile }}</div>
+            <div class="px-2 py-1">
+              <div class="signature">
+              </div>
+            </div>
+            <div class="px-2 py-1 bottom-info"></div>
+          </div>
+        </div>
+      </div>

@@ -151,7 +151,7 @@ export class EmployeeComponent implements OnInit {
 
   previewTransferReport(empNo: string) {
     if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.send('view-report', empNo);
+      this.electronService.ipcRenderer.send('view-employee-transfer', empNo);
     }
   }
 
@@ -169,7 +169,7 @@ export class EmployeeComponent implements OnInit {
 
   previewEmployeeLicense(empNo: string) {
     if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.send('view-license', empNo);
+      this.electronService.ipcRenderer.send('view-employee-license', empNo);
     }
   }
 

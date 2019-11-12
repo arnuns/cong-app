@@ -15,10 +15,13 @@ import { NgxElectronModule } from 'ngx-electron';
 import { defineLocale } from 'ngx-bootstrap/chronos';
 import { thLocale } from 'ngx-bootstrap/locale';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { MonthHelper } from 'src/app/core/helpers/month.helper';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CookieService } from 'ngx-cookie-service';
+import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { NgxSmartModalModule } from 'ngx-smart-modal';
 
 @NgModule({
   declarations: [
@@ -35,14 +38,17 @@ import { CookieService } from 'ngx-cookie-service';
     NgSelectModule,
     NgxSpinnerModule,
     NgxElectronModule,
+    NgxSmartModalModule.forRoot(),
     DataTablesModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    PdfViewerModule
+    PdfViewerModule,
+    NgxQRCodeModule
   ],
   providers: [
     MomentHelper,
+    MonthHelper,
     SpinnerHelper,
     CookieService
   ],
@@ -55,11 +61,13 @@ import { CookieService } from 'ngx-cookie-service';
     NgSelectModule,
     NgxSpinnerModule,
     NgxElectronModule,
+    NgxSmartModalModule,
     DataTablesModule,
     BsDatepickerModule,
     BsDropdownModule,
     TabsModule,
-    PdfViewerModule
+    PdfViewerModule,
+    NgxQRCodeModule
   ]
 })
 export class SharedModule {

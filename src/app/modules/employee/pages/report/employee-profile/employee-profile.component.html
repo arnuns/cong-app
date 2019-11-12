@@ -1,0 +1,803 @@
+<div class="container-fluid page-break">
+  <div class="d-flex align-items-center">
+    <div class="p-2 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-2 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="page">
+    <div class="d-flex justify-content-center">
+      <div class="p-1">
+        <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
+          class="img-profile">
+        <ng-template #elseNoProfileImage>
+          <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
+            class="img-profile">
+        </ng-template>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ประวัติพนักงาน</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>บริษัท</strong>
+          </div>
+          <div>{{ user?.company.name | uppercase }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>ไซต์งานลูกค้า</strong>
+          </div>
+          <div>{{ user?.site.name }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>ตำแหน่ง</strong>
+          </div>
+          <div>{{ user?.role.nameTH }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันเริ่มงาน</strong>
+          </div>
+          <div>
+            {{ (!user?.startDate) ? '-' : (user?.startDate | date: 'dd/MM/yyyy') }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ข้อมูลบัตรประชาชน</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>เลขที่บัตรประจำตัวประชาชน</strong>
+          </div>
+          <div>{{ user?.idCardNumber }}</div>
+        </div>
+      </div>
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันที่ออกบัตร</strong>
+          </div>
+          <div>{{ (!user?.dateIssued) ? '-' : (user?.dateIssued | date: 'dd/MM/yyyy')
+                  }}
+          </div>
+        </div>
+      </div>
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันหมดอายุ</strong>
+          </div>
+          <div>{{ (!user?.expiryDate) ? '-' : (user?.expiryDate | date: 'dd/MM/yyyy')
+                  }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ข้อมูลส่วนตัว</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1 text-white">
+            <strong>ภาษา</strong>
+          </div>
+          <div class="px-2 py-1">TH</div>
+          <div class="px-2 py-1">EN</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>คำนำหน้าชื่อ</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.title }}</div>
+          <div class="px-2 py-1">{{ (!user?.titleEn) ? '-' : user?.titleEn }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ชื่อ</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.firstName }}</div>
+          <div class="px-2 py-1">
+            {{ (!user?.firstnameEn) ? '-' : user?.firstnameEn }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>นามสกุล</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.lastName }}</div>
+          <div class="px-2 py-1">
+            {{ (!user?.lastnameEn) ? '-' : user?.lastnameEn }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>เพศ</strong>
+          </div>
+          <div class="px-2 py-1">
+            <p *ngIf="user?.gender == 'male'; else genderElseBlock">
+              ชาย
+            </p>
+            <ng-template #genderElseBlock>
+              <p>หญิง</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>วันเกิด</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ user?.birthdate | date: 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>อายุ (ปี)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ age }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>น้ำหนัก (กก.)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.weight) ? '-' : user?.weight }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ส่วนสูง (ซม.)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.height) ? '-' : user?.height }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ตำหนิ</strong>
+          </div>
+          <div class="px-2 py-1">
+            -
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>เชื้อชาติ</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.ethnicity) ? '-' : user?.ethnicity }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>สัญชาติ</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.nationality) ? '-' : user?.nationality }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ศาสนา</strong>
+          </div>
+          <div class="px-2 py-1">{{ (!user?.religion) ? '-' : user?.religion }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>ที่อยู่ตามทะเบียนบ้าน</strong>
+      </div>
+      <div class="px-2 py-1">
+        {{ (!user?.permanentAddress) ? '-' : user?.permanentAddress }}
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)</strong>
+      </div>
+      <div class="px-2 py-1">
+        {{ (!user?.currentAddress) ? '-' : user?.currentAddress }}</div>
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="d-flex justify-content-center">
+    <div class="p-1">หน้า 1 จาก 3</div>
+  </div>
+</div>
+
+<div class="container-fluid page-break">
+  <div class="d-flex align-items-center">
+    <div class="p-2 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-2 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="page">
+    <div class="d-flex flex-column">
+      <div>
+        <div class="d-flex flex-row">
+          <div class="px-2 py-1">
+            <strong>สถานะของที่อยู่อาศัย</strong>
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.residenceStatus === 'Owner'; else elseNonOwner" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonOwner>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            อาศัยผู้อื่น
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.residenceStatus === 'Rental'; else elseNonRental" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonRental>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            บ้านเช่า
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.residenceStatus === 'Parents'; else elseNonParents" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonParents>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ของบิดา-มารดา
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.residenceStatus === 'Others'; else elseNonOthers" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonOthers>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template> อื่นๆ
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-row">
+          <div class="px-2 py-1">
+            <strong>เบอร์โทรศัพท์</strong>
+          </div>
+          <div class="px-2 py-1">{{ (user?.phoneNo === null || user?.phoneNo === undefined) ? '-' : user?.phoneNo }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div>
+            <div class="d-flex flex-row">
+              <div class="px-2 py-1">
+                <strong>ชื่อ-สกุลบิดา</strong>
+              </div>
+              <div class="px-2 py-1">
+                <strong>อายุ (ปี)</strong>
+              </div>
+              <div class="px-2 py-1">
+                <strong>อาชีพ</strong>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex flex-row">
+              <div class="px-2 py-1">
+                {{ (!user?.parentName_1) ? '-' : user?.parentName_1 }}
+              </div>
+              <div class="px-2 py-1">
+                {{ (!user?.parentAge_1) ? '-' : user?.parentAge_1 }}
+              </div>
+              <div class="px-2 py-1">
+                {{ (!user?.parentJob_1) ? '-' : user?.parentJob_1 }}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex flex-row">
+              <div class="px-2 py-1">
+                <strong>ชื่อ-สกุลมารดา</strong>
+              </div>
+              <div class="px-2 py-1">
+                <strong>อายุ (ปี)</strong>
+              </div>
+              <div class="px-2 py-1">
+                <strong>อาชีพ</strong>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex flex-row">
+              <div class="px-2 py-1">
+                {{ (!user?.parentName_2) ? '-' : user?.parentName_2 }}
+              </div>
+              <div class="px-2 py-1">
+                {{ (!user?.parentAge_2) ? '-' : user?.parentAge_2 }}
+              </div>
+              <div class="px-2 py-1">
+                {{ (!user?.parentJob_2) ? '-' : user?.parentJob_2 }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>สถานภาพทางการทหาร</strong>
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.militaryStatus === 'Serving'; else elseNonServing" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonServing>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            กำลังอยู่ในภาวะเป็นทหารเกณฑ์
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.militaryStatus === 'Completed'; else elseNonCompleted" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonCompleted>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ผ่านทหารเกณฑ์มาแล้วโดยการเป็นทหารเกณฑ์
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.militaryStatus === 'Exempted'; else elseNonExempted" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseNonExempted>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ได้รับการยกเว้นโดยการเป็น ร.ด. จบหลักสูตร หรือจับฉลากได้ใบดำ หรือร่างกายไม่ได้ขนาด
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>การศึกษา และประวัติการทำงาน</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ระดับการศึกษา</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.education) ? '-' : user?.education }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>สถาบันการศึกษา</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.graduateSchool) ? '-' : user?.graduateSchool }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>สาขา</strong>
+          </div>
+          <div class="px-2 py-1">{{ (!user?.faculty) ? '-' : user?.faculty }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="px-2 py-1">
+        <strong>ประวัติการทำงาน</strong>
+      </div>
+    </div>
+    <div class="p-1">
+      <table class="table table-bordered">
+        <tbody>
+          <tr *ngIf="(!user?.jobHistories || user?.jobHistories.length <= 0)">
+            <td>-</td>
+          </tr>
+          <tr *ngFor="let job of user?.jobHistories; let i = index">
+            <td class="p-0 text-center">{{ i+1 }}</td>
+            <td class="p-0">
+              <div class="d-flex flex-row">
+                <div>
+                  <div class="d-flex flex-column">
+                    <div class="p-1">
+                      <strong>ชื่อสถานประกอบการ</strong>
+                    </div>
+                    <div class="p-1">{{ job.companyName }}</div>
+                    <div class="p-1">
+                      <strong>ชื่อ-สกุลบุคคลอ้างอิง</strong>
+                    </div>
+                    <div class="p-1">{{ job.refName }}</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="d-flex flex-column">
+                    <div class="p-1">
+                      <strong>ตำแหน่ง</strong>
+                    </div>
+                    <div class="p-1">{{ job.position }}</div>
+                    <div class="p-1">
+                      <strong>ตำแหน่งบุคคลอ้างอิง</strong>
+                    </div>
+                    <div class="p-1">{{ job.refRelation }}</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="d-flex flex-column">
+                    <div class="p-1">
+                      <strong>ระยะเวลา (จำนวนปี/เดือน)</strong>
+                    </div>
+                    <div class="p-1">{{ job.duration }}</div>
+                    <div class="p-1">
+                      <strong>เบอร์โทรศัพท์</strong>
+                    </div>
+                    <div class="p-1">{{ job.refPhoneNo }}</div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="d-flex justify-content-center">
+    <div class="p-1">หน้า 2 จาก 3</div>
+  </div>
+</div>
+
+<div class="container-fluid page-break">
+  <div class="d-flex align-items-center">
+    <div class="p-2 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-2 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="page">
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ความสามารถ และข้อมูลทั่วไป</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div class="px-2 py-1">
+        <strong>ความสามารถด้านภาษา</strong>
+      </div>
+    </div>
+    <div class="p-1">
+      <table class="table table-bordered">
+        <tbody>
+          <tr *ngIf="(!user?.languageAbilities || user?.languageAbilities.length <= 0)">
+            <td>-</td>
+          </tr>
+          <ng-container *ngFor="let lang of user?.languageAbilities">
+            <tr>
+              <td class="p-0" rowspan="2">
+                {{ (lang.language === 'Thai') ? 'ภาษาไทย' : (lang.language === 'English' ? 'ภาษาอังกฤษ' : '-') }}</td>
+              <td class="p-0">
+                <strong>อ่าน</strong>
+              </td>
+              <td class="p-0">
+                <strong>เขียน</strong>
+              </td>
+              <td class="p-0">
+                <strong>พูด</strong>
+              </td>
+            </tr>
+            <tr>
+              <td class="p-0">
+                <div class="d-flex flex-row">
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.read === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                    <ng-template #elseNonFair>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    พอใช้
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.read === 'Good'; else elseNonGood" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                    <ng-template #elseNonGood>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดี
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.read === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonExcellent>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดีมาก
+                  </div>
+                </div>
+              </td>
+              <td class="p-0">
+                <div class="d-flex flex-row">
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.write === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonFair>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    พอใช้
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.write === 'Good'; else elseNonGood" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonGood>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดี
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.write === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonExcellent>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดีมาก
+                  </div>
+                </div>
+              </td>
+              <td class="p-0">
+                <div class="d-flex flex-row">
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.conversation === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonFair>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    พอใช้
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.conversation === 'Good'; else elseNonGood" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonGood>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดี
+                  </div>
+                  <div class="px-2 py-1">
+                    <i *ngIf="lang.conversation === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                      aria-hidden="true"></i>
+                    <ng-template #elseNonExcellent>
+                      <i class="fa fa-circle-thin" aria-hidden="true"></i>
+                    </ng-template>
+                    ดีมาก
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>กรณีฉุกเฉิน บุคคลที่ติดต่อได้</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.refName_1) ? '-' : user?.refName_1 }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ความสัมพันธ์</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.refRelation_1) ? '-' : user?.refRelation_1 }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>เบอร์โทรศัพท์</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.refPhoneNo_1) ? '-' : user?.refPhoneNo_1 }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)</strong>
+      </div>
+      <div class="px-2 py-1">
+        {{ (!user?.refAddress_1) ? '-' : user?.refAddress_1 }}
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>
+          ข้อมูลทั่วไป
+        </strong>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            ท่านมีร่างกายสมประกอบหรือไม่
+          </div>
+          <div class="px-2 py-1">
+            โรคเรื้อรังประจำตัวหรือไม่
+          </div>
+          <div class="px-2 py-1">
+            เคยต้องโทษทางคดีอาญาหรือคดีเพ่งหรือไม่
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <i *ngIf="(!user?.disability === null); else elseDisabilityYes"
+              class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            <ng-template #elseDisabilityYes>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ไม่มี
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="(!user?.congenitalDisease); else elseCongenitalDiseaseYes"
+              class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            <ng-template #elseCongenitalDiseaseYes>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ไม่มี
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.isPreviousConviction === false; else elseIsPreviousConvictionYes" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseIsPreviousConvictionYes>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            ไม่มี
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <i *ngIf="(user?.disability); else elseDisabilityNo"
+              class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            <ng-template #elseDisabilityNo>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            มี
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="(user?.congenitalDisease); else elseCongenitalDiseaseNo"
+              class="fa fa-dot-circle-o" aria-hidden="true"></i>
+            <ng-template #elseCongenitalDiseaseNo>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            มี
+          </div>
+          <div class="px-2 py-1">
+            <i *ngIf="user?.isPreviousConviction; else elseIsPreviousConvictionNo" class="fa fa-dot-circle-o"
+              aria-hidden="true"></i>
+            <ng-template #elseIsPreviousConvictionNo>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+            มี
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div class="px-2 py-1">
+        จำนวนครั้ง
+      </div>
+      <div class="px-2 py-1">
+        {{ (!user?.numOfConviction) ? '-' : user?.numOfConviction }}
+      </div>
+      <div class="px-2 py-1">
+        เนื้อหาของคดี
+      </div>
+      <div class="px-2 py-1">
+        {{ (!user?.convictionCause) ? '-' : user?.convictionCause }}
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>เอกสารสำคัญแนบท้าย
+      </u>
+    </h5>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>บัญชีธนาคาร</strong>
+      </div>
+      <div>
+        <div class="d-flex flex-row">
+          <div class="px-2 py-1">
+            <strong>ธนาคาร</strong>
+          </div>
+          <div class="px-2 py-1">
+            <strong>เลขที่บัญชี</strong>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-row">
+          <div class="px-2 py-1">{{ (!user?.bankName) ? '-' : user?.bankName }}
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.bankAccount) ? '-' : user?.bankAccount }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="d-flex justify-content-center">
+    <div class="p-1">หน้า 3 จาก 3</div>
+  </div>
+</div>

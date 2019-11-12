@@ -149,3 +149,12 @@ export interface Role {
     nameTH: string;
     createOn: Date;
 }
+
+export interface BeginResign {
+    companyId: string;
+    siteId: number;
+    oldStartDate: string;
+    oldEndDate: string;
+    startDate: string;
+    description: string;
+}

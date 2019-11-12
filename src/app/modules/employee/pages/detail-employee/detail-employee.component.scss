@@ -30,6 +30,24 @@
   object-fit: contain;
 }
 
+.container {
+  padding: 0;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.container:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 32px;
+  width: 1px;
+  height: 100%;
+  background: #e5e5e5;
+  z-index: 1
+}
+
 .timeline-block {
   width: 100%;
   display: -webkit-box;
@@ -42,6 +60,7 @@
   justify-content: space-between;
   clear: both;
   padding: 10px 23.5px 0px 26.5px;
+  position: relative;
 }
 
 .timeline-block-right {
@@ -49,8 +68,8 @@
 }
 
 .marker {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #00ca9d;
   margin-top: 10px;
@@ -127,4 +146,24 @@
 .img-view {
   max-width: 45px;
   max-height: 45px;
+}
+
+.img-view-link {
+  cursor: pointer;
+}
+
+.img-view-link:hover {
+  opacity: .8;
+}
+
+.timeattendance-table th {
+  background-color: #ebedf8;
+}
+
+.year-select {
+  width: 120px;
+}
+
+.month-select {
+  width: 120px;
 }

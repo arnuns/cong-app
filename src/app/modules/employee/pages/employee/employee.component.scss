@@ -25,3 +25,13 @@
   width: 120px;
   height: 42px;
 }
+
+.employee-view-user-link {
+  color: #00ca9d;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.employee-view-user-link:hover {
+  opacity: .8;
+}

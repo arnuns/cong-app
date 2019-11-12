@@ -1,0 +1,225 @@
+<div class="container-fluid">
+  <div class="d-flex align-items-center">
+    <div class="p-2 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-2 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <h5 class="report-header p-1 mt-2">
+    ประวัติและตำหนิรูปพรรณ
+  </h5>
+  <div class="d-flex">
+    <div class="p-2">
+      <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
+        class="img-profile">
+      <ng-template #elseNoProfileImage>
+        <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
+          class="img-profile">
+      </ng-template>
+    </div>
+    <div class="p-2">
+      <div class="img-idcard"></div>
+    </div>
+    <div class="p-2">
+      <div class="d-flex flex-column">
+        <div>
+          <h5 class="p-0">{{ user?.title + user?.firstName + ' ' + user?.lastName }}</h5>
+        </div>
+        <div>รหัสพนักงาน:
+          <strong>{{ user?.company.name.toUpperCase() + user?.empNo }}</strong>
+        </div>
+        <div>ตำแหน่ง:
+          <strong>{{ user?.role.nameTH }}</strong>
+        </div>
+        <div>ไซต์งานลูกค้า:
+          <strong>{{ user?.site.name }}</strong>
+        </div>
+        <div *ngIf="user?.licenseNo">เลขที่ใบอนุญาต:
+          <strong>{{ user?.licenseNo }}</strong>
+        </div>
+        <div>เลขที่บัตรประชาชน:
+          <strong>{{ user?.idCardNumber }}</strong>
+        </div>
+        <div>วัน/เดือน/ปีเกิด:
+          <strong>{{ birthDateString }}</strong>
+        </div>
+        <div>อายุ:
+          <strong>{{ age }} ปี</strong>
+        </div>
+        <div>เบอร์โทรศัพท์:
+          <strong>{{ user?.phoneNo }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex">
+    <div class="px-2 py-0 user-info-box">
+      <div class="d-flex flex-column">
+        <div>เพศ:
+          <strong *ngIf="user?.gender == 'male'; else elseFemale">ชาย</strong>
+          <ng-template #elseFemale>
+            <strong>หญิง</strong>
+          </ng-template>
+        </div>
+        <div>เชื้อชาติ:
+          <strong>{{ user?.nationality }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-0 user-info-box">
+      <div class="d-flex flex-column">
+        <div>ส่วนสูง:
+          <strong>{{ user?.height }} ซม.</strong>
+        </div>
+        <div>สัญชาติ:
+          <strong>{{ user?.ethnicity }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-0 user-info-box">
+      <div class="d-flex flex-column">
+        <div>น้ำหนัก:
+          <strong>{{ user?.weight }} กก.</strong>
+        </div>
+        <div>ศาสนา:
+          <strong>{{ user?.religion }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex">
+    <div class="px-2 py-0 user-info-box">
+      <div class="d-flex flex-column">
+        <div>ระดับการศึกษา:
+          <strong>{{ user?.education }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-0">
+      <div class="d-flex flex-column">
+        <div>สาขา/สถาบันที่จบ:
+          <strong>{{ user?.graduateSchool }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column">
+    <div class="px-2 py-0">ภูมิลำเนา:
+      <strong>{{ user?.permanentAddress }}</strong>
+    </div>
+    <div class="px-2 py-0">ที่อยู่ปัจจุบัน:
+      <strong>{{ user?.currentAddress }}</strong>
+    </div>
+    <div class="px-2 py-0">ตำหนิ/แผลเป็น:
+      <strong>{{ !user?.defect ? '-' : user?.defect }}</strong>
+    </div>
+  </div>
+  <h5 class="report-header p-1 mt-2">
+    บุคคลอ้างอิง
+  </h5>
+  <div class="d-flex flex-column">
+    <div class="px-2 py-0">
+      <div class="d-flex">
+        <div class="related-name">
+          1. {{ user?.refName_2 }}
+        </div>
+        <div>
+          ความสัมพันธ์:
+          <strong>{{ user?.refRelation_2 }}</strong>
+        </div>
+      </div>
+    </div>
+    <div class="px-2 py-0">
+      <div class="d-flex">
+        <div class="related-name">
+          2. {{ user?.refName_3 }}
+        </div>
+        <div>
+          ความสัมพันธ์:
+          <strong>{{ user?. refRelation_3 }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex">
+    <div>
+      <h5 class="report-header training-title p-1 mt-2 mr-2">
+        การฝึกอบรม
+      </h5>
+      <div class="d-flex flex-column training-box">
+        <div class="px-2">1. {{ user?.training_1 }}</div>
+        <div class="px-2">2. {{ user?.training_2 }}</div>
+        <div class="px-2">3. {{ user?.training_3 }}</div>
+      </div>
+    </div>
+    <div>
+      <h5 class="report-header check-title p-1 mt-2">
+        สรุปผลการตรวจปัสสาวะ
+      </h5>
+      <div class="d-flex flex-column">
+        <div>
+          <i class="fa fa-circle-thin" aria-hidden="true"></i> ไม่พบสารเสพติด</div>
+        <div>
+          <i class="fa fa-circle-thin" aria-hidden="true"></i> พบสารเสพติด</div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-end">
+    <div class="p-2">
+      <div class="d-flex flex-column text-center">
+        <div class="p-2">ลงชื่อ ......................................... ผู้บันทึก</div>
+        <div class="p-2">(.........................................)</div>
+        <div class="p-2">ตำแหน่ง .........................................</div>
+      </div>
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr class="text-center">
+        <th class="p-0" colspan="6">
+          <h5 class="px-0 py-1 m-0" style="background-color: #00ca9d; color: #ffffff; font-size: 1.05rem">
+            ภาพสแกนลายนิ้วมือทั้ง 10</h5>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="text-center">
+        <td class="p-0 hand-side-title" rowspan="2">มือซ้าย</td>
+        <td class="p-0">นิ้วก้อย</td>
+        <td class="p-0">นิ้วนาง</td>
+        <td class="p-0">นิ้วกลาง</td>
+        <td class="p-0">นิ้วชี้</td>
+        <td class="p-0">นิ้วหัวแม่มือ</td>
+      </tr>
+      <tr>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+      </tr>
+      <tr class="text-center">
+        <td class="p-0 hand-side-title" rowspan="2">มือขวา</td>
+        <td class="p-0">นิ้วก้อย</td>
+        <td class="p-0">นิ้วนาง</td>
+        <td class="p-0">นิ้วกลาง</td>
+        <td class="p-0">นิ้วชี้</td>
+        <td class="p-0">นิ้วหัวแม่มือ</td>
+      </tr>
+      <tr>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+        <td class="fingerprint"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

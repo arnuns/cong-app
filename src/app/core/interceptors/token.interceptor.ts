@@ -5,26 +5,29 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, retryWhen, concatMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '../services/auth/auth.service';
+import { User } from '../models/user';
 
 @Injectable()
 
 export class TokenInterceptor implements HttpInterceptor {
+    user: User;
     constructor(
-        private cookieService: CookieService,
-        private router: Router) { }
+        private authService: AuthService,
+        private router: Router) {
+        this.authService.currentUser.subscribe(user => {
+            this.user = user;
+        });
+    }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        const userCookie = this.cookieService.get('user');
-        if (userCookie) {
-            const currentUser = JSON.parse(userCookie);
-            if (currentUser && currentUser.token) {
-                request = request.clone({
-                    setHeaders: {
-                        'Authorization': `Bearer ${currentUser.token}`,
-                        'api-version': environment.apiVersion
-                    }
-                });
-            }
+        if (this.user && this.user.token) {
+            request = request.clone({
+                setHeaders: {
+                    'Authorization': `Bearer ${this.user.token}`,
+                    'api-version': environment.apiVersion
+                }
+            });
         }
         return next.handle(request)
             .pipe(

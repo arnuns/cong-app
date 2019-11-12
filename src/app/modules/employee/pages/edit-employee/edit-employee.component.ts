@@ -14,6 +14,7 @@ import { SiteService } from 'src/app/core/services/site.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { combineLatest } from 'rxjs';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-edit-employee',
@@ -32,11 +33,16 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   user: User;
   sub: any;
   reading = false;
+  updating = false;
   roles: Role[] = [];
   companies: Company[] = [];
   sites: Site[] = [];
   banks: AvailableBank[] = [];
   hospitals: Hospital[] = [];
+
+  beginResignForm = this.fb.group({
+    begin_start_date: [null, Validators.required]
+  });
 
   employeeForm = this.fb.group({
     is_temporary: [false],
@@ -141,6 +147,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     private applicationStateService: ApplicationStateService,
     private fb: FormBuilder,
     private moment: MomentHelper,
+    private ngxSmartModalService: NgxSmartModalService,
     private router: Router,
     private siteService: SiteService,
     private spinner: SpinnerHelper,
@@ -407,6 +414,35 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       default:
         break;
     }
+  }
+
+  displayBeginModal() {
+    this.ngxSmartModalService.getModal('beginModal').open();
+  }
+
+  beginDatePickerValueChange(startDate: Date) {
+    this.beginResignForm.get('begin_start_date').setValue(startDate);
+  }
+
+  onSubmitBeginResign() {
+    this.spinner.showLoadingSpinner();
+    this.updating = true;
+    this.userService.updateUserBeginResign(this.empNo, {
+      companyId: this.employeeForm.get('company_id').value,
+      siteId: this.employeeForm.get('site_id').value,
+      oldStartDate: this.moment.formatISO8601(this.employeeForm.get('start_date').value),
+      oldEndDate: this.moment.formatISO8601(this.employeeForm.get('end_date').value),
+      startDate: this.moment.formatISO8601(this.beginResignForm.get('begin_start_date').value),
+      description: this.employeeForm.get('resignation_cause').value
+    }).subscribe(user => {
+      this.spinner.hideLoadingSpinner(0);
+      this.updating = false;
+      this.ngxSmartModalService.getModal('beginModal').close();
+      this.router.navigate(['/employee']);
+    }, error => {
+      this.spinner.hideLoadingSpinner(0);
+      this.updating = false;
+    });
   }
 
   onSubmit() {

@@ -1,0 +1,264 @@
+<div class="container-fluid page-break">
+  <div class="d-flex align-items-center">
+    <div class="p-2 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-2 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <hr class="mt-1 bg-light" />
+  <div class="page">
+    <div class="d-flex justify-content-center">
+      <div class="p-1">
+        <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
+          class="img-profile">
+        <ng-template #elseNoProfileImage>
+          <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
+            class="img-profile">
+        </ng-template>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ประวัติพนักงาน</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>บริษัท</strong>
+          </div>
+          <div>{{ user?.company.name | uppercase }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>ไซต์งานลูกค้า</strong>
+          </div>
+          <div>{{ user?.site.name }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>ตำแหน่ง</strong>
+          </div>
+          <div>{{ user?.role.nameTH }}</div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันเริ่มงาน</strong>
+          </div>
+          <div>{{ (!user?.startDate) ? '-' : (user?.startDate | date: 'dd/MM/yyyy') }}</div>
+        </div>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ข้อมูลบัตรประชาชน</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>เลขที่บัตรประจำตัวประชาชน</strong>
+          </div>
+          <div>{{ user?.idCardNumber }}</div>
+        </div>
+      </div>
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันที่ออกบัตร</strong>
+          </div>
+          <div>{{ (!user?.dateIssued) ? '-' : (user?.dateIssued | date: 'dd/MM/yyyy')
+                  }}
+          </div>
+        </div>
+      </div>
+      <div class="px-2 py-1">
+        <div class="d-flex flex-column">
+          <div>
+            <strong>วันหมดอายุ</strong>
+          </div>
+          <div>{{ (!user?.expiryDate) ? '-' : (user?.expiryDate | date: 'dd/MM/yyyy')
+                  }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 class="report-header px-1 py-2 m-1 text-center">
+      <u>ข้อมูลส่วนตัว</u>
+    </h5>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1 text-white">
+            <strong>ภาษา</strong>
+          </div>
+          <div class="px-2 py-1">TH</div>
+          <div class="px-2 py-1">EN</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>คำนำหน้าชื่อ</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.title }}</div>
+          <div class="px-2 py-1">{{ (!user?.titleEn) ? '-' : user?.titleEn }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ชื่อ</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.firstName }}</div>
+          <div class="px-2 py-1">{{ (!user?.firstnameEn) ? '-' : user?.firstnameEn }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>นามสกุล</strong>
+          </div>
+          <div class="px-2 py-1">{{ user?.lastName }}</div>
+          <div class="px-2 py-1">{{ (!user?.lastnameEn) ? '-' : user?.lastnameEn }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>เพศ</strong>
+          </div>
+          <div class="px-2 py-1">
+            <p *ngIf="user?.gender == 'male'; else genderElseBlock">
+              ชาย
+            </p>
+            <ng-template #genderElseBlock>
+              <p>หญิง</p>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>วันเกิด</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ user?.birthdate | date: 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>อายุ (ปี)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ age }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>น้ำหนัก (กก.)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.weight) ? '-' : user?.weight }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ส่วนสูง (ซม.)</strong>
+          </div>
+          <div class="px-2 py-1">
+            {{ (!user?.height) ? '-' : user?.height }}
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ตำหนิ</strong>
+          </div>
+          <div class="px-2 py-1">
+            -
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-row">
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>เชื้อชาติ</strong>
+          </div>
+          <div class="px-2 py-1">{{ (!user?.ethnicity) ? '-' : user?.ethnicity }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>สัญชาติ</strong>
+          </div>
+          <div class="px-2 py-1">{{ (!user?.nationality) ? '-' : user?.nationality }}</div>
+        </div>
+      </div>
+      <div>
+        <div class="d-flex flex-column">
+          <div class="px-2 py-1">
+            <strong>ศาสนา</strong>
+          </div>
+          <div class="px-2 py-1">{{ (!user?.religion) ? '-' : user?.religion }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>ที่อยู่ตามทะเบียนบ้าน</strong>
+      </div>
+      <div class="px-2 py-1">{{ (!user?.permanentAddress) ? '-' : user?.permanentAddress }}</div>
+    </div>
+    <div class="d-flex flex-column">
+      <div class="px-2 py-1">
+        <strong>ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)</strong>
+      </div>
+      <div class="px-2 py-1">{{ (!user?.currentAddress) ? '-' : user?.currentAddress }}</div>
+    </div>
+    <div class="d-flex flex-column justify-content-center">
+      <div class="px-2 pt-3 pb-1">
+        <p align="justify" class="text-sign">
+          ข้าพเจ้าขอรับรองว่า ข้อความและเนื้อหาที่ข้าพเจ้าได้แจ้งไว้ในประวัติฯ นี้เป็นจริงทุกประการ
+          หากสืบว่าข้าพเจ้าได้แจ้งข้อความเท็จไว้
+          ข้าพเจ้ายินยอมที่จะให้บริษัทฯ ปลดข้าพเจ้าออกจากงานทันที
+        </p>
+      </div>
+      <div class="p-2 border border-dark">
+        <div class="d-flex flex-column">
+          <div>
+            ขอรับรองสำเนาถูกต้อง
+          </div>
+          <div class="text-right">
+            .................................................. ผู้จัดการฝ่ายปฏิบัติการ รปภ. / บุคคล
+            / ธุรการ
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -5,6 +5,7 @@ $primary-color: #4b74ff;
 @import "~bootstrap/scss/bootstrap.scss";
 @import "~@ng-select/ng-select/themes/default.theme.css";
 @import "~ngx-bootstrap/datepicker/bs-datepicker.css";
+@import "~ngx-smart-modal/ngx-smart-modal";
 
 * {
   letter-spacing: .05em;
@@ -216,4 +217,20 @@ i.fa.disable {
   width: 30px;
   height: 30px;
   padding-top: 0.8em;
+}
+
+.badge-primary {
+  background-color: #4b74ff;
+}
+
+.badge-greenblue {
+  background-color: #00ca9d;
+}
+
+.badge-rosypink {
+  background-color: #f25c62 !important;
+}
+
+.nsm-content {
+  padding: 0rem;
 }

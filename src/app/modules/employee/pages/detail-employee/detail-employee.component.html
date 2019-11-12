@@ -121,7 +121,7 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column align-items-center">
                   <div class="p-2">
                     <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt=""
                       class="img-profile">
@@ -221,6 +221,41 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6 text-left">
+                <button type="button" class="btn btn-outline-primary" (click)="navigateMainToEditPage(user?.empNo)">
+                  <small>
+                    แก้ไขข้อมูล
+                  </small>
+                </button>
+              </div>
+              <div class="col-md-6 text-right">
+                <div class="btn-group" dropdown [dropup]="true">
+                  <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle"
+                    aria-controls="dropdown-basic">
+                    พิมพ์เอกสาร <span class="caret"></span>
+                  </button>
+                  <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
+                    aria-labelledby="button-basic">
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewTransferReport(user?.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i>
+                        พิมพ์ใบส่งตัว</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeProfileReport(user?.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i>
+                        พิมพ์ประวัติแบบเต็ม</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeProfileMiniReport(user?.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i>
+                        พิมพ์ประวัติแบบย่อ</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeLicense(user?.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i>
+                        พิมพ์ใบอนุญาต</a></li>
+                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeCard(user?.empNo)"><i
+                          class="fa fa-print" aria-hidden="true"></i>
+                        พิมพ์บัตรพนักงาน</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
         </tab>
         <tab heading="เอกสารสมัครงาน">
@@ -267,10 +302,10 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column align-items-center">
                   <div class="p-2">
-                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile"
-                      alt="" class="img-profile">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt=""
+                      class="img-profile">
                     <ng-template #elseNoProfileImage>
                       <img *ngIf="user?.imageProfile == null" [src]="defaultImagePath" alt="" class="img-profile">
                     </ng-template>
@@ -299,7 +334,7 @@
               </div>
             </div>
             <div class="row p-2">
-              <div class="col-md-2 px-1 py-2 mx-2 my-1 text-center border pointer"
+              <div class="col-md-2 px-1 py-2 mx-2 my-1 text-center border img-view-link"
                 *ngFor="let document of user?.documents" (click)="viewUserDococuments(document.id)">
                 <img class="img-view" [src]="defaultImagePath + '/img/img-view@2x.png'" alt="">
                 <br />
@@ -308,8 +343,235 @@
             </div>
           </div>
         </tab>
-        <tab heading="บันทึกเวลาเข้างาน">Static content 2</tab>
-        <tab heading="ประวัติการทำงาน">Static content 3</tab>
+        <tab heading="บันทึกเวลาเข้างาน" (selectTab)="onSelectTimeAttendanceTab()">
+          <div class="tab-layout">
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col">
+                    <h5>
+                      {{ user?.company.name.toUpperCase() + user?.empNo }}
+                      <br />
+                      <small>{{ user?.site.name }}</small>
+                    </h5>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      ตำแหน่ง
+                    </span>
+                    <p>
+                      {{ user?.role.nameTH }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เลขที่ใบอนุญาต
+                    </span>
+                    <p>
+                      {{ user?.licenseNo }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      ชื่อ-สกุล
+                    </span>
+                    <p>
+                      {{ user?.title }} {{ user?.firstName }} {{ user?.lastName }}
+                      <br /> {{ user?.titleEn }}. {{ user?.firstnameEn }} {{ user?.lastnameEn }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="p-2">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt=""
+                      class="img-profile">
+                    <ng-template #elseNoProfileImage>
+                      <img *ngIf="user?.imageProfile == null" [src]="defaultImagePath" alt="" class="img-profile">
+                    </ng-template>
+                  </div>
+                  <div class="p-2">
+                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                      <small>
+                        <i class="fa fa-circle active" aria-hidden="true"></i>
+                      </small> ทำงาน</span>
+                    <span *ngIf="user?.status == true && user?.isComplete == false">
+                      <small>
+                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
+                      </small> เอกสารไม่ครบ</span>
+                    <span *ngIf="user?.status == false">
+                      <small>
+                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                      </small> ลาออก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-left">
+                <h5 class="mb-0">บันทึกเวลาเข้างาน</h5>
+                <form [formGroup]="timeAttendanceForm">
+                  <div class="d-flex my-3">
+                    <div>
+                      <ng-select class="year-select" [clearable]="false" [items]="years" bindLabel="view"
+                        bindValue="viewValue" formControlName="year" (change)="onYearSelectionChange()">
+                      </ng-select>
+                    </div>
+                    <div class="ml-3">
+                      <ng-select class="month-select" [clearable]="false" [items]="months" bindLabel="abbrThai"
+                        bindValue="value" formControlName="month" (change)="onMonthSelectionChange()">
+                      </ng-select>
+                    </div>
+                  </div>
+                </form>
+                <hr />
+                <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger"
+                  class="table table-hover timeattendance-table">
+                  <thead>
+                    <tr>
+                      <th>
+                        <div class="d-flex flex-column">
+                          <div>วัน เดือน ปี</div>
+                          <div>หน่วยงาน</div>
+                        </div>
+                      </th>
+                      <th>เวลาเข้า - ออก</th>
+                      <th>บันทึกโดย</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let timeAttendance of timeAttendances">
+                      <td>{{ timeAttendance.workDate | date: 'dd MMMM yyyy' }}</td>
+                      <td>{{ convertToTimeRangeString(timeAttendance.checkInTime, timeAttendance.leaveTime) }}</td>
+                      <td>{{ timeAttendance.checkInByName }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </tab>
+        <tab heading="ประวัติการทำงาน">
+          <div class="tab-layout">
+            <div class="row">
+              <div class="col-md-9 text-left">
+                <div class="row mb-2">
+                  <div class="col">
+                    <h5>
+                      {{ user?.company.name.toUpperCase() + user?.empNo }}
+                      <br />
+                      <small>{{ user?.site.name }}</small>
+                    </h5>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      ตำแหน่ง
+                    </span>
+                    <p>
+                      {{ user?.role.nameTH }}
+                    </p>
+                  </div>
+                  <div class="col-md-4">
+                    <span class="label-title d-block">
+                      เลขที่ใบอนุญาต
+                    </span>
+                    <p>
+                      {{ user?.licenseNo }}
+                    </p>
+                  </div>
+                </div>
+                <div class="row mb-2">
+                  <div class="col">
+                    <span class="label-title d-block">
+                      ชื่อ-สกุล
+                    </span>
+                    <p>
+                      {{ user?.title }} {{ user?.firstName }} {{ user?.lastName }}
+                      <br /> {{ user?.titleEn }}. {{ user?.firstnameEn }} {{ user?.lastnameEn }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="d-flex flex-column align-items-center">
+                  <div class="p-2">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt=""
+                      class="img-profile">
+                    <ng-template #elseNoProfileImage>
+                      <img *ngIf="user?.imageProfile == null" [src]="defaultImagePath" alt="" class="img-profile">
+                    </ng-template>
+                  </div>
+                  <div class="p-2">
+                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                      <small>
+                        <i class="fa fa-circle active" aria-hidden="true"></i>
+                      </small> ทำงาน</span>
+                    <span *ngIf="user?.status == true && user?.isComplete == false">
+                      <small>
+                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
+                      </small> เอกสารไม่ครบ</span>
+                    <span *ngIf="user?.status == false">
+                      <small>
+                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                      </small> ลาออก</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12 text-left">
+                <h5 class="mb-0">ประวัติการทำงาน</h5>
+                <hr />
+                <div class="row">
+                  <div class="col text-left">
+                    <div class="container" *ngIf="user?.timelineUsers.length > 0; else elseNoTimelineUser">
+                      <div class="timeline-block timeline-block-right" *ngFor="let timeline of user?.timelineUsers">
+                        <div [ngClass]="timeline.reason != 'resign' ? 'marker' : 'marker exit'"></div>
+                        <div class="timeline-content">
+                          <h5>
+                            <span
+                              [ngClass]="timeline.reason != 'resign' ? 'badge badge-greenblue rounded-badge text-white px-4 py-2' : 'badge badge-rosypink rounded-badge text-white px-4 py-2'">
+                              {{ timeline.effectiveDate | date: 'dd MMMM yyyy' }}
+                            </span>
+                          </h5>
+                          <span *ngIf="timeline.company; else siteOnly">{{ timeline.company.name | uppercase }}
+                            <small>{{ timeline.site.name }}</small>
+                          </span>
+                          <ng-template #siteOnly>
+                            <span>GMG
+                              <small>{{ timeline.site.name }}</small>
+                            </span>
+                          </ng-template>
+                          <div [ngSwitch]="timeline?.reason">
+                            <p *ngSwitchCase="'begin'">เข้าทำงาน</p>
+                            <p *ngSwitchCase="'company'">ย้ายบริษัท</p>
+                            <p *ngSwitchCase="'site'">ย้ายหน่วยงาน
+                              <span [ngSwitch]="timeline?.isApprove">
+                                <small *ngSwitchCase="true">อนุมัติโดย {{timeline.approveBy}}</small>
+                                <small *ngSwitchCase="false">ปฏิเสธโดย {{timeline.approveBy}}</small>
+                              </span>
+                            </p>
+                            <p *ngSwitchCase="'resign'">ลาออก</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #elseNoTimelineUser>
+                      <div class="text-secondary">ไม่พบประวัติการย้ายหน่วยงาน</div>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
       </tabset>
     </div>
   </div>
