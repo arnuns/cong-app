@@ -6,6 +6,7 @@ import { RoutingStateService } from 'src/app/core/services/routing-state.service
 import { FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from 'src/app/core/services/user.service';
+import { ElectronService } from 'ngx-electron';
 
 @Component({
   selector: 'app-layout',
@@ -24,6 +25,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   constructor(
     private applicationStateService: ApplicationStateService,
     private authService: AuthService,
+    private electronService: ElectronService,
     private fb: FormBuilder,
     private userService: UserService,
     private routingStateService: RoutingStateService) {
@@ -51,6 +53,12 @@ export class LayoutComponent implements OnInit, AfterViewInit {
             });
           }
         });
+  }
+
+  viewUserInfo(empNo: string) {
+    if (this.electronService.isElectronApp) {
+      this.electronService.ipcRenderer.send('view-user', empNo);
+    }
   }
 
   onLogout() {

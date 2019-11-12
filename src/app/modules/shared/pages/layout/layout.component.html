@@ -50,7 +50,7 @@
           </div>
         </form>
         <div class="list-group result-group" *ngIf="searchResults.length > 0">
-          <a href="#" class="list-group-item list-group-item-action" *ngFor="let result of searchResults">
+          <a (click)="viewUserInfo(result.empNo)" class="list-group-item list-group-item-action" *ngFor="let result of searchResults">
             <div class="d-flex w-100">
               <div><strong>{{ result.firstName }} {{ result.lastName }}</strong></div>
               <div class="ml-auto">
