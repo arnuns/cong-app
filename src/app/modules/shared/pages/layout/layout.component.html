@@ -32,6 +32,14 @@
           </div>
         </a>
       </li>
+      <li>
+        <a class="nav-link" [routerLink]="['/site']" [routerLinkActive]="['active']">
+          <div class="d-flex align-items-center h-100">
+            <div class="nav-icon"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
+            <div class="ml-3 menu-text">หน่วยงาน</div>
+          </div>
+        </a>
+      </li>
     </ul>
   </nav>
   <nav class="topnavbar sticky-top" [class.m-0]="isHiddenLeftMenu" [class.hidden]="isHiddenTopMenu">
@@ -50,7 +58,8 @@
           </div>
         </form>
         <div class="list-group result-group" *ngIf="searchResults.length > 0">
-          <a (click)="viewUserInfo(result.empNo)" class="list-group-item list-group-item-action" *ngFor="let result of searchResults">
+          <a (click)="viewUserInfo(result.empNo)" class="list-group-item list-group-item-action"
+            *ngFor="let result of searchResults">
             <div class="d-flex w-100">
               <div><strong>{{ result.firstName }} {{ result.lastName }}</strong></div>
               <div class="ml-auto">

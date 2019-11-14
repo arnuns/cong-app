@@ -28,6 +28,11 @@ const routes: Routes = [
         path: 'employee',
         canLoad: [AuthGuardService],
         loadChildren: './modules/employee/employee.module#EmployeeModule'
+      },
+      {
+        path: 'site',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/site/site.module#SiteModule'
       }
     ]
   }

@@ -1,0 +1,67 @@
+<div class="row menu-title">
+  <div class="col px-0">
+    <div class="d-flex align-items-center w-100">
+      <div>
+        <h3 class="title noselect">หน่วยงาน ({{ totalSites | number }})</h3>
+      </div>
+      <div class="ml-auto">
+        <button class="btn btn-primary button__add"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่มหน่วยงาน</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-body">
+    <form [formGroup]="siteForm">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <div class="form-group mb-1">
+            <input type="text" class="form-control search-control" formControlName="search" placeholder="ค้นหาหน่วยงาน">
+          </div>
+        </div>
+      </div>
+    </form>
+    <table datatable [dtOptions]="dtOptions" class="table table-hover site-table">
+      <thead>
+        <tr>
+          <th>รหัสหน่วยงาน</th>
+          <th>ชื่อหน่วยงาน</th>
+          <th>วันที่สร้าง</th>
+          <th>จังหวัด</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let site of sites; let i = index">
+          <td>{{ site.code }}</td>
+          <td>{{ site.name }}</td>
+          <td class="col--create-on">
+            <span>{{ site.createOn | date: 'yyyy/MM/dd' }}</span>
+            {{ site.createOn | date:'dd-MM-yyyy' }}
+          </td>
+          <td>{{ site.province.name }}</td>
+          <td>
+            <span dropdown class="action--dropdown">
+              <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+              </a>
+              <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
+                aria-labelledby="basic-link">
+                <li>
+                  <a class="dropdown-item" (click)="editSiteInfo(site.id)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-list-alt" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">แก้ไข</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

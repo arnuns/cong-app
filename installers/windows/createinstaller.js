@@ -13,11 +13,11 @@ function getInstallerConfig() {
     const rootPath = path.join('./')
     const outPath = path.join(rootPath, 'release-builds')
     return Promise.resolve({
-        appDirectory: path.join(outPath, 'cong-app-win32-ia32/'),
+        appDirectory: path.join(outPath, 'CongApp-win32-ia32/'),
         authors: 'Arnun Sae-Lim',
         noMsi: true,
-        outputDirectory: path.join(outPath, 'windows-installer'),
-        exe: 'cong-app.exe',
+        outputDirectory: path.join(outPath, 'CongApp-Windows-Installer'),
+        exe: 'CongApp.exe',
         setupExe: 'CongAppInstaller.exe',
         setupIcon: path.join(rootPath, 'src', 'assets', 'icons', 'cong_icon.ico')
     })

@@ -1,4 +1,5 @@
 import { TimePicker } from './datepicker';
+import { Province } from './address';
 
 export interface Site {
     id: number;
@@ -9,6 +10,7 @@ export interface Site {
     districtId: number;
     amphurId: number;
     provinceId: number;
+    province: Province;
     postCode: string;
     latitude: number;
     longitude: number;

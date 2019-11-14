@@ -1,0 +1,26 @@
+::ng-deep {
+  .site-table .dataTables_empty {
+    display: none;
+  }
+}
+
+.site-table td {
+  font-size: 14px;
+  letter-spacing: 1;
+}
+
+.col--create-on>span {
+  display: none;
+}
+
+.search-control {
+  width: 500px;
+  height: 36px;
+}
+
+.button__add {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
