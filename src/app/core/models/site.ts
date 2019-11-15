@@ -1,4 +1,3 @@
-import { TimePicker } from './datepicker';
 import { Province } from './address';
 
 export interface Site {
@@ -11,7 +10,6 @@ export interface Site {
     amphurId: number;
     provinceId: number;
     province: Province;
-    postCode: string;
     latitude: number;
     longitude: number;
     isPayroll: boolean;
@@ -34,30 +32,11 @@ export interface SiteRole {
     updateBy: string;
 }
 
-export class SiteWorkRate {
+export interface SiteWorkRate {
     siteId: number;
     startTime: string;
-    startTimePicker: TimePicker;
     endTime: string;
-    endTimePicker: TimePicker;
     workerCount: number;
     createOn: Date;
     createBy: string;
-    constructor(
-        siteId: number,
-        startTime: string,
-        endTime: string,
-        workerCount: number,
-        createOn: Date,
-        createBy: string
-    ) {
-        this.siteId = siteId;
-        this.startTime = startTime;
-        this.startTimePicker = new TimePicker(parseInt(startTime.split(':')[0], 0), parseInt(startTime.split(':')[1], 0), 0);
-        this.endTime = endTime;
-        this.endTimePicker = new TimePicker(parseInt(endTime.split(':')[0], 0), parseInt(endTime.split(':')[1], 0), 0);
-        this.workerCount = workerCount;
-        this.createOn = createOn;
-        this.createBy = createBy;
-    }
 }

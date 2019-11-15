@@ -114,6 +114,6 @@ export class SiteComponent implements OnInit, AfterViewInit {
   }
 
   editSiteInfo(siteId: number) {
-    // this.router.navigate(['/site/edit', siteId]);
+    this.router.navigate(['/site/edit', siteId]);
   }
 }

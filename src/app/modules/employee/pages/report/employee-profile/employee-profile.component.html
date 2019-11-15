@@ -281,7 +281,7 @@
             <strong>สถานะของที่อยู่อาศัย</strong>
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.residenceStatus === 'Owner'; else elseNonOwner" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.residenceStatus === 'owner'; else elseNonOwner" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonOwner>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -289,7 +289,7 @@
             อาศัยผู้อื่น
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.residenceStatus === 'Rental'; else elseNonRental" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.residenceStatus === 'rental'; else elseNonRental" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonRental>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -297,7 +297,7 @@
             บ้านเช่า
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.residenceStatus === 'Parents'; else elseNonParents" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.residenceStatus === 'parents'; else elseNonParents" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonParents>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -305,7 +305,7 @@
             ของบิดา-มารดา
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.residenceStatus === 'Others'; else elseNonOthers" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.residenceStatus === 'others'; else elseNonOthers" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonOthers>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -384,7 +384,7 @@
             <strong>สถานภาพทางการทหาร</strong>
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.militaryStatus === 'Serving'; else elseNonServing" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.militaryStatus === 'serving'; else elseNonServing" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonServing>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -392,7 +392,7 @@
             กำลังอยู่ในภาวะเป็นทหารเกณฑ์
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.militaryStatus === 'Completed'; else elseNonCompleted" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.militaryStatus === 'completed'; else elseNonCompleted" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonCompleted>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -400,7 +400,7 @@
             ผ่านทหารเกณฑ์มาแล้วโดยการเป็นทหารเกณฑ์
           </div>
           <div class="px-2 py-1">
-            <i *ngIf="user?.militaryStatus === 'Exempted'; else elseNonExempted" class="fa fa-dot-circle-o"
+            <i *ngIf="user?.militaryStatus === 'exempted'; else elseNonExempted" class="fa fa-dot-circle-o"
               aria-hidden="true"></i>
             <ng-template #elseNonExempted>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -555,21 +555,21 @@
               <td class="p-0">
                 <div class="d-flex flex-row">
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.read === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                    <i *ngIf="lang.read === 1; else elseNonFair" class="fa fa-dot-circle-o" aria-hidden="true"></i>
                     <ng-template #elseNonFair>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
                     </ng-template>
                     พอใช้
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.read === 'Good'; else elseNonGood" class="fa fa-dot-circle-o" aria-hidden="true"></i>
+                    <i *ngIf="lang.read === 2; else elseNonGood" class="fa fa-dot-circle-o" aria-hidden="true"></i>
                     <ng-template #elseNonGood>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
                     </ng-template>
                     ดี
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.read === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.read === 3; else elseNonExcellent" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonExcellent>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -581,7 +581,7 @@
               <td class="p-0">
                 <div class="d-flex flex-row">
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.write === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.write === 1; else elseNonFair" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonFair>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -589,7 +589,7 @@
                     พอใช้
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.write === 'Good'; else elseNonGood" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.write === 2; else elseNonGood" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonGood>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -597,7 +597,7 @@
                     ดี
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.write === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.write === 3; else elseNonExcellent" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonExcellent>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -609,7 +609,7 @@
               <td class="p-0">
                 <div class="d-flex flex-row">
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.conversation === 'Fair'; else elseNonFair" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.conversation === 1; else elseNonFair" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonFair>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -617,7 +617,7 @@
                     พอใช้
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.conversation === 'Good'; else elseNonGood" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.conversation === 2; else elseNonGood" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonGood>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -625,7 +625,7 @@
                     ดี
                   </div>
                   <div class="px-2 py-1">
-                    <i *ngIf="lang.conversation === 'Excellent'; else elseNonExcellent" class="fa fa-dot-circle-o"
+                    <i *ngIf="lang.conversation === 3; else elseNonExcellent" class="fa fa-dot-circle-o"
                       aria-hidden="true"></i>
                     <ng-template #elseNonExcellent>
                       <i class="fa fa-circle-thin" aria-hidden="true"></i>
@@ -700,7 +700,7 @@
       <div>
         <div class="d-flex flex-column">
           <div class="px-2 py-1">
-            <i *ngIf="(!user?.disability === null); else elseDisabilityYes"
+            <i *ngIf="(!user?.disability); else elseDisabilityYes"
               class="fa fa-dot-circle-o" aria-hidden="true"></i>
             <ng-template #elseDisabilityYes>
               <i class="fa fa-circle-thin" aria-hidden="true"></i>

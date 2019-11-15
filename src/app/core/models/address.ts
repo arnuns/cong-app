@@ -14,6 +14,7 @@ export interface Amphur {
     nameEn: string;
     geoId: number;
     provinceId: number;
+    province: Province;
 }
 
 export interface District {
@@ -22,6 +23,14 @@ export interface District {
     name: string;
     nameEn: string;
     amphurId: number;
+    amphur: Amphur;
     provinceId: number;
+    province: Province;
     geoId: number;
+}
+
+export interface Postcode {
+    id: number;
+    districtCode: string;
+    code: string;
 }

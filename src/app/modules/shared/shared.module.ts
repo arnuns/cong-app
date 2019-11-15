@@ -22,6 +22,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CookieService } from 'ngx-cookie-service';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
     NgxSmartModalModule.forRoot(),
     DataTablesModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    TimepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     PdfViewerModule,
@@ -64,6 +66,7 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
     NgxSmartModalModule,
     DataTablesModule,
     BsDatepickerModule,
+    TimepickerModule,
     BsDropdownModule,
     TabsModule,
     PdfViewerModule,

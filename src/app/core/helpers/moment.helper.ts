@@ -17,4 +17,8 @@ export class MomentHelper {
     format(input, format) {
         return moment(input).format(format);
     }
+
+    toDate(input, format) {
+        return moment(input, format).toDate();
+    }
 }
