@@ -1,4 +1,5 @@
 import { Province } from './address';
+import { PageFilter } from './page-filter.model';
 
 export interface Site {
     id: number;
@@ -39,4 +40,8 @@ export interface SiteWorkRate {
     workerCount: number;
     createOn: Date;
     createBy: string;
+}
+
+export interface SiteFilter extends PageFilter {
+    search: string;
 }

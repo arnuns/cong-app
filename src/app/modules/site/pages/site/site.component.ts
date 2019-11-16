@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { SiteService } from 'src/app/core/services/site.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { DataTableDirective } from 'angular-datatables';
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
-import { Site } from 'src/app/core/models/site';
+import { Site, SiteFilter } from 'src/app/core/models/site';
 import { FormBuilder } from '@angular/forms';
 import { distinctUntilChanged, debounceTime } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -14,11 +14,13 @@ import { Router } from '@angular/router';
   templateUrl: './site.component.html',
   styleUrls: ['./site.component.scss']
 })
-export class SiteComponent implements OnInit, AfterViewInit {
+export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
   public defaultImagePath = environment.basePath;
-
   sites: Site[] = [];
+  siteFilter: SiteFilter;
+  filterSessionName = 'siteFilter';
+
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
   totalSites = 0;
@@ -36,6 +38,12 @@ export class SiteComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.initialData();
+  }
+
+  ngOnDestroy() {
+    if (this.siteFilter) {
+      localStorage.setItem(this.filterSessionName, JSON.stringify(this.siteFilter));
+    }
   }
 
   ngAfterViewInit() {
@@ -87,12 +95,30 @@ export class SiteComponent implements OnInit, AfterViewInit {
           } else {
             sortColumn = 'code';
           }
+          const siteFilterString = localStorage.getItem(that.filterSessionName);
+          if (siteFilterString) {
+            const storageSiteFillter = JSON.parse(siteFilterString) as SiteFilter;
+            that.siteForm.patchValue({
+              search: storageSiteFillter.search,
+            });
+            dtInstance.page(storageSiteFillter.page);
+            dtInstance.page.len(storageSiteFillter.page_size);
+            localStorage.removeItem(that.filterSessionName);
+          }
+          that.siteFilter = {
+            search: that.siteForm.get('search').value,
+            sort_column: sortColumn,
+            sort_by: sortBy,
+            page: dtInstance.page.info().page + 1,
+            page_size: dtInstance.page.info().length
+          };
+
           that.siteService.getSiteFilter(
-            that.siteForm.get('search').value,
-            sortColumn,
-            sortBy,
-            dtInstance.page.info().page + 1,
-            dtInstance.page.info().length).subscribe(result => {
+            that.siteFilter.search,
+            that.siteFilter.sort_column,
+            that.siteFilter.sort_by,
+            that.siteFilter.page,
+            that.siteFilter.page_size).subscribe(result => {
               that.sites = result.data;
               that.totalSites = result.total;
               callback({

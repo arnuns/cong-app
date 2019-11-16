@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { User } from 'src/app/core/models/user';
+import { User, UserFilter } from 'src/app/core/models/user';
 import { Subject } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { FormBuilder } from '@angular/forms';
@@ -17,12 +17,15 @@ import { Router } from '@angular/router';
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
   public defaultImagePath = environment.basePath;
   user: User;
   sites: Site[] = [];
   users: User[] = [];
+  userFilter: UserFilter;
+  filterSessionName = 'userFilter';
+
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
   totalUsers = 0;
@@ -50,6 +53,12 @@ export class EmployeeComponent implements OnInit {
       this.sites = sites;
     });
     this.initialData();
+  }
+
+  ngOnDestroy() {
+    if (this.userFilter) {
+      localStorage.setItem(this.filterSessionName, JSON.stringify(this.userFilter));
+    }
   }
 
   initialData() {
@@ -89,18 +98,35 @@ export class EmployeeComponent implements OnInit {
           } else {
             sortColumn = 'empNo';
           }
-          let siteArray = '';
-          if (that.userForm.get('site_array').value) {
-            siteArray = that.userForm.get('site_array').value.map(s => s.id).join(',');
+          const userFilterString = localStorage.getItem(that.filterSessionName);
+          if (userFilterString) {
+            const storageUserFillter = JSON.parse(userFilterString) as UserFilter;
+            that.userForm.patchValue({
+              site_array: storageUserFillter.site_array ? storageUserFillter.site_array : [],
+              user_status: storageUserFillter.user_status
+            });
+            dtInstance.page(storageUserFillter.page);
+            dtInstance.page.len(storageUserFillter.page_size);
+            localStorage.removeItem(that.filterSessionName);
           }
+          that.userFilter = {
+            search: '',
+            site_array: that.userForm.get('site_array').value,
+            user_status: that.userForm.get('user_status').value,
+            sort_column: sortColumn,
+            sort_by: sortBy,
+            page: dtInstance.page.info().page,
+            page_size: dtInstance.page.info().length
+          };
+
           that.userService.getUserFilter(
-            '',
-            siteArray,
-            that.userForm.get('user_status').value,
-            sortColumn,
-            sortBy,
-            dtInstance.page.info().page + 1,
-            dtInstance.page.info().length).subscribe(result => {
+            that.userFilter.search,
+            that.userFilter.site_array ? that.userFilter.site_array.map(s => s.id).join(',') : '',
+            that.userFilter.user_status,
+            that.userFilter.sort_column,
+            that.userFilter.sort_by,
+            that.userFilter.page + 1,
+            that.userFilter.page_size).subscribe(result => {
               that.users = result.data;
               that.totalUsers = result.total;
               callback({

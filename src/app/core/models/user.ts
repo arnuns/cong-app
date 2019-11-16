@@ -1,6 +1,7 @@
 import { Site } from './site';
 import { Company } from './company';
 import { Hospital } from './hospital';
+import { PageFilter } from './page-filter.model';
 
 export interface User {
     empNo: number;
@@ -157,4 +158,10 @@ export interface BeginResign {
     oldEndDate: string;
     startDate: string;
     description: string;
+}
+
+export interface UserFilter extends PageFilter {
+    search: string;
+    site_array: Site[];
+    user_status: string;
 }
