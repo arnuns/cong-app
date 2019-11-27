@@ -1,0 +1,55 @@
+.button__add-payroll {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #00ca9d;
+  color: #ffffff;
+}
+
+.button__add-payroll:hover {
+  opacity: .8;
+}
+
+.button__add-site {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.button__add-site:hover {
+  opacity: .8;
+}
+
+.button__add {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.button__export {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+.search-control {
+  width: 400px;
+  height: 36px;
+}
+
+.payroll-select {
+  width: 250px;
+}
+
+.filter-select {
+  width: 180px;
+}
+
+.payroll-table td {
+  font-size: 14px;
+  letter-spacing: 1;
+}

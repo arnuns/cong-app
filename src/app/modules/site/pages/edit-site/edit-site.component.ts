@@ -98,6 +98,8 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         province_id: this.site.provinceId,
         amphur_id: this.site.amphurId > 0 ? this.site.amphurId : undefined,
         district_id: this.site.districtId > 0 ? this.site.districtId : undefined,
+        latitude: this.site.latitude,
+        longitude: this.site.longitude,
         is_monthly: this.site.isMonthly
       });
       this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);

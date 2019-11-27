@@ -33,6 +33,11 @@ const routes: Routes = [
         path: 'site',
         canLoad: [AuthGuardService],
         loadChildren: './modules/site/site.module#SiteModule'
+      },
+      {
+        path: 'payroll',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/payroll/payroll.module#PayrollModule'
       }
     ]
   }
