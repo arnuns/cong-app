@@ -6,7 +6,7 @@ import { Site } from '../models/site';
 import { CookieService } from 'ngx-cookie-service';
 import { Province, Amphur, District, Postcode } from '../models/address';
 import { Observable } from 'rxjs';
-import { PayrollCycle, SitePayrollCycleSalary } from '../models/payroll';
+import { PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite, Salary } from '../models/payroll';
 
 @Injectable({
     providedIn: 'root'
@@ -29,11 +29,27 @@ export class PayrollService extends BaseService {
         return this.http.get<PayrollCycle>(`${this.serviceUrl}/payroll/${id}`);
     }
 
-    getAllSitePayrollCycleSalary(payrollCycleId: number) {
+    getAllPayrollCycleSalaryGroupBySite(payrollCycleId: number) {
         return this.http.get<SitePayrollCycleSalary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/sitesalary/all`);
     }
 
-    getSitePayrollCycleSalary(payrollCycleId: number, siteId: number) {
+    getPayrollCycleSiteSalary(payrollCycleId: number, siteId: number) {
         return this.http.get<SitePayrollCycleSalary>(`${this.serviceUrl}/payroll/${payrollCycleId}/sitesalary/${siteId}`);
+    }
+
+    getPayrollCycleSalary(payrollCycleId: number) {
+        return this.http.get<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/salary/all`);
+    }
+
+    getSitePayrollCycleSalary(payrollCycleId: number, siteId: number) {
+        return this.http.get<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/all`);
+    }
+
+    getSummaryPayrollSalaryBySite(payrollCycleId: number) {
+        return this.http.get<SummarySalaryBySite[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/summary/bysite`);
+    }
+
+    deleteSitePayroll(payrollCycleId: number, siteId: number) {
+        return this.http.delete(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}`);
     }
 }

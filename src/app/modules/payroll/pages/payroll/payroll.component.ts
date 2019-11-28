@@ -8,6 +8,10 @@ import { Site } from 'src/app/core/models/site';
 import { DataTableDirective } from 'angular-datatables';
 import { FormBuilder } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Papa } from 'ngx-papaparse';
+import * as FileSaver from 'file-saver';
+import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -27,6 +31,9 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   allSitePayrollCycleSalary: SitePayrollCycleSalary[] = [];
   sites: Site[] = [];
   siteItemList: Site[] = [];
+  selectedSiteItems = [];
+  deleteSiteId = 0;
+  deleteSiteName = '';
 
   payrollForm = this.fb.group({
     payroll_cycle_id: [undefined],
@@ -39,6 +46,9 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
+    private moment: MomentHelper,
+    private ngxSmartModalService: NgxSmartModalService,
+    private papa: Papa,
     private payrollService: PayrollService,
     private spinner: SpinnerHelper,
     private siteService: SiteService
@@ -81,6 +91,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           dtInstance.draw();
         });
       });
+    this.ngxSmartModalService.getModal('deleteModal').onClose.subscribe((event: Event) => {
+      this.deleteSiteId = 0;
+      this.deleteSiteName = '';
+    });
   }
 
   initialTable() {
@@ -157,7 +171,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   getPayrollCycleSalary(payrollCycleId: number, rerender = false) {
     this.spinner.showLoadingSpinner();
-    this.payrollService.getAllSitePayrollCycleSalary(payrollCycleId).subscribe(allSitePayrollCycleSalary => {
+    this.payrollService.getAllPayrollCycleSalaryGroupBySite(payrollCycleId).subscribe(allSitePayrollCycleSalary => {
       this.allSitePayrollCycleSalary = allSitePayrollCycleSalary;
       this.siteItemList = this.sites.filter(s => s.isPayroll
         && this.allSitePayrollCycleSalary.map(p => p.siteId).indexOf(s.id) === -1);
@@ -187,11 +201,194 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     });
   }
 
+  onClickAddNewSite() {
+    this.ngxSmartModalService.getModal('addSiteModal').open();
+  }
+
+  onClickDeleteSite(siteName: string, siteId: number) {
+    this.deleteSiteId = siteId;
+    this.deleteSiteName = siteName;
+    this.ngxSmartModalService.getModal('deleteModal').open();
+  }
+
+  onDeleteSite() {
+    this.spinner.showLoadingSpinner();
+    this.payrollService.deleteSitePayroll(this.payrollCycle.id, this.deleteSiteId).subscribe(_ => {
+      this.getPayrollCycleSalary(this.payrollCycle.id, true);
+      this.ngxSmartModalService.getModal('deleteModal').close();
+    }, error => {
+      this.spinner.hideLoadingSpinner(0);
+    });
+  }
+
+  onExportAllSalaryToCsv() {
+    this.spinner.showLoadingSpinner();
+    this.payrollService.getPayrollCycleSalary(this.payrollCycle.id).subscribe(salaries => {
+      const data = salaries.map(s => ({
+        'รหัสพนักงาน': s.empNo,
+        'หน่วยงาน': s.siteName,
+        'ตำแหน่ง': s.roleNameTH,
+        'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
+        'คำนำหน้าชื่อ': s.title,
+        'ชื่อ': s.firstName,
+        'นามสกุล': s.lastName,
+        'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
+        'ธนาคาร': (s.bankId === 0) ? '' : (s.bankId === 1 ? 'กสิกร' : (s.bankId === 2 ? 'icbc' : (s.bankId === 3 ? 'ธนชาต' : ''))),
+        'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
+        'วันทำงานต่อเดือน': s.minimumManday,
+        'ค่าแรงขั้นต่ำ': s.minimumWage,
+        'แรงละ': s.hiringRatePerDay,
+        'จำนวนแรง': s.manday,
+        'ค่าแรงปกติ': s.totalWage,
+        'ค่าตำแหน่ง': s.positionValue,
+        'ค่าจุด': s.pointValue,
+        'นักขัตฤกษ์': s.annualHoliday,
+        'ค่าโทรศัพท์': s.telephoneCharge,
+        'คืนเงินหัก': s.refund,
+        'เบี้ยขยัน': s.dutyAllowance,
+        'โบนัส': s.bonus,
+        'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+        'รายได้อื่นๆ': s.otherIncome,
+        'ค่าแทนจุด': s.extraReplaceValue,
+        'รายได้จุดพิเศษ': s.extraPointValue,
+        'ประกันสังคม': s.socialSecurity,
+        'ค่าอุปกรณ์': s.inventory,
+        'ผิดวินัย': s.discipline,
+        'ค่าธรรมเนียม': s.transferFee,
+        'ขาดงาน': s.absence,
+        'ใบอนุญาต': s.licenseFee,
+        'เบิกล่วงหน้า': s.advance,
+        'ค่าเช่าบ้าน': s.rentHouse,
+        'พิธีการทางศาสนา': s.cremationFee,
+        'รายการหักอื่นๆ': s.otherFee,
+        'หมายเหตุ': !s.remark ? '' : s.remark,
+        'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
+        'รวมรายได้': s.totalIncome,
+        'รวมรายการหัก': s.totalDeductible,
+        'เงินได้สุทธิ': s.totalAmount
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `salary_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }, error => {
+      this.spinner.hideLoadingSpinner();
+    });
+  }
+
+  onExportSummaryBySiteToCsv() {
+    this.spinner.showLoadingSpinner();
+    this.payrollService.getSummaryPayrollSalaryBySite(this.payrollCycle.id).subscribe(salaries => {
+      const data = salaries.map(s => ({
+        'หน่วยงาน': s.siteName,
+        'รหัสหน่วยงาน': !s.siteCode ? '' : s.siteCode,
+        'จำนวนพนักงาน': s.totalEmployee,
+        'จำนวนแรง': s.totalManday,
+        'ค่าแรงปกติ': s.totalWage,
+        'ค่าตำแหน่ง': s.positionValue,
+        'ค่าจุด': s.pointValue,
+        'นักขัตฤกษ์': s.annualHoliday,
+        'ค่าโทรศัพท์': s.telephoneCharge,
+        'คืนเงินหัก': s.refund,
+        'เบี้ยขยัน': s.dutyAllowance,
+        'โบนัส': s.bonus,
+        'ค่าล่วงเวลา (OT)': s.overtime,
+        'รายได้อื่นๆ': s.otherIncome,
+        'ค่าแทนจุด': s.extraReplaceValue,
+        'รายได้จุดพิเศษ': s.extraPointValue,
+        'ประกันสังคม': s.socialSecurity,
+        'ค่าอุปกรณ์': s.inventory,
+        'ผิดวินัย': s.discipline,
+        'ค่าธรรมเนียม': s.transferFee,
+        'ขาดงาน': s.absence,
+        'ใบอนุญาต': s.licenseFee,
+        'เบิกล่วงหน้า': s.advance,
+        'ค่าเช่าบ้าน': s.rentHouse,
+        'พิธีการทางศาสนา': s.cremationFee,
+        'รายการหักอื่นๆ': s.otherFee,
+        'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
+        'รวมรายได้': s.totalIncome,
+        'รวมรายการหัก': s.totalDeductible,
+        'เงินได้สุทธิ': s.totalAmount
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `summary_salary_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }, error => {
+      this.spinner.hideLoadingSpinner();
+    });
+  }
+
+  onExportSiteSalaryToCsv(siteId: number) {
+    this.spinner.showLoadingSpinner();
+    this.payrollService.getSitePayrollCycleSalary(this.payrollCycle.id, siteId).subscribe(salaries => {
+      const data = salaries.map(s => ({
+        'รหัสพนักงาน': s.empNo,
+        'หน่วยงาน': s.siteName,
+        'ตำแหน่ง': s.roleNameTH,
+        'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
+        'คำนำหน้าชื่อ': s.title,
+        'ชื่อ': s.firstName,
+        'นามสกุล': s.lastName,
+        'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
+        'ธนาคาร': (s.bankId === 0) ? '' : (s.bankId === 1 ? 'กสิกร' : (s.bankId === 2 ? 'icbc' : (s.bankId === 3 ? 'ธนชาต' : ''))),
+        'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
+        'วันทำงานต่อเดือน': s.minimumManday,
+        'ค่าแรงขั้นต่ำ': s.minimumWage,
+        'แรงละ': s.hiringRatePerDay,
+        'จำนวนแรง': s.manday,
+        'ค่าแรงปกติ': s.totalWage,
+        'ค่าตำแหน่ง': s.positionValue,
+        'ค่าจุด': s.pointValue,
+        'นักขัตฤกษ์': s.annualHoliday,
+        'ค่าโทรศัพท์': s.telephoneCharge,
+        'คืนเงินหัก': s.refund,
+        'เบี้ยขยัน': s.dutyAllowance,
+        'โบนัส': s.bonus,
+        'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+        'รายได้อื่นๆ': s.otherIncome,
+        'ค่าแทนจุด': s.extraReplaceValue,
+        'รายได้จุดพิเศษ': s.extraPointValue,
+        'ประกันสังคม': s.socialSecurity,
+        'ค่าอุปกรณ์': s.inventory,
+        'ผิดวินัย': s.discipline,
+        'ค่าธรรมเนียม': s.transferFee,
+        'ขาดงาน': s.absence,
+        'ใบอนุญาต': s.licenseFee,
+        'เบิกล่วงหน้า': s.advance,
+        'ค่าเช่าบ้าน': s.rentHouse,
+        'พิธีการทางศาสนา': s.cremationFee,
+        'รายการหักอื่นๆ': s.otherFee,
+        'หมายเหตุ': !s.remark ? '' : s.remark,
+        'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
+        'รวมรายได้': s.totalIncome,
+        'รวมรายการหัก': s.totalDeductible,
+        'เงินได้สุทธิ': s.totalAmount
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `salary_site_${siteId}_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }, error => {
+      this.spinner.hideLoadingSpinner();
+    });
+  }
+
   convertToStartEndDateString(start: string, end: string): string {
     if (start === '' || start === null || start === undefined || end === '' || end === null || end === undefined) {
       return '';
     }
     return this.concatStartEndString(new Date(start), new Date(end));
+  }
+
+  convertToDateString(dateString: string): string {
+    if (dateString === null || dateString === undefined || dateString === '') {
+      return '';
+    }
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    const d = new Date(dateString);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
   }
 
   concatStartEndString(startDate: Date, endDate: Date): string {

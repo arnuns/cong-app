@@ -27,7 +27,7 @@ export class Salary {
     minimumManday: number;
     hiringRatePerDay: number;
     siteManday: number;
-    totalManday: number;
+    manday: number;
     totalWage: number;
     positionValue: number;
     pointValue: number;
@@ -225,7 +225,6 @@ export class Salary {
         this.minimumManday = minimumManday;
         this.hiringRatePerDay = hiringRatePerDay;
         this.siteManday = siteManday;
-        this.totalManday = totalManday;
         this.totalWage = totalWage;
         this.positionValue = positionValue;
         this.pointValue = pointValue;

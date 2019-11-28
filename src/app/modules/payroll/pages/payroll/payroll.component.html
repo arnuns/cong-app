@@ -40,16 +40,17 @@
           </div>
         </div>
         <div class="ml-auto">
-          <button class="btn btn-primary button__add-site"><i class="fa fa-plus" aria-hidden="true"></i> เพิ่มหน่วยงาน</button>
+          <button class="btn btn-primary button__add-site" (click)="onClickAddNewSite()"><i class="fa fa-plus"
+              aria-hidden="true"></i>
+            เพิ่มหน่วยงาน</button>
         </div>
         <div class="ml-2">
           <div class="btn-group action--dropdown" dropdown #dropdown="bs-dropdown">
             <button dropdownToggle type="button" class="btn btn-outline-primary button__export dropdown-toggle">
               <i class="fa fa-cloud-download" aria-hidden="true"></i> ดาวน์โหลด <span class="caret"></span>
             </button>
-            <ul *dropdownMenu class="dropdown-menu" role="menu"
-              aria-labelledby="button-triggers-manual">
-              <li role="menuitem"><a class="dropdown-item" (click)="onExportAllSiteToCsv()">พนักงานทั้งหมด</a></li>
+            <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
+              <li role="menuitem"><a class="dropdown-item" (click)="onExportAllSalaryToCsv()">พนักงานทั้งหมด</a></li>
               <li role="menuitem"><a class="dropdown-item" (click)="onExportSummaryBySiteToCsv()">แยกตามหน่วยงาน</a>
               </li>
             </ul>
@@ -115,7 +116,37 @@
                         <div>
                           <i class="fa fa-list-alt" aria-hidden="true"></i>
                         </div>
-                        <div class="ml-2">แก้ไขข้อมูล</div>
+                        <div class="ml-2">รายการเงินเดือน</div>
+                      </div>
+                    </a>
+                  </li>
+                  <li *ngIf="site.status === 'paid'">
+                    <a class="dropdown-item" (click)="editSiteInfo(site.id)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-print" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">พิมพ์สลิป</div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="onExportSiteSalaryToCsv(site.siteId)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-cloud-download" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">ดาวน์โหลด</div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" (click)="onClickDeleteSite(site.siteName, site.siteId)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">ลบ</div>
                       </div>
                     </a>
                   </li>
@@ -128,3 +159,42 @@
     </div>
   </div>
 </form>
+
+<ngx-smart-modal #addSiteModal [identifier]="'addSiteModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'add-site-dialog'">
+  <div class="dialog">
+    <h5 class="title">เพิ่มหน่วยงาน</h5>
+    <div class="dialog-body">
+      <div class="form-group mb-1">
+        <ng-select [items]="siteItemList" [multiple]="true" bindLabel="name" [closeOnSelect]="false" bindValue="id"
+          [(ngModel)]="selectedSiteItems" placeholder="เลือกหน่วยงาน">
+          <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+            <input id="item-{{index}}" type="checkbox" [ngModel]="item$.selected" /> {{item.name}}
+          </ng-template>
+        </ng-select>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end w-100 p-3">
+      <div><button type="button" class="btn btn-primary button_modal">เพิ่ม</button></div>
+      <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+          (click)="addSiteModal.close()">ยกเลิก</button></div>
+    </div>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #deleteModal [identifier]="'deleteModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'delete-dialog'">
+  <div class="dialog">
+    <h5 class="title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ลบหน่วยงาน</h5>
+    <div class="dialog-body">
+      <div class="p-2">
+        <p>คุณต้องการลบหน่วยงาน {{ deleteSiteName }} นี้ใช่หรือไม่?</p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end w-100 p-3">
+      <div><button type="button" class="btn btn-danger button_modal" (click)="onDeleteSite()">ลบข้อมูล</button></div>
+      <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+          (click)="deleteModal.close()">ยกเลิก</button></div>
+    </div>
+  </div>
+</ngx-smart-modal>

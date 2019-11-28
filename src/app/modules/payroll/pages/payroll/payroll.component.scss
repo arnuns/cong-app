@@ -53,3 +53,37 @@
   font-size: 14px;
   letter-spacing: 1;
 }
+
+
+h5.title {
+  background: #00ca9d;
+  color: #ffffff;
+  padding: 15px 25px;
+}
+
+.add-site-dialog .dialog-body {
+  padding: 20px;
+  min-height: 50vh;
+}
+
+
+.delete-dialog .dialog-body {
+  padding: 20px;
+}
+
+.button_modal {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+::ng-deep {
+  .add-site-dialog {
+    max-width: 600px !important;
+  }
+
+  .delete-dialog {
+    max-width: 560px !important;
+  }
+}
