@@ -30,7 +30,7 @@
         <div class="ml-2">
           <div class="form-group mb-1">
             <ng-select placeholder="ทั้งหมด" class="filter-select" formControlName="status"
-              (change)="onFilterStatusChange()">
+              (change)="onFilterStatusChange($event)">
               <ng-option value="inprogress">รอดำเนินการ</ng-option>
               <ng-option value="done">รอตรวจสอบ</ng-option>
               <ng-option value="complete">รอสั่งจ่าย</ng-option>
