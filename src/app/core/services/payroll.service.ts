@@ -52,4 +52,8 @@ export class PayrollService extends BaseService {
     deleteSitePayroll(payrollCycleId: number, siteId: number) {
         return this.http.delete(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}`);
     }
+
+    addMultipleSiteSalary(payrollCycleId: number, siteIds: number[]) {
+        return this.http.post<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/sites`, { siteIds });
+    }
 }

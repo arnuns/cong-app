@@ -61,16 +61,6 @@ h5.title {
   padding: 15px 25px;
 }
 
-.add-site-dialog .dialog-body {
-  padding: 20px;
-  min-height: 50vh;
-}
-
-
-.delete-dialog .dialog-body {
-  padding: 20px;
-}
-
 .button_modal {
   font-size: 14px;
   width: 160px;
@@ -83,7 +73,17 @@ h5.title {
     max-width: 600px !important;
   }
 
+  .add-site-dialog .dialog-body {
+    padding: 20px;
+    min-height: 50vh;
+  }
+
   .delete-dialog {
     max-width: 560px !important;
   }
+
+  .delete-dialog .dialog-body {
+    padding: 20px;
+  }
+
 }

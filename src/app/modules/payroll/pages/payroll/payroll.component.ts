@@ -95,6 +95,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       this.deleteSiteId = 0;
       this.deleteSiteName = '';
     });
+
+    this.ngxSmartModalService.getModal('addSiteModal').onClose.subscribe((event: Event) => {
+      this.selectedSiteItems = [];
+    });
   }
 
   initialTable() {
@@ -198,6 +202,16 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   onFilterStatusChange($event) {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.draw();
+    });
+  }
+
+  addSite() {
+    this.spinner.showLoadingSpinner();
+    this.payrollService.addMultipleSiteSalary(this.payrollCycle.id, this.selectedSiteItems).subscribe(salaries => {
+      this.getPayrollCycleSalary(this.payrollCycle.id, true);
+      this.ngxSmartModalService.getModal('addSiteModal').close();
+    }, error => {
+      this.spinner.hideLoadingSpinner(0);
     });
   }
 
