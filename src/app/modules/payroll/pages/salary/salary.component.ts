@@ -489,6 +489,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   onDeduction() {
   }
 
+  onSubmit() {}
+
   onClickSearchUser(user: User) {
     this.updateSalaryForm.patchValue({
       empno: user.empNo,
