@@ -1,0 +1,176 @@
+.bgno {
+  background-color: #eaeaea;
+}
+
+.label {
+  font-size: 12px;
+  color: #9b9b9b;
+}
+
+.button__add {
+  font-size: 14px;
+  width: 170px;
+  height: 36px;
+  border-radius: 18px;
+  color: #ffffff;
+}
+
+.button__checked {
+  font-size: 14px;
+  width: 200px;
+  height: 36px;
+  border-radius: 18px;
+  background-color: #00ca9d;
+}
+
+.button__checked.active {
+  color: #00ca9d !important;
+  background-color: #ffffff !important;
+  border: 1px solid #00ca9d !important;
+}
+
+.button__add:hover,
+.button__checked:hover {
+  opacity: .8;
+}
+
+.site--title {
+  font-size: 21px;
+  font-weight: bold;
+}
+
+.search-control {
+  width: 400px;
+  height: 36px;
+}
+
+.search-user-control {
+  width: 500px;
+  height: 36px;
+}
+
+.main-content {
+  min-height: calc(100vh - 150px);
+  padding-bottom: 60px;
+}
+
+thead tr th {
+  font-size: 13px;
+}
+
+tbody tr td {
+  font-size: 13px;
+}
+
+.col--manday,
+.col--hiring-rate {
+  text-align: center;
+}
+
+.col--total-income,
+.col--sso,
+.col--total-deductible,
+.col--total-amount {
+  text-align: right;
+}
+
+tfoot tr td {
+  border-top: 1px solid #08080d !important;
+}
+
+.summary--total-amount {
+  background-color: #e8f4f9;
+}
+
+.button__deductible {
+  width: 110px;
+  height: 36px;
+  border-radius: 17px;
+  font-size: 14px;
+}
+
+.button_modal {
+  font-size: 14px;
+  width: 160px;
+  height: 36px;
+  border-radius: 18px;
+}
+
+input.form-control {
+  height: 36px;
+}
+
+h5.title {
+  background: #00ca9d;
+  color: #ffffff;
+  padding: 15px 25px;
+}
+
+.bg-focus {
+  background-color: #e8f4f9;
+}
+
+.suggestion {
+  position: absolute;
+  top: 35px;
+  z-index: 1001;
+  width: 500px;
+  max-width: 500px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+
+.site-suggestion {
+  position: absolute;
+  top: 35px;
+  z-index: 1001;
+  width: 400px;
+  max-width: 400px;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 6px 20px 0 rgba(0, 0, 0, 0.09);
+}
+
+.line {
+  border: 1px dashed #efefef;
+  margin: 30px 0;
+}
+
+.button__remove {
+  cursor: pointer;
+}
+
+.button__remove:hover {
+  opacity: .9;
+}
+
+::ng-deep {
+  .suspend-dialog {
+    max-width: 560px !important;
+  }
+
+  .suspend-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .delete-dialog {
+    max-width: 560px !important;
+  }
+
+  .delete-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .deduction-dialog {
+    max-width: 600px !important;
+  }
+
+  .deduction-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .salary-dialog {
+    max-width: 100vw !important;
+  }
+
+  .salary-dialog .dialog-body {
+    padding: 20px;
+  }
+}

@@ -14,7 +14,8 @@
           </div>
         </div>
         <div class="ml-3">
-          <button class="btn button__add-payroll">สร้างรอบบิลใหม่</button>
+          <button type="button" class="btn button__add-payroll"
+            (click)="newPayrollModal.open()">สร้างรอบบิลใหม่</button>
         </div>
       </div>
     </div>
@@ -111,7 +112,7 @@
                 <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
                   aria-labelledby="basic-link">
                   <li>
-                    <a class="dropdown-item" (click)="editSiteInfo(site.id)">
+                    <a class="dropdown-item" (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">
                       <div class="d-flex align-items-center w-100">
                         <div>
                           <i class="fa fa-list-alt" aria-hidden="true"></i>
@@ -155,6 +156,16 @@
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7">
+              <div class="d-flex align-items-center justify-content-end">
+                <div>จำนวนแรงทั้งหมด <strong>{{ summaryTotalManday | number:'1.2-2' }}</strong></div>
+                <div class="summary--total-amount p-3 ml-2">ยอดรวม <strong>{{ summaryTotalAmount | number:'1.2-2'}}</strong></div>
+              </div>
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
@@ -175,7 +186,8 @@
       </div>
     </div>
     <div class="d-flex justify-content-end w-100 p-3">
-      <div><button type="button" class="btn btn-primary button_modal" [disabled]="selectedSiteItems.length <= 0" (click)="addSite()">เพิ่ม</button></div>
+      <div><button type="button" class="btn btn-primary button_modal" [disabled]="selectedSiteItems.length <= 0"
+          (click)="addSite()">เพิ่ม</button></div>
       <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
           (click)="addSiteModal.close()">ยกเลิก</button></div>
     </div>
@@ -191,10 +203,42 @@
         <p>คุณต้องการลบหน่วยงาน {{ deleteSiteName }} นี้ใช่หรือไม่?</p>
       </div>
     </div>
-    <div class="d-flex justify-content-end w-100 p-3">
+    <div class="d-flex justify-content-center w-100 p-3">
       <div><button type="button" class="btn btn-danger button_modal" (click)="onDeleteSite()">ลบข้อมูล</button></div>
       <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
           (click)="deleteModal.close()">ยกเลิก</button></div>
+    </div>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #newPayrollModal [identifier]="'newPayrollModal'" [closable]="true" [escapable]="false"
+  [dismissable]="true" [customClass]="'new-payroll-dialog'">
+  <div class="dialog">
+    <h5 class="title">
+      <i class="fa fa-calendar" aria-hidden="true"></i> สร้างรอบบิลใหม่</h5>
+    <div class="dialog-body">
+      <form [formGroup]="createPayrollForm" (ngSubmit)="f.form.valid && onCreatePayroll()" #f="ngForm">
+        <div>
+          <div class="form-group">
+            <input type="text" class="form-control mb-3" placeholder="คลิกเพื่อเลือกช่วงเวลา" bsDaterangepicker
+              formControlName="payrollDateRange" />
+          </div>
+        </div>
+        <div>
+          <div class="form-group">
+            <input type="checkbox" id="isMonthly" formControlName="isMonthly">
+            <label class="pl-2" for="isMonthly">
+              เฉพาะจ่ายเงินเป็นรายเดือน
+            </label>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end w-100 p-3">
+          <div><button type="submit" class="btn btn-primary button_modal" [disabled]="!f.form.valid">สร้าง</button>
+          </div>
+          <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+              (click)="newPayrollModal.close()">ยกเลิก</button></div>
+        </div>
+      </form>
     </div>
   </div>
 </ngx-smart-modal>

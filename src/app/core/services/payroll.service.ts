@@ -2,11 +2,9 @@ import { Injectable } from '@angular/core';
 import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
-import { Site } from '../models/site';
 import { CookieService } from 'ngx-cookie-service';
-import { Province, Amphur, District, Postcode } from '../models/address';
-import { Observable } from 'rxjs';
 import { PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite, Salary } from '../models/payroll';
+import { MomentHelper } from '../helpers/moment.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +13,7 @@ export class PayrollService extends BaseService {
 
     constructor(
         private cacheService: CacheService,
+        private moment: MomentHelper,
         private http: HttpClient,
         cookieService: CookieService
     ) {
@@ -55,5 +54,24 @@ export class PayrollService extends BaseService {
 
     addMultipleSiteSalary(payrollCycleId: number, siteIds: number[]) {
         return this.http.post<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/sites`, { siteIds });
+    }
+
+    createPayrollCycle(startWorkDate: Date, endWorkDate: Date, isMonthly: boolean) {
+        const start = this.moment.formatISO8601(startWorkDate);
+        const end = this.moment.formatISO8601(endWorkDate);
+        return this.http.post<PayrollCycle>(`${this.serviceUrl}/payroll/cycle`,
+            {
+                start,
+                end,
+                isMonthly: isMonthly
+            });
+    }
+
+    suspendEmployeePayrollSalary(payrollCycleId: number, siteId: number, salaryId: number) {
+        return this.http.put<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salaryId}/suspend`, {});
+    }
+
+    deleteEmployeePayrollSalary(payrollCycleId: number, siteId: number, salaryId: number) { 
+        return this.http.delete(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salaryId}`);
     }
 }

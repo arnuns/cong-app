@@ -1,0 +1,695 @@
+<div class="row p-4 bgno">
+  <div class="col px-0">
+    <div class="d-flex w-100">
+      <div>
+        <h3 class="title noselect">ทะเบียนจ่ายค่าแรง
+          {{ convertToStartEndDateString(payrollCycle?.start, payrollCycle?.end) }}</h3>
+      </div>
+      <div class="ml-auto">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row mt-5 main-content">
+  <div class="col-md-12">
+    <form [formGroup]="salaryForm">
+      <div class="d-flex align-items-start w-100">
+        <div>
+          <div class="d-flex flex-column">
+            <div class="site--title">รหัสหน่วยงาน <strong
+                *ngIf="site?.code; else notDefinedCode">{{ site?.code }}</strong>
+              <ng-template #notDefinedCode>
+                <small class="text-secondary font-italic">ไม่ระบุ</small>
+              </ng-template>
+            </div>
+            <div class="site--title"><strong>{{ site?.fullName }}</strong></div>
+            <div class="text-secondary">จำนวนรายการเงินเดือน {{ salaries.length | number }} คน</div>
+          </div>
+        </div>
+        <div class="ml-auto"></div>
+        <div class="ml-2">
+          <button class="btn btn-primary button__add" (click)="salaryModal.open()"><i class="fa fa-plus"
+              aria-hidden="true"></i>
+            เพิ่มพนักงาน</button>
+        </div>
+      </div>
+      <div class="d-flex align-items-center w-100 my-4">
+        <div>
+          <div class="form-group mb-1">
+            <input type="text" class="form-control search-control" formControlName="search"
+              placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน">
+          </div>
+        </div>
+      </div>
+    </form>
+    <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover salary-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>ชื่อ - สกุล</th>
+          <th class="col--manday">จำนวนแรง</th>
+          <th class="col--hiring-rate">แรงละ</th>
+          <th class="col--total-income">รวมรับ</th>
+          <th class="col--sso">ประกันสังคม</th>
+          <th class="col--total-deductible">รวมหัก</th>
+          <th>เลขที่บัญชี</th>
+          <th class="col--total-amount">ยอดโอน</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let salary of salaries; let i = index">
+          <td>
+            <ng-container *ngIf="salary.isSuspend; else elsePaid">
+              <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
+            </ng-container>
+            <ng-template #elsePaid>
+              <ng-container *ngIf="salary.isPaid; else elseComplete">
+                <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
+              </ng-container>
+            </ng-template>
+            <ng-template #elseComplete>
+              <ng-container *ngIf="salary.isComplete; else elseDone">
+                <i class="fa fa-circle text-success" aria-hidden="true"></i>
+              </ng-container>
+            </ng-template>
+            <ng-template #elseDone>
+              <ng-container *ngIf="(salary.manday * salary.hiringRatePerDay) > 0; else elseUnComplete">
+                <i class="fa fa-circle inactive" aria-hidden="true"></i>
+              </ng-container>
+            </ng-template>
+            <ng-template #elseUnComplete>
+              <i class="fa fa-circle-thin" aria-hidden="true"></i>
+            </ng-template>
+          </td>
+          <td>{{ i+1 }}</td>
+          <td class="pointer" (click)="editSalaryModal(salary)">
+            <div class="d-flex flex-column">
+              <div>{{ salary.firstName }} {{ salary.lastName }}</div>
+              <div>
+                {{ salary.idCardNumber }}
+              </div>
+            </div>
+          </td>
+          <td class="col--manday pointer" (click)="editSalaryModal(salary)">{{ salary.manday }}</td>
+          <td class="col--hiring-rate pointer" (click)="editSalaryModal(salary)">{{ salary.hiringRatePerDay }}</td>
+          <td class="col--total-income pointer" (click)="editSalaryModal(salary)">
+            {{ summaryTotalIncome(salary) | number:'1.2-2' }}</td>
+          <td class="col--sso pointer" (click)="editSalaryModal(salary)">{{ salary.socialSecurity | number:'1.2-2' }}
+          </td>
+          <td class="col--total-deductible pointer" (click)="editSalaryModal(salary)">
+            {{ (salary.socialSecurity + salary.totalDeductible) | number:'1.2-2' }}</td>
+          <td class="pointer" (click)="editSalaryModal(salary)">{{ salary.bankAccount }}</td>
+          <td class="col--total-amount pointer" (click)="editSalaryModal(salary)">
+            {{ salary.totalAmount | number:'1.2-2' }}</td>
+          <td>
+            <span dropdown class="action--dropdown">
+              <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
+                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+              </a>
+              <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
+                aria-labelledby="basic-link">
+                <li>
+                  <a class="dropdown-item" (click)="editSalaryModal(salary)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">แก้ไข</div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="openSuspendDialog(salary)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">ระงับการจ่าย</div>
+                    </div>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="openDeleteDialog(salary)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">ลบ</div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="11">
+            <div class="d-flex align-items-center">
+              <div>
+                <button class="btn btn-dark button__deductible" (click)="openDeductionDialog()">รายการหัก</button>
+              </div>
+              <div class="ml-auto">จำนวนแรงทั้งหมด <strong>{{ summaryTotalManday | number:'1.2-2' }}</strong></div>
+              <div class="summary--total-amount p-3 ml-2">ยอดรวม
+                <strong>{{ summaryTotalAmount | number:'1.2-2'}}</strong></div>
+            </div>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<ngx-smart-modal #suspendModal [identifier]="'suspendModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'suspend-dialog'">
+  <div class="dialog">
+    <form [formGroup]="suspendForm" (ngSubmit)="f.form.valid && onSuspend()" #f="ngForm">
+      <h5 class="title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ระงับการจ่ายเงิน</h5>
+      <div class="dialog-body">
+        <div class="p-2">
+          <p>คุณต้องการระงับการจ่ายเงินของ <strong>{{ suspendForm.get('full_name').value }}</strong> นี้ใช่หรือไม่?</p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w-100 p-3">
+        <div><button class="btn btn-danger button_modal">ระงับ</button></div>
+        <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+            (click)="suspendModal.close()">ยกเลิก</button></div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #deleteModal [identifier]="'deleteModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'delete-dialog'">
+  <div class="dialog">
+    <form [formGroup]="deleteForm" (ngSubmit)="f.form.valid && onDelete()" #f="ngForm">
+      <h5 class="title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ลบรายการ</h5>
+      <div class="dialog-body">
+        <div class="p-2">
+          <p>คุณต้องการลบรายการของ <strong>{{ suspendForm.get('full_name').value }}</strong> นี้ใช่หรือไม่?</p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w-100 p-3">
+        <div><button type="button" class="btn btn-danger button_modal" (click)="onDeleteSite()">ลบข้อมูล</button></div>
+        <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+            (click)="deleteModal.close()">ยกเลิก</button></div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #deductionModal [identifier]="'deductionModal'" [closable]="true" [escapable]="false"
+  [dismissable]="false" [customClass]="'deduction-dialog'">
+  <div class="dialog">
+    <form [formGroup]="deductionForm" (ngSubmit)="df.form.valid && onDeduction()" #df="ngForm">
+      <h5 class="title">รายการหักทั้งหน่วยงาน</h5>
+      <div class="dialog-body">
+        <div class="d-flex flex-column">
+          <div class="site--title">รหัสหน่วยงาน <strong
+              *ngIf="site?.code; else notDefinedCode">{{ site?.code }}</strong>
+            <ng-template #notDefinedCode>
+              <small class="text-secondary font-italic">ไม่ระบุ</small>
+            </ng-template>
+          </div>
+          <div class="site--title"><strong>{{ site?.fullName }}</strong></div>
+          <div class="text-secondary">จำนวนรายการเงินเดือน {{ salaries.length | number }} คน</div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="deduction" class="label">รายการ</label>
+              <ng-select class="deduction-select" [clearable]="false" [searchable]="false" formControlName="deduction">
+                <ng-option [value]="'cremation_fee'">พิธีการทางศาสนา</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="amount" class="label">จำนวน</label>
+              <input type="number" class="form-control" formControlName="amount">
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-focus">
+          <div class="row d-flex justify-content-center">
+            <div class="col-10 d-flex justify-content-between">
+              <span>รายการหัก: </span>
+              <span>{{ deductionForm.get('amount').value | currency: '฿'}}</span>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center pt-2">
+            <div class="col-10 d-flex justify-content-between">
+              <b>ยอดรวม: </b>
+              <b>{{ (deductionForm.get('amount').value * salaries.length) | currency: '฿'}}</b>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center">
+            <div class="col-10">
+              <span class="text-secondary font-xs">(จำนวนเงินหัก {{ deductionForm.get('amount').value }} x จำนวนคน
+                {{ salaries.length }})</span>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center w-100 p-3">
+          <div>
+            <button class="btn btn-info button_modal" [disabled]="!df.form.valid">ยืนยัน</button>
+          </div>
+          <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+              (click)="deductionModal.close()">ยกเลิก</button></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #salaryModal [identifier]="'salaryModal'" [closable]="true" [escapable]="false" [dismissable]="false"
+  [customClass]="'salary-dialog'">
+  <div class="dialog">
+    <form [formGroup]="updateSalaryForm" (ngSubmit)="uf.form.valid && onSubmit()" #uf="ngForm">
+      <h5 class="title">แบบฟอร์มทะเบียนจ่ายค่าแรง
+        <small *ngIf="updateSalaryForm.get('is_temporary').value" class="badge badge-danger">นอกระบบ</small></h5>
+      <div class="dialog-body">
+        <div class="d-flex flex-column">
+          <div class="site--title">รหัสหน่วยงาน <strong
+              *ngIf="site?.code; else notDefinedCode">{{ site?.code }}</strong>
+            <ng-template #notDefinedCode>
+              <small class="text-secondary font-italic">ไม่ระบุ</small>
+            </ng-template>
+          </div>
+          <div class="site--title"><strong>{{ site?.fullName }}</strong></div>
+        </div>
+        <div class="row p-2"
+          *ngIf="!updateSalaryForm.get('salary_id').value && !updateSalaryForm.get('is_temporary').value">
+          <div class="col">
+            <div class="form-group">
+              <input type="text" class="form-control search-user-control" formControlName="search"
+                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน">
+              <div class="suggestion" *ngIf="salaryEmployees?.length > 0">
+                <div class="list-group">
+                  <a (click)="onClickSearchUser(user)"
+                    class="list-group-item list-group-item-action flex-column align-items-start"
+                    *ngFor="let user of salaryEmployees">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">{{ user.firstName }} {{ user.lastName }}</h6>
+                      <small>{{ user.site.name }}</small>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row py-1 px-2">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="idCardNumber">เลขที่บัตรประจำตัวประชาชน
+                <small
+                  [hidden]="updateSalaryForm.get('idcard_no').valid || (updateSalaryForm.get('idcard_no').pristine && !uf.submitted)"
+                  class="text-danger">
+                  * เลขที่บัตรไม่ถูกต้อง
+                </small>
+              </label>
+              <input type="text" class="form-control" maxlength="13" formControlName="idcard_no" />
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-group">
+              <label for="title">คำนำหน้า <small class="text-danger">*</small>
+              </label>
+              <ng-select [searchable]="false" [clearable]="false" formControlName="title">
+                <ng-option value="นาย">นาย</ng-option>
+                <ng-option value="นาง">นาง</ng-option>
+                <ng-option value="นางสาว">นางสาว</ng-option>
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="firstname">ชื่อ <small class="text-danger">*</small></label>
+              <input type="text" class="form-control" formControlName="firstname" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="lastname">นามสกุล <small class="text-danger">*</small></label>
+              <input type="text" class="form-control" formControlName="lastname" />
+            </div>
+          </div>
+        </div>
+        <div class="row py-1 px-2">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="bankId">ธนาคาร
+                <small class="text-danger">*</small>
+              </label>
+              <ng-select placeholder="กรุณาเลือก" class="title-select" [clearable]="false" [items]="banks"
+                bindLabel="name" bindValue="id" formControlName="bank_id">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="bank_account">เลขที่บัญชี
+                <small class="text-danger">*</small>
+              </label>
+              <input type="text" class="form-control" formControlName="bank_account">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="line"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col mx-0">
+            <div class="d-flex align-items-center my-2">
+              <div><span class="badge badge-primary rounded-badge">1</span></div>
+              <div class="ml-2">
+                <h3 class="title">รายได้</h3>
+              </div>
+              <div class="ml-2">
+                <div class="form-group mb-0">
+                  <input type="text" class="form-control search-control" formControlName="site_search"
+                    placeholder="เพิ่มหน่วยงาน">
+                  <div class="site-suggestion" *ngIf="salarySites?.length > 0">
+                    <div class="list-group">
+                      <a (click)="onClickSearchSite(site)"
+                        class="list-group-item list-group-item-action flex-column align-items-start"
+                        *ngFor="let site of salarySites">
+                        <div class="d-flex w-100 justify-content-between">
+                          <h6 class="mb-1">{{ site.name }}</h6>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div formArrayName="site_array">
+              <div class="row mb-2" *ngFor="let siteForm of siteForms.controls; let i = index" [formGroupName]="i">
+                <div class="col-md-12">
+                  <div class="d-flex align-items-center w-100">
+                    <div>
+                      {{ siteForm.get('site_name').value }}
+                    </div>
+                    <div class="ml-2" *ngIf="i > 0">
+                      <i class="fa fa-times text-danger button__remove" (click)="removeSite(i)"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <label for="manday" class="label">
+                      จำนวนวัน
+                    </label>
+                    <input type="number" class="form-control" formControlName="manday">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <label for="hiring_rate_per_day" class="label">
+                      อัตราวันละ
+                    </label>
+                    <input type="number" class="form-control" formControlName="hiring_rate_per_day">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="position_value">ค่าตำแหน่ง
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="position_value" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="point_value">ค่าจุด
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="point_value" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_overtime').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">ค่าล่วงเวลา (OT) <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_overtime')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="overtime" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_annual_holiday').value">
+                <div class="form-group mb-0">
+                  <label for="annual_holiday">นักขัตฤกษ์ <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_annual_holiday')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="annual_holiday" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_telephone_charge').value">
+                <div class="form-group mb-0">
+                  <label for="telephone_charge">ค่าโทรศัพท์ <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_telephone_charge')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="telephone_charge" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_refund').value">
+                <div class="form-group mb-0">
+                  <label for="refund">คืนเงินหัก <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_refund')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="refund" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_duty_allowance').value">
+                <div class="form-group mb-0">
+                  <label for="duty_allowance">เบี้ยขยัน <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_duty_allowance')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="duty_allowance" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_bonus').value">
+                <div class="form-group mb-0">
+                  <label for="bonus">เงินโบนัส <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_bonus')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="bonus" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="!noOtherItem">
+                <div class="form-group mb-0">
+                  <label for="income_other">อื่นๆ</label>
+                  <ng-select placeholder="ระบุ" [searchable]="false" [clearable]="false"
+                    (change)="onSelectionOther($event)" formControlName="income_other">
+                    <ng-option value="is_overtime" *ngIf="!updateSalaryForm.get('is_overtime').value">ค่าล่วงเวลา (OT)
+                    </ng-option>
+                    <ng-option value="is_annual_holiday" *ngIf="!updateSalaryForm.get('is_annual_holiday').value">
+                      นักขัตฤกษ์</ng-option>
+                    <ng-option value="is_telephone_charge" *ngIf="!updateSalaryForm.get('is_telephone_charge').value">
+                      ค่าโทรศัพท์</ng-option>
+                    <ng-option value="is_refund" *ngIf="!updateSalaryForm.get('is_refund').value">คืนเงินหัก</ng-option>
+                    <ng-option value="is_duty_allowance" *ngIf="!updateSalaryForm.get('is_duty_allowance').value">
+                      เบี้ยขยัน</ng-option>
+                    <ng-option value="is_bonus" *ngIf="!updateSalaryForm.get('is_bonus').value">เงินโบนัส</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex w-100 mt-4">
+              <div class="ml-auto text-secondary">รวมรายได้: {{ totalIncome | currency:'฿' }}</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-flex align-items-center my-2">
+              <div><span class="badge badge-primary rounded-badge">2</span></div>
+              <div class="ml-2">
+                <h3 class="title">รายการหัก</h3>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="withholding_tax">ภาษีหัก ณ ที่จ่าย</label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="withholding_tax" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label>ประกันสังคม</label>
+                  <input type="number" class="form-control" [value]="socialSecurity" readonly />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="transfer_fee">ค่าธรรมเนียม</label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="transfer_fee" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="inventory">ค่าอุปกรณ์</label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="inventory" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_discipline').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">ผิดวินัย <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_discipline')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="discipline" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_license_fee').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">ค่าใบอนุญาต <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_license_fee')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="license_fee" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_advance').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">เบิกล่วงหน้า <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_advance')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="advance" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_absence').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">ขาดงาน <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_absence')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="absence" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_cremation_fee').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">พิธีการทางศาสนา <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_cremation_fee')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="cremation_fee" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_rent_house').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">ค่าเช่าบ้าน <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_rent_house')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="rent_house" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_other').value">
+                <div class="form-group mb-0">
+                  <label for="overtime">อื่นๆ <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_other')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="other" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="!noFeeOtherItem">
+                <div class="form-group mb-0">
+                  <label for="fee_other">อื่นๆ</label>
+                  <ng-select placeholder="ระบุ" [searchable]="false" [clearable]="false"
+                    (change)="onSelectionFeeOther($event)" formControlName="fee_other">
+                    <ng-option value="is_discipline" *ngIf="!updateSalaryForm.get('is_discipline').value">ผิดวินัย
+                    </ng-option>
+                    <ng-option value="is_license_fee" *ngIf="!updateSalaryForm.get('is_license_fee').value">ค่าใบอนุญาต
+                    </ng-option>
+                    <ng-option value="is_advance" *ngIf="!updateSalaryForm.get('is_advance').value">เบิกล่วงหน้า
+                    </ng-option>
+                    <ng-option value="is_absence" *ngIf="!updateSalaryForm.get('is_absence').value">ขาดงาน</ng-option>
+                    <ng-option value="is_cremation_fee" *ngIf="!updateSalaryForm.get('is_cremation_fee').value">
+                      พิธีการทางศาสนา</ng-option>
+                    <ng-option value="is_rent_house" *ngIf="!updateSalaryForm.get('is_rent_house').value">ค่าเช่าบ้าน
+                    </ng-option>
+                    <ng-option value="is_other" *ngIf="!updateSalaryForm.get('is_other').value">อื่นๆ</ng-option>
+                  </ng-select>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex w-100 mt-4">
+              <div class="ml-auto text-secondary">รวมรายการหัก: {{ totalFee | currency:'฿' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="line"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group mb-0">
+              <label for="remark">หมายเหตุ</label>
+              <textarea class="form-control" id="remark" rows="3" formControlName="remark"
+                placeholder="อื่นๆ (โปรดระบุ)"></textarea>
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-flex w-100">
+              <div>รวมรายได้:</div>
+              <div class="ml-auto">{{ totalIncome | currency:'฿' }}</div>
+            </div>
+            <div class="d-flex w-100 mt-2">
+              <div>รวมรายการหัก:</div>
+              <div class="ml-auto">{{ totalFee | currency:'฿' }}</div>
+            </div>
+            <div class="d-flex w-100 mt-2">
+              <div>
+                <div><strong>เงินได้สุทธิ</strong></div>
+                <small class="text-secondary">(Net income)</small>
+              </div>
+              <div class="ml-auto">
+                <strong>{{ (totalIncome - totalFee) | currency: '฿' }}</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="line"></div>
+          </div>
+        </div>
+        <div class="d-flex w-100">
+          <div>
+            <button type="button" class="btn btn-primary button__checked"
+              [class.active]="updateSalaryForm.get('is_complete').value" btnCheckbox formControlName="is_complete"
+              tabindex="0" role="button">
+              <i *ngIf="updateSalaryForm.get('is_complete').value" class="fa fa-check-circle-o" aria-hidden="true"></i>
+              <i *ngIf="!updateSalaryForm.get('is_complete').value" class="fa fa-circle text-white"
+                aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
+          </div>
+          <div class="ml-auto">
+            <button class="btn btn-primary button__add">
+              บันทึกข้อมูล</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>

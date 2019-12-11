@@ -2,16 +2,17 @@ import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular
 import { PayrollService } from 'src/app/core/services/payroll.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { combineLatest, Subject } from 'rxjs';
-import { PayrollCycle, SitePayrollCycleSalary } from 'src/app/core/models/payroll';
+import { PayrollCycle, SitePayrollCycleSalary, Salary } from 'src/app/core/models/payroll';
 import { SiteService } from 'src/app/core/services/site.service';
 import { Site } from 'src/app/core/models/site';
 import { DataTableDirective } from 'angular-datatables';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Papa } from 'ngx-papaparse';
 import * as FileSaver from 'file-saver';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { Router } from '@angular/router';
 
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -41,6 +42,11 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     status: [undefined]
   });
 
+  createPayrollForm = this.fb.group({
+    payrollDateRange: [[], [Validators.required]],
+    isMonthly: [false, [Validators.required]]
+  });
+
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
 
@@ -50,6 +56,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     private ngxSmartModalService: NgxSmartModalService,
     private papa: Papa,
     private payrollService: PayrollService,
+    private router: Router,
     private spinner: SpinnerHelper,
     private siteService: SiteService
   ) {
@@ -99,6 +106,13 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     this.ngxSmartModalService.getModal('addSiteModal').onClose.subscribe((event: Event) => {
       this.selectedSiteItems = [];
     });
+
+    this.ngxSmartModalService.getModal('newPayrollModal').onClose.subscribe((event: Event) => {
+      this.createPayrollForm.reset({
+        payrollDateRange: [],
+        isMonthly: false
+      });
+    });
   }
 
   initialTable() {
@@ -132,8 +146,12 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       },
       order: [[2, 'asc']],
       pageLength: 10,
-      pagingType: 'simple',
+      pagingType: 'simple'
     };
+  }
+
+  onRowClickHandler(payrollCycleId: number, siteId: number) {
+    this.router.navigate(['/payroll', payrollCycleId, 'salary', siteId]);
   }
 
   searchFilter() {
@@ -235,6 +253,26 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     });
   }
 
+  onCreatePayroll() {
+    this.spinner.showLoadingSpinner();
+    const dateRange: Date[] = this.createPayrollForm.get('payrollDateRange').value;
+    this.payrollService.createPayrollCycle(dateRange[0], dateRange[1], this.createPayrollForm.get('isMonthly').value)
+      .subscribe(payrollCycle => {
+        this.payrollCycle = payrollCycle;
+        this.payrollForm.get('payroll_cycle_id').setValue(payrollCycle.id);
+        if (this.payrollCycleSelectList.filter(p => p.id === payrollCycle.id).length <= 0) {
+          this.payrollCycleSelectList = [{
+            value: payrollCycle.id,
+            viewValue: this.convertToStartEndDateString(payrollCycle.start, payrollCycle.end)
+          }].concat(this.payrollCycleSelectList);
+        }
+        this.getPayrollCycleSalary(payrollCycle.id, true);
+        this.ngxSmartModalService.getModal('newPayrollModal').close();
+      }, error => {
+        this.spinner.hideLoadingSpinner(0);
+      });
+  }
+
   onExportAllSalaryToCsv() {
     this.spinner.showLoadingSpinner();
     this.payrollService.getPayrollCycleSalary(this.payrollCycle.id).subscribe(salaries => {
@@ -277,7 +315,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'รายการหักอื่นๆ': s.otherFee,
         'หมายเหตุ': !s.remark ? '' : s.remark,
         'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': s.totalIncome,
+        'รวมรายได้': this.summaryTotalIncome(s),
         'รวมรายการหัก': s.totalDeductible,
         'เงินได้สุทธิ': s.totalAmount
       }));
@@ -376,7 +414,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'รายการหักอื่นๆ': s.otherFee,
         'หมายเหตุ': !s.remark ? '' : s.remark,
         'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': s.totalIncome,
+        'รวมรายได้': this.summaryTotalIncome(s),
         'รวมรายการหัก': s.totalDeductible,
         'เงินได้สุทธิ': s.totalAmount
       }));
@@ -387,6 +425,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     }, error => {
       this.spinner.hideLoadingSpinner();
     });
+  }
+
+  summaryTotalIncome(salary: Salary) {
+    return salary.totalWage + salary.extraReplaceValue + salary.extraOvertime + salary.extraPointValue + salary.totalIncome;
   }
 
   convertToStartEndDateString(start: string, end: string): string {
@@ -414,5 +456,15 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       dtInstance.destroy();
       this.dtTrigger.next();
     });
+  }
+
+  get summaryTotalManday() {
+    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) { return 0; }
+    return this.allSitePayrollCycleSalary.map(s => s.totalManday).reduce((a, b) => a + b, 0);
+  }
+
+  get summaryTotalAmount() {
+    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) { return 0; }
+    return this.allSitePayrollCycleSalary.map(s => s.totalAmount).reduce((a, b) => a + b, 0);
   }
 }

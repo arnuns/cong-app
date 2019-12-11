@@ -43,7 +43,7 @@ export class LayoutComponent implements OnInit, AfterViewInit {
       .pipe(
         debounceTime(400),
         distinctUntilChanged()).subscribe(val => {
-          if (val.length < 3) {
+          if (val.length < 2) {
             this.searchResults = [];
           } else {
             this.userService.getUserFilter(val, null, null, 'name', 'asc', 1, 12).subscribe(results => {

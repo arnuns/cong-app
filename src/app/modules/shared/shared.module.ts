@@ -17,6 +17,7 @@ import { thLocale } from 'ngx-bootstrap/locale';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { MonthHelper } from 'src/app/core/helpers/month.helper';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CookieService } from 'ngx-cookie-service';
@@ -44,6 +45,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     BsDatepickerModule.forRoot(),
     TimepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
+    ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     PdfViewerModule,
     NgxQRCodeModule
@@ -68,6 +70,7 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     BsDatepickerModule,
     TimepickerModule,
     BsDropdownModule,
+    ButtonsModule,
     TabsModule,
     PdfViewerModule,
     NgxQRCodeModule

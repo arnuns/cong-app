@@ -68,6 +68,10 @@ h5.title {
   border-radius: 18px;
 }
 
+.summary--total-amount {
+  background-color: #e8f4f9;
+}
+
 ::ng-deep {
   .add-site-dialog {
     max-width: 600px !important;
@@ -86,4 +90,15 @@ h5.title {
     padding: 20px;
   }
 
+  .new-payroll-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .new-payroll-dialog {
+    max-width: 690px;
+  }
+}
+
+tfoot tr td {
+  border-top: 1px solid #08080d !important;
 }
