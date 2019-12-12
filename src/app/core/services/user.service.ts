@@ -24,6 +24,10 @@ export class UserService extends BaseService {
     return this.cacheService.get('user_count', this.http.get<number>(`${this.serviceUrl}/user/count`));
   }
 
+  getUserByIdCardNumber(idCardNumber: string) {
+    return this.http.get<User>(`${this.serviceUrl}/user/idcardnumber/${idCardNumber}`);
+  }
+
   getUserFilter(
     search: string,
     site_array: string,

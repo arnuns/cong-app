@@ -1,5 +1,6 @@
 import { Province } from './address';
 import { PageFilter } from './page-filter.model';
+import { Role } from './user';
 
 export interface Site {
     id: number;
@@ -25,6 +26,8 @@ export interface Site {
 export interface SiteRole {
     siteId: number;
     roleId: string;
+    site: Site;
+    role: Role;
     hiringRatePerDay: number;
     minimumManday: number;
     createOn: Date;

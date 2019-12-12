@@ -20,13 +20,20 @@
   width: 200px;
   height: 36px;
   border-radius: 18px;
-  background-color: #00ca9d;
+  background-color: #00ca9d !important;
+  color: #ffffff !important;
 }
 
 .button__checked.active {
   color: #00ca9d !important;
   background-color: #ffffff !important;
   border: 1px solid #00ca9d !important;
+}
+
+.button__paid {
+  width: 170px;
+  height: 36px;
+  border-radius: 18px;
 }
 
 .button__add:hover,
@@ -163,6 +170,22 @@ h5.title {
   }
 
   .deduction-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .complete-dialog {
+    max-width: 560px !important;
+  }
+
+  .complete-dialog .dialog-body {
+    padding: 20px;
+  }
+
+  .paid-dialog {
+    max-width: 560px !important;
+  }
+
+  .paid-dialog .dialog-body {
     padding: 20px;
   }
 

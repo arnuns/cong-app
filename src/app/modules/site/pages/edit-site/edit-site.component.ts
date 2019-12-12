@@ -145,6 +145,8 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       siteRoles = this.siteRoleForms.controls.map(c => ({
         siteId: this.siteId,
         roleId: c.get('role_id').value,
+        site: null,
+        role: null,
         hiringRatePerDay: c.get('hiring_rate_per_day').value,
         minimumManday: c.get('minimum_manday').value,
         createOn: new Date(),

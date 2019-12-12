@@ -1,3 +1,6 @@
+import { Site } from './site';
+import { Role, User } from './user';
+
 export interface PayrollCycle {
     id: number;
     start: string;
@@ -13,9 +16,12 @@ export interface Salary {
     siteId: number;
     siteCode: string;
     siteName: string;
+    site: Site;
     roleId: string;
     roleNameTH: string;
+    role: Role;
     empNo: number;
+    user: User;
     title: string;
     firstName: string;
     lastName: string;
@@ -63,8 +69,8 @@ export interface Salary {
     createBy: string;
     createOn: Date;
     updateBy: string;
-    updateOn?: Date;
-    siteSalary?: SiteSalary[];
+    updateOn: Date;
+    siteSalaries: SiteSalary[];
     totalIncome: number;
     totalDeductible: number;
     totalAmount: number;
@@ -74,6 +80,7 @@ export interface SiteSalary {
     payrollCycleId: number;
     empNo: number;
     siteId: number;
+    site: Site;
     salaryId: number;
     siteCode: string;
     siteName: string;

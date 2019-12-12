@@ -104,7 +104,7 @@
           <td class="col--total-amount pointer" (click)="editSalaryModal(salary)">
             {{ salary.totalAmount | number:'1.2-2' }}</td>
           <td>
-            <span dropdown class="action--dropdown">
+            <span dropdown class="action--dropdown" *ngIf="!salary.isPaid">
               <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
               </a>
@@ -120,7 +120,7 @@
                     </div>
                   </a>
                 </li>
-                <li>
+                <li *ngIf="!salary.isSuspend">
                   <a class="dropdown-item text-danger" (click)="openSuspendDialog(salary)">
                     <div class="d-flex align-items-center w-100">
                       <div>
@@ -150,11 +150,22 @@
           <td colspan="11">
             <div class="d-flex align-items-center">
               <div>
-                <button class="btn btn-dark button__deductible" (click)="openDeductionDialog()">รายการหัก</button>
+                <button class="btn btn-dark button__deductible" (click)="openDeductionDialog()" *ngIf="sitePayrollCycleSalary?.status !== 'paid'">รายการหัก</button>
               </div>
               <div class="ml-auto">จำนวนแรงทั้งหมด <strong>{{ summaryTotalManday | number:'1.2-2' }}</strong></div>
               <div class="summary--total-amount p-3 ml-2">ยอดรวม
                 <strong>{{ summaryTotalAmount | number:'1.2-2'}}</strong></div>
+            </div>
+            <div class="d-flex align-items-center mt-2">
+              <div class="ml-auto">
+                <ng-container *ngIf="sitePayrollCycleSalary?.status === 'done'">
+                  <button class="btn bg-primary button__checked" (click)="openCompleteDialog()">
+                    <i class="fa fa-circle text-white" aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
+                </ng-container>
+                <ng-container *ngIf="sitePayrollCycleSalary?.status === 'complete'">
+                  <button class="btn btn-primary button__paid" (click)="paidModal.open()">สั่งจ่าย</button>
+                </ng-container>
+              </div>
             </div>
           </td>
         </tr>
@@ -260,6 +271,69 @@
           <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
               (click)="deductionModal.close()">ยกเลิก</button></div>
         </div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #completeModal [identifier]="'completeModal'" [closable]="true" [escapable]="false"
+  [dismissable]="true" [customClass]="'complete-dialog'">
+  <div class="dialog">
+    <h5 class="title"><i class="fa fa-info-circle" aria-hidden="true"></i> ตรวจสอบข้อมูล</h5>
+    <div class="dialog-body">
+      <div class="p-2">
+        <p>คุณได้ตรวจสอบรายการเงินเดือนเรียบร้อยแล้ว นี้ใช่หรือไม่?</p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center w-100 p-3">
+      <div><button type="button" class="btn btn-primary button_modal" (click)="onComplete()">ยืนยัน</button></div>
+      <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+          (click)="completeModal.close()">ยกเลิก</button></div>
+    </div>
+  </div>
+</ngx-smart-modal>
+
+<ngx-smart-modal #paidModal [identifier]="'paidModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'paid-dialog'">
+  <div class="dialog">
+    <form [formGroup]="paidForm" (ngSubmit)="pf.form.valid && onPaid()" #pf="ngForm">
+      <h5 class="title">สั่งจ่าย</h5>
+      <div class="dialog-body">
+        <div class="d-flex flex-column">
+          <div class="site--title">รหัสหน่วยงาน <strong
+              *ngIf="site?.code; else notDefinedCode">{{ site?.code }}</strong>
+            <ng-template #notDefinedCode>
+              <small class="text-secondary font-italic">ไม่ระบุ</small>
+            </ng-template>
+          </div>
+          <div class="site--title"><strong>{{ site?.fullName }}</strong></div>
+        </div>
+        <div class="p-2">
+          <div class="form-group">
+            <label for="payday">วันที่จ่ายเงิน:</label>
+            <input type="text" class="form-control mb-3" placeholder="คลิกเพื่อเลือกวัน" bsDatepicker
+              formControlName="payday" />
+          </div>
+        </div>
+        <div class="mt-4 p-3 bg-focus">
+          <div class="row d-flex justify-content-center">
+            <div class="col-10 d-flex justify-content-between">
+              <span>จำนวนรายการ: </span>
+              <span>{{ salaries.length | number }} รายการ</span>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center pt-2">
+            <div class="col-10 d-flex justify-content-between">
+              <b>ยอดรวม: </b>
+              <b>{{ summaryTotalAmount | currency: '฿'}}</b>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w-100 p-3">
+        <div><button class="btn btn-primary button_modal" [disabled]="!pf.form.valid">ยืนยัน</button></div>
+        <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+            (click)="paidModal.close()">ยกเลิก</button></div>
       </div>
     </form>
   </div>
@@ -414,7 +488,8 @@
                     <label for="hiring_rate_per_day" class="label">
                       อัตราวันละ
                     </label>
-                    <input type="number" class="form-control" formControlName="hiring_rate_per_day">
+                    <input type="number" class="form-control" [(ngModel)]="hiringRatePerDay"
+                      [ngModelOptions]="{standalone: true}" [disabled]="updateSalaryForm.get('is_paid').value">
                   </div>
                 </div>
               </div>
@@ -488,6 +563,15 @@
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="bonus" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_other_income').value">
+                <div class="form-group mb-0">
+                  <label for="bonus">เงินโบนัส <i class="fa fa-times text-danger button__remove"
+                      (click)="toggleShowControl('is_other_income')"></i>
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="other_income" />
                 </div>
               </div>
               <div class="col-md-6 mt-2" *ngIf="!noOtherItem">
@@ -679,13 +763,13 @@
           <div>
             <button type="button" class="btn btn-primary button__checked"
               [class.active]="updateSalaryForm.get('is_complete').value" btnCheckbox formControlName="is_complete"
-              tabindex="0" role="button">
+              tabindex="0" role="button" [disabled]="updateSalaryForm.get('is_paid').value">
               <i *ngIf="updateSalaryForm.get('is_complete').value" class="fa fa-check-circle-o" aria-hidden="true"></i>
               <i *ngIf="!updateSalaryForm.get('is_complete').value" class="fa fa-circle text-white"
                 aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
           </div>
           <div class="ml-auto">
-            <button class="btn btn-primary button__add">
+            <button class="btn btn-primary button__add" [disabled]="!uf.form.valid || updateSalaryForm.get('is_paid').value">
               บันทึกข้อมูล</button>
           </div>
         </div>

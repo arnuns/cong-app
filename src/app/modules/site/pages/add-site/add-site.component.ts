@@ -94,6 +94,8 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       this.addSiteRole([{
         siteId: undefined,
         roleId: 'security',
+        site: null,
+        role: null,
         hiringRatePerDay: undefined,
         minimumManday: 26,
         createOn: undefined,
@@ -125,6 +127,8 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       siteRoles = this.siteRoleForms.controls.map(c => ({
         siteId: undefined,
         roleId: c.get('role_id').value,
+        site: null,
+        role: null,
         hiringRatePerDay: c.get('hiring_rate_per_day').value,
         minimumManday: c.get('minimum_manday').value,
         createOn: new Date(),

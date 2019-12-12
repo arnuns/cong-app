@@ -71,7 +71,32 @@ export class PayrollService extends BaseService {
         return this.http.put<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salaryId}/suspend`, {});
     }
 
-    deleteEmployeePayrollSalary(payrollCycleId: number, siteId: number, salaryId: number) { 
+    deleteEmployeePayrollSalary(payrollCycleId: number, siteId: number, salaryId: number) {
         return this.http.delete(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salaryId}`);
+    }
+
+    updatePayrollDeduction(payrollCycleId: number, siteId: number, cremationFee: number) {
+        return this.http.put<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/deduction`, {
+            cremation_fee: cremationFee
+        });
+    }
+
+    updateCompletePayrollSiteSalary(payrollCycleId: number, siteId: number) {
+        return this.http.put<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/complete`, {});
+    }
+
+    updatePaydayPayrollSiteSalary(payrollCycleId: number, siteId: number, paydayDate: Date) {
+        const payday = this.moment.formatISO8601(paydayDate);
+        return this.http.put<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/payday`, {
+            payday: payday
+        });
+    }
+
+    addSalary(payrollCycleId: number, siteId: number, salary: Salary) {
+        return this.http.post<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}`, salary);
+    }
+
+    updateSalary(payrollCycleId: number, siteId: number, salary: Salary) {
+        return this.http.put<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salary.id}`, salary);
     }
 }

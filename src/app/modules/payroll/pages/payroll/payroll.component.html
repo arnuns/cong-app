@@ -72,7 +72,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let site of allSitePayrollCycleSalary; let i = index">
-            <td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">
               <span *ngIf="site.status === 'paid'; else elseUnComplete">
                 <i class="fa fa-check-circle text-success" aria-hidden="true"></i>
               </span>
@@ -80,11 +80,11 @@
                 <i class="fa fa-circle-thin" aria-hidden="true"></i>
               </ng-template>
             </td>
-            <td>{{ site.siteCode }}</td>
-            <td>{{ site.siteName }}</td>
-            <td>{{ site.totalManday | number:'1.2-2' }}</td>
-            <td>{{ site.totalAmount | number:'1.2-2' }}</td>
-            <td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">{{ site.siteCode }}</td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">{{ site.siteName }}</td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">{{ site.totalManday | number:'1.2-2' }}</td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">{{ site.totalAmount | number:'1.2-2' }}</td>
+            <td (click)="onRowClickHandler(site.payrollCycleId, site.siteId)">
               <span *ngIf="site.status === 'paid'">
                 สั่งจ่ายแล้ว</span>
               <span *ngIf="site.status === 'complete'">
