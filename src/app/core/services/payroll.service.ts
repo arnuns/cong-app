@@ -3,7 +3,7 @@ import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite, Salary } from '../models/payroll';
+import { PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite, Salary, SiteSalary } from '../models/payroll';
 import { MomentHelper } from '../helpers/moment.helper';
 
 @Injectable({
@@ -98,5 +98,9 @@ export class PayrollService extends BaseService {
 
     updateSalary(payrollCycleId: number, siteId: number, salary: Salary) {
         return this.http.put<Salary>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salary.id}`, salary);
+    }
+
+    getSiteSalary(payrollCycleId: number, salaryId: number) {
+        return this.http.get<SiteSalary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/salary/${salaryId}`);
     }
 }

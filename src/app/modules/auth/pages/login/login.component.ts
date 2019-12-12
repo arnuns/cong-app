@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { SafeStyle, DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, AfterViewInit {
+  @ViewChild('username', { static: false }) username: ElementRef;
   public defaultImagePath = environment.basePath;
   public loginBackgroundStyle: SafeStyle;
   public loading = false;
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.username.nativeElement.focus();
   }
 
   get appVersion() {

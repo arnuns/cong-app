@@ -433,6 +433,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   editSalaryModal(salary: Salary) {
+    this.spinner.showLoadingSpinner();
     this.hiringRatePerDay = salary.hiringRatePerDay.toFixed(2);
     this.updateSalaryForm.patchValue({
       search: '',
@@ -488,22 +489,28 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
-    if (salary.siteSalaries.length > 0) {
-      salary.siteSalaries.forEach(siteSalary => {
-        this.siteForms.controls.push(this.fb.group({
-          id: siteSalary.siteId,
-          site_code: siteSalary.siteCode,
-          site_name: siteSalary.siteName,
-          manday: siteSalary.manday
-        }));
-      });
-    } else {
-      this.addSite();
-    }
     if (salary.isPaid) {
       this.updateSalaryForm.disable();
     }
-    this.ngxSmartModalService.getModal('salaryModal').open();
+    this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
+      this.spinner.hideLoadingSpinner(0);
+      if (siteSalaries.length > 0) {
+        siteSalaries.forEach(siteSalary => {
+          this.siteForms.controls.push(this.fb.group({
+            id: siteSalary.siteId,
+            site_code: siteSalary.siteCode,
+            site_name: siteSalary.siteName,
+            manday: siteSalary.manday
+          }));
+        });
+        this.ngxSmartModalService.getModal('salaryModal').open();
+      } else {
+        this.addSite();
+      }
+    }, error => {
+      this.spinner.hideLoadingSpinner(0);
+    });
+
   }
 
   searchFilter() {
