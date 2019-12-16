@@ -197,7 +197,7 @@ ipcMain.on('view-payslip', (event, payrollCycleId, siteId) => {
   winPayslip.loadURL(`file://${__dirname}/dist/index.html#/payroll/${payrollCycleId}/site/${siteId}/payslip`)
   winPayslip.once('ready-to-show', () => {
     winPayslip.show()
-    winPayslip.webContents.openDevTools()
+    // winPayslip.webContents.openDevTools()
   })
 })
 
