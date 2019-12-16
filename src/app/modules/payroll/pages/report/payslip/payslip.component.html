@@ -26,40 +26,46 @@
         <td colspan="2" class="p-1 border border-dark">
           <div class="d-flex flex-column">
             <div class="pt-0 px-1">
-              <div class="d-flex">
-                <div class="left-column">ชื่อ - สกุล
-                  <strong>{{ user.title + ' ' + user.firstName + ' ' + user.lastName }}</strong>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <div class="d-flex flex-column">
+                    <div>ชื่อ - สกุล
+                      <strong>{{ user.title + ' ' + user.firstName + ' ' + user.lastName }}</strong></div>
+                  </div>
+                  <div>ตำแหน่ง
+                    <strong>{{ user.roleNameTH }}</strong></div>
+                  <div>
+                    ประจำงวด
+                    <strong>{{ convertToStartEndDateString(payrollCycle?.start, payrollCycle?.end) }}</strong>
+                  </div>
                 </div>
-                <div class="mid-column">เลขประจำตัวประชาชน
-                  <strong>{{ user.idCardNumber }}</strong>
+                <div>
+                  <div class="d-flex flex-column">
+                    <div>
+                      เลขประจำตัวประชาชน
+                      <strong>{{ user.idCardNumber }}</strong>
+                    </div>
+                    <div>
+                      รหัสพนักงาน
+                      <strong>{{ user.empNo }}</strong>
+                    </div>
+                  </div>
                 </div>
-                <div class="right-column">วันที่เริ่มงาน
-                  <strong>{{ convertToDateString(user.startDate) }}</strong>
-                </div>
-              </div>
-            </div>
-            <div class="pt-0 px-1">
-              <div class="d-flex">
-                <div class="left-column">ตำแหน่ง
-                  <strong>{{ user.roleNameTH }}</strong>
-                </div>
-                <div class="mid-column">รหัสพนักงาน
-                  <strong>{{ user.empNo }}</strong>
-                </div>
-                <div class="right-column">หน่วยงาน
-                  <strong>{{ user.siteName }}</strong>
-                </div>
-              </div>
-            </div>
-            <div class="px-1 py-0">
-              <div class="d-flex">
-                <div class="half-column">
-                  ประจำงวด
-                  <strong>{{ convertToStartEndDateString(payrollCycle?.start, payrollCycle?.end) }}</strong>
-                </div>
-                <div class="half-column">
-                  วันที่จ่าย
-                  <strong>{{ convertToDateString(user.payDay) }}</strong>
+                <div>
+                  <div class="d-flex flex-column">
+                    <div>
+                      วันที่เริ่มงาน
+                      <strong>{{ convertToDateString(user.startDate) }}</strong>
+                    </div>
+                    <div>
+                      หน่วยงาน
+                      <strong>{{ user.siteName }}</strong>
+                    </div>
+                    <div>
+                      วันที่จ่าย
+                      <strong>{{ convertToDateString(user.payDay) }}</strong>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

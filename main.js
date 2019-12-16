@@ -194,15 +194,10 @@ ipcMain.on('view-payslip', (event, payrollCycleId, siteId) => {
       nodeIntegration: true
     }
   })
-  winPayslip.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/report/payslip?payrollcycleid=${payrollCycleId}&siteid=${siteId}`),
-      protocol: "file:",
-      slashes: true
-    })
-  )
+  winPayslip.loadURL(`file://${__dirname}/dist/index.html#/payroll/${payrollCycleId}/site/${siteId}/payslip`)
   winPayslip.once('ready-to-show', () => {
     winPayslip.show()
+    winPayslip.webContents.openDevTools()
   })
 })
 
