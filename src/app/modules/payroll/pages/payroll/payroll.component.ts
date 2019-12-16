@@ -13,6 +13,7 @@ import { Papa } from 'ngx-papaparse';
 import * as FileSaver from 'file-saver';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { Router } from '@angular/router';
+import { ElectronService } from 'ngx-electron';
 
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -51,6 +52,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   dtOptions: DataTables.Settings = {};
 
   constructor(
+    private electronService: ElectronService,
     private fb: FormBuilder,
     private moment: MomentHelper,
     private ngxSmartModalService: NgxSmartModalService,
@@ -151,7 +153,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onRowClickHandler(payrollCycleId: number, siteId: number) {
-    this.router.navigate(['/payroll', payrollCycleId, 'salary', siteId]);
+    this.router.navigate(['/payroll', payrollCycleId, 'site', siteId, 'salary']);
   }
 
   searchFilter() {
@@ -425,6 +427,12 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     }, error => {
       this.spinner.hideLoadingSpinner();
     });
+  }
+
+  exportPayslipReport(payrollCycleId: number, siteId: number) {
+    if (this.electronService.isElectronApp) {
+      this.electronService.ipcRenderer.send('view-payslip', payrollCycleId, siteId);
+    }
   }
 
   summaryTotalIncome(salary: Salary) {

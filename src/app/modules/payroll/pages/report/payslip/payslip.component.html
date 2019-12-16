@@ -1,0 +1,294 @@
+<div *ngFor="let user of userSalarys;let i = index"
+  [class]="(i + 1) % 2 === 0 ? 'container-fluid' : 'container-fluid page-break'">
+  <div class="d-flex align-items-center">
+    <div class="p-1 mx-3">
+      <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+    </div>
+    <div class="p-1 header-text">
+      <strong>{{ companyReportHeader.FullName }} / {{ companyReportHeader.FullNameEn }}</strong>
+      <br /> สำนักงานใหญ่: {{ companyReportHeader.Address1 }}
+      <br /> สำนักงานสาขา: {{ companyReportHeader.Address2 }}
+      <br /> โทรศัพท์: {{ companyReportHeader.Tel }} โทรสาร: {{ companyReportHeader.Fax }} มือถือ: {{ companyReportHeader.Mobile
+            }}
+      <br /> อีเมล์: {{ companyReportHeader.Email }} เว็บไซต์: {{ companyReportHeader.Website }}
+    </div>
+  </div>
+  <table class="table table-bordered mb-1">
+    <thead>
+      <tr>
+        <th colspan="2" class="p-0 text-center border border-dark bg-highlight report-header">
+          ใบแจ้งเงินเดือน (PAY SLIP)
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2" class="p-1 border border-dark">
+          <div class="d-flex flex-column">
+            <div class="pt-0 px-1">
+              <div class="d-flex">
+                <div class="left-column">ชื่อ - สกุล
+                  <strong>{{ user.title + ' ' + user.firstName + ' ' + user.lastName }}</strong>
+                </div>
+                <div class="mid-column">เลขประจำตัวประชาชน
+                  <strong>{{ user.idCardNumber }}</strong>
+                </div>
+                <div class="right-column">วันที่เริ่มงาน
+                  <strong>{{ convertToDateString(user.startDate) }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="pt-0 px-1">
+              <div class="d-flex">
+                <div class="left-column">ตำแหน่ง
+                  <strong>{{ user.roleNameTH }}</strong>
+                </div>
+                <div class="mid-column">รหัสพนักงาน
+                  <strong>{{ user.empNo }}</strong>
+                </div>
+                <div class="right-column">หน่วยงาน
+                  <strong>{{ user.siteName }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="px-1 py-0">
+              <div class="d-flex">
+                <div class="half-column">
+                  ประจำงวด
+                  <strong>{{ convertToStartEndDateString(payrollCycle?.start, payrollCycle?.end) }}</strong>
+                </div>
+                <div class="half-column">
+                  วันที่จ่าย
+                  <strong>{{ convertToDateString(user.payDay) }}</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th class="border border-dark p-0">
+          <div class="d-flex justify-content-center bg-highlight report-header">
+            <div class="p-0">
+              รายได้
+            </div>
+          </div>
+        </th>
+        <th class="border border-dark p-0">
+          <div class="d-flex justify-content-center bg-highlight report-header">
+            <div class="p-0">
+              รายการหัก
+            </div>
+          </div>
+        </th>
+      </tr>
+      <tr>
+        <td class="p-1 half-column border border-dark">
+          <div class="d-flex flex-column">
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">1. ค่าแรง</div>
+                <div>
+                  <!-- {{ (user.totalManday > 0) ? (user.totalManday | number) : "-" }} -->
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">
+                  - ค่าแรงปกติ
+                </div>
+                <div>
+                  {{ (user.totalWage > 0) ? (user.totalWage | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">
+                  - ค่าล่วงเวลา (OT)
+                </div>
+                <div>
+                  {{ ((user.overtime + user.extraOvertime) > 0) ? ((user.overtime + user.extraOvertime) | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">
+                  - รายได้จุดพิเศษ
+                </div>
+                <div>
+                  {{ (user.extraPointValue > 0) ? (user.extraPointValue | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">2. ค่าตำแหน่ง</div>
+                <div class="pb-1">{{ (user.positionValue > 0) ? (user.positionValue | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">3. ค่าจุด</div>
+                <div class="pb-1">{{ (user.pointValue > 0) ? (user.pointValue | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">4. ค่าแทนจุด</div>
+                <div class="pb-1">{{ (user.extraReplaceValue > 0) ? (user.extraReplaceValue | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">5. อื่นๆ</div>
+                <div>{{ ((user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
+                        > 0) ? ((user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
+                        | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div
+              *ngIf="(user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome) > 0">
+              <div class="d-flex">
+                <div class="mr-auto">
+                  <small>( {{ (user.annualHoliday > 0) ? "นักขัตฤกษ์ " + (user.annualHoliday | number) + " บาท" : "" }} {{ (user.telephoneCharge
+                          > 0) ? "ค่าโทรศัพท์ " + (user.telephoneCharge | number) + " บาท" : "" }} {{ (user.refund > 0) ? "คืนเงินหัก
+                          " + (user.refund | number) + " บาท" : "" }} {{ (user.dutyAllowance > 0) ? "เบี้ยขยัน " + (user.dutyAllowance
+                          | number) + " บาท" : "" }}
+                    {{ (user.bonus > 0) ? "เงินโบนัส " + (user.bonus | number) + " บาท" : "" }}
+                    {{ (user.otherIncome > 0) ? "อื่นๆ " + (user.otherIncome | number) + " บาท" : "" }} )</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+        <td class="p-1 half-column border border-dark">
+          <div class="d-flex flex-column">
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">1. ภาษีหัก ณ ที่จ่าย
+                </div>
+                <div class="pb-1">{{ (user.withholdingTax > 0) ? (user.withholdingTax | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">2. ประกันสังคม
+                </div>
+                <div class="pb-1">{{ (user.socialSecurity > 0) ? (user.socialSecurity | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">3. ค่าธรรมเนียม
+                </div>
+                <div class="pb-1">{{ (user.transferFee > 0) ? (user.transferFee | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">4. ค่าอุปกรณ์
+                </div>
+                <div class="pb-1">{{ (user.inventory > 0) ? (user.inventory | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">5. เบิกล่วงหน้า
+                </div>
+                <div class="pb-1">{{ (user.advance > 0) ? (user.advance | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">6. อื่นๆ</div>
+                <div>{{ ( (user.discipline + user.licenseFee + user.absence + user.cremationFee + user.rentHouse + user.otherFee)
+                        > 0) ? ((user.discipline + user.licenseFee + user.absence + user.cremationFee + user.rentHouse + user.otherFee)
+                        | number:'1.2-2') : "-" }}</div>
+              </div>
+            </div>
+            <div
+              *ngIf="(user.discipline + user.licenseFee + user.absence + user.cremationFee + user.rentHouse + user.otherFee) > 0">
+              <div class="d-flex">
+                <div class="mr-auto">
+                  <small>( {{ (user.discipline > 0) ? "ค่าผิดวินัย " + (user.discipline | number) + " บาท" : "" }} {{ (user.licenseFee
+                          > 0) ? "ค่าใบอนุญาต " + (user.licenseFee | number) + " บาท" : "" }} {{ (user.absence > 0) ? "ขาดงาน "
+                          + (user.absence | number) + " บาท" : "" }} {{ (user.cremationFee > 0) ? "ณาปนกิจ " + (user.cremationFee
+                          | number) + " บาท" : "" }} {{ (user.rentHouse > 0) ? "ค่าเช่าบ้าน " + (user.rentHouse | number) + " บาท"
+                          : "" }} {{ (user.otherFee > 0) ? "อื่นๆ " + (user.otherFee | number) + " บาท" : "" }}
+                    )</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-0 half-column border border-dark">
+          <div class="d-flex">
+            <div class="mr-auto p-1">
+              <strong>รายได้รวม</strong>
+            </div>
+            <div class="p-1">
+              <strong>{{ (user.totalIncome > 0) ? (user.totalIncome | number:'1.2-2') : "-" }}</strong>
+            </div>
+          </div>
+        </td>
+        <td class="p-0 half-column border border-dark">
+          <div class="d-flex">
+            <div class="mr-auto p-1">
+              <strong>รายการหักรวม</strong>
+            </div>
+            <div class="p-1">
+              <strong>{{ (user.totalDeductible) ? (user.totalDeductible | number:'1.2-2') : "-" }}</strong>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="p-0 half-column border border-dark">
+          <div class="d-flex">
+            <div class="mr-auto p-1">
+              <strong>เงินได้สะสม</strong>
+            </div>
+            <div class="p-1">
+              <strong>-</strong>
+            </div>
+          </div>
+        </td>
+        <td class="p-0 half-column border border-dark">
+          <div class="d-flex">
+            <div class="mr-auto p-1">
+              <strong>ภาษีสะสม</strong>
+            </div>
+            <div class="p-1">
+              <strong>-</strong>
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2" class="p-0 border border-dark">
+          <div class="d-flex justify-content-end bg-highlight">
+            <div class="p-0 mr-5 report-header">รับเงินได้สุทธิ (NET INCOME)</div>
+            <div class="p-0 report-header">
+              {{ user.totalAmount | number:'1.2-2' }}
+            </div>
+          </div>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end">
+    <div class="px-1 pt-1 pb-2">
+      <div class="d-flex flex-column text-center signature-box">
+        <div class="py-2 px-1">ลงชื่อ .........................................</div>
+        <div class="py-1 px-1">(...................................................)</div>
+        <div class="py-0 px-1">ฝ่ายการเงิน</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -38,6 +38,11 @@ const routes: Routes = [
         path: 'payroll',
         canLoad: [AuthGuardService],
         loadChildren: './modules/payroll/payroll.module#PayrollModule'
+      },
+      {
+        path: 'sso',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/sso/sso.module#SsoModule'
       }
     ]
   }

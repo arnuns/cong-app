@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PayrollComponent } from './pages/payroll/payroll.component';
 import { SalaryComponent } from './pages/salary/salary.component';
-
+import { PayslipComponent } from './pages/report/payslip/payslip.component';
 
 const routes: Routes = [
   {
@@ -10,8 +10,12 @@ const routes: Routes = [
     component: PayrollComponent
   },
   {
-    path: ':id/salary/:siteid',
+    path: ':id/site/:siteid/salary',
     component: SalaryComponent
+  },
+  {
+    path: ':id/site/:siteid/payslip',
+    component: PayslipComponent
   }
 ];
 

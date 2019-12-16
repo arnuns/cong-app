@@ -1,5 +1,6 @@
 import { Site } from './site';
 import { Role, User } from './user';
+import { PageFilter } from './page-filter.model';
 
 export interface PayrollCycle {
     id: number;
@@ -121,6 +122,12 @@ export interface SocialSecurityHistory {
     updateOn: Date;
 }
 
+export interface SocialSecurityHistoryMonthName {
+    payrollYear: number;
+    payrollMonth: number;
+    monthName: string;
+}
+
 export interface PayrollYearMonth {
     year: number;
     month: number;
@@ -167,4 +174,11 @@ export interface SummarySalaryBySite {
 
 export interface PayrollDeductible {
     cremationFee: number;
+}
+
+export interface SocialSecurityHistoryFilter extends PageFilter {
+    search: string;
+    payrollYear: number;
+    payrollMonth: number;
+    socialHospitalId: number;
 }

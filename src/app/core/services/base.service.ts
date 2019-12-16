@@ -63,6 +63,20 @@ export class BaseService {
     if (!this.userDataStorage) { return null; }
     return JSON.parse(this.userDataStorage) as User;
   }
+
+  protected downloadFile(response) {
+    const url = window.URL.createObjectURL(response.data);
+    const a = document.createElement('a');
+    document.body.appendChild(a);
+    a.setAttribute('style', 'display: none');
+    a.href = url;
+    a.download = response.filename;
+    a.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 100);
+    a.remove();
+  }
 }
 
 export class ApiResponse<T> {

@@ -32,6 +32,13 @@
               aria-hidden="true"></i>
             เพิ่มพนักงาน</button>
         </div>
+        <div class="ml-2">
+          <button type="button" class="btn btn-outline-primary button__export" *ngIf="sitePayrollCycleSalary?.status === 'paid'"
+            (click)="exportPayslipReport(sitePayrollCycleSalary?.payrollCycleId, sitePayrollCycleSalary?.siteId)">
+            <i class="fa fa-print" aria-hidden="true"></i>
+            พิมพ์สลิป
+          </button>
+        </div>
       </div>
       <div class="d-flex align-items-center w-100 my-4">
         <div>
@@ -150,7 +157,8 @@
           <td colspan="11">
             <div class="d-flex align-items-center">
               <div>
-                <button class="btn btn-dark button__deductible" (click)="openDeductionDialog()" *ngIf="sitePayrollCycleSalary?.status !== 'paid'">รายการหัก</button>
+                <button class="btn btn-dark button__deductible" (click)="openDeductionDialog()"
+                  *ngIf="sitePayrollCycleSalary?.status !== 'paid'">รายการหัก</button>
               </div>
               <div class="ml-auto">จำนวนแรงทั้งหมด <strong>{{ summaryTotalManday | number:'1.2-2' }}</strong></div>
               <div class="summary--total-amount p-3 ml-2">ยอดรวม
@@ -523,7 +531,8 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_annual_holiday').value">
                 <div class="form-group mb-0">
                   <label for="annual_holiday">นักขัตฤกษ์ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_annual_holiday')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_annual_holiday')"
+                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="annual_holiday" />
@@ -532,7 +541,8 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_telephone_charge').value">
                 <div class="form-group mb-0">
                   <label for="telephone_charge">ค่าโทรศัพท์ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_telephone_charge')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_telephone_charge')"
+                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="telephone_charge" />
@@ -550,7 +560,8 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_duty_allowance').value">
                 <div class="form-group mb-0">
                   <label for="duty_allowance">เบี้ยขยัน <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_duty_allowance')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_duty_allowance')"
+                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="duty_allowance" />
@@ -671,7 +682,8 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_cremation_fee').value">
                 <div class="form-group mb-0">
                   <label for="overtime">พิธีการทางศาสนา <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_cremation_fee')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_cremation_fee')"
+                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="cremation_fee" />
@@ -769,7 +781,8 @@
                 aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
           </div>
           <div class="ml-auto">
-            <button class="btn btn-primary button__add" [disabled]="!uf.form.valid || updateSalaryForm.get('is_paid').value">
+            <button class="btn btn-primary button__add"
+              [disabled]="!uf.form.valid || updateSalaryForm.get('is_paid').value">
               บันทึกข้อมูล</button>
           </div>
         </div>

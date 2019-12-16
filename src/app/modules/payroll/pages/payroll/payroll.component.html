@@ -122,7 +122,7 @@
                     </a>
                   </li>
                   <li *ngIf="site.status === 'paid'">
-                    <a class="dropdown-item" (click)="editSiteInfo(site.id)">
+                    <a class="dropdown-item" (click)="exportPayslipReport(site.payrollCycleId, site.id)">
                       <div class="d-flex align-items-center w-100">
                         <div>
                           <i class="fa fa-print" aria-hidden="true"></i>

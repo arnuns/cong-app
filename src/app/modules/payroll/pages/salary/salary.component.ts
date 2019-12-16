@@ -15,6 +15,7 @@ import { User } from 'src/app/core/models/user';
 import { UserService } from 'src/app/core/services/user.service';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
 import { IDCardNumber } from 'src/app/core/validators/idcard-no.validator';
+import { ElectronService } from 'ngx-electron';
 
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -128,6 +129,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
+    private electronService: ElectronService,
     private fb: FormBuilder,
     private ngxSmartModalService: NgxSmartModalService,
     private payrollService: PayrollService,
@@ -814,6 +816,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.hideLoadingSpinner(0);
     });
 
+  }
+
+  exportPayslipReport(payrollCycleId: number, siteId: number) {
+    if (this.electronService.isElectronApp) {
+      this.electronService.ipcRenderer.send('view-payslip', payrollCycleId, siteId);
+    }
   }
 
   setTwoNumberDecimal($event) {

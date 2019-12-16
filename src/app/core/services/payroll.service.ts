@@ -3,7 +3,10 @@ import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite, Salary, SiteSalary } from '../models/payroll';
+import {
+    PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite,
+    Salary, SiteSalary, SocialSecurityHistory, SocialSecurityHistoryMonthName
+} from '../models/payroll';
 import { MomentHelper } from '../helpers/moment.helper';
 
 @Injectable({
@@ -102,5 +105,51 @@ export class PayrollService extends BaseService {
 
     getSiteSalary(payrollCycleId: number, salaryId: number) {
         return this.http.get<SiteSalary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/salary/${salaryId}`);
+    }
+
+    getSocialSecurityHistoryMonthName() {
+        return this.http.get<SocialSecurityHistoryMonthName[]>(`${this.serviceUrl}/Payroll/SocialSecurity/MonthNameHistory`);
+    }
+
+    getSocialSecurityHistoryFilter(
+        search: string,
+        payroll_year: number,
+        payroll_month: number,
+        social_hospital_id: number,
+        sort_column: string,
+        sort_by: string,
+        page: number,
+        page_size: number) {
+        const params = new HttpParams()
+            .set('search', (!search) ? '' : search)
+            .set('payroll_year', payroll_year ? String(payroll_year) : '')
+            .set('payroll_month', payroll_month ? String(payroll_month) : '')
+            .set('social_hospital_id', (!social_hospital_id) ? '0' : `${social_hospital_id}`)
+            .set('sort_column', sort_column)
+            .set('sort_by', sort_by)
+            .set('page', String(page))
+            .set('page_size', String(page_size));
+        return this.http.get<Paginate<SocialSecurityHistory[]>>(
+            `${this.serviceUrl}/Payroll/SocialSecurity/Filter`, { params: params });
+    }
+
+    updateSocialSecurityHistory(
+        payrollYear: number,
+        payrollMonth: number,
+        idCardNumber: string,
+        socialHospitalId: number,
+        hospitalName: string) {
+        return this.http.put<SocialSecurityHistory>(`${this.serviceUrl}/Payroll/SocialSecurity`, {
+            payrollYear,
+            payrollMonth,
+            idCardNumber,
+            socialHospitalId,
+            hospitalName
+        });
+    }
+
+    getSocialSecurityHistories(payrollYear: number, payrollMonth: number) {
+        // tslint:disable-next-line: max-line-length
+        return this.http.get<SocialSecurityHistory[]>(`${this.serviceUrl}/Payroll/SocialSecurity/Year/${payrollYear}/Month/${payrollMonth}`);
     }
 }

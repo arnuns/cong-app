@@ -1,0 +1,131 @@
+<form [formGroup]="socialSecurityForm">
+  <div class="row menu-title">
+    <div class="col px-0">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <h3 class="title noselect">ประกันสังคม</h3>
+        </div>
+        <div class="ml-3">
+          <div class="d-flex align-items-center">
+            <div>
+              รอบเดือน
+            </div>
+            <div class="ml-2 form-group mb-0">
+              <ng-select class="month-select" [clearable]="false" [searchable]="false" [items]="nameMonths"
+                bindLabel="view" bindValue="viewValue" formControlName="payroll_year_month"
+                (change)="onYearMonthSelectionChange($event)">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="ml-auto">
+          <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()"><i class="fa fa-cloud-download"
+              aria-hidden="true"></i>
+            ดาวน์โหลด</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <div class="form-group mb-1">
+            <input type="text" class="form-control search-control" formControlName="search"
+              placeholder="ค้นหา: ชื่อ, เลขประจำตัวประชาชน">
+          </div>
+        </div>
+        <div class="ml-2">
+          <div class="form-group mb-1">
+            <ng-select class="hospital-select" [clearable]="true" [items]="hospitals" bindLabel="name" bindValue="id"
+              formControlName="social_hospital_id" placeholder="เลือกโรงพยาบาล"
+              (change)="onHospitalSelectionChange($event)">
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <table datatable [dtOptions]="dtOptions" class="table table-hover sso-table">
+        <thead>
+          <tr>
+            <th>เลขประจำตัวประชาชน</th>
+            <th>ชื่อ - สกุล</th>
+            <th class="text-right">ค่าจ้าง</th>
+            <th class="text-right">จำนวนเงินสมทบ</th>
+            <th>ชื่อสถานพยาบาล</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let sso of socialSecurityHistories; let i = index">
+            <td>{{ sso.idCardNumber }}</td>
+            <td>{{ sso.firstName }} {{ sso.lastName}}</td>
+            <td class="text-right">{{ sso.totalWage | number:'1.2-2' }}</td>
+            <td class="text-right">{{ sso.socialSecurity | number:'1.2-2' }}</td>
+            <td>{{ sso.hospitalName ? sso.hospitalName : '-' }}</td>
+            <td>
+              <span dropdown class="action--dropdown">
+                <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
+                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </a>
+                <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
+                  aria-labelledby="basic-link">
+                  <li>
+                    <a class="dropdown-item" (click)="onClickEdit(sso)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">แก้ไขสถานพยาบาล</div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="ordsocialSecurityHistoriesers?.length == 0">
+          <tr>
+            <td colspan="6" class="text-center">Data not found!</td>
+          </tr>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</form>
+
+<ngx-smart-modal #editModal [identifier]="'editModal'" [closable]="true" [escapable]="false" [dismissable]="false"
+  [customClass]="'edit-dialog'">
+  <div class="dialog">
+    <form [formGroup]="editForm" (ngSubmit)="f.form.valid && onEdit()" #f="ngForm">
+      <h5 class="title">สถานพยาบาล</h5>
+      <div class="dialog-body">
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="label">ชื่อ - สกุล</label>
+              <div>
+                <strong>{{ editForm.get('name').value }}</strong>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="social_hospital_id" class="label">สถานพยาบาลที่ต้องการเปลี่ยน/เลือก</label>
+              <ng-select class="hospital-select" [clearable]="false" [items]="hospitals" bindLabel="name" bindValue="id"
+                formControlName="social_hospital_id" placeholder="เลือกโรงพยาบาล">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center w-100 p-3">
+          <div>
+            <button class="btn btn-primary button_modal" [disabled]="!f.form.valid">ยืนยัน</button>
+          </div>
+          <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+              (click)="editModal.close()">ยกเลิก</button></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
