@@ -1,0 +1,245 @@
+<form [formGroup]="timeAttendanceForm">
+  <div class="row menu-title">
+    <div class="col px-0">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <h3 class="title noselect">บันทึกเวลาเข้า-ออก</h3>
+        </div>
+        <div class="ml-auto">
+          <button type="button" class="btn btn-primary button__add" [disabled]="!timeAttendanceForm.get('site_id').value" (click)="onClickAdd()">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            บันทึกเวลาให้พนักงาน</button>
+        </div>
+        <div class="ml-2">
+          <div class="btn-group action--dropdown" dropdown #dropdown="bs-dropdown">
+            <button dropdownToggle type="button" class="btn btn-outline-primary button__export dropdown-toggle">
+              <i class="fa fa-cloud-download" aria-hidden="true"></i> ดาวน์โหลด <span class="caret"></span>
+            </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
+              <li role="menuitem" *ngIf="timeAttendances.length > 0"><a class="dropdown-item"
+                  (click)="onExport()">สรุปรายวัน</a></li>
+              <li role="menuitem"><a class="dropdown-item" (click)="onExportSummaryBySiteToCsv()">แยกตามหน่วยงาน</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex align-items-center w-100">
+        <div>
+          <div class="form-group mb-1">
+            <ng-select class="site-select" [clearable]="false" [items]="sites" bindLabel="name" bindValue="id"
+              formControlName="site_id" placeholder="เลือกหน่วยงาน" (change)="onSiteSelectionChange($event)">
+            </ng-select>
+          </div>
+        </div>
+        <div class="ml-2">
+          <input type="text" class="form-control mb-1" placeholder="คลิกเพื่อเลือกวัน" bsDatepicker
+            formControlName="work_date" (bsValueChange)="onWorkDateSelectionChange($event)" />
+        </div>
+      </div>
+      <table datatable [dtOptions]="dtOptions" class="table table-hover time-attendance-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>ชื่อ - สกุล</th>
+            <th>ตำแหน่ง</th>
+            <th>หน่วยงาน</th>
+            <th>วันที่</th>
+            <th>เวลาเข้า</th>
+            <th>เวลาออก</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let t of timeAttendances; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ t.employeeName }}</td>
+            <td>{{ t.user.role.nameTH }}</td>
+            <td>{{ t.site.name }}</td>
+            <td>{{ t.workDate | date: 'dd/MM/yyyy' }}</td>
+            <td class="text-success">{{ t.checkInTime | date:'HH:mm' }}</td>
+            <td class="text-danger">{{ t.leaveTime | date:'HH:mm' }}</td>
+            <td>
+              <span dropdown class="action--dropdown">
+                <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
+                  <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                </a>
+                <ul id="basic-link-dropdown" *dropdownMenu class="dropdown-menu noselect" role="menu"
+                  aria-labelledby="basic-link">
+                  <li>
+                    <a class="dropdown-item" (click)="onClickEdit(t)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-pencil" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">แก้ไขเวลาออก</div>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" (click)="openDeleteDialog(t)">
+                      <div class="d-flex align-items-center w-100">
+                        <div>
+                          <i class="fa fa-trash" aria-hidden="true"></i>
+                        </div>
+                        <div class="ml-2">ลบ</div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="timeAttendances?.length == 0">
+          <tr>
+            <td colspan="8" class="text-center">Data not found!</td>
+          </tr>
+        <tbody>
+      </table>
+    </div>
+  </div>
+</form>
+
+<ngx-smart-modal #newTimeAttendanceModal [identifier]="'newTimeAttendanceModal'" [closable]="true" [escapable]="false"
+  [dismissable]="true" [customClass]="'time-attendance-dialog'">
+  <div class="dialog">
+    <form [formGroup]="editForm" (ngSubmit)="ef.form.valid && onSubmit()" #ef="ngForm">
+      <h5 class="title">บันทึกเวลาเข้า-ออก</h5>
+      <div class="dialog-body">
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <label for="site_id" class="label">หน่วยงาน <small class="text-danger">*</small></label>
+              <ng-select class="site-select" [clearable]="false" [items]="sites" bindLabel="name" bindValue="id"
+                formControlName="site_id" placeholder="เลือกหน่วยงาน">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="work_date" class="label">วันที่ <small class="text-danger">*</small></label>
+              <div class="input-group">
+                <input class="form-control form-control--date" onkeydown="return false" #wdp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+                  formControlName="work_date">
+                <div class="input-group-append">
+                  <span class="input-group-text pointer" (click)="wdp.toggle()"><i class="fa fa-calendar text-dark"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="period_time" class="label">เวลาเข้า-ออกงาน <small class="text-danger">*</small></label>
+              <ng-select class="period-select" [clearable]="false" [searchable]="false" [items]="siteWorkRates" bindLabel="view"
+                bindValue="viewValue" formControlName="period_time" placeholder="เลือกรอบเวลา">
+              </ng-select>
+            </div>
+          </div>
+          <div class="col-md-12 mt-4">
+            <div class="form-group mb-2">
+              <input type="text" class="form-control search-user-control" formControlName="search"
+                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน">
+              <div class="suggestion" *ngIf="employees?.length > 0">
+                <div class="list-group">
+                  <a (click)="onClickSearchUser(user)"
+                    class="list-group-item list-group-item-action flex-column align-items-start"
+                    *ngFor="let user of employees">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h6 class="mb-1">{{ user.firstName }} {{ user.lastName }}</h6>
+                      <small>{{ user.site.name }}</small>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <label for="name" class="label">ชื่อ - สกุล</label>
+              <input type="text" class="form-control" formControlName="name" readonly>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="mb-2">
+              เวลาที่บันทึก
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="checkin_date" class="label">วันเข้า</label>
+              <div class="input-group">
+                <input class="form-control form-control--date" onkeydown="return false" #cdp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+                  formControlName="checkin_date">
+                <div class="input-group-append">
+                  <span class="input-group-text pointer"><i class="fa fa-calendar text-dark"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="leave_date" class="label">วันออก</label>
+              <div class="input-group">
+                <input class="form-control form-control--date" onkeydown="return false" #ldp="bsDatepicker" bsDatepicker
+                  [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+                  formControlName="leave_date">
+                <div class="input-group-append">
+                  <span class="input-group-text pointer"><i class="fa fa-calendar text-dark"
+                      aria-hidden="true"></i></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="checkin_time" class="label">เวลาเข้า</label>
+              <timepicker [formControlName]="'checkin_time'" [showMeridian]="false" [showSpinners]="false"></timepicker>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group mb-2">
+              <label for="leave_time" class="label">เวลาออก</label>
+              <timepicker [formControlName]="'leave_time'" [showMeridian]="false" [showSpinners]="false"></timepicker>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-center w-100 p-3">
+          <div>
+            <button class="btn btn-primary button_modal" [disabled]="!ef.form.valid">บันทึก</button>
+          </div>
+          <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+              (click)="newTimeAttendanceModal.close()">ยกเลิก</button></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>
+
+
+<ngx-smart-modal #deleteModal [identifier]="'deleteModal'" [closable]="true" [escapable]="false" [dismissable]="true"
+  [customClass]="'delete-dialog'">
+  <div class="dialog">
+    <form [formGroup]="deleteForm" (ngSubmit)="df.form.valid && onDelete()" #df="ngForm">
+      <h5 class="title danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ลบรายการ</h5>
+      <div class="dialog-body">
+        <div class="p-2">
+          <p>คุณต้องการลบรายการนี้ใช่หรือไม่</p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center w-100 p-3">
+        <div><button type="button" class="btn btn-danger button_modal" (click)="onDelete()">ลบข้อมูล</button></div>
+        <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
+            (click)="deleteModal.close()">ยกเลิก</button></div>
+      </div>
+    </form>
+  </div>
+</ngx-smart-modal>

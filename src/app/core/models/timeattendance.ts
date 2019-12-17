@@ -1,5 +1,6 @@
 import { User } from './user';
 import { Site } from './site';
+import { PageFilter } from './page-filter.model';
 
 export interface TimeAttendance {
 
@@ -12,13 +13,18 @@ export interface TimeAttendance {
     workDate: Date;
     startTime: string;
     endTime: string;
-    checkInTime: Date;
+    checkInTime: string;
     checkInByName: string;
-    leaveTime: Date;
+    leaveTime: string;
     leaveByName: string;
     createBy: string;
     createOn: Date;
     updateBy: string;
     updateOn: Date;
+}
+
+export interface TimeAttendanceFilter extends PageFilter {
+    siteId: number;
+    workDate: Date;
 }
 

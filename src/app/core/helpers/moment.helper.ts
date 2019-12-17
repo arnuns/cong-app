@@ -5,9 +5,10 @@ import * as moment from 'moment';
 
 export class MomentHelper {
     defaultFormatWithoutTs = 'YYYY-MM-DDT00:00:00Z';
+    defaultFormatWithTs = 'YYYY-MM-DDTHH:mm:ssZ';
 
-    formatISO8601(input) {
-        return moment(input).format(this.defaultFormatWithoutTs);
+    formatISO8601(input, withTs = false) {
+        return moment(input).format(withTs ? this.defaultFormatWithTs : this.defaultFormatWithoutTs);
     }
 
     formatDate(input) {

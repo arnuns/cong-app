@@ -186,7 +186,7 @@
   [customClass]="'suspend-dialog'">
   <div class="dialog">
     <form [formGroup]="suspendForm" (ngSubmit)="f.form.valid && onSuspend()" #f="ngForm">
-      <h5 class="title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ระงับการจ่ายเงิน</h5>
+      <h5 class="title danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ระงับการจ่ายเงิน</h5>
       <div class="dialog-body">
         <div class="p-2">
           <p>คุณต้องการระงับการจ่ายเงินของ <strong>{{ suspendForm.get('full_name').value }}</strong> นี้ใช่หรือไม่?</p>
@@ -205,7 +205,7 @@
   [customClass]="'delete-dialog'">
   <div class="dialog">
     <form [formGroup]="deleteForm" (ngSubmit)="f.form.valid && onDelete()" #f="ngForm">
-      <h5 class="title"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ลบรายการ</h5>
+      <h5 class="title danger"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> ลบรายการ</h5>
       <div class="dialog-body">
         <div class="p-2">
           <p>คุณต้องการลบรายการของ <strong>{{ suspendForm.get('full_name').value }}</strong> นี้ใช่หรือไม่?</p>

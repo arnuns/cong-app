@@ -43,6 +43,11 @@ const routes: Routes = [
         path: 'sso',
         canLoad: [AuthGuardService],
         loadChildren: './modules/sso/sso.module#SsoModule'
+      },
+      {
+        path: 'time-attendance',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/time-attendance/time-attendance.module#TimeAttendanceModule'
       }
     ]
   }

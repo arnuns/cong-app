@@ -12,6 +12,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { Papa } from 'ngx-papaparse';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import * as FileSaver from 'file-saver';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-social-security',
@@ -73,11 +74,16 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
     if (this.socialSecurityHistoryFilter) {
       localStorage.setItem(this.filterSessionName, JSON.stringify(this.socialSecurityHistoryFilter));
     }
-
     this.applicationStateService.setIsHiddenSearch = false;
   }
 
   ngAfterViewInit() {
+    this.socialSecurityForm.get('search').valueChanges
+      .pipe(debounceTime(400), distinctUntilChanged()).subscribe(val => {
+        this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+          dtInstance.draw();
+        });
+      });
   }
 
   initialData() {
