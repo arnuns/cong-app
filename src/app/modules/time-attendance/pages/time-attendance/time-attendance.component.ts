@@ -14,6 +14,7 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
 import { User } from 'src/app/core/models/user';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UserService } from 'src/app/core/services/user.service';
+import { ElectronService } from 'ngx-electron';
 
 @Component({
   selector: 'app-time-attendance',
@@ -55,6 +56,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   dtOptions: DataTables.Settings = {};
   constructor(
     private applicationStateService: ApplicationStateService,
+    private electronService: ElectronService,
     private fb: FormBuilder,
     private moment: MomentHelper,
     private ngxSmartModalService: NgxSmartModalService,
@@ -324,7 +326,11 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onExportWorkingSiteMonthlyReport() {
-    console.log(this.timeAttendanceForm.get('site_id').value);
+    if (this.electronService.isElectronApp) {
+      const workDate: Date = this.timeAttendanceForm.get('work_date').value;
+      this.electronService.ipcRenderer.send('view-working-site-report'
+        , this.timeAttendanceForm.get('site_id').value, workDate.getFullYear(), workDate.getMonth() + 1);
+    }
   }
 
   onClickSearchUser(user: User) {
