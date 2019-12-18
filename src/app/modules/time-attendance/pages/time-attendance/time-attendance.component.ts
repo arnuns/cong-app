@@ -323,6 +323,10 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     });
   }
 
+  onExportWorkingSiteMonthlyReport() {
+    console.log(this.timeAttendanceForm.get('site_id').value);
+  }
+
   onClickSearchUser(user: User) {
     this.editForm.patchValue({
       emp_no: user.empNo,

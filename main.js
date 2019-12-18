@@ -302,15 +302,11 @@ ipcMain.on('view-working-site-report', (event, siteId, year, month) => {
       nodeIntegration: true
     }
   })
-  winWorkingSiteReport.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html#/report/workingsite?siteId=${siteId}&year=${year}&month=${month}`),
-      protocol: "file:",
-      slashes: true
-    })
-  )
+
+  winWorkingSiteReport.loadURL(`file://${__dirname}/dist/index.html#/time-attendance/working-site/${siteId}/year/${year}/month/${month}/report`)
   winWorkingSiteReport.once('ready-to-show', () => {
     winWorkingSiteReport.show()
+    // winWorkingSiteReport.webContents.openDevTools()
   })
 })
 
@@ -336,9 +332,9 @@ ipcMain.on('print-to-pdf-landscape', (event) => {
   const pdfPath = `${os.tmpdir()}/print_${dateString}.pdf`;
   const win = BrowserWindow.fromWebContents(event.sender);
   win.webContents.printToPDF({ landscape: true, marginsType: 2, pageSize: 'A4', printBackground: true }, (error, data) => {
-    if (error) return console.log(error.message);
-    fs.writeFile(pdfPath, data, (err) => {
-      if (err) return console.log(err.message);
+    if (error) throw error
+    fs.writeFile(pdfPath, data, (error) => {
+      if (error) throw error
       shell.openExternal(`file://${pdfPath}`);
       event.sender.send('wrote-pdf', pdfPath)
       win.close();

@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { TimeAttendanceRoutingModule } from './time-attendance-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { TimeAttendanceComponent } from './pages/time-attendance/time-attendance.component';
+import { WorkingSiteComponent } from './pages/report/working-site/working-site.component';
 
 
 @NgModule({
-  declarations: [TimeAttendanceComponent],
+  declarations: [TimeAttendanceComponent, WorkingSiteComponent],
   imports: [
     CommonModule,
     TimeAttendanceRoutingModule,

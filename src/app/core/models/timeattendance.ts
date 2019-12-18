@@ -28,3 +28,33 @@ export interface TimeAttendanceFilter extends PageFilter {
     workDate: Date;
 }
 
+export class WorkingSiteMonthly {
+    empNo: number;
+    employeeName: string;
+    startTime: string;
+    endTime: string;
+    workingDay: WorkingDay[];
+    total: number;
+    totalLateMinute: number;
+}
+
+export interface WorkingDay {
+    empNo: number;
+    workDate: Date;
+    checkinTime: string;
+    endTime: string;
+    lateMinute: number;
+    isLate: boolean;
+    status: number;
+}
+
+export interface WorkingSitePeriod {
+    startTime: string;
+    endTime: string;
+    workingSiteMonthly: WorkingSiteMonthly[];
+}
+
+export interface WorkingDaySummary {
+    workDate: Date;
+    workerCount: number;
+}

@@ -1,0 +1,145 @@
+<div class="container-fluid page-break">
+        <div class="page">
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <h5>
+                <small>รายงานการปฏิบัติงานของเจ้าหน้าที่รักษาความปลอดภัย
+                  <br/> {{ companyReportHeader.FullName }}</small>
+              </h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12 text-center">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="align-middle text-center p-1 no" rowspan="2">ลำดับ</th>
+                    <th class="align-middle text-center employee-name" rowspan="2">ชื่อ - นามสกุล</th>
+                    <th class="align-middle text-center title-month" colspan="31">วันที่ปฏิบัติงาน เดือน {{ displayMonth }} {{ displayYear }}</th>
+                    <th class="align-middle text-center summary" rowspan="2">รวมสาย (นาที)</th>
+                    <th class="align-middle text-center summary" rowspan="2">รวม (วัน)</th>
+                  </tr>
+                  <tr>
+                    <th class="p-1 text-center day">1</th>
+                    <th class="p-1 text-center day">2</th>
+                    <th class="p-1 text-center day">3</th>
+                    <th class="p-1 text-center day">4</th>
+                    <th class="p-1 text-center day">5</th>
+                    <th class="p-1 text-center day">6</th>
+                    <th class="p-1 text-center day">7</th>
+                    <th class="p-1 text-center day">8</th>
+                    <th class="p-1 text-center day">9</th>
+                    <th class="p-1 text-center day">10</th>
+                    <th class="p-1 text-center day">11</th>
+                    <th class="p-1 text-center day">12</th>
+                    <th class="p-1 text-center day">13</th>
+                    <th class="p-1 text-center day">14</th>
+                    <th class="p-1 text-center day">15</th>
+                    <th class="p-1 text-center day">16</th>
+                    <th class="p-1 text-center day">17</th>
+                    <th class="p-1 text-center day">18</th>
+                    <th class="p-1 text-center day">19</th>
+                    <th class="p-1 text-center day">20</th>
+                    <th class="p-1 text-center day">21</th>
+                    <th class="p-1 text-center day">22</th>
+                    <th class="p-1 text-center day">23</th>
+                    <th class="p-1 text-center day">24</th>
+                    <th class="p-1 text-center day">25</th>
+                    <th class="p-1 text-center day">26</th>
+                    <th class="p-1 text-center day">27</th>
+                    <th class="p-1 text-center day">28</th>
+                    <th class="p-1 text-center day">29</th>
+                    <th class="p-1 text-center day">30</th>
+                    <th class="p-1 text-center day">31</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-container *ngFor="let p of workingSitePeriod">
+                    <tr>
+                      <td class="p-1 bg-disabled" colspan="35">
+                        <span class="bg-disabled font-weight-bold">เวลาเข้า-ออกงาน {{ (p.startTime.substring(0, p.startTime.length - 3)) + ' - ' + (p.endTime.substring(0,
+                          p.endTime.length - 3)) }}</span>
+                      </td>
+                    </tr>
+                    <tr *ngFor="let w of p.workingSiteMonthly; let i = index">
+                      <td class="p-1">{{ i + 1 }}</td>
+                      <td class="p-1 text-left">{{ w.employeeName }}</td>
+                      <td *ngFor="let m of w.workingDay; let d = index" class="p-1 text-center day">
+                        <span *ngIf="m.status === 1 && m.isLate === false">
+                          ✓
+                        </span>
+                        <span *ngIf="m.status === 1 && m.isLate === true">
+                          ส
+                        </span>
+                      </td>
+                      <td class="p-1">{{ w.totalLateMinute }}</td>
+                      <td class="p-1">{{ w.total }}</td>
+                    </tr>
+                  </ng-container>
+                  <tr>
+                    <td colspan="2" class="p-1 text-right">รวมจำนวนแรงทำงาน</td>
+                    <td *ngFor="let w of workingDaySummary" class="p-1 text-center day">
+                      {{ w.workerCount }}
+                    </td>
+                    <td class="p-1">{{ summaryLateMinute }}</td>
+                    <td class="p-1">{{ summaryManday }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8 text-center">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th colspan="3">{{ companyReportHeader.FullName }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="pt-4 pb-1">
+                      _______________________
+                      <br/> ผู้จัดทำ
+                      <br/> วันที่ _____/_____ /_____
+                    </td>
+                    <td class="pt-4 pb-1">
+                      _______________________
+                      <br/> ผู้ตรวจสอบ
+                      <br/> วันที่ _____/_____ /_____
+                    </td>
+                    <td class="pt-4 pb-1">
+                      _______________________
+                      <br/> ผู้อนุมัติ
+                      <br/> วันที่ _____/_____ /_____
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-sm-4 text-center">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th colspan="2">{{ site?.name }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="pt-4 pb-1">
+                      _______________________
+                      <br/> ผู้ตรวจสอบ
+                      <br/> วันที่ _____/_____ /_____
+                    </td>
+                    <td class="pt-4 pb-1">
+                      _______________________
+                      <br/> ผู้อนุมัติ
+                      <br/> วันที่ _____/_____ /_____
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>

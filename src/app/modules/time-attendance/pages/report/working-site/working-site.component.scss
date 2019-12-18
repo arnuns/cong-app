@@ -1,0 +1,54 @@
+.page {
+  /* width: 975px !important; */
+}
+
+.page-break {
+  page-break-before: always;
+}
+
+.table {
+  font-size: 0.65rem;
+}
+
+.no {
+  width: 40px;
+}
+
+.employee-name {
+  width: 200px;
+}
+
+.summary {
+  width: 80px;
+}
+
+.day {
+  width: 26px;
+  height: 26px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table,
+th,
+td {
+  border: 1px solid #000000;
+}
+
+.table thead th {
+  border-bottom: 1px solid #000000;
+}
+
+.bg-disabled {
+  height: 26px !important;
+}
+
+@media print {
+  .bg-disabled {
+    background-color: #c6c7c9 !important;
+    -webkit-print-color-adjust: exact;
+
+  }
+}

@@ -3,7 +3,7 @@ import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { TimeAttendance } from '../models/timeattendance';
+import { TimeAttendance, WorkingSiteMonthly, WorkingDay, WorkingDaySummary } from '../models/timeattendance';
 import { MomentHelper } from '../helpers/moment.helper';
 import { Site } from '../models/site';
 
@@ -73,6 +73,14 @@ export class TimeAttendanceService extends BaseService {
             .set('page_size', String(page_size));
         return this.http.get<Paginate<TimeAttendance[]>>(
             `${this.serviceUrl}/timeattendance/filter`, { params: params });
+    }
+
+    getWorkingSiteMonthlyTimeAttendances(siteId: number, year: number, month: number) {
+        return this.http.get<WorkingSiteMonthly[]>(`${this.serviceUrl}/timeattendance/working-site/${siteId}/year/${year}/month/${month}`);
+    }
+
+    getWorkingDaySummary(siteId: number, year: number, month: number) {
+        return this.http.get<WorkingDaySummary[]>(`${this.serviceUrl}/timeattendance/working-site/${siteId}/year/${year}/month/${month}/daily`);
     }
 
 }
