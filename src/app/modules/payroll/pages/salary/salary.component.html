@@ -33,7 +33,8 @@
             เพิ่มพนักงาน</button>
         </div>
         <div class="ml-2">
-          <button type="button" class="btn btn-outline-primary button__export" *ngIf="sitePayrollCycleSalary?.status === 'paid'"
+          <button type="button" class="btn btn-outline-primary button__export"
+            *ngIf="sitePayrollCycleSalary?.status === 'paid'"
             (click)="exportPayslipReport(sitePayrollCycleSalary?.payrollCycleId, sitePayrollCycleSalary?.siteId)">
             <i class="fa fa-print" aria-hidden="true"></i>
             พิมพ์สลิป
@@ -368,9 +369,15 @@
           <div class="col">
             <div class="form-group">
               <input type="text" class="form-control search-user-control" formControlName="search"
-                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน">
-              <div class="suggestion" *ngIf="salaryEmployees?.length > 0">
+                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน" (keydown)="onSearchChange()">
+              <div class="suggestion" *ngIf="salaryEmployees?.length > 0 || searching">
                 <div class="list-group">
+                  <a class="list-group-item list-group-item-action flex-column align-items-start" *ngIf="searching">
+                    <div class="loading">
+                      <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </a>
                   <a (click)="onClickSearchUser(user)"
                     class="list-group-item list-group-item-action flex-column align-items-start"
                     *ngFor="let user of salaryEmployees">

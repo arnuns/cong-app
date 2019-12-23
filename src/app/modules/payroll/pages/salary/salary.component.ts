@@ -29,6 +29,8 @@ const thaiMonth = new Array('มกราคม', 'กุมภาพันธ�
 export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
 
+  searching = false;
+
   payrollCycleId: number;
   siteId: number;
   payrollCycle: PayrollCycle;
@@ -281,11 +283,14 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       .pipe(debounceTime(400), distinctUntilChanged()).subscribe(val => {
         if (val.length < 2) {
           this.salaryEmployees = [];
+          this.searching = false;
         } else {
           this.userService.getUserFilter(val, null, null, 'name', 'asc', 1, 12).subscribe(results => {
             this.salaryEmployees = results.data.filter(d => this.salaries.map(s => s.empNo).indexOf(d.empNo) === -1);
+            this.searching = false;
           }, error => {
             this.salaryEmployees = [];
+            this.searching = false;
           });
         }
       });
@@ -563,6 +568,11 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       pageLength: 20,
       pagingType: 'simple'
     };
+  }
+
+  onSearchChange() {
+    this.searching = true;
+    this.salaryEmployees = [];
   }
 
   convertToStartEndDateString(start: string, end: string): string {
