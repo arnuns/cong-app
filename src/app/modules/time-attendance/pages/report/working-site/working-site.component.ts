@@ -66,7 +66,7 @@ export class WorkingSiteComponent implements OnDestroy, OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.siteId = Number(params['siteid']);
       this.year = Number(params['year']);
-      this.month = Number(params['month']) - 1;
+      this.month = Number(params['month']);
       const buddhaYear = this.year + 543;
       this.displayYear = `${buddhaYear}`;
       this.displayMonth = this.thaiMonth[this.month];
@@ -87,57 +87,59 @@ export class WorkingSiteComponent implements OnDestroy, OnInit {
     ).subscribe(results => {
       this.numberDays = new Date(this.year, this.month + 1, 0).getDate();
       this.workingSiteMonthly = results[0];
-      this.site.siteWorkRates.forEach(x => {
-        if (this.workingSiteMonthly.filter(w => w.startTime === x.startTime && w.endTime === x.endTime).length > 0) {
-          this.workingSitePeriod.push(
-            {
-              startTime: x.startTime,
-              endTime: x.endTime,
-              workingSiteMonthly: this.workingSiteMonthly.filter(w => w.startTime === x.startTime && w.endTime === x.endTime)
-            });
-        }
-      });
-      this.workingSitePeriod.forEach(s => {
-        s.workingSiteMonthly.forEach(w => {
-          const workingDay: WorkingDay[] = [];
-          for (let index = 0; index < 31; index++) {
-            const day = index + 1;
-            const date = new Date(this.year, this.month, day);
-            const validWorkingDay = w.workingDay.filter(f => new Date(f.workDate).getDate() === day);
-            const wkd: WorkingDay = {
-              empNo: w.empNo,
-              workDate: date,
-              checkinTime: null,
-              endTime: null,
-              lateMinute: day > this.numberDays || validWorkingDay.length <= 0 ? 0 : validWorkingDay[0].lateMinute,
-              isLate: day > this.numberDays || validWorkingDay.length <= 0 ? true : validWorkingDay[0].isLate,
-              status: day > this.numberDays || validWorkingDay.length <= 0 ? 0 : 1
-            };
-            workingDay.push(wkd);
+      if (this.workingSiteMonthly) {
+        this.site.siteWorkRates.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime()).forEach(x => {
+          if (this.workingSiteMonthly.filter(w => w.startTime === x.startTime && w.endTime === x.endTime).length > 0) {
+            this.workingSitePeriod.push(
+              {
+                startTime: x.startTime,
+                endTime: x.endTime,
+                workingSiteMonthly: this.workingSiteMonthly.filter(w => w.startTime === x.startTime && w.endTime === x.endTime)
+              });
           }
-          w.totalLateMinute = workingDay.reduce(function (prevVal, elem) {
-            return prevVal + elem.lateMinute;
-          }, 0) || 0;
-          w.workingDay = workingDay;
         });
-      });
-      const workingDaySum = results[1];
-      for (let index = 0; index < 31; index++) {
-        const day = index + 1;
-        const date = new Date(this.year, this.month, day);
-        const validWorkingDay = workingDaySum.filter(f => new Date(f.workDate).getDate() === day);
-        this.workingDaySummary.push({
-          workDate: date,
-          workerCount: validWorkingDay.length <= 0 ? 0 : validWorkingDay[0].workerCount
+        this.workingSitePeriod.forEach(s => {
+          s.workingSiteMonthly.forEach(w => {
+            const workingDay: WorkingDay[] = [];
+            for (let index = 0; index < 31; index++) {
+              const day = index + 1;
+              const date = new Date(this.year, this.month, day);
+              const validWorkingDay = w.workingDay.filter(f => new Date(f.workDate).getDate() === day);
+              const wkd: WorkingDay = {
+                empNo: w.empNo,
+                workDate: date,
+                checkinTime: null,
+                endTime: null,
+                lateMinute: day > this.numberDays || validWorkingDay.length <= 0 ? 0 : validWorkingDay[0].lateMinute,
+                isLate: day > this.numberDays || validWorkingDay.length <= 0 ? true : validWorkingDay[0].isLate,
+                status: day > this.numberDays || validWorkingDay.length <= 0 ? 0 : 1
+              };
+              workingDay.push(wkd);
+            }
+            w.totalLateMinute = workingDay.reduce(function (prevVal, elem) {
+              return prevVal + elem.lateMinute;
+            }, 0) || 0;
+            w.workingDay = workingDay;
+          });
         });
-      }
-      this.summaryLateMinute = this.workingSiteMonthly.reduce(function (prevVal, elem) {
-        return prevVal + (!elem.totalLateMinute ? 0 : elem.totalLateMinute);
-      }, 0 || 0);
-      this.summaryManday = this.workingDaySummary.reduce(function (prevVal, elem) {
-        return prevVal + elem.workerCount;
-      }, 0) || 0;
-      this.spinner.hideLoadingSpinner(0);
+        const workingDaySum = results[1];
+        for (let index = 0; index < 31; index++) {
+          const day = index + 1;
+          const date = new Date(this.year, this.month, day);
+          const validWorkingDay = workingDaySum.filter(f => new Date(f.workDate).getDate() === day);
+          this.workingDaySummary.push({
+            workDate: date,
+            workerCount: validWorkingDay.length <= 0 ? 0 : validWorkingDay[0].workerCount
+          });
+        }
+        this.summaryLateMinute = this.workingSiteMonthly.reduce(function (prevVal, elem) {
+          return prevVal + (!elem.totalLateMinute ? 0 : elem.totalLateMinute);
+        }, 0 || 0);
+        this.summaryManday = this.workingDaySummary.reduce(function (prevVal, elem) {
+          return prevVal + elem.workerCount;
+        }, 0) || 0;
+        this.spinner.hideLoadingSpinner(0);
+      } else { this.spinner.hideLoadingSpinner(0); }
     }, error => {
     }, () => {
       if (this.electronService.isElectronApp) {
