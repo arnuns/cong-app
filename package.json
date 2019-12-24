@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Electron Application Employee Management System",
   "description": "Cong Electron Application Employee Management System",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -18,6 +18,9 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:patch": "npm version patch --force && ng build --prod",
+    "build:minor": "npm version minor --force && ng build --prod",
+    "build:major": "npm version major --force && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
