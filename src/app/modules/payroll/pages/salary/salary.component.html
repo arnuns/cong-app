@@ -585,7 +585,7 @@
               </div>
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_other_income').value">
                 <div class="form-group mb-0">
-                  <label for="bonus">เงินโบนัส <i class="fa fa-times text-danger button__remove"
+                  <label for="bonus">อื่นๆ <i class="fa fa-times text-danger button__remove"
                       (click)="toggleShowControl('is_other_income')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
@@ -607,6 +607,7 @@
                     <ng-option value="is_duty_allowance" *ngIf="!updateSalaryForm.get('is_duty_allowance').value">
                       เบี้ยขยัน</ng-option>
                     <ng-option value="is_bonus" *ngIf="!updateSalaryForm.get('is_bonus').value">เงินโบนัส</ng-option>
+                    <ng-option value="is_other_income" *ngIf="!updateSalaryForm.get('is_other_income').value">อื่นๆ</ng-option>
                   </ng-select>
                 </div>
               </div>
