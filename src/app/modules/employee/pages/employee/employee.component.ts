@@ -32,7 +32,7 @@ export class EmployeeComponent implements OnDestroy, OnInit {
 
   userForm = this.fb.group({
     site_array: [[]],
-    user_status: [undefined]
+    user_status: [true]
   });
 
   constructor(

@@ -176,6 +176,7 @@ ipcMain.on('view-employee-transfer', (event, empNo) => {
   winEmployeeTransfer.loadURL(`file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-transfer`)
   winEmployeeTransfer.once('ready-to-show', () => {
     winEmployeeTransfer.show()
+    // winEmployeeTransfer.webContents.openDevTools()
   })
 })
 

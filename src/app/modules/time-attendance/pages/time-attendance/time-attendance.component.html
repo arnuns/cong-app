@@ -6,7 +6,8 @@
           <h3 class="title noselect">บันทึกเวลาเข้า-ออก</h3>
         </div>
         <div class="ml-auto">
-          <button type="button" class="btn btn-primary button__add" [disabled]="!timeAttendanceForm.get('site_id').value" (click)="onClickAdd()">
+          <button type="button" class="btn btn-primary button__add"
+            [disabled]="!timeAttendanceForm.get('site_id').value" (click)="onClickAdd()">
             <i class="fa fa-plus" aria-hidden="true"></i>
             บันทึกเวลาให้พนักงาน</button>
         </div>
@@ -137,17 +138,23 @@
           <div class="col-md-6">
             <div class="form-group mb-2">
               <label for="period_time" class="label">เวลาเข้า-ออกงาน <small class="text-danger">*</small></label>
-              <ng-select class="period-select" [clearable]="false" [searchable]="false" [items]="siteWorkRates" bindLabel="view"
-                bindValue="viewValue" formControlName="period_time" placeholder="เลือกรอบเวลา">
+              <ng-select class="period-select" [clearable]="false" [searchable]="false" [items]="siteWorkRates"
+                bindLabel="view" bindValue="viewValue" formControlName="period_time" placeholder="เลือกรอบเวลา">
               </ng-select>
             </div>
           </div>
           <div class="col-md-12 mt-4">
             <div class="form-group mb-2">
               <input type="text" class="form-control search-user-control" formControlName="search"
-                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน">
-              <div class="suggestion" *ngIf="employees?.length > 0">
+                placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน" (keydown)="onSearchChange()">
+              <div class="suggestion" *ngIf="employees?.length > 0 || searching">
                 <div class="list-group">
+                  <a class="list-group-item list-group-item-action" *ngIf="searching">
+                    <div class="loading">
+                      <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </a>
                   <a (click)="onClickSearchUser(user)"
                     class="list-group-item list-group-item-action flex-column align-items-start"
                     *ngFor="let user of employees">

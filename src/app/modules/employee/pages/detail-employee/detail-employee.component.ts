@@ -213,7 +213,7 @@ export class DetailEmployeeComponent implements OnDestroy, OnInit {
 
   previewTransferReport(empNo: string) {
     if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.send('view-employee-transer', empNo);
+      this.electronService.ipcRenderer.send('view-employee-transfer', empNo);
     }
   }
 

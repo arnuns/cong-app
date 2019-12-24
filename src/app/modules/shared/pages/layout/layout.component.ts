@@ -14,6 +14,7 @@ import { ElectronService } from 'ngx-electron';
   styleUrls: ['./layout.component.scss']
 })
 export class LayoutComponent implements OnInit, AfterViewInit {
+  searching = false;
   user: User;
   isHiddenLeftMenu = false;
   isHiddenSearch = false;
@@ -45,11 +46,14 @@ export class LayoutComponent implements OnInit, AfterViewInit {
         distinctUntilChanged()).subscribe(val => {
           if (val.length < 2) {
             this.searchResults = [];
+            this.searching = false;
           } else {
             this.userService.getUserFilter(val, null, null, 'name', 'asc', 1, 12).subscribe(results => {
               this.searchResults = results.data;
+              this.searching = false;
             }, error => {
               this.searchResults = [];
+              this.searching = false;
             });
           }
         });
@@ -59,6 +63,11 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.send('view-user', empNo);
     }
+  }
+
+  onSearchChange() {
+    this.searching = true;
+    this.searchResults = [];
   }
 
   onLogout() {

@@ -66,7 +66,7 @@ export class WorkingSiteComponent implements OnDestroy, OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.siteId = Number(params['siteid']);
       this.year = Number(params['year']);
-      this.month = Number(params['month']);
+      this.month = Number(params['month']) - 1;
       const buddhaYear = this.year + 543;
       this.displayYear = `${buddhaYear}`;
       this.displayMonth = this.thaiMonth[this.month];
@@ -81,8 +81,8 @@ export class WorkingSiteComponent implements OnDestroy, OnInit {
   initalizeReport(): void {
     combineLatest(
       [
-        this.timeAttendanceService.getWorkingSiteMonthlyTimeAttendances(this.siteId, this.year, this.month),
-        this.timeAttendanceService.getWorkingDaySummary(this.siteId, this.year, this.month)
+        this.timeAttendanceService.getWorkingSiteMonthlyTimeAttendances(this.siteId, this.year, this.month + 1),
+        this.timeAttendanceService.getWorkingDaySummary(this.siteId, this.year, this.month + 1)
       ]
     ).subscribe(results => {
       this.numberDays = new Date(this.year, this.month + 1, 0).getDate();
