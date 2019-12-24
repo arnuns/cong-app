@@ -883,7 +883,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       + (this.updateSalaryForm.get('telephone_charge').value ? Number(this.updateSalaryForm.get('telephone_charge').value) : 0)
       + (this.updateSalaryForm.get('refund').value ? Number(this.updateSalaryForm.get('refund').value) : 0)
       + (this.updateSalaryForm.get('duty_allowance').value ? Number(this.updateSalaryForm.get('duty_allowance').value) : 0)
-      + (this.updateSalaryForm.get('bonus').value ? Number(this.updateSalaryForm.get('bonus').value) : 0);
+      + (this.updateSalaryForm.get('bonus').value ? Number(this.updateSalaryForm.get('bonus').value) : 0)
+      + (this.updateSalaryForm.get('other_income').value ? Number(this.updateSalaryForm.get('other_income').value) : 0);
   }
 
   get socialSecurity() {
