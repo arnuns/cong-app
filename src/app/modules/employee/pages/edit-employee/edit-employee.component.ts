@@ -141,6 +141,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   });
 
   serverError: string;
+  dateFormat = 'YYYY-MM-DDT00:00:00Z';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -283,8 +284,8 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           site_id: this.user.siteId,
           role_id: this.user.roleId ? this.user.roleId : 'security',
           idcard_no: this.user.idCardNumber ? this.user.idCardNumber : '',
-          dateissued: this.user.dateIssued ? this.user.dateIssued : null,
-          expirydate: this.user.expiryDate ? this.user.expiryDate : null,
+          dateissued: this.user.dateIssued ? this.convertToDate(this.user.dateIssued) : null,
+          expirydate: this.user.expiryDate ? this.convertToDate(this.user.expiryDate) : null,
           title: this.user.title ? this.user.title : '',
           firstname: this.user.firstName ? this.user.firstName : '',
           lastname: this.user.lastName ? this.user.lastName : '',
@@ -292,7 +293,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           firstname_en: this.user.firstnameEn ? this.user.firstnameEn : '',
           lastname_en: this.user.lastnameEn ? this.user.lastnameEn : '',
           gender: this.user.gender ? this.user.gender : '',
-          birthdate: this.user.birthdate ? this.user.birthdate : null,
+          birthdate: this.user.birthdate ? this.convertToDate(this.user.birthdate) : null,
           weight: this.user.weight ? this.user.weight : '',
           height: this.user.height ? this.user.height : '',
           ethnicity: this.user.ethnicity ? this.user.ethnicity : '',
@@ -354,15 +355,15 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           bank_id: this.user.bankId,
           bank_account: this.user.bankAccount ? this.user.bankAccount : '',
           license_no: this.user.licenseNo ? this.user.licenseNo : '',
-          license_start_date: this.user.licenseStartDate ? this.user.licenseStartDate : null,
-          license_end_date: this.user.licenseEndDate ? this.user.licenseEndDate : null,
-          register_date: this.user.registerOn ? this.user.registerOn : new Date(),
-          start_date: this.user.startDate ? this.user.startDate : null,
-          end_date: this.user.endDate ? this.user.endDate : null,
+          license_start_date: this.user.licenseStartDate ? this.convertToDate(this.user.licenseStartDate) : null,
+          license_end_date: this.user.licenseEndDate ? this.convertToDate(this.user.licenseEndDate) : null,
+          register_date: this.user.registerOn ? this.convertToDate(this.user.registerOn) : new Date(),
+          start_date: this.user.startDate ? this.convertToDate(this.user.startDate) : null,
+          end_date: this.user.endDate ? this.convertToDate(this.user.endDate) : null,
           resignation_cause: this.user.resignationCause ? this.user.resignationCause : '',
           is_social_security: this.user.isSocialSecurity,
-          sso_start_date: this.user.socialSecurityStartDate ? this.user.socialSecurityStartDate : null,
-          sso_end_date: this.user.socialSecurityEndDate ? this.user.socialSecurityEndDate : null,
+          sso_start_date: this.user.socialSecurityStartDate ? this.convertToDate(this.user.socialSecurityStartDate) : null,
+          sso_end_date: this.user.socialSecurityEndDate ? this.convertToDate(this.user.socialSecurityEndDate) : null,
           hospital_id: this.user.socialHospitalId
         });
       }
@@ -443,6 +444,12 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.hideLoadingSpinner(0);
       this.updating = false;
     });
+  }
+
+  convertToDate(dateString: string) {
+    const date: Date = this.moment.toDate(dateString, this.dateFormat);
+    date.setHours(7);
+    return date;
   }
 
   onSubmit() {

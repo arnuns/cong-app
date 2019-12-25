@@ -48,7 +48,7 @@ export class EmployeeProfileMiniComponent implements OnDestroy, OnInit {
       this.spinner.showLoadingSpinner();
       this.userService.getUser(this.empNo).subscribe(user => {
         this.user = user;
-        this.age = this.convertToAge(this.user.birthdate);
+        this.age = this.convertToAge(new Date(this.user.birthdate));
         this.spinner.hideLoadingSpinner(0);
       }, error => {
         this.spinner.hideLoadingSpinner(0);
