@@ -17,12 +17,12 @@
               <strong>{{ user?.firstName + ' ' + user?.lastName }}</strong>
               <br/> {{ user?.role.nameTH }}
             </div>
-            <div>
-              <div class="d-flex">
+            <div class="mt-2">
+              <div class="d-flex px-2">
                 <div class="align-self-center">
                   <ngx-qrcode [qrc-element-type]="'value'" [qrc-value]="empNoString" qrc-class="qrcode"></ngx-qrcode>
                 </div>
-                <div class="align-self-center">
+                <div class="align-self-center ml-1">
                   <div class="d-flex flex-column card-info">
                     <div>รหัสพนักงาน:
                       <strong>{{ user?.company.name.toUpperCase() + user?.empNo }}</strong>

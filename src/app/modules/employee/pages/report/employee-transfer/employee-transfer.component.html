@@ -15,110 +15,98 @@
   <h5 class="report-header p-1 mt-2">
     ประวัติและตำหนิรูปพรรณ
   </h5>
-  <div class="d-flex">
-    <div class="p-2">
-      <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
-        class="img-profile">
-      <ng-template #elseNoProfileImage>
-        <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
-          class="img-profile">
-      </ng-template>
-    </div>
-    <div class="p-2">
-      <div class="img-idcard"></div>
-    </div>
-    <div class="p-2">
-      <div class="d-flex flex-column">
-        <div>
-          <h5 class="p-0">{{ user?.title + user?.firstName + ' ' + user?.lastName }}</h5>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex">
+        <div class="p-2">
+          <div class="img-profile" [style.backgroundImage]="'url('+ user?.imageProfile +')'">
+          </div>
+          <!-- <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
+            class="img-profile">
+          <ng-template #elseNoProfileImage>
+            <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
+              class="img-profile">
+          </ng-template> -->
         </div>
-        <div>รหัสพนักงาน:
-          <strong>{{ user?.company.name.toUpperCase() + user?.empNo }}</strong>
-        </div>
-        <div>ตำแหน่ง:
-          <strong>{{ user?.role.nameTH }}</strong>
-        </div>
-        <div>ไซต์งานลูกค้า:
-          <strong>{{ user?.site.name }}</strong>
-        </div>
-        <div *ngIf="user?.licenseNo">เลขที่ใบอนุญาต:
-          <strong>{{ user?.licenseNo }}</strong>
-        </div>
-        <div>เลขที่บัตรประชาชน:
-          <strong>{{ user?.idCardNumber }}</strong>
-        </div>
-        <div>วัน/เดือน/ปีเกิด:
-          <strong>{{ birthDateString }}</strong>
-        </div>
-        <div>อายุ:
-          <strong>{{ age }} ปี</strong>
-        </div>
-        <div>เบอร์โทรศัพท์:
-          <strong>{{ user?.phoneNo }}</strong>
+        <div class="p-2">
+          <div class="img-idcard"></div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="d-flex">
-    <div class="px-2 py-0 user-info-box">
-      <div class="d-flex flex-column">
-        <div>เพศ:
+      <div class="p-2">
+        <div class="mb-1">เพศ:
           <strong *ngIf="user?.gender == 'male'; else elseFemale">ชาย</strong>
           <ng-template #elseFemale>
             <strong>หญิง</strong>
           </ng-template>
         </div>
-        <div>เชื้อชาติ:
+        <div class="mb-1">เชื้อชาติ:
           <strong>{{ user?.nationality }}</strong>
         </div>
-      </div>
-    </div>
-    <div class="px-2 py-0 user-info-box">
-      <div class="d-flex flex-column">
-        <div>ส่วนสูง:
-          <strong>{{ user?.height }} ซม.</strong>
-        </div>
-        <div>สัญชาติ:
-          <strong>{{ user?.ethnicity }}</strong>
-        </div>
-      </div>
-    </div>
-    <div class="px-2 py-0 user-info-box">
-      <div class="d-flex flex-column">
-        <div>น้ำหนัก:
-          <strong>{{ user?.weight }} กก.</strong>
-        </div>
-        <div>ศาสนา:
-          <strong>{{ user?.religion }}</strong>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="d-flex">
-    <div class="px-2 py-0 user-info-box">
-      <div class="d-flex flex-column">
-        <div>ระดับการศึกษา:
+        <div class="mb-1">ระดับการศึกษา:
           <strong>{{ user?.education }}</strong>
         </div>
-      </div>
-    </div>
-    <div class="px-2 py-0">
-      <div class="d-flex flex-column">
-        <div>สาขา/สถาบันที่จบ:
-          <strong>{{ user?.graduateSchool }}</strong>
+        <div class="mb-1">ภูมิลำเนา:
+          <strong>{{ user?.permanentAddress }}</strong>
+        </div>
+        <div class="mb-1">ที่อยู่ปัจจุบัน:
+          <strong>{{ user?.currentAddress }}</strong>
+        </div>
+        <div>ตำหนิ/แผลเป็น:
+          <strong>{{ !user?.defect ? '-' : user?.defect }}</strong>
         </div>
       </div>
     </div>
-  </div>
-  <div class="d-flex flex-column">
-    <div class="px-2 py-0">ภูมิลำเนา:
-      <strong>{{ user?.permanentAddress }}</strong>
-    </div>
-    <div class="px-2 py-0">ที่อยู่ปัจจุบัน:
-      <strong>{{ user?.currentAddress }}</strong>
-    </div>
-    <div class="px-2 py-0">ตำหนิ/แผลเป็น:
-      <strong>{{ !user?.defect ? '-' : user?.defect }}</strong>
+    <div class="col-md-6">
+      <div class="d-flex flex-column">
+        <div class="mb-1">
+          <h5 class="p-0">{{ user?.title + user?.firstName + ' ' + user?.lastName }}</h5>
+        </div>
+        <div class="mb-1">รหัสพนักงาน:
+          <strong>{{ user?.company.name.toUpperCase() + user?.empNo }}</strong>
+        </div>
+        <div class="mb-1">ตำแหน่ง:
+          <strong>{{ user?.role.nameTH }}</strong>
+        </div>
+        <div class="mb-1">ไซต์งานลูกค้า:
+          <strong>{{ user?.site.name }}</strong>
+        </div>
+        <div class="mb-1" *ngIf="user?.licenseNo">เลขที่ใบอนุญาต:
+          <strong>{{ user?.licenseNo }}</strong>
+        </div>
+        <div class="mb-1">เลขที่บัตรประชาชน:
+          <strong>{{ user?.idCardNumber }}</strong>
+        </div>
+        <div class="mb-1">วัน/เดือน/ปีเกิด:
+          <strong>{{ birthDateString }}</strong>
+        </div>
+        <div class="mb-1">อายุ:
+          <strong>{{ age }} ปี</strong>
+        </div>
+        <div class="mb-1">เบอร์โทรศัพท์:
+          <strong>{{ user?.phoneNo }}</strong>
+        </div>
+        <div class="d-flex">
+          <div>
+            <div class="mb-1">ส่วนสูง:
+              <strong>{{ user?.height }} ซม.</strong>
+            </div>
+            <div class="mb-1">สัญชาติ:
+              <strong>{{ user?.ethnicity }}</strong>
+            </div>
+            <div class="mb-1">สาขา/สถาบันที่จบ:
+              <strong>{{ user?.graduateSchool }}</strong>
+            </div>
+          </div>
+          <div>
+            <div>น้ำหนัก:
+              <strong>{{ user?.weight }} กก.</strong>
+            </div>
+            <div>ศาสนา:
+              <strong>{{ user?.religion }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <h5 class="report-header p-1 mt-2">
@@ -148,26 +136,24 @@
       </div>
     </div>
   </div>
-  <div class="d-flex">
-    <div>
+  <div class="row">
+    <div class="col-md-6">
       <h5 class="report-header training-title p-1 mt-2 mr-2">
         การฝึกอบรม
       </h5>
-      <div class="d-flex flex-column training-box">
-        <div class="px-2">1. {{ user?.training_1 }}</div>
-        <div class="px-2">2. {{ user?.training_2 }}</div>
-        <div class="px-2">3. {{ user?.training_3 }}</div>
+      <div class="d-flex flex-column px-2">
+        <div>1. {{ user?.training_1 }}</div>
+        <div>2. {{ user?.training_2 }}</div>
+        <div>3. {{ user?.training_3 }}</div>
       </div>
     </div>
-    <div>
+    <div class="col-md-6">
       <h5 class="report-header check-title p-1 mt-2">
         สรุปผลการตรวจปัสสาวะ
       </h5>
-      <div class="d-flex flex-column">
-        <div>
-          <i class="fa fa-circle-thin" aria-hidden="true"></i> ไม่พบสารเสพติด</div>
-        <div>
-          <i class="fa fa-circle-thin" aria-hidden="true"></i> พบสารเสพติด</div>
+      <div class="d-flex flex-column px-2">
+        <div><i class="fa fa-circle-thin" aria-hidden="true"></i> ไม่พบสารเสพติด</div>
+        <div><i class="fa fa-circle-thin" aria-hidden="true"></i> พบสารเสพติด</div>
       </div>
     </div>
   </div>

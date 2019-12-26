@@ -1,27 +1,31 @@
+
 .logo-header {
   height: 70px;
 }
 
 .header-text {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .report-header {
   background-color: #00ca9d;
   color: #ffffff;
   font-size: 0.9rem;
-  // width: 750px;
 }
 
 .img-profile {
   border: 1px solid #000000;
-  height: 160px;
-  width: 125px;
+  display: block;
+  width: 140px;
+  height: 180px;
+  background-color: #dddddd;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
 }
 
 .img-idcard {
-  width: 245px;
-  height: 160px;
+  width: 260px;
+  height: 180px;
   background-color: #dddddd;
   border: 1px solid #000000;
 }
@@ -47,19 +51,17 @@
   min-width: 300px;
 }
 
-.training-title {
-  // width: 390px;
-  width: 100%;
-}
+// .training-title {
+//   width: 390px;
+// }
 
-.training-box {
-  width: 400px;
-}
+// .training-box {
+//   width: 400px;
+// }
 
-.check-title {
-  // width: 350px;
-  width: 100%;
-}
+// .check-title {
+//   width: 350px;
+// }
 
 .hand-side-title {
   width: 80px;

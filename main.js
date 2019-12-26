@@ -160,11 +160,11 @@ ipcMain.on('view-document', (event, empNo, documentId) => {
 
 ipcMain.on('view-employee-transfer', (event, empNo) => {
   winEmployeeTransfer = new BrowserWindow({
-    width: 826,
+    width: 885,
     height: 1169,
-    minWidth: 826,
+    minWidth: 885,
     minHeight: 1169,
-    maxWidth: 826,
+    maxWidth: 885,
     maxHeight: 1169,
     parent: 'top',
     modal: true,
@@ -316,7 +316,7 @@ ipcMain.on('print-to-pdf', (event) => {
   const dateString = '' + dd.getFullYear() + (dd.getMonth() + 1) + (dd.getDate()) + dd.getHours() + dd.getMinutes() + dd.getSeconds();
   const pdfPath = `${os.tmpdir()}/print_${dateString}.pdf`;
   const win = BrowserWindow.fromWebContents(event.sender);
-  win.webContents.printToPDF({ marginsType: 2, pageSize: 'A4', printBackground: true }, (error, data) => {
+  win.webContents.printToPDF({ marginsType: 2, pageSize: 'A4',  printBackground: true }, (error, data) => {
     if (error) throw error
     fs.writeFile(pdfPath, data, (error) => {
       if (error) throw error

@@ -1,11 +1,11 @@
 .employee-card {
-  width: 204.5px;
-  height: 325.4px;
+  width: 239px;
+  height: 380px;
 }
 
 .employee-card.front {
   background-repeat: no-repeat;
-  background-size: 206px 200px;
+  background-size: 239px 210px;
 }
 
 .employee-card.back {
@@ -23,27 +23,27 @@
 }
 
 .company-name {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .img-profile {
-  width: 82.7px;
-  height: 113.6px;
+  width: 90px;
+  height: 120px;
   border: 2px solid #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 0 rgba(0, 0, 0, 0.19);
   background: #d8d8d8;
 }
 
 .rule-info {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .address-info {
-  font-size: 8px;
+  font-size: 10px;
 }
 
 .bottom-info {
-  font-size: 7px;
+  font-size: 10px;
 }
 
 .signature {
@@ -69,13 +69,13 @@ hr.style6 {
 }
 
 .card-info {
-  font-size: 9px;
+  font-size: 10px;
 }
 
 ::ng-deep {
   .qrcode img {
-    width: 80px !important;
-    height: 80px !important;
+    width: 90px !important;
+    height: 90px !important;
   }
 }
 
