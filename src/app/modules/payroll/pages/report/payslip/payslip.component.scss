@@ -3,11 +3,11 @@
 }
 
 .header-text {
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 }
 
 .report-header {
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 table {
@@ -15,17 +15,18 @@ table {
 }
 
 table>tbody>tr>td {
-  font-size: 0.7rem;
+  font-size: 14px;
+  line-height: 1.5rem;
 }
 
 .left-column {
   width: 240px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .mid-column {
   width: 245px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .right-column {
@@ -35,7 +36,7 @@ table>tbody>tr>td {
 
 .half-column {
   width: 350px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .bg-highlight {
@@ -43,9 +44,18 @@ table>tbody>tr>td {
 }
 
 .signature-box {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
 }
 
 .page-break {
   page-break-before: always;
+}
+
+.container-fluid {
+  padding: 15px;
+}
+
+.bg-highlight {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
