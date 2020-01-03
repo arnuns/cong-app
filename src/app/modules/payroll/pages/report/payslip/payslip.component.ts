@@ -6,6 +6,7 @@ import { ElectronService } from 'ngx-electron';
 import { PayrollService } from 'src/app/core/services/payroll.service';
 import { CacheService } from 'src/app/core/services/cache/cache.service';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 
 @Component({
   selector: 'app-payslip',
@@ -37,7 +38,8 @@ export class PayslipComponent implements OnDestroy, OnInit {
     private applicationStateService: ApplicationStateService,
     private electronService: ElectronService,
     private payrollService: PayrollService,
-    private cacheService: CacheService) {
+    private cacheService: CacheService,
+    private spinner: SpinnerHelper) {
     document.body.style.backgroundColor = '#ffffff';
     this.updateView();
   }
@@ -46,19 +48,22 @@ export class PayslipComponent implements OnDestroy, OnInit {
     this.activatedRoute.params.subscribe(params => {
       const payrollCycleId = Number(params['id']);
       const siteId = Number(params['siteid']);
+      this.spinner.showLoadingSpinner();
       const payrollCycle = this.cacheService.get(`payrollCycle_${payrollCycleId}`,
         this.payrollService.getPayrollCycle(payrollCycleId), 50000);
       payrollCycle.subscribe(result => {
         this.payrollCycle = result;
       }, error => {
+        this.spinner.hideLoadingSpinner(0);
       }, () => {
         this.payrollService.getSitePayrollCycleSalary(payrollCycleId, siteId).subscribe(salaries => {
           this.userSalarys = salaries.filter(s => s.siteId === siteId);
-        }, error => {
-        }, () => {
+          this.spinner.hideLoadingSpinner();
           if (this.electronService.isElectronApp) {
-            setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 1000);
+            setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 5000);
           }
+        }, error => {
+          this.spinner.hideLoadingSpinner(0);
         });
       });
     });

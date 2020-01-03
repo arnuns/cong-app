@@ -23,23 +23,23 @@
 }
 
 .company-name {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .img-profile {
-  width: 90px;
-  height: 120px;
+  width: 130px;
+  height: 165px;
   border: 2px solid #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 15px 0 rgba(0, 0, 0, 0.19);
   background: #d8d8d8;
 }
 
 .rule-info {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .address-info {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .bottom-info {
@@ -69,13 +69,13 @@ hr.style6 {
 }
 
 .card-info {
-  font-size: 10px;
+  font-size: 12px;
 }
 
 ::ng-deep {
   .qrcode img {
-    width: 90px !important;
-    height: 90px !important;
+    width: 110px !important;
+    height: 110px !important;
   }
 }
 
