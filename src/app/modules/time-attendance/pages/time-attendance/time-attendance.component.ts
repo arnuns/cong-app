@@ -288,9 +288,13 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       })))[0]
       : [];
     const workDate = new Date(timeAttendance.workDate);
-    workDate.setHours(7);
+    if (workDate) {
+      workDate.setHours(7);
+    }
     const leaveDate = new Date(timeAttendance.leaveTime);
-    leaveDate.setHours(7);
+    if (leaveDate) {
+      leaveDate.setHours(7);
+    }
     this.editForm.patchValue({
       id: timeAttendance.id,
       site_id: timeAttendance.siteId,
