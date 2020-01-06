@@ -10,7 +10,7 @@ export interface TimeAttendance {
     employeeName: string;
     siteId: number;
     site: Site;
-    workDate: Date;
+    workDate: string;
     startTime: string;
     endTime: string;
     checkInTime: string;
