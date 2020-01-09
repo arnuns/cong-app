@@ -346,7 +346,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'คืนเงินหัก': s.refund,
         'เบี้ยขยัน': s.dutyAllowance,
         'โบนัส': s.bonus,
-        'ค่าล่วงเวลา (OT)': s.overtime,
+        'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
         'รายได้อื่นๆ': s.otherIncome,
         'ค่าแทนจุด': s.extraReplaceValue,
         'รายได้จุดพิเศษ': s.extraPointValue,
@@ -436,7 +436,12 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   summaryTotalIncome(salary: Salary) {
-    return salary.totalWage + salary.extraReplaceValue + salary.extraOvertime + salary.extraPointValue + salary.totalIncome;
+    return (!salary.totalWage ? 0 : salary.totalWage)
+      + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
+      + (!salary.overtime ? 0 : salary.overtime)
+      + (!salary.extraOvertime ? 0 : salary.extraOvertime)
+      + (!salary.extraPointValue ? 0 : salary.extraPointValue)
+      + (!salary.totalIncome ? 0 : salary.totalIncome);
   }
 
   convertToStartEndDateString(start: string, end: string): string {
