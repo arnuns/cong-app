@@ -71,20 +71,19 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   ngOnInit() {
     this.spinner.showLoadingSpinner();
-    this.initialData();
     combineLatest([
       this.timeAttendanceService.getTimeAttendanceSites()
     ]).subscribe(results => {
-
       this.sites = results[0];
-      this.timeAttendanceForm.patchValue({
-        site_id: this.sites[0].id
-      });
-      this.timeAttendanceForm.get('site_id').setValue(this.sites[0].id);
+      // this.timeAttendanceForm.patchValue({
+      //   site_id: this.sites[0].id
+      // });
+      // this.timeAttendanceForm.get('site_id').setValue(this.sites[0].id);
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.spinner.hideLoadingSpinner(0);
     });
+    this.initialData();
   }
 
   ngOnDestroy() {
@@ -210,6 +209,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
             that.timeAttendanceFilter.page_size).subscribe(result => {
               that.spinner.hideLoadingSpinner(0);
               that.timeAttendances = result.data;
+              that.timeAttendanceForm.get('site_id').setValue(that.timeAttendances[0].siteId);
               callback({
                 recordsTotal: result.total,
                 recordsFiltered: result.total,
@@ -314,28 +314,34 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   onExport() {
     this.spinner.showLoadingSpinner();
-    this.timeAttendanceService.getSiteTimeAttendanceByWorkDate(
-      this.timeAttendanceForm.get('site_id').value,
-      this.timeAttendanceForm.get('work_date').value
-    ).subscribe(timeAttendances => {
-      const data = timeAttendances.map(s => ({
-        'หน่วยงาน': s.site.name,
-        'วันที่': s.workDate,
-        'รหัสพนักงาน': `'${s.empNo}`,
-        'ตำแหน่ง': s.user.role.nameTH,
-        'ชื่อ-สกุล': s.employeeName,
-        'รอบเวลา': `${s.startTime.substr(0, 5)} - ${s.endTime.substr(0, 5)} `,
-        'เวลาเข้า': s.checkInTime === undefined ? '' : this.moment.format(s.checkInTime, 'HH:mm'),
-        'เวลาออก': s.leaveTime === undefined ? '' : this.moment.format(s.leaveTime, 'HH:mm'),
-        'สาย (นาที)': this.diffMinutes(new Date(s.checkInTime), new Date(String(s.checkInTime).substr(0, 11) + s.startTime))
-      }));
-      const BOM = '\uFEFF';
-      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `${timeAttendances[0].site.name}_${this.moment.format(new Date(), 'YYYYMMDD')}.csv`);
-      this.spinner.hideLoadingSpinner();
-    }, error => {
+    const site = this.sites.filter(s => s.id === this.timeAttendanceForm.get('site_id').value)[0];
+    const workDate = this.timeAttendanceForm.get('work_date').value;
+    if (site && workDate) {
+      this.timeAttendanceService.getSiteTimeAttendanceByWorkDate(
+        site.id,
+        workDate
+      ).subscribe(timeAttendances => {
+        const data = timeAttendances.map(s => ({
+          'หน่วยงาน': s.site.name,
+          'วันที่': s.workDate,
+          'รหัสพนักงาน': `'${s.empNo}`,
+          'ตำแหน่ง': s.user.role.nameTH,
+          'ชื่อ-สกุล': s.employeeName,
+          'รอบเวลา': `${s.startTime.substr(0, 5)} - ${s.endTime.substr(0, 5)} `,
+          'เวลาเข้า': s.checkInTime === undefined ? '' : this.moment.format(s.checkInTime, 'HH:mm'),
+          'เวลาออก': s.leaveTime === undefined ? '' : this.moment.format(s.leaveTime, 'HH:mm'),
+          'สาย (นาที)': this.diffMinutes(new Date(s.checkInTime), new Date(String(s.checkInTime).substr(0, 11) + s.startTime))
+        }));
+        const BOM = '\uFEFF';
+        const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+        FileSaver.saveAs(blob, `${site.name}_${this.moment.format(workDate, 'YYYYMMDD')}.csv`);
+        this.spinner.hideLoadingSpinner();
+      }, error => {
+        this.spinner.hideLoadingSpinner(0);
+      });
+    } else {
       this.spinner.hideLoadingSpinner(0);
-    });
+    }
   }
 
   onExportWorkingSiteMonthlyReport() {
