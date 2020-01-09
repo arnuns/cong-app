@@ -103,7 +103,7 @@
           <td class="col--manday pointer" (click)="editSalaryModal(salary)">{{ salary.manday }}</td>
           <td class="col--hiring-rate pointer" (click)="editSalaryModal(salary)">{{ salary.hiringRatePerDay }}</td>
           <td class="col--total-income pointer" (click)="editSalaryModal(salary)">
-            {{ summaryTotalIncome(salary) | number:'1.2-2' }}</td>
+            {{ salary.totalIncome | number:'1.2-2' }}</td>
           <td class="col--sso pointer" (click)="editSalaryModal(salary)">{{ salary.socialSecurity | number:'1.2-2' }}
           </td>
           <td class="col--total-deductible pointer" (click)="editSalaryModal(salary)">

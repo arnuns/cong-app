@@ -317,7 +317,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'รายการหักอื่นๆ': s.otherFee,
         'หมายเหตุ': !s.remark ? '' : s.remark,
         'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': this.summaryTotalIncome(s),
+        'รวมรายได้': s.totalIncome,
         'รวมรายการหัก': s.totalDeductible,
         'เงินได้สุทธิ': s.totalAmount
       }));
@@ -416,7 +416,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'รายการหักอื่นๆ': s.otherFee,
         'หมายเหตุ': !s.remark ? '' : s.remark,
         'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': this.summaryTotalIncome(s),
+        'รวมรายได้': s.totalIncome,
         'รวมรายการหัก': s.totalDeductible,
         'เงินได้สุทธิ': s.totalAmount
       }));
@@ -435,14 +435,14 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
-  summaryTotalIncome(salary: Salary) {
-    return (!salary.totalWage ? 0 : salary.totalWage)
-      + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
-      + (!salary.overtime ? 0 : salary.overtime)
-      + (!salary.extraOvertime ? 0 : salary.extraOvertime)
-      + (!salary.extraPointValue ? 0 : salary.extraPointValue)
-      + (!salary.totalIncome ? 0 : salary.totalIncome);
-  }
+  // summaryTotalIncome(salary: Salary) {
+  //   return (!salary.totalWage ? 0 : salary.totalWage)
+  //     + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
+  //     + (!salary.overtime ? 0 : salary.overtime)
+  //     + (!salary.extraOvertime ? 0 : salary.extraOvertime)
+  //     + (!salary.extraPointValue ? 0 : salary.extraPointValue)
+  //     + (!salary.totalIncome ? 0 : salary.totalIncome);
+  // }
 
   convertToStartEndDateString(start: string, end: string): string {
     if (start === '' || start === null || start === undefined || end === '' || end === null || end === undefined) {

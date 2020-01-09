@@ -586,14 +586,14 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     return `${startDate.getDate()} - ${endDate.getDate()} ${thaiMonth[endDate.getMonth()]} ${endDate.getFullYear()}`;
   }
 
-  summaryTotalIncome(salary: Salary) {
-    return (!salary.totalWage ? 0 : salary.totalWage)
-      + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
-      + (!salary.overtime ? 0 : salary.overtime)
-      + (!salary.extraOvertime ? 0 : salary.extraOvertime)
-      + (!salary.extraPointValue ? 0 : salary.extraPointValue)
-      + (!salary.totalIncome ? 0 : salary.totalIncome);
-  }
+  // summaryTotalIncome(salary: Salary) {
+  //   return (!salary.totalWage ? 0 : salary.totalWage)
+  //     + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
+  //     + (!salary.overtime ? 0 : salary.overtime)
+  //     + (!salary.extraOvertime ? 0 : salary.extraOvertime)
+  //     + (!salary.extraPointValue ? 0 : salary.extraPointValue)
+  //     + (!salary.totalIncome ? 0 : salary.totalIncome);
+  // }
 
   openSuspendDialog(salary: Salary) {
     this.suspendForm.patchValue({
