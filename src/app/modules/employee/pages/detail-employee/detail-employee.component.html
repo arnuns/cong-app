@@ -131,18 +131,16 @@
                     </ng-template>
                   </div>
                   <div class="p-2">
-                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                    <span *ngIf="user?.status; else elseUserInActive">
                       <small>
                         <i class="fa fa-circle active" aria-hidden="true"></i>
                       </small> ทำงาน</span>
-                    <span *ngIf="user?.status == true && user?.isComplete == false">
-                      <small>
-                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
-                      </small> เอกสารไม่ครบ</span>
-                    <span *ngIf="user?.status == false">
-                      <small>
-                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
-                      </small> ลาออก</span>
+                    <ng-template #elseUserInActive>
+                      <span>
+                        <small>
+                          <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                        </small> ลาออก</span>
+                    </ng-template>
                   </div>
                 </div>
               </div>
@@ -243,8 +241,9 @@
                     <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeProfileReport(user?.empNo)"><i
                           class="fa fa-print" aria-hidden="true"></i>
                         พิมพ์ประวัติแบบเต็ม</a></li>
-                    <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeProfileMiniReport(user?.empNo)"><i
-                          class="fa fa-print" aria-hidden="true"></i>
+                    <li role="menuitem"><a class="dropdown-item"
+                        (click)="previewEmployeeProfileMiniReport(user?.empNo)"><i class="fa fa-print"
+                          aria-hidden="true"></i>
                         พิมพ์ประวัติแบบย่อ</a></li>
                     <li role="menuitem"><a class="dropdown-item" (click)="previewEmployeeLicense(user?.empNo)"><i
                           class="fa fa-print" aria-hidden="true"></i>
@@ -311,18 +310,16 @@
                     </ng-template>
                   </div>
                   <div class="p-2">
-                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                    <span *ngIf="user?.status; else elseUserInActive">
                       <small>
                         <i class="fa fa-circle active" aria-hidden="true"></i>
                       </small> ทำงาน</span>
-                    <span *ngIf="user?.status == true && user?.isComplete == false">
-                      <small>
-                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
-                      </small> เอกสารไม่ครบ</span>
-                    <span *ngIf="user?.status == false">
-                      <small>
-                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
-                      </small> ลาออก</span>
+                    <ng-template #elseUserInActive>
+                      <span>
+                        <small>
+                          <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                        </small> ลาออก</span>
+                    </ng-template>
                   </div>
                 </div>
               </div>
@@ -396,18 +393,16 @@
                     </ng-template>
                   </div>
                   <div class="p-2">
-                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                    <span *ngIf="user?.status; else elseUserInActive">
                       <small>
                         <i class="fa fa-circle active" aria-hidden="true"></i>
                       </small> ทำงาน</span>
-                    <span *ngIf="user?.status == true && user?.isComplete == false">
-                      <small>
-                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
-                      </small> เอกสารไม่ครบ</span>
-                    <span *ngIf="user?.status == false">
-                      <small>
-                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
-                      </small> ลาออก</span>
+                    <ng-template #elseUserInActive>
+                      <span>
+                        <small>
+                          <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                        </small> ลาออก</span>
+                    </ng-template>
                   </div>
                 </div>
               </div>
@@ -509,18 +504,16 @@
                     </ng-template>
                   </div>
                   <div class="p-2">
-                    <span *ngIf="user?.status == true && user?.isComplete == true">
+                    <span *ngIf="user?.status; else elseUserInActive">
                       <small>
                         <i class="fa fa-circle active" aria-hidden="true"></i>
                       </small> ทำงาน</span>
-                    <span *ngIf="user?.status == true && user?.isComplete == false">
-                      <small>
-                        <i class="fa fa-circle inactive" aria-hidden="true"></i>
-                      </small> เอกสารไม่ครบ</span>
-                    <span *ngIf="user?.status == false">
-                      <small>
-                        <i class="fa fa-circle terminate" aria-hidden="true"></i>
-                      </small> ลาออก</span>
+                    <ng-template #elseUserInActive>
+                      <span>
+                        <small>
+                          <i class="fa fa-circle terminate" aria-hidden="true"></i>
+                        </small> ลาออก</span>
+                    </ng-template>
                   </div>
                 </div>
               </div>

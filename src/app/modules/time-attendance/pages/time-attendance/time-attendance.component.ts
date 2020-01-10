@@ -209,7 +209,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
             that.timeAttendanceFilter.page_size).subscribe(result => {
               that.spinner.hideLoadingSpinner(0);
               that.timeAttendances = result.data;
-              that.timeAttendanceForm.get('site_id').setValue(that.timeAttendances[0].siteId);
+              that.timeAttendanceForm.get('site_id').setValue(
+                that.timeAttendances.length > 0
+                  ? that.timeAttendances[0].siteId : that.timeAttendanceFilter.siteId);
               callback({
                 recordsTotal: result.total,
                 recordsFiltered: result.total,
@@ -323,13 +325,13 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       ).subscribe(timeAttendances => {
         const data = timeAttendances.map(s => ({
           'หน่วยงาน': s.site.name,
-          'วันที่': s.workDate,
+          'วันที่': this.moment.format(s.workDate, 'YYYY-MM-DD'),
           'รหัสพนักงาน': `'${s.empNo}`,
           'ตำแหน่ง': s.user.role.nameTH,
           'ชื่อ-สกุล': s.employeeName,
           'รอบเวลา': `${s.startTime.substr(0, 5)} - ${s.endTime.substr(0, 5)} `,
-          'เวลาเข้า': s.checkInTime === undefined ? '' : this.moment.format(s.checkInTime, 'HH:mm'),
-          'เวลาออก': s.leaveTime === undefined ? '' : this.moment.format(s.leaveTime, 'HH:mm'),
+          'เวลาเข้า': s.checkInTime === undefined ? '' : this.moment.format(s.checkInTime, 'HH:mm:ss'),
+          'เวลาออก': s.leaveTime === undefined ? '' : this.moment.format(s.leaveTime, 'HH:mm:ss'),
           'สาย (นาที)': this.diffMinutes(new Date(s.checkInTime), new Date(String(s.checkInTime).substr(0, 11) + s.startTime))
         }));
         const BOM = '\uFEFF';
