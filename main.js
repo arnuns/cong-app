@@ -6,6 +6,7 @@ if (setupEvents.handleSquirrelEvent()) {
 }
 
 const { app, BrowserWindow, Menu, ipcMain, shell } = require('electron')
+const { autoUpdater } = require('electron-updater');
 const fs = require('fs');
 const os = require('os');
 const url = require("url");
@@ -58,7 +59,7 @@ function createWindow() {
   Menu.setApplicationMenu(mainMenu)
 
   // Open the DevTools.
-  // win.webContents.openDevTools()
+  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -348,3 +349,19 @@ ipcMain.on('navigate-main-to-edit-employee', (event, empNo) => {
   win.loadURL(`file://${__dirname}/dist/index.html#/employee/edit/${empNo}?backUrl=${employeeUrl}`)
   win.show();
 })
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});

@@ -17,7 +17,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always",
     "build:patch": "npm version patch --force && ng build --prod",
     "build:minor": "npm version minor --force && ng build --prod",
     "build:major": "npm version major --force && ng build --prod",
