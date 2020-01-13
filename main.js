@@ -40,7 +40,8 @@ function createWindow() {
     icon: `file://${__dirname}/dist/assets/icons/png/64x64.png`,
     title: 'CONG',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     }
   })
   
@@ -59,7 +60,7 @@ function createWindow() {
   Menu.setApplicationMenu(mainMenu)
 
   // Open the DevTools.
-  win.webContents.openDevTools()
+  // win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {
