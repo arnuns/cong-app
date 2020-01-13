@@ -3,12 +3,12 @@
   <p id="message" #message></p>
   <div class="d-flex justify-content-center align-items-center w-100">
     <div>
-      <button id="close-button" onClick="closeNotification()" class="btn btn-outline-dark button__updater">
+      <button type="button" id="close-button" (click)="closeNotification()" class="btn btn-outline-dark button__updater">
         Close
       </button>
     </div>
     <div class="ml-2">
-      <button id="restart-button" onClick="restartApp()" class="btn btn-primary button__updater hidden" #restartButton>
+      <button type="button" id="restart-button" (click)="restartApp()" class="btn btn-primary button__updater hidden" #restartButton>
         Restart
       </button>
     </div>
