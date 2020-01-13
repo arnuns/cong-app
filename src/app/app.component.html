@@ -1,10 +1,16 @@
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 <div id="notification" class="hidden" #notification>
   <p id="message" #message></p>
-  <button id="close-button" onClick="closeNotification()">
-    Close
-  </button>
-  <button id="restart-button" onClick="restartApp()" class="hidden" #restartButton>
-    Restart
-  </button>
+  <div class="d-flex justify-content-center align-items-center w-100">
+    <div>
+      <button id="close-button" onClick="closeNotification()" class="btn btn-outline-dark button__updater">
+        Close
+      </button>
+    </div>
+    <div class="ml-2">
+      <button id="restart-button" onClick="restartApp()" class="btn btn-primary button__updater hidden" #restartButton>
+        Restart
+      </button>
+    </div>
+  </div>
 </div>
