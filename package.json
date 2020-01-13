@@ -14,6 +14,21 @@
     "url": "https://github.com/arnuns/cong-app.git"
   },
   "main": "main.js",
+  "build": {
+    "appId": "com.ubakong.cong.CongElectronAutoUpdate",
+    "productName": "Cong Application",
+    "files": [
+      "**/*",
+      "dist/**/*"
+    ],
+    "directories": {
+      "output": "dist",
+      "buildResources": "dist"
+    },
+    "win": {
+      "icon": "dist/assets/icons/cong_icon.ico"
+    }
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -45,12 +60,13 @@
     "@angular/router": "~8.2.12",
     "@ng-select/ng-select": "^3.3.0",
     "angular-datatables": "^8.0.0",
+    "asar": "^2.0.3",
     "bootstrap": "^4.3.1",
     "core-js": "^3.3.4",
     "datatables.net": "^1.10.20",
     "datatables.net-bs4": "^1.10.20",
     "datatables.net-dt": "^1.10.20",
-    "electron-updater": "^4.1.2",
+    "electron-updater": "^4.2.0",
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",

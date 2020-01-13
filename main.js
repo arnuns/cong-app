@@ -40,11 +40,12 @@ function createWindow() {
     icon: `file://${__dirname}/dist/assets/icons/png/64x64.png`,
     title: 'CONG',
     webPreferences: {
-      nodeIntegration: true,
-      webSecurity: false
+      nodeIntegration: true
     }
   })
   
+  // win.loadFile('dist/index.html')
+
   win.loadURL(
     url.format({
       pathname: path.join(__dirname, `/dist/index.html`),
