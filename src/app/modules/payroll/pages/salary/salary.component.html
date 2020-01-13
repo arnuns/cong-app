@@ -112,7 +112,7 @@
           <td class="col--total-amount pointer" (click)="editSalaryModal(salary)">
             {{ salary.totalAmount | number:'1.2-2' }}</td>
           <td>
-            <span dropdown class="action--dropdown" *ngIf="!salary.isPaid">
+            <span dropdown class="action--dropdown">
               <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">
                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
               </a>
@@ -485,7 +485,7 @@
                     <div>
                       {{ siteForm.get('site_name').value }}
                     </div>
-                    <div class="ml-2" *ngIf="i > 0 && !updateSalaryForm.get('is_paid').value">
+                    <div class="ml-2" *ngIf="i > 0">
                       <i class="fa fa-times text-danger button__remove" (click)="removeSite(i)"></i>
                     </div>
                   </div>
@@ -504,7 +504,7 @@
                       อัตราวันละ
                     </label>
                     <input type="number" class="form-control" [(ngModel)]="hiringRatePerDay"
-                      [ngModelOptions]="{standalone: true}" [disabled]="updateSalaryForm.get('is_paid').value">
+                      [ngModelOptions]="{standalone: true}">
                   </div>
                 </div>
               </div>
@@ -529,7 +529,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_overtime').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ค่าล่วงเวลา (OT) <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_overtime')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_overtime')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="overtime" />
@@ -538,8 +538,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_annual_holiday').value">
                 <div class="form-group mb-0">
                   <label for="annual_holiday">นักขัตฤกษ์ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_annual_holiday')"
-                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_annual_holiday')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="annual_holiday" />
@@ -548,8 +547,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_telephone_charge').value">
                 <div class="form-group mb-0">
                   <label for="telephone_charge">ค่าโทรศัพท์ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_telephone_charge')"
-                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_telephone_charge')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="telephone_charge" />
@@ -558,7 +556,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_refund').value">
                 <div class="form-group mb-0">
                   <label for="refund">คืนเงินหัก <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_refund')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_refund')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="refund" />
@@ -567,8 +565,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_duty_allowance').value">
                 <div class="form-group mb-0">
                   <label for="duty_allowance">เบี้ยขยัน <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_duty_allowance')"
-                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_duty_allowance')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="duty_allowance" />
@@ -577,7 +574,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_bonus').value">
                 <div class="form-group mb-0">
                   <label for="bonus">เงินโบนัส <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_bonus')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_bonus')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="bonus" />
@@ -654,7 +651,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_discipline').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ผิดวินัย <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_discipline')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_discipline')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="discipline" />
@@ -663,7 +660,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_license_fee').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ค่าใบอนุญาต <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_license_fee')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_license_fee')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="license_fee" />
@@ -672,7 +669,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_advance').value">
                 <div class="form-group mb-0">
                   <label for="overtime">เบิกล่วงหน้า <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_advance')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_advance')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="advance" />
@@ -681,7 +678,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_absence').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ขาดงาน <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_absence')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_absence')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="absence" />
@@ -690,8 +687,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_cremation_fee').value">
                 <div class="form-group mb-0">
                   <label for="overtime">พิธีการทางศาสนา <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_cremation_fee')"
-                      *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_cremation_fee')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="cremation_fee" />
@@ -700,7 +696,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_rent_house').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ค่าเช่าบ้าน <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_rent_house')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_rent_house')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="rent_house" />
@@ -709,7 +705,7 @@
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_other').value">
                 <div class="form-group mb-0">
                   <label for="overtime">อื่นๆ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_other')" *ngIf="!updateSalaryForm.get('is_paid').value"></i>
+                      (click)="toggleShowControl('is_other')"></i>
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="other" />
@@ -783,14 +779,14 @@
           <div>
             <button type="button" class="btn btn-primary button__checked"
               [class.active]="updateSalaryForm.get('is_complete').value" btnCheckbox formControlName="is_complete"
-              tabindex="0" role="button" [disabled]="updateSalaryForm.get('is_paid').value">
+              tabindex="0" role="button">
               <i *ngIf="updateSalaryForm.get('is_complete').value" class="fa fa-check-circle-o" aria-hidden="true"></i>
               <i *ngIf="!updateSalaryForm.get('is_complete').value" class="fa fa-circle text-white"
                 aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
           </div>
           <div class="ml-auto">
             <button class="btn btn-primary button__add"
-              [disabled]="!uf.form.valid || updateSalaryForm.get('is_paid').value">
+              [disabled]="!uf.form.valid">
               บันทึกข้อมูล</button>
           </div>
         </div>

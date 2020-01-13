@@ -496,9 +496,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
-    if (salary.isPaid) {
-      this.updateSalaryForm.disable();
-    }
+    // if (salary.isPaid) {
+    //   this.updateSalaryForm.disable();
+    // }
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
