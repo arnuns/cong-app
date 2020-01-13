@@ -14,21 +14,6 @@
     "url": "https://github.com/arnuns/cong-app.git"
   },
   "main": "main.js",
-  "build": {
-    "appId": "com.ubakong.cong.CongElectronAutoUpdate",
-    "productName": "Cong Application",
-    "files": [
-      "**/*",
-      "dist/**/*"
-    ],
-    "directories": {
-      "output": "dist",
-      "buildResources": "dist"
-    },
-    "win": {
-      "icon": "dist/assets/icons/cong_icon.ico"
-    }
-  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
