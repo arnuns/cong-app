@@ -1,4 +1,4 @@
-import { Site } from './site';
+import { Site, SiteRole } from './site';
 import { Company } from './company';
 import { Hospital } from './hospital';
 import { PageFilter } from './page-filter.model';
@@ -91,6 +91,8 @@ export interface User {
     jobHistories: JobHistory[];
     languageAbilities: LanguageAbility[];
     timelineUsers: TimelineUser[];
+    siteRole: SiteRole;
+    workExperience: number;
 }
 
 export interface TimelineUser {

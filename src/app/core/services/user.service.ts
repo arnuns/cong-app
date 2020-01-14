@@ -49,6 +49,10 @@ export class UserService extends BaseService {
       `${this.serviceUrl}/user/filter`, { params: params });
   }
 
+  getUsers() {
+    return this.http.get<User[]>(`${this.serviceUrl}/user/all`);
+  }
+
   getUserRoles() {
     return this.cacheService.get('roles', this.http.get<Role[]>(`${this.serviceUrl}/user/roles`));
   }

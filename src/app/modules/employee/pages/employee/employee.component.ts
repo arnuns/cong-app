@@ -11,6 +11,10 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import * as _ from 'lodash';
 import { ElectronService } from 'ngx-electron';
 import { Router } from '@angular/router';
+import { Papa } from 'ngx-papaparse';
+import * as FileSaver from 'file-saver';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 
 @Component({
   selector: 'app-employee',
@@ -39,8 +43,11 @@ export class EmployeeComponent implements OnDestroy, OnInit {
     private authService: AuthService,
     private electronService: ElectronService,
     private fb: FormBuilder,
+    private moment: MomentHelper,
+    private papa: Papa,
     private router: Router,
     private siteService: SiteService,
+    private spinner: SpinnerHelper,
     private userService: UserService
   ) {
     this.authService.currentUser.subscribe(user => {
@@ -203,6 +210,91 @@ export class EmployeeComponent implements OnDestroy, OnInit {
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.send('view-employee-card', empNo);
     }
+  }
+
+  onExportUserToCsv() {
+    this.spinner.showLoadingSpinner();
+    this.userService.getUsers().subscribe(users => {
+      const data = users.map(u => ({
+        'รหัสพนักงาน': `'${u.empNo}`,
+        'บริษัท': u.companyId,
+        'หน่วยงาน': u.site.name,
+        'ตำแหน่ง': u.role.nameTH,
+        'เลขที่บัตรประชาชน': `'${u.idCardNumber}`,
+        'วันที่ออกบัตร': !u.dateIssued ? '' : this.convertToDateString(u.dateIssued),
+        'วันหมดอายุ': !u.expiryDate ? '' : this.convertToDateString(u.expiryDate),
+        'คำนำหน้า': u.title,
+        'ชื่อ': u.firstName,
+        'นามสกุล': u.lastName,
+        'คำนำหน้าภาษาอังกฤษ': u.titleEn,
+        'ชื่อภาษาอังกฤษ': u.firstnameEn,
+        'นามสกุลอังกฤษ': u.lastnameEn,
+        'เพศ': u.gender,
+        'ธนาคาร': u.bankName,
+        'เลขที่บัญชี': `'${u.bankAccount}`,
+        'เบอร์โทรศัพท์': u.phoneNo,
+        'ระดับการศึกษา': u.education,
+        'วันเกิด': !u.birthdate ? '' : this.convertToDateString(u.birthdate),
+        'อายุ': this.convertToAge(u.birthdate),
+        'อายุงาน': u.workExperience,
+        'อายุเกษียณ': 60,
+        'น้ำหนัก': u.weight && u.weight > 0 ? u.weight : '',
+        'ส่วนสูง': u.height && u.height > 0 ? u.height : '',
+        'เชื้อชาติ': u.ethnicity,
+        'สัญชาติ': u.nationality,
+        'ศาสนา': u.religion,
+        'ที่อยู่ตามทะเบียนบ้าน': u.permanentAddress,
+        'ที่อยู่ปัจจุบัน': u.currentAddress,
+        'วันเริ่มงาน': !u.startDate ? '' : this.convertToDateString(u.startDate),
+        'วันที่ลาออก': !u.endDate ? '' : this.convertToDateString(u.endDate),
+        'อายุงาน (วัน)': !u.startDate ? 0
+          : Math.ceil(Math.abs((!u.endDate ? new Date().getTime() : new Date(u.endDate).getTime())
+            - new Date(u.startDate).getTime()) / (1000 * 3600 * 24)),
+        'สาเหตุที่ออก': u.resignationCause,
+        'กรณีฉุกเฉินบุคคลที่ติดต่อได้': u.refName_1 ? u.refName_1 : '',
+        'ความสัมพันธ์ผู้ติดต่อ': u.refRelation_1 ? u.refRelation_1 : '',
+        'เบอร์โทรศัพท์ผู้ติดต่อ': u.refPhoneNo_1 ? u.refPhoneNo_1 : '',
+        'ที่อยู่ผู้ติดต่อ': u.refAddress_1 ? u.refAddress_1 : '',
+        'วันที่ยื่นเข้าประกันสังคม': !u.socialSecurityStartDate ? '' : this.convertToDateString(u.socialSecurityStartDate),
+        'วันที่ยื่นออกประกันสังคม': !u.socialSecurityEndDate ? '' : this.convertToDateString(u.socialSecurityEndDate),
+        'สถานพยาบาลประกันสังคม': !u.hospital ? '' : u.hospital.name,
+        'เลขที่ใบอนุญาต': !u.licenseNo ? '' : u.licenseNo,
+        'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
+        'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
+        'เงินเดือน': (!u.siteRole || !u.site || !u.site.province) ? 0 : u.siteRole.minimumManday * u.site.province.minimumWage,
+        'วันทำงานต่อเดือน': !u.siteRole ? 0 : u.siteRole.minimumManday,
+        'ค่าแรงขั้นต่ำ': (!u.site || !u.site.province) ? 0 : u.site.province.minimumWage
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `users_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }, error => {
+      this.spinner.hideLoadingSpinner();
+    });
+  }
+
+  convertToAge(birthdate: string): number {
+    if (birthdate === undefined || birthdate === null || birthdate === '') {
+      return 0;
+    }
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  }
+
+  convertToDateString(dateString: string): string {
+    if (dateString === null || dateString === undefined || dateString === '') {
+      return '';
+    }
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    const d = new Date(dateString);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
   }
 
   get HasEmployeePermission() {
