@@ -60,22 +60,22 @@ hr.style6 {
 
 .name-info {
   line-height: normal;
-  font-size: 11px;
+  font-size: 16px;
   padding: 3px 0 2px 0;
 }
 
 .name-info>strong {
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .card-info {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 ::ng-deep {
   .qrcode img {
-    width: 110px !important;
-    height: 110px !important;
+    width: 120px !important;
+    height: 120px !important;
   }
 }
 

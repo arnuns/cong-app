@@ -82,8 +82,8 @@
             </div>
             <div>
               <div class="upload-btn-wrapper">
-                <input type="file" (change)="imageProfileChange($event)"
-                  accept="image/x-png,image/jpeg" #imageProfileUpload />
+                <input type="file" (change)="imageProfileChange($event)" accept="image/x-png,image/jpeg"
+                  #imageProfileUpload />
                 <button type="button" class="btn btn-outline-secondary capture-profile">
                   <i class="fa fa-camera" aria-hidden="true"></i> ถ่ายรูป</button>
               </div>
@@ -112,7 +112,7 @@
             <small
               [hidden]="employeeForm.get('idcard_no').valid || (employeeForm.get('idcard_no').pristine && !addForm.submitted)"
               class="text-danger">
-              กรุณากรอกเลขที่บัตรประจำตัวประชาชนให้ถูกต้อง
+              {{ employeeForm.get('idcard_no').hasError('idCardNumberExists') ? 'เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว' : 'กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง'}}
             </small>
             <div class="form-group">
               <label for="idcard_no">เลขที่บัตรประจำตัวประชาชน

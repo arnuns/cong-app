@@ -7,7 +7,7 @@ import { Company } from 'src/app/core/models/company';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Site } from 'src/app/core/models/site';
 import { SiteService } from 'src/app/core/services/site.service';
-import { IDCardNumber } from 'src/app/core/validators/idcard-no.validator';
+import { IDCardNumber, existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
 import { Hospital } from 'src/app/core/models/hospital';
 import { environment } from 'src/environments/environment';
@@ -41,7 +41,8 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     company_id: ['gmg', Validators.required],
     site_id: [undefined, Validators.required],
     role_id: ['security', Validators.required],
-    idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
+    idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)],
+      existingIDCardNumberValidator(this.userService)],
     dateissued: [null, Validators.required],
     expirydate: [null, Validators.required],
     title: ['นาย', Validators.required],
@@ -127,8 +128,6 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     sso_start_date: [null],
     sso_end_date: [null],
     hospital_id: [undefined]
-  }, {
-    validator: IDCardNumber('idcard_no')
   });
 
   serverError: string;

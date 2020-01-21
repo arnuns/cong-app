@@ -8,7 +8,7 @@ import { Site } from 'src/app/core/models/site';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
 import { Hospital } from 'src/app/core/models/hospital';
 import { Validators, FormBuilder } from '@angular/forms';
-import { IDCardNumber } from 'src/app/core/validators/idcard-no.validator';
+import { IDCardNumber, existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { SiteService } from 'src/app/core/services/site.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -136,8 +136,6 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     sso_start_date: [null],
     sso_end_date: [null],
     hospital_id: [undefined]
-  }, {
-    validator: IDCardNumber('idcard_no')
   });
 
   serverError: string;
@@ -263,6 +261,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       ]
     ).subscribe(results => {
       this.user = results[0];
+      this.employeeForm.get('idcard_no').setAsyncValidators(existingIDCardNumberValidator(this.userService, this.user));
       this.sites = results[1];
       this.roles = results[2];
       this.companies = results[3].filter(c => c.status);

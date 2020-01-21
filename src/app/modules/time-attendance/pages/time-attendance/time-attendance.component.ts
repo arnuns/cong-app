@@ -325,7 +325,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       ).subscribe(timeAttendances => {
         const data = timeAttendances.map(s => ({
           'หน่วยงาน': s.site.name,
-          'วันที่': this.moment.format(s.workDate, 'YYYY-MM-DD'),
+          'วันที่': this.moment.format(s.workDate, 'DD/MM/YYYY'),
           'รหัสพนักงาน': `'${s.empNo}`,
           'ตำแหน่ง': s.user.role.nameTH,
           'ชื่อ-สกุล': s.employeeName,

@@ -107,7 +107,7 @@
             <small
               [hidden]="employeeForm.get('idcard_no').valid || (employeeForm.get('idcard_no').pristine && !addForm.submitted)"
               class="text-danger">
-              กรุณากรอกเลขที่บัตรประจำตัวประชาชนให้ถูกต้อง
+              {{ employeeForm.get('idcard_no').hasError('idCardNumberExists') ? 'เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว' : 'กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง'}}
             </small>
             <div class="form-group">
               <label for="idcard_no">เลขที่บัตรประจำตัวประชาชน
