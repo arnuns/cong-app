@@ -4,28 +4,32 @@
 }
 
 .header-text {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 .report-header {
   background-color: #00ca9d;
   color: #ffffff;
-  font-size: 0.9rem;
+  font-size: 20px;
+}
+
+.report-info {
+  font-size: 18px;
 }
 
 .img-profile {
   border: 1px solid #000000;
   display: block;
-  width: 140px;
-  height: 180px;
+  width: 180px;
+  height: 220px;
   background-color: #dddddd;
   background-repeat: no-repeat;
   background-size: 100% 100%;
 }
 
 .img-idcard {
-  width: 260px;
-  height: 180px;
+  width: 270px;
+  height: 220px;
   background-color: #dddddd;
   border: 1px solid #000000;
 }
@@ -41,10 +45,6 @@
 
 .fill-in {
   border: 1px solid #000000;
-}
-
-.d-flex {
-  font-size: 0.9rem;
 }
 
 .related-name {
@@ -75,7 +75,11 @@
 
 .fingerprint {
   width: 110px;
-  height: 110px;
+  height: 160px;
+}
+
+table tr td {
+  font-size: 18px;
 }
 
 * {

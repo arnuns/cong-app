@@ -166,12 +166,12 @@ ipcMain.on('view-document', (event, empNo, documentId) => {
 
 ipcMain.on('view-employee-transfer', (event, empNo) => {
   winEmployeeTransfer = new BrowserWindow({
-    width: 885,
-    height: 1169,
-    minWidth: 885,
-    minHeight: 1169,
-    maxWidth: 885,
-    maxHeight: 1169,
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
     parent: 'top',
     modal: true,
     show: false,
@@ -210,12 +210,12 @@ ipcMain.on('view-payslip', (event, payrollCycleId, siteId) => {
 
 ipcMain.on('view-employee-profile', (event, empNo) => {
   winEmployeeProfile = new BrowserWindow({
-    width: 826,
-    height: 1169,
-    minWidth: 826,
-    minHeight: 1169,
-    maxWidth: 826,
-    maxHeight: 1169,
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
     parent: 'top',
     modal: true,
     show: false,
@@ -231,12 +231,12 @@ ipcMain.on('view-employee-profile', (event, empNo) => {
 
 ipcMain.on('view-employee-profile-mini', (event, empNo) => {
   winEmployeeProfileMini = new BrowserWindow({
-    width: 826,
-    height: 1169,
-    minWidth: 826,
-    minHeight: 1169,
-    maxWidth: 826,
-    maxHeight: 1169,
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
     parent: 'top',
     modal: true,
     show: false,
@@ -252,12 +252,12 @@ ipcMain.on('view-employee-profile-mini', (event, empNo) => {
 
 ipcMain.on('view-employee-license', (event, empNo) => {
   winEmployeeLicense = new BrowserWindow({
-    width: 826,
-    height: 1169,
-    minWidth: 826,
-    minHeight: 1169,
-    maxWidth: 826,
-    maxHeight: 1169,
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
     parent: 'top',
     modal: true,
     show: false,
@@ -273,12 +273,12 @@ ipcMain.on('view-employee-license', (event, empNo) => {
 
 ipcMain.on('view-employee-card', (event, empNo) => {
   winEmployeeCard = new BrowserWindow({
-    width: 826,
-    height: 1169,
-    minWidth: 826,
-    minHeight: 1169,
-    maxWidth: 826,
-    maxHeight: 1169,
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
     parent: 'top',
     modal: true,
     show: false,
@@ -296,12 +296,12 @@ ipcMain.on('view-employee-card', (event, empNo) => {
 
 ipcMain.on('view-working-site-report', (event, siteId, year, month) => {
   winWorkingSiteReport = new BrowserWindow({
-    width: 1169,
-    height: 826,
-    minWidth: 1169,
-    minHeight: 826,
-    maxWidth: 1169,
-    maxHeight: 826,
+    width: 1562,
+    height: 1068,
+    minWidth: 1562,
+    minHeight: 1068,
+    maxWidth: 1562,
+    maxHeight: 1068,
     parent: 'top',
     modal: true,
     show: false,

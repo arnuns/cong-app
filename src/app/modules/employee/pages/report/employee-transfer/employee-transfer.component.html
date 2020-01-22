@@ -15,7 +15,7 @@
   <h5 class="report-header p-1 mt-2">
     ประวัติและตำหนิรูปพรรณ
   </h5>
-  <div class="row">
+  <div class="row report-info">
     <div class="col-md-6">
       <div class="d-flex">
         <div class="p-2">
@@ -112,8 +112,8 @@
   <h5 class="report-header p-1 mt-2">
     บุคคลอ้างอิง
   </h5>
-  <div class="d-flex flex-column">
-    <div class="px-2 py-0">
+  <div class="d-flex flex-column report-info">
+    <div class="p-2">
       <div class="d-flex">
         <div class="related-name">
           1. {{ user?.refName_2 }}
@@ -141,7 +141,7 @@
       <h5 class="report-header training-title p-1 mt-2 mr-2">
         การฝึกอบรม
       </h5>
-      <div class="d-flex flex-column px-2">
+      <div class="d-flex flex-column px-2 report-info">
         <div>1. {{ user?.training_1 }}</div>
         <div>2. {{ user?.training_2 }}</div>
         <div>3. {{ user?.training_3 }}</div>
@@ -151,18 +151,18 @@
       <h5 class="report-header check-title p-1 mt-2">
         สรุปผลการตรวจปัสสาวะ
       </h5>
-      <div class="d-flex flex-column px-2">
+      <div class="d-flex flex-column px-2 report-info">
         <div><i class="fa fa-circle-thin" aria-hidden="true"></i> ไม่พบสารเสพติด</div>
         <div><i class="fa fa-circle-thin" aria-hidden="true"></i> พบสารเสพติด</div>
       </div>
     </div>
   </div>
-  <div class="d-flex justify-content-end">
+  <div class="d-flex justify-content-end report-info">
     <div class="p-2">
       <div class="d-flex flex-column text-center">
-        <div class="p-2">ลงชื่อ ......................................... ผู้บันทึก</div>
-        <div class="p-2">(.........................................)</div>
-        <div class="p-2">ตำแหน่ง .........................................</div>
+        <div class="px-2 py-3">ลงชื่อ ................................................... ผู้บันทึก</div>
+        <div class="px-2 py-3">(.............................................................)</div>
+        <div class="px-2 py-3">ตำแหน่ง .......................................................</div>
       </div>
     </div>
   </div>
@@ -170,7 +170,7 @@
     <thead>
       <tr class="text-center">
         <th class="p-0" colspan="6">
-          <h5 class="px-0 py-1 m-0" style="background-color: #00ca9d; color: #ffffff; font-size: 1.05rem">
+          <h5 class="report-header px-0 py-1 m-0" style="background-color: #00ca9d; color: #ffffff; font-size: 1.05rem">
             ภาพสแกนลายนิ้วมือทั้ง 10</h5>
         </th>
       </tr>

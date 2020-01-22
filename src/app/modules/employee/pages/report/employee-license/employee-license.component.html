@@ -18,24 +18,16 @@
               <div class="p-1">
                 <strong>เลขประจำตัวประชาชน</strong> {{ user?.idCardNumber }}</div>
               <div class="p-1">
-                <div class="d-flex flex-row">
-                  <div class="pr-4">
-                    <strong>วันออกบัตร</strong>
+                <div class="d-flex">
+                  <div class="d-flex flex-column align-items-center">
+                    <div><strong>วันออกบัตร</strong></div>
+                    <div class="mt-3">{{ (user?.licenseStartDate === null || user?.licenseStartDate === undefined) ? '............/............/............' : (user?.licenseStartDate
+                      | date: 'dd/MM/yyyy') }}</div>
                   </div>
-                  <div class="pl-1">
-                    <strong>วันสิ้นอายุ</strong>
-                  </div>
-                </div>
-              </div>
-              <div class="p-1">
-                <div class="d-flex flex-row">
-                  <div [class]="(user?.expiryDate === null || user?.expiryDate === undefined) ? 'pr-4' : 'pr-3'">
-                    {{ (user?.licenseStartDate === null || user?.licenseStartDate === undefined) ? '..../..../....' : (user?.licenseStartDate
-                          | date: 'dd/MM/yyyy') }}
-                  </div>
-                  <div class="pl-1">
-                    {{ (user?.licenseEndDate === null || user?.licenseEndDate === undefined) ? '..../..../....' : (user?.licenseEndDate | date:
-                          'dd/MM/yyyy') }}
+                  <div class="ml-3 d-flex flex-column align-items-center">
+                    <div><strong>วันสิ้นอายุ</strong></div>
+                    <div class="mt-3">{{ (user?.licenseEndDate === null || user?.licenseEndDate === undefined) ? '............/............/............' : (user?.licenseEndDate | date:
+                      'dd/MM/yyyy') }}</div>
                   </div>
                 </div>
               </div>
@@ -65,19 +57,13 @@
         <strong>คำเตือน</strong>
       </div>
       <div class="p-1 pl-2">
-        <p>๑. ให้ติดบัตรประจำตัวตลอดเวลาที่ปฏิบัติหน้าที่ รักษาความปลอดภัย</p>
-      </div>
-      <div class="p-1 pl-2">
-        <p>๒. การฝ่าฝืนหรือไม่ปฏิบัติตามกฎหมาย กฎกระทรวง ประกาศ ระเบียบ และข้อบังคับที่กำหนดไว้ใน
+        <p class="mb-0">๑. ให้ติดบัตรประจำตัวตลอดเวลาที่ปฏิบัติหน้าที่ รักษาความปลอดภัย</p>
+        <p class="mb-0">๒. การฝ่าฝืนหรือไม่ปฏิบัติตามกฎหมาย กฎกระทรวง ประกาศ ระเบียบ และข้อบังคับที่กำหนดไว้ใน
           พ.ร.บ.ธุรกิจรักษาความปลอดภัย
           พ.ศ.๒๕๕๘ อาจถูกเพิกถอนบัตรประจำตัว</p>
-      </div>
-      <div class="p-1 pl-2">
-        <p>๓. ต้องให้ความร่วมมือกับเจ้าหน้าที่ตำรวจ เมื่อเรียกตรวจสอบบัตรประจำตัว หรือเอกสารใบอนุญาต
+        <p class="mb-0">๓. ต้องให้ความร่วมมือกับเจ้าหน้าที่ตำรวจ เมื่อเรียกตรวจสอบบัตรประจำตัว หรือเอกสารใบอนุญาต
           หรือเอกสารอื่นที่เกี่ยวข้องกับการรักษาความปลอดภัยทุกกรณี</p>
-      </div>
-      <div class="p-1 pl-2">
-        <p>๔. การยื่นต่ออายุบัตรประจำตัว ให้ปฏิบัติตามเงื่อนไขที่กำหนดไว้ในกฎกระทรวง</p>
+        <p class="mb-0">๔. การยื่นต่ออายุบัตรประจำตัว ให้ปฏิบัติตามเงื่อนไขที่กำหนดไว้ในกฎกระทรวง</p>
       </div>
     </div>
   </div>
