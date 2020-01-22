@@ -8,7 +8,7 @@ import { Site } from 'src/app/core/models/site';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
 import { Hospital } from 'src/app/core/models/hospital';
 import { Validators, FormBuilder } from '@angular/forms';
-import { IDCardNumber, existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
+import { existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { SiteService } from 'src/app/core/services/site.service';
 import { UserService } from 'src/app/core/services/user.service';
