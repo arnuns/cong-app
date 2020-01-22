@@ -1,16 +1,19 @@
 <router-outlet (activate)="onActivate($event)"></router-outlet>
 <div id="notification" class="hidden" #notification>
-  <p id="message" #message></p>
-  <div class="d-flex justify-content-center align-items-center w-100">
+  <div class="d-flex flex-column justify-content-center align-items-center w-100">
     <div>
-      <button type="button" id="close-button" (click)="closeNotification()" class="btn btn-outline-dark button__updater">
-        Close
-      </button>
+      <p class="message mb-0" id="message" #message></p>
     </div>
-    <div class="ml-2">
-      <button type="button" id="restart-button" (click)="restartApp()" class="btn btn-primary button__updater hidden" #restartButton>
-        Restart
-      </button>
+    <div class="updater-loading" #updaterLoading>
+      <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+      <span class="sr-only">กำลังดาวน์โหลด</span> กำลังดาวน์โหลด...
+    </div>
+    <div class="d-flex justify-content-center align-items-center w-100 mt-2">
+      <div>
+        <button type="button" id="restart-button" (click)="restartApp()" class="btn btn-primary button__updater hidden"
+          #restartButton>
+          เริ่มต้นใหม่
+        </button>
+      </div>
     </div>
   </div>
-</div>
