@@ -259,7 +259,7 @@
               </div>
             </div>
             <div class="ml-auto">
-              <button type="submit" class="btn button__save">บันทึกข้อมูล</button>
+              <button type="submit" [disabled]="!f.form.valid" class="btn button__save">บันทึกข้อมูล</button>
             </div>
           </div>
         </div>

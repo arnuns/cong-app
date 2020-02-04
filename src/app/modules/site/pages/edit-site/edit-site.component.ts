@@ -39,8 +39,8 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     province_id: [undefined, [Validators.required]],
     amphur_id: [undefined, [Validators.required]],
     district_id: [undefined, [Validators.required]],
-    latitude: ['', [Validators.pattern(/^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,15}/g)]],
-    longitude: ['', [Validators.pattern(/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)/g)]],
+    latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+    longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
     postcode: [{ value: '', disabled: true }],
     is_monthly: [false],
     site_work_rates: this.fb.array([]),
@@ -90,6 +90,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       this.districts = results[3];
       this.postcodes = results[4];
       this.roles = results[5];
+      console.log(this.site);
       this.siteForm.patchValue({
         code: this.site.code,
         full_name: this.site.fullName,
@@ -269,5 +270,17 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     this.applicationStateService.setIsHiddenLeftMenu = true;
     this.applicationStateService.setIsHiddenSearch = true;
   }
+
+  // public findInvalidControls() {
+  //   const invalid = [];
+  //   const controls = this.siteForm.controls;
+  //   for (const name in controls) {
+  //     console.log(`${name} ${controls[name].invalid}`);
+  //     if (controls[name].invalid) {
+  //       invalid.push(name);
+  //     }
+  //   }
+  //   return invalid;
+  // }
 
 }
