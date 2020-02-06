@@ -19,8 +19,8 @@
           </div>
         </div>
         <div class="ml-auto">
-          <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()"><i class="fa fa-cloud-download"
-              aria-hidden="true"></i>
+          <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()"><i
+              class="fa fa-cloud-download" aria-hidden="true"></i>
             ดาวน์โหลด</button>
         </div>
       </div>
@@ -36,10 +36,18 @@
           </div>
         </div>
         <div class="ml-2">
-          <div class="form-group mb-1">
+          <div class="form-group mb-1 hospital-select-group">
             <ng-select class="hospital-select" [clearable]="true" [items]="hospitals" bindLabel="name" bindValue="id"
               formControlName="social_hospital_id" placeholder="เลือกโรงพยาบาล"
               (change)="onHospitalSelectionChange($event)">
+            </ng-select>
+          </div>
+        </div>
+        <div class="ml-2">
+          <div class="form-group mb-1">
+            <ng-select class="site-select" [clearable]="true" [items]="sites" bindLabel="name" bindValue="id"
+              formControlName="site_id" placeholder="เลือกหน่วยงาน"
+              (change)="onSiteSelectionChange($event)">
             </ng-select>
           </div>
         </div>

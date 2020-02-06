@@ -10,12 +10,16 @@
 }
 
 .search-control {
-  width: 300px;
+  width: 280px;
   height: 36px;
 }
 
 .hospital-select {
-  width: 500px;
+  width: 250px;
+}
+
+.site-select {
+  width: 250px;
 }
 
 .sso-table tr td {
@@ -52,5 +56,9 @@ h5.title {
 
   .edit-dialog .dialog-body {
     padding: 20px;
+  }
+
+  .hospital-select-group .ng-dropdown-panel {
+    width: auto;
   }
 }

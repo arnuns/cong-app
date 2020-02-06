@@ -181,4 +181,5 @@ export interface SocialSecurityHistoryFilter extends PageFilter {
     payrollYear: number;
     payrollMonth: number;
     socialHospitalId: number;
+    siteId: number;
 }

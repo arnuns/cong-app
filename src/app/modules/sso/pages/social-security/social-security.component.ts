@@ -13,6 +13,8 @@ import { Papa } from 'ngx-papaparse';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import * as FileSaver from 'file-saver';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Site } from 'src/app/core/models/site';
+import { SiteService } from 'src/app/core/services/site.service';
 
 @Component({
   selector: 'app-social-security',
@@ -23,13 +25,15 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
   nameMonths: any[] = [];
   hospitals: Hospital[] = [];
+  sites: Site[] = [];
   socialSecurityHistoryFilter: SocialSecurityHistoryFilter;
   filterSessionName = 'socialSecurityHistoryFilter';
   socialSecurityHistories: SocialSecurityHistory[] = [];
   socialSecurityForm = this.fb.group({
     payroll_year_month: [undefined],
     search: [''],
-    social_hospital_id: [undefined]
+    social_hospital_id: [undefined],
+    site_id: [undefined]
   });
   editForm = this.fb.group({
     name: [''],
@@ -46,6 +50,7 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
     private papa: Papa,
     private payrollService: PayrollService,
     private spinner: SpinnerHelper,
+    private siteService: SiteService,
     private userService: UserService
   ) {
     this.updateView();
@@ -57,12 +62,14 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
     combineLatest(
       [
         this.payrollService.getSocialSecurityHistoryMonthName(),
-        this.userService.getHospitals()
+        this.userService.getHospitals(),
+        this.siteService.getSites()
       ]
     ).subscribe(results => {
       this.nameMonths = results[0].map(m => ({ view: m.monthName, viewValue: `${m.payrollYear},${m.payrollMonth}` }));
       this.socialSecurityForm.get('payroll_year_month').setValue(this.nameMonths[0].viewValue);
       this.hospitals = results[1];
+      this.sites = results[2];
       this.refreshTable();
       this.spinner.hideLoadingSpinner(0);
     }, error => {
@@ -133,7 +140,8 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
             that.socialSecurityForm.patchValue({
               payroll_year_month: `${storageSocialSecurityHistoryFillter.payrollYear},${storageSocialSecurityHistoryFillter.payrollMonth}`,
               search: storageSocialSecurityHistoryFillter.search,
-              social_hospital_id: storageSocialSecurityHistoryFillter.socialHospitalId
+              social_hospital_id: storageSocialSecurityHistoryFillter.socialHospitalId,
+              site_id: storageSocialSecurityHistoryFillter.siteId
             });
             dtInstance.page(storageSocialSecurityHistoryFillter.page);
             dtInstance.page.len(storageSocialSecurityHistoryFillter.page_size);
@@ -146,6 +154,7 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
             payrollYear: payrollYearMonth ? payrollYearMonth[0] : undefined,
             payrollMonth: payrollYearMonth ? payrollYearMonth[1] : undefined,
             socialHospitalId: that.socialSecurityForm.get('social_hospital_id').value,
+            siteId: that.socialSecurityForm.get('site_id').value,
             sort_column: sortColumn,
             sort_by: sortBy,
             page: dtInstance.page.info().page,
@@ -157,6 +166,7 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
             that.socialSecurityHistoryFilter.payrollYear,
             that.socialSecurityHistoryFilter.payrollMonth,
             that.socialSecurityHistoryFilter.socialHospitalId,
+            that.socialSecurityHistoryFilter.siteId,
             that.socialSecurityHistoryFilter.sort_column,
             that.socialSecurityHistoryFilter.sort_by,
             that.socialSecurityHistoryFilter.page + 1,
@@ -206,6 +216,10 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
     this.refreshTable();
   }
 
+  onSiteSelectionChange(data) {
+    this.refreshTable();
+  }
+
   onClickEdit(socialSecurityHistory: SocialSecurityHistory) {
     this.editForm.patchValue({
       name: `${socialSecurityHistory.firstName} ${socialSecurityHistory.lastName}`,
@@ -238,7 +252,8 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
     const payrollYearMonth = this.socialSecurityForm.get('payroll_year_month').value.split(',');
     this.payrollService.getSocialSecurityHistories(
       payrollYearMonth[0],
-      payrollYearMonth[1]
+      payrollYearMonth[1],
+      this.socialSecurityForm.get('site_id').value
     ).subscribe(socialSecurityHistories => {
       const data = socialSecurityHistories.map(s => ({
         'ปี': s.payrollYear,
@@ -254,7 +269,11 @@ export class SocialSecurityComponent implements OnDestroy, OnInit, AfterViewInit
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `sso_${payrollYearMonth[0]}_${payrollYearMonth[1]}.csv`);
+      let fileName = `sso_${payrollYearMonth[0]}_${payrollYearMonth[1]}`;
+      if (this.socialSecurityForm.get('site_id').value) {
+        fileName = `sso_${payrollYearMonth[0]}_${payrollYearMonth[1]}_${this.socialSecurityForm.get('site_id').value}`;
+      }
+      FileSaver.saveAs(blob, `${fileName}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
       this.spinner.hideLoadingSpinner();

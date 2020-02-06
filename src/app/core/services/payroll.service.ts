@@ -116,6 +116,7 @@ export class PayrollService extends BaseService {
         payroll_year: number,
         payroll_month: number,
         social_hospital_id: number,
+        site_id: number,
         sort_column: string,
         sort_by: string,
         page: number,
@@ -125,6 +126,7 @@ export class PayrollService extends BaseService {
             .set('payroll_year', payroll_year ? String(payroll_year) : '')
             .set('payroll_month', payroll_month ? String(payroll_month) : '')
             .set('social_hospital_id', (!social_hospital_id) ? '0' : `${social_hospital_id}`)
+            .set('site_id', (!site_id) ? '0' : `${site_id}`)
             .set('sort_column', sort_column)
             .set('sort_by', sort_by)
             .set('page', String(page))
@@ -148,8 +150,9 @@ export class PayrollService extends BaseService {
         });
     }
 
-    getSocialSecurityHistories(payrollYear: number, payrollMonth: number) {
+    getSocialSecurityHistories(payrollYear: number, payrollMonth: number, siteId: number) {
+        const siteIdValue = (!siteId) ? '0' : `${siteId}`;
         // tslint:disable-next-line: max-line-length
-        return this.http.get<SocialSecurityHistory[]>(`${this.serviceUrl}/Payroll/SocialSecurity/Year/${payrollYear}/Month/${payrollMonth}`);
+        return this.http.get<SocialSecurityHistory[]>(`${this.serviceUrl}/Payroll/SocialSecurity/Year/${payrollYear}/Month/${payrollMonth}/Site/${siteIdValue}`);
     }
 }
