@@ -7,7 +7,7 @@ import { Company } from 'src/app/core/models/company';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Site } from 'src/app/core/models/site';
 import { SiteService } from 'src/app/core/services/site.service';
-import { IDCardNumber, existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
+import { existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
 import { Hospital } from 'src/app/core/models/hospital';
 import { environment } from 'src/environments/environment';
@@ -46,9 +46,11 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     dateissued: [null, Validators.required],
     expirydate: [null, Validators.required],
     title: ['นาย', Validators.required],
+    title_other: [''],
     firstname: ['', Validators.required],
     lastname: ['', Validators.required],
     title_en: ['mr'],
+    title_other_en: [''],
     firstname_en: [''],
     lastname_en: [''],
     gender: ['male', Validators.required],
@@ -201,6 +203,24 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       this.employeeForm.get('education').updateValueAndValidity();
       this.employeeForm.get('graduate_school').updateValueAndValidity();
     });
+    this.employeeForm.get('title').valueChanges.subscribe(val => {
+      if (val === 'อื่นๆ') {
+        this.employeeForm.get('title_other').setValidators([Validators.required]);
+      } else {
+        this.employeeForm.get('title_other').setValue('');
+        this.employeeForm.get('title_other').setValidators(null);
+      }
+      this.employeeForm.get('title_other').updateValueAndValidity();
+    });
+    this.employeeForm.get('title_en').valueChanges.subscribe(val => {
+      if (val === 'others') {
+        this.employeeForm.get('title_other_en').setValidators([Validators.required]);
+      } else {
+        this.employeeForm.get('title_other_en').setValue('');
+        this.employeeForm.get('title_other_en').setValidators(null);
+      }
+      this.employeeForm.get('title_other_en').updateValueAndValidity();
+    });
     this.employeeForm.get('is_disability').valueChanges.subscribe(val => {
       if (val) {
         this.employeeForm.get('disability').setValidators([Validators.required]);
@@ -319,8 +339,13 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     }
     formData.append('dateIssued', getValue('dateissued') ? this.moment.formatISO8601(getValue('dateissued')) : '');
     formData.append('expiryDate', getValue('expirydate') ? this.moment.formatISO8601(getValue('expirydate')) : '');
-    if (getValue('title')) {
-      formData.append('title', getValue('title'));
+    const title = getValue('title');
+    if (title) {
+      if (title === 'อื่นๆ') {
+        formData.append('title', getValue('title_other'));
+      } else {
+        formData.append('title', getValue('title'));
+      }
     }
     if (getValue('firstname')) {
       formData.append('firstName', getValue('firstname'));
@@ -328,8 +353,13 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('lastname')) {
       formData.append('lastName', getValue('lastname'));
     }
-    if (getValue('title_en')) {
-      formData.append('titleEn', getValue('title_en'));
+    const titleEn = getValue('title_en');
+    if (titleEn) {
+      if (titleEn === 'others') {
+        formData.append('titleEn', getValue('title_other_en'));
+      } else {
+        formData.append('titleEn', getValue('title_en'));
+      }
     }
     if (getValue('firstname_en')) {
       formData.append('firstnameEn', getValue('firstname_en'));

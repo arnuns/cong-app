@@ -185,10 +185,21 @@
                 <ng-option [value]="'นาย'">นาย</ng-option>
                 <ng-option [value]="'นาง'">นาง</ng-option>
                 <ng-option [value]="'นางสาว'">นางสาว</ng-option>
+                <ng-option [value]="'อื่นๆ'">อื่นๆ</ng-option>
               </ng-select>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3" *ngIf="employeeForm.get('title').value === 'อื่นๆ'">
+            <div class="form-group">
+              <label for="title_other">อื่นๆ
+                <span class="text-danger">
+                  <small>*</small>
+                </span>
+              </label>
+              <input type="text" class="form-control" maxlength="50" formControlName="title_other">
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="form-group">
               <label for="firstname">ชื่อ
                 <span class="text-danger">
@@ -198,7 +209,7 @@
               <input type="text" class="form-control" maxlength="50" formControlName="firstname" />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
               <label for="lastname">สกุล
                 <span class="text-danger">
@@ -217,16 +228,27 @@
                 <ng-option [value]="'mr'">Mr.</ng-option>
                 <ng-option [value]="'ms'">Ms.</ng-option>
                 <ng-option [value]="'mrs'">Mrs.</ng-option>
+                <ng-option [value]="'others'">Others</ng-option>
               </ng-select>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3" *ngIf="employeeForm.get('title_en').value === 'others'">
+            <div class="form-group">
+              <label for="title_other_en">อื่นๆ ภาษาอังกฤษ
+                <span class="text-danger">
+                  <small>*</small>
+                </span>
+              </label>
+              <input type="text" class="form-control" maxlength="50" formControlName="title_other_en">
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="form-group">
               <label for="firstname_en">ชื่อภาษาอังกฤษ</label>
               <input type="text" class="form-control" maxlength="50" formControlName="firstname_en" />
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="form-group">
               <label for="lastname_en">สกุลภาษาอังกฤษ</label>
               <input type="text" class="form-control" maxlength="50" formControlName="lastname_en" />
