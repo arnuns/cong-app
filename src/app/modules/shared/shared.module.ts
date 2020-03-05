@@ -24,6 +24,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     ButtonsModule.forRoot(),
     TabsModule.forRoot(),
     PdfViewerModule,
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    RoundProgressModule
   ],
   providers: [
     MomentHelper,
@@ -73,7 +75,8 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
     ButtonsModule,
     TabsModule,
     PdfViewerModule,
-    NgxQRCodeModule
+    NgxQRCodeModule,
+    RoundProgressModule
   ]
 })
 export class SharedModule {

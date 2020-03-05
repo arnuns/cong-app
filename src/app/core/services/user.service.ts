@@ -88,4 +88,25 @@ export class UserService extends BaseService {
   updateUserBeginResign(empNo: number, data: BeginResign) {
     return this.http.put<User>(`${this.serviceUrl}/user/${empNo}/beginresign`, data);
   }
+
+  getUserByDateRange(startDateString: string, endDateString: string) {
+    const params = new HttpParams()
+      .set('start_date', startDateString)
+      .set('end_date', endDateString);
+    return this.http.get<User[]>(`${this.serviceUrl}/user/bydaterange`, { params: params });
+  }
+
+  getUserByMonthYear(month: number, year: number) {
+    const params = new HttpParams()
+      .set('year', String(year))
+      .set('month', String(month));
+    return this.http.get<User[]>(`${this.serviceUrl}/user/bymonthyear`, { params: params });
+  }
+
+  getCountUserByMonthYear(month: number, year: number) {
+    const params = new HttpParams()
+      .set('year', String(year))
+      .set('month', String(month));
+    return this.http.get<number>(`${this.serviceUrl}/user/countbymonthyear`, { params: params });
+  }
 }

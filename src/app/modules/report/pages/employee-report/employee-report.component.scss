@@ -1,0 +1,112 @@
+::ng-deep {
+  .report-card .card-header {
+    background-color: #ffffff;
+  }
+
+  .round-progress round-progress {
+    width: 102px !important;
+    height: 102px !important;
+  }
+
+}
+
+.report-card {
+  min-height: 250px;
+}
+
+.date-range--control {
+  width: 230px;
+  height: 32px;
+}
+
+.button__action {
+  background-color: #333333;
+  border-radius: 24px;
+  color: #ffffff;
+  font-size: 12px;
+  height: 32px;
+}
+
+.button__submit {
+  @extend .button__action;
+  width: 68px;
+}
+
+.button__submit:hover {
+  opacity: .85;
+}
+
+.button__export {
+  @extend .button__action;
+}
+
+.employee--percentage {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.employee--label {
+  border-bottom: 1px dashed #979797;
+  color: #000000;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  width: 39px;
+}
+
+.employee--count {
+  font-weight: bold;
+}
+
+.employee--label-uom {
+  border-bottom: 1px dashed #979797;
+  color: #808285;
+  display: inline-block;
+  font-size: 12px;
+  font-weight: bold;
+  width: 30px;
+}
+
+.round-chart {
+  position: relative;
+  text-align: center;
+}
+
+.round-chart .chart-detail {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1em;
+}
+
+.positive-chart {
+  color: #00ca9d;
+}
+
+.negative-chart {
+  color: #f25c62;
+}
+
+.increase-detail {
+  background-color: #00ca9d;
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 7px 16px;
+  height: 100px;
+}
+
+.employee-in-rate--title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.employee-in-rate--count {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.employee-in-rate--percentage {
+  font-size: 12px;
+  font-weight: bold;
+}

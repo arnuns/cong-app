@@ -48,6 +48,11 @@ const routes: Routes = [
         path: 'time-attendance',
         canLoad: [AuthGuardService],
         loadChildren: './modules/time-attendance/time-attendance.module#TimeAttendanceModule'
+      },
+      {
+        path: 'report',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/report/report.module#ReportModule'
       }
     ]
   }

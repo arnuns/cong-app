@@ -58,6 +58,14 @@
         </a>
       </li>
       <li>
+        <a class="nav-link" [routerLink]="['/report']" [routerLinkActive]="['active']">
+          <div class="d-flex align-items-center h-100">
+            <div class="nav-icon"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
+            <div class="ml-3 menu-text">รายงาน</div>
+          </div>
+        </a>
+      </li>
+      <li>
         <a class="nav-link" [routerLink]="['/time-attendance']" [routerLinkActive]="['active']">
           <div class="d-flex align-items-center h-100">
             <div class="nav-icon">
@@ -81,7 +89,8 @@
           <div class="form-group mb-0 has-search">
             <span class="fa fa-search form-control-feedback"></span>
             <input type="text" class="form-control" autocomplete="off"
-              placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน, รหัสพนักงาน, หน่วยงาน" formControlName="search" (keydown)="onSearchChange()">
+              placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน, รหัสพนักงาน, หน่วยงาน" formControlName="search"
+              (keydown)="onSearchChange()">
           </div>
         </form>
         <div class="list-group result-group" *ngIf="searchResults?.length > 0 || searching">
