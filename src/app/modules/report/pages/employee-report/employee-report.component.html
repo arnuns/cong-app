@@ -15,7 +15,7 @@
           <div class="d-flex align-items-center">
             <div><strong>พนักงานในระบบ:</strong></div>
             <div class="ml-auto">
-              <button type="button" class="btn button__export">
+              <button type="button" (click)="onExportEmployeeByMonth()" [disabled]="empInRateReportProcessing" class="btn button__export">
                 Export พนักงานตามเดือน <i class="fa fa-cloud-download" aria-hidden="true"></i>
               </button>
             </div>
@@ -78,7 +78,7 @@
           <div class="d-flex align-items-center">
             <div><strong>พนักงานสมัคร/ลาออก:</strong></div>
             <div class="ml-auto">
-              <button type="button" class="btn button__export">
+              <button type="button" class="btn button__export" (click)="onExportEmpInOut()" [disabled]="empInOutReportProcessing || empInOutReport.data.length <= 0">
                 Export พนักงานสมัคร/ลาออก <i class="fa fa-cloud-download" aria-hidden="true"></i>
               </button>
             </div>

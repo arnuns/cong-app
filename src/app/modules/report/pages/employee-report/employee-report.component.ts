@@ -4,6 +4,9 @@ import { User } from 'src/app/core/models/user';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { combineLatest } from 'rxjs';
+import { Papa } from 'ngx-papaparse';
+import * as FileSaver from 'file-saver';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 
 @Component({
   selector: 'app-employee-report',
@@ -13,7 +16,6 @@ import { combineLatest } from 'rxjs';
 export class EmployeeReportComponent implements OnInit {
   lastMonthUsers: User[] = [];
   compareMonthUsers: User[] = [];
-  users: User[] = [];
   monthYears: {
     view: string,
     viewValue: string
@@ -47,6 +49,8 @@ export class EmployeeReportComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private moment: MomentHelper,
+    private papa: Papa,
+    private spinner: SpinnerHelper,
     private userService: UserService) {
     const date = new Date();
     this.initialControlEmpInReport(new Date(date.getFullYear(), date.getMonth() - 1, 1, 7, 0, 0));
@@ -162,4 +166,102 @@ export class EmployeeReportComponent implements OnInit {
     this.getCountEmployeeByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0]));
   }
 
+  onExportEmpInOut() {
+    this.spinner.showLoadingSpinner();
+    const data = this.empInOutReport.data.map(u => ({
+      'รหัสพนักงาน': `'${u.empNo}`,
+      'บริษัท': u.companyId,
+      'หน่วยงาน': u.site.name,
+      'ตำแหน่ง': u.role.nameTH,
+      'เลขที่บัตรประชาชน': `'${u.idCardNumber}`,
+      'วันที่ออกบัตร': !u.dateIssued ? '' : this.convertToDateString(u.dateIssued),
+      'วันหมดอายุ': !u.expiryDate ? '' : this.convertToDateString(u.expiryDate),
+      'คำนำหน้า': u.title,
+      'ชื่อ': u.firstName,
+      'นามสกุล': u.lastName,
+      'คำนำหน้าภาษาอังกฤษ': u.titleEn,
+      'ชื่อภาษาอังกฤษ': u.firstnameEn,
+      'นามสกุลอังกฤษ': u.lastnameEn,
+      'เพศ': u.gender,
+      'ธนาคาร': u.bankName,
+      'เลขที่บัญชี': `'${u.bankAccount}`,
+      'เบอร์โทรศัพท์': u.phoneNo,
+      'วันเกิด': !u.birthdate ? '' : this.convertToDateString(u.birthdate),
+      'น้ำหนัก': u.weight && u.weight > 0 ? u.weight : '',
+      'ส่วนสูง': u.height && u.height > 0 ? u.height : '',
+      'เชื้อชาติ': u.ethnicity,
+      'สัญชาติ': u.nationality,
+      'ศาสนา': u.religion,
+      'ที่อยู่ตามทะเบียนบ้าน': u.permanentAddress,
+      'ที่อยู่ปัจจุบัน': u.currentAddress,
+      'วันเริ่มงาน': !u.startDate ? '' : this.convertToDateString(u.startDate),
+      'วันที่ลาออก': !u.endDate ? '' : this.convertToDateString(u.endDate),
+      'สาเหตุที่ออก': u.resignationCause,
+      'กรณีฉุกเฉินบุคคลที่ติดต่อได้': u.refName_1 ? u.refName_1 : '',
+      'ความสัมพันธ์ผู้ติดต่อ': u.refRelation_1 ? u.refRelation_1 : '',
+      'เบอร์โทรศัพท์ผู้ติดต่อ': u.refPhoneNo_1 ? u.refPhoneNo_1 : '',
+      'ที่อยู่ผู้ติดต่อ': u.refAddress_1 ? u.refAddress_1 : ''
+    }));
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+    FileSaver.saveAs(blob, `employee_inout_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+    this.spinner.hideLoadingSpinner();
+  }
+
+  onExportEmployeeByMonth() {
+    const monthYear: string = this.empInRateReportForm.get('month_year').value;
+    const monthYearArray = monthYear.split('-');
+    this.userService.getUserByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0])).subscribe(users => {
+      const data = users.map(u => ({
+        'รหัสพนักงาน': `'${u.empNo}`,
+        'บริษัท': u.companyId,
+        'หน่วยงาน': u.site.name,
+        'ตำแหน่ง': u.role.nameTH,
+        'เลขที่บัตรประชาชน': `'${u.idCardNumber}`,
+        'วันที่ออกบัตร': !u.dateIssued ? '' : this.convertToDateString(u.dateIssued),
+        'วันหมดอายุ': !u.expiryDate ? '' : this.convertToDateString(u.expiryDate),
+        'คำนำหน้า': u.title,
+        'ชื่อ': u.firstName,
+        'นามสกุล': u.lastName,
+        'คำนำหน้าภาษาอังกฤษ': u.titleEn,
+        'ชื่อภาษาอังกฤษ': u.firstnameEn,
+        'นามสกุลอังกฤษ': u.lastnameEn,
+        'เพศ': u.gender,
+        'ธนาคาร': u.bankName,
+        'เลขที่บัญชี': `'${u.bankAccount}`,
+        'เบอร์โทรศัพท์': u.phoneNo,
+        'วันเกิด': !u.birthdate ? '' : this.convertToDateString(u.birthdate),
+        'น้ำหนัก': u.weight && u.weight > 0 ? u.weight : '',
+        'ส่วนสูง': u.height && u.height > 0 ? u.height : '',
+        'เชื้อชาติ': u.ethnicity,
+        'สัญชาติ': u.nationality,
+        'ศาสนา': u.religion,
+        'ที่อยู่ตามทะเบียนบ้าน': u.permanentAddress,
+        'ที่อยู่ปัจจุบัน': u.currentAddress,
+        'วันเริ่มงาน': !u.startDate ? '' : this.convertToDateString(u.startDate),
+        'วันที่ลาออก': !u.endDate ? '' : this.convertToDateString(u.endDate),
+        'สาเหตุที่ออก': u.resignationCause,
+        'กรณีฉุกเฉินบุคคลที่ติดต่อได้': u.refName_1 ? u.refName_1 : '',
+        'ความสัมพันธ์ผู้ติดต่อ': u.refRelation_1 ? u.refRelation_1 : '',
+        'เบอร์โทรศัพท์ผู้ติดต่อ': u.refPhoneNo_1 ? u.refPhoneNo_1 : '',
+        'ที่อยู่ผู้ติดต่อ': u.refAddress_1 ? u.refAddress_1 : ''
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `employee_inout_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }, error => {
+      console.log(error);
+      this.spinner.hideLoadingSpinner();
+    });
+  }
+
+  convertToDateString(dateString: string): string {
+    if (dateString === null || dateString === undefined || dateString === '') {
+      return '';
+    }
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    const d = new Date(dateString);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
+  }
 }

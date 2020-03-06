@@ -11,7 +11,7 @@
 }
 
 .report-card {
-  min-height: 250px;
+  min-height: 251px;
 }
 
 .date-range--control {
@@ -38,6 +38,10 @@
 
 .button__export {
   @extend .button__action;
+}
+
+.button__export:hover {
+  opacity: .85;
 }
 
 .employee--percentage {
