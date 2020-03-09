@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Application Employee Management System",
   "description": "Cong Application Employee Management System",
-  "version": "2.1.6",
+  "version": "2.2.0",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -29,6 +29,7 @@
     "electron-build": "ng build --base-href --prod",
     "package-mac": "electron-packager . 'CongApp' --overwrite --asar --platform=darwin --arch=x64 --icon=src/assets/icons/cong_icon.icns --prune=true --out=release-builds",
     "package-win": "electron-packager . 'CongApp' --overwrite --asar --platform=win32 --arch=ia32 --icon=src/assets/icons/cong_icon.ico --prune=true --out=release-builds --version-string.CompanyName=CE --version-string.FileDescription=CE --version-string.ProductName=\"CongApp\"",
+    "package-win2": "electron-packager . 'CongApp' --platform=win32 --arch=x64 --electron-version=2.0.5 --out=./release-builds",
     "create-installer-mac": "electron-installer-dmg ./release-builds/CongApp-darwin-x64/CongApp.app CongApp --out=release-builds --overwrite --icon=src/assets/icons/cong_icon.icns",
     "create-installer-win": "node installers/windows/createinstaller.js"
   },
@@ -83,7 +84,7 @@
     "electron": "^3.0.10",
     "electron-builder": "^22.2.0",
     "electron-installer-dmg": "^3.0.0",
-    "electron-packager": "^14.0.6",
+    "electron-packager": "^14.2.1",
     "electron-winstaller": "^4.0.0",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
