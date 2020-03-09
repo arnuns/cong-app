@@ -120,19 +120,24 @@ export class EmployeeReportComponent implements OnInit {
 
   getEmployeeByDateRange(startDate: Date, endDate: Date) {
     const that = this;
+    const dateFormat = 'YYYY-MM-DD';
     this.empInOutReportProcessing = true;
-    function toDateQuery(date: Date) { return that.moment.format(date, 'YYYY-MM-DD'); }
+    function toDateQuery(date: Date) { return that.moment.format(date, dateFormat); }
+    const queryStartDate = toDateQuery(startDate);
+    const queryEndDate = toDateQuery(endDate);
     this.userService.getUserByDateRange(toDateQuery(startDate), toDateQuery(endDate))
       .subscribe(users => {
+        const rangeStart = this.moment.toDate(queryStartDate, dateFormat);
+        const rangeEnd = this.moment.toDate(queryEndDate, dateFormat);
         this.empInOutReport = {
           data: users,
           begin: users.filter(u => {
             const registerOn = u.registerOn ? new Date(u.registerOn) : undefined;
-            return registerOn && registerOn >= startDate && registerOn <= endDate;
+            return registerOn && registerOn.getTime() >= rangeStart.getTime() && registerOn.getTime() <= rangeEnd.getTime();
           }),
           resign: users.filter(u => {
             const resignOn = u.endDate ? new Date(u.endDate) : undefined;
-            return resignOn && resignOn >= startDate && resignOn <= endDate;
+            return resignOn && resignOn.getTime() >= rangeStart.getTime() && resignOn.getTime() <= rangeEnd.getTime();
           })
         };
         this.empInOutReportProcessing = false;
