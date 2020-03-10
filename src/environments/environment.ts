@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://testapi.congapps.com',
+  apiUrl: 'https://api.congapps.com',
   // apiUrl: 'http://localhost:5000',
   apiVersion: '1.0',
   // basePath: '../dist/assets',
