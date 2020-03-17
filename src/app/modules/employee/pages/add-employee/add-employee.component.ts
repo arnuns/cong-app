@@ -432,40 +432,40 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       formData.append('faculty', getValue('faculty'));
     }
     if (getValue('company_1')) {
-      formData.append('company1', getValue('company_1'));
+      formData.append('company_1', getValue('company_1'));
     }
     if (getValue('position_1')) {
-      formData.append('position1', getValue('position_1'));
+      formData.append('position_1', getValue('position_1'));
     }
     if (getValue('duration_1')) {
-      formData.append('duration1', getValue('duration_1'));
+      formData.append('duration_1', getValue('duration_1'));
     }
     if (getValue('resignation_cause_1')) {
-      formData.append('resignationCause1', getValue('resignation_cause_1'));
+      formData.append('resignationCause_1', getValue('resignation_cause_1'));
     }
     if (getValue('company_2')) {
-      formData.append('company2', getValue('company_2'));
+      formData.append('company_2', getValue('company_2'));
     }
     if (getValue('position_2')) {
-      formData.append('position2', getValue('position_2'));
+      formData.append('position_2', getValue('position_2'));
     }
     if (getValue('duration_2')) {
-      formData.append('duration2', getValue('duration_2'));
+      formData.append('duration_2', getValue('duration_2'));
     }
     if (getValue('resignation_cause_2')) {
-      formData.append('resignationCause2', getValue('resignation_cause_2'));
+      formData.append('resignationCause_2', getValue('resignation_cause_2'));
     }
     if (getValue('company_3')) {
-      formData.append('company3', getValue('company_3'));
+      formData.append('company_3', getValue('company_3'));
     }
     if (getValue('position_3')) {
-      formData.append('position3', getValue('position_3'));
+      formData.append('position_3', getValue('position_3'));
     }
     if (getValue('duration_3')) {
-      formData.append('duration3', getValue('duration_3'));
+      formData.append('duration_3', getValue('duration_3'));
     }
     if (getValue('resignation_cause_3')) {
-      formData.append('resignationCause3', getValue('resignation_cause_3'));
+      formData.append('resignationCause_3', getValue('resignation_cause_3'));
     }
     if (getValue('training_1')) {
       formData.append('training_1', getValue('training_1'));
