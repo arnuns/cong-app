@@ -5,7 +5,7 @@ import { CacheService } from './cache/cache.service';
 import { CookieService } from 'ngx-cookie-service';
 import {
     PayrollCycle, SitePayrollCycleSalary, SummarySalaryBySite,
-    Salary, SiteSalary, SocialSecurityHistory, SocialSecurityHistoryMonthName
+    Salary, SiteSalary, SocialSecurityHistory, SocialSecurityHistoryMonthName, SocialSecurityRate
 } from '../models/payroll';
 import { MomentHelper } from '../helpers/moment.helper';
 
@@ -154,5 +154,13 @@ export class PayrollService extends BaseService {
         const siteIdValue = (!siteId) ? '0' : `${siteId}`;
         // tslint:disable-next-line: max-line-length
         return this.http.get<SocialSecurityHistory[]>(`${this.serviceUrl}/Payroll/SocialSecurity/Year/${payrollYear}/Month/${payrollMonth}/Site/${siteIdValue}`);
+    }
+
+    getSocialSecurityRate(year: number, month: number) {
+        const params = new HttpParams()
+            .set('year', String(year))
+            .set('month', String(month));
+        return this.cacheService.get(`sso_rate_y${year}_m${month}`,
+            this.http.get<SocialSecurityRate>(`${this.serviceUrl}/Payroll/SocialSecurity/Rate`, { params: params }));
     }
 }

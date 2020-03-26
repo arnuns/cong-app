@@ -176,6 +176,12 @@ export interface PayrollDeductible {
     cremationFee: number;
 }
 
+export interface SocialSecurityRate {
+    year: number;
+    month: number;
+    rate: number;
+}
+
 export interface SocialSecurityHistoryFilter extends PageFilter {
     search: string;
     payrollYear: number;

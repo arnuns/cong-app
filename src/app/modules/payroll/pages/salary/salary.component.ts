@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { combineLatest, Subject } from 'rxjs';
 import { PayrollService } from 'src/app/core/services/payroll.service';
-import { PayrollCycle, Salary, SiteSalary, SitePayrollCycleSalary } from 'src/app/core/models/payroll';
+import { PayrollCycle, Salary, SiteSalary, SitePayrollCycleSalary, SocialSecurityRate } from 'src/app/core/models/payroll';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { SiteService } from 'src/app/core/services/site.service';
 import { Site } from 'src/app/core/models/site';
@@ -35,6 +35,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   siteId: number;
   payrollCycle: PayrollCycle;
   sitePayrollCycleSalary: SitePayrollCycleSalary;
+  socialSecurityRate: SocialSecurityRate;
   sites: Site[] = [];
   site: Site;
   salaries: Salary[] = [];
@@ -414,14 +415,17 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   getSitePayrollCycleSalary(rerender = false) {
     this.spinner.showLoadingSpinner();
+    const payrollEndDate = new Date(this.payrollCycle.end);
     combineLatest(
       [
         this.payrollService.getPayrollCycleSiteSalary(this.payrollCycleId, this.siteId),
-        this.payrollService.getSitePayrollCycleSalary(this.payrollCycleId, this.siteId)
+        this.payrollService.getSitePayrollCycleSalary(this.payrollCycleId, this.siteId),
+        this.payrollService.getSocialSecurityRate(payrollEndDate.getFullYear(), payrollEndDate.getMonth() + 1)
       ]
     ).subscribe(results => {
       this.sitePayrollCycleSalary = results[0];
       this.salaries = results[1];
+      this.socialSecurityRate = results[2];
       if (rerender) {
         this.rerender();
       } else {
@@ -921,7 +925,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     }
     resultWage = (minimumWage * resultManday);
-    result = (resultWage + positionValue) * 0.05;
+    result = (resultWage + positionValue) * (this.socialSecurityRate ? this.socialSecurityRate.rate : 0.05);
     if (result < 42) {
       result = 42;
     } else if (result > 750) {
