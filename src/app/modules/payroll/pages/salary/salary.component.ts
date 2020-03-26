@@ -931,7 +931,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     } else if (result > 750) {
       result = 750;
     } else {
-      result = Math.ceil(result);
+      result = Math.round(result);
     }
     return result;
   }
