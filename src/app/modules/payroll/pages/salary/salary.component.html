@@ -107,7 +107,7 @@
           <td class="col--sso pointer" (click)="editSalaryModal(salary)">{{ salary.socialSecurity | number:'1.2-2' }}
           </td>
           <td class="col--total-deductible pointer" (click)="editSalaryModal(salary)">
-            {{ (salary.socialSecurity + salary.totalDeductible) | number:'1.2-2' }}</td>
+            {{ salary.totalDeductible | number:'1.2-2' }}</td>
           <td class="pointer" (click)="editSalaryModal(salary)">{{ salary.bankAccount }}</td>
           <td class="col--total-amount pointer" (click)="editSalaryModal(salary)">
             {{ salary.totalAmount | number:'1.2-2' }}</td>
