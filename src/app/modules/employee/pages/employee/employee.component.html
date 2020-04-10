@@ -23,7 +23,7 @@
         <div>
           <div class="form-group mb-1">
             <ng-select class="site-select" [items]="sites" [multiple]="true" [closeOnSelect]="false"
-              [searchable]="false" (change)="onSiteSelectionChange()" bindLabel="name" placeholder="เลือกหน่วยงาน"
+              (change)="onSiteSelectionChange()" bindLabel="name" placeholder="เลือกหน่วยงาน"
               formControlName="site_array">
               <ng-template ng-multi-label-tmp let-items="items" let-clear="clear">
                 <div class="ng-value" *ngFor="let item of items | slice:0:5">

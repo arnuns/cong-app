@@ -12,7 +12,7 @@ import { existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { SiteService } from 'src/app/core/services/site.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscribable, Subscription } from 'rxjs';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 
@@ -145,6 +145,9 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
 
   serverError: string;
   dateFormat = 'YYYY-MM-DDT00:00:00Z';
+  titleSubscription: Subscription;
+  titleEnSubscription: Subscription;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -220,24 +223,8 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       this.employeeForm.get('education').updateValueAndValidity();
       this.employeeForm.get('graduate_school').updateValueAndValidity();
     });
-    this.employeeForm.get('title').valueChanges.subscribe(val => {
-      if (val === 'อื่นๆ') {
-        this.employeeForm.get('title_other').setValidators([Validators.required]);
-      } else {
-        this.employeeForm.get('title_other').setValue('');
-        this.employeeForm.get('title_other').setValidators(null);
-      }
-      this.employeeForm.get('title_other').updateValueAndValidity();
-    });
-    this.employeeForm.get('title_en').valueChanges.subscribe(val => {
-      if (val === 'others') {
-        this.employeeForm.get('title_other_en').setValidators([Validators.required]);
-      } else {
-        this.employeeForm.get('title_other_en').setValue('');
-        this.employeeForm.get('title_other_en').setValidators(null);
-      }
-      this.employeeForm.get('title_other_en').updateValueAndValidity();
-    });
+    this.titleSubscription = this.titleValueChanges();
+    this.titleEnSubscription = this.titleEnValueChanges();
     this.employeeForm.get('is_disability').valueChanges.subscribe(val => {
       if (val) {
         this.employeeForm.get('disability').setValidators([Validators.required]);
@@ -299,7 +286,12 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
         if (this.user.imageProfile) {
           this.previewImageProfileUrl.nativeElement.src = this.user.imageProfile;
         }
-
+        if (this.titleSubscription) {
+          this.titleSubscription.unsubscribe();
+        }
+        if (this.titleEnSubscription) {
+          this.titleEnSubscription.unsubscribe();
+        }
         if (this.user.title) {
           if (!this.titleArrays.some(t => t === this.user.title.toLowerCase())) {
             this.employeeForm.patchValue({
@@ -308,9 +300,13 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
             });
             this.employeeForm.get('title_other').setValidators([Validators.required]);
           } else {
-            this.employeeForm.get('title_other').setValue('');
+            this.employeeForm.patchValue({
+              title: this.user.title,
+              title_other: ''
+            });
             this.employeeForm.get('title_other').setValidators(null);
           }
+          this.employeeForm.get('title').updateValueAndValidity();
           this.employeeForm.get('title_other').updateValueAndValidity();
         }
         if (this.user.titleEn) {
@@ -321,10 +317,17 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
             });
             this.employeeForm.get('title_other_en').setValidators([Validators.required]);
           } else {
-            this.employeeForm.get('title_other_en').setValue('');
+            this.employeeForm.patchValue({
+              title_en: this.user.titleEn,
+              title_other_en: ''
+            });
             this.employeeForm.get('title_other_en').setValidators(null);
           }
+          this.employeeForm.get('title_en').updateValueAndValidity();
+          this.employeeForm.get('title_other_en').updateValueAndValidity();
         }
+        this.titleSubscription = this.titleValueChanges();
+        this.titleEnSubscription = this.titleEnValueChanges();
         this.employeeForm.patchValue({
           is_temporary: this.user.isTemporary,
           image_profile: null,
@@ -334,10 +337,8 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           idcard_no: this.user.idCardNumber ? this.user.idCardNumber : '',
           dateissued: this.user.dateIssued ? this.convertToDate(this.user.dateIssued) : null,
           expirydate: this.user.expiryDate ? this.convertToDate(this.user.expiryDate) : null,
-          // title: this.user.title ? this.user.title : '',
           firstname: this.user.firstName ? this.user.firstName : '',
           lastname: this.user.lastName ? this.user.lastName : '',
-          // title_en: this.user.titleEn ? this.user.titleEn : '',
           firstname_en: this.user.firstnameEn ? this.user.firstnameEn : '',
           lastname_en: this.user.lastnameEn ? this.user.lastnameEn : '',
           gender: this.user.gender ? this.user.gender : '',
@@ -463,6 +464,30 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       default:
         break;
     }
+  }
+
+  titleValueChanges() {
+    return this.employeeForm.get('title').valueChanges.subscribe(val => {
+      if (val === 'อื่นๆ') {
+        this.employeeForm.get('title_other').setValidators([Validators.required]);
+      } else {
+        this.employeeForm.get('title_other').setValue('');
+        this.employeeForm.get('title_other').setValidators(null);
+      }
+      this.employeeForm.get('title_other').updateValueAndValidity();
+    });
+  }
+
+  titleEnValueChanges() {
+    return this.employeeForm.get('title_en').valueChanges.subscribe(val => {
+      if (val === 'others') {
+        this.employeeForm.get('title_other_en').setValidators([Validators.required]);
+      } else {
+        this.employeeForm.get('title_other_en').setValue('');
+        this.employeeForm.get('title_other_en').setValidators(null);
+      }
+      this.employeeForm.get('title_other_en').updateValueAndValidity();
+    });
   }
 
   displayBeginModal() {
