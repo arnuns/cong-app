@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { combineLatest, Subject } from 'rxjs';
 import { PayrollService } from 'src/app/core/services/payroll.service';
-import { PayrollCycle, Salary, SiteSalary, SitePayrollCycleSalary, SocialSecurityRate } from 'src/app/core/models/payroll';
+import { PayrollCycle, Salary, SitePayrollCycleSalary, SocialSecurityRate } from 'src/app/core/models/payroll';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { SiteService } from 'src/app/core/services/site.service';
 import { Site } from 'src/app/core/models/site';
@@ -500,9 +500,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
-    // if (salary.isPaid) {
-    //   this.updateSalaryForm.disable();
-    // }
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
@@ -925,11 +922,14 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     }
     resultWage = (minimumWage * resultManday);
-    result = (resultWage + positionValue) * (this.socialSecurityRate ? this.socialSecurityRate.rate : 0.05);
-    if (result < 42) {
-      result = 42;
-    } else if (result > 750) {
-      result = 750;
+    const rateSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.rate : 0.05;
+    const minimumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.minimumAmount : 83;
+    const maximumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.maximumAmount : 750;
+    result = (resultWage + positionValue) * rateSocialSecurity;
+    if (result < minimumSocialSecurity) {
+      result = minimumSocialSecurity;
+    } else if (result > maximumSocialSecurity) {
+      result = maximumSocialSecurity;
     } else {
       result = Math.round(result);
     }

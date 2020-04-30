@@ -180,6 +180,8 @@ export interface SocialSecurityRate {
     year: number;
     month: number;
     rate: number;
+    minimumAmount: number;
+    maximumAmount: number;
 }
 
 export interface SocialSecurityHistoryFilter extends PageFilter {
