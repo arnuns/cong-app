@@ -90,7 +90,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       this.districts = results[3];
       this.postcodes = results[4];
       this.roles = results[5];
-      console.log(this.site);
+      (this.site);
       this.siteForm.patchValue({
         code: this.site.code,
         full_name: this.site.fullName,
