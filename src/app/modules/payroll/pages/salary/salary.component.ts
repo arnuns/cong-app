@@ -205,7 +205,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       if (!this.updateSalaryForm.get('salary_id').value) {
         this.addSite();
         const siteRole = this.site.siteRoles.filter(r => r.roleId === 'security')[0];
-        const hiringRatePerDay = siteRole ? siteRole.hiringRatePerDay : this.site.province.minimumWage;
+        const hiringRatePerDay = siteRole ? siteRole.hiringRatePerDay : this.site.minimumWage;
         this.hiringRatePerDay = hiringRatePerDay.toFixed(2);
       }
       combineLatest(
@@ -657,7 +657,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.spinner.showLoadingSpinner();
     const siteRole = this.site.siteRoles.filter(r => r.roleId === this.updateSalaryForm.get('role_id').value)[0];
     const minimumManday = siteRole ? siteRole.minimumManday : 26;
-    const hiringRatePerDay = this.hiringRatePerDay ? Number(this.hiringRatePerDay) : this.site.province.minimumWage;
+    const hiringRatePerDay = this.hiringRatePerDay ? Number(this.hiringRatePerDay) : this.site.minimumWage;
     const salary: Salary = {
       id: getValue('salary_id') ? getValue('salary_id') : 0,
       payrollCycleId: this.payrollCycleId,
@@ -677,7 +677,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       startDate: null,
       bankAccount: getValue('bank_account'),
       bankId: getValue('bank_id'),
-      minimumWage: this.site.province.minimumWage,
+      minimumWage: this.site.minimumWage,
       minimumManday: minimumManday,
       hiringRatePerDay: hiringRatePerDay,
       siteManday: 0,
@@ -905,7 +905,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     if (!this.site) { return 0; }
     const siteRole = this.site.siteRoles.filter(r => r.roleId === this.updateSalaryForm.get('role_id').value)[0];
     const minimumManday = siteRole ? siteRole.minimumManday : 26;
-    const minimumWage = this.site.province.minimumWage;
+    const minimumWage = this.site.minimumWage;
     const positionValue = this.updateSalaryForm.get('position_value').value
       ? Number(this.updateSalaryForm.get('position_value').value) : 0;
     if (this.site.isMonthly) {
