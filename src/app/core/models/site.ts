@@ -14,8 +14,10 @@ export interface Site {
     province: Province;
     latitude: number;
     longitude: number;
+    minimumWage: number;
     isPayroll: boolean;
     isMonthly: boolean;
+    selfCheckIn: boolean;
     status: boolean;
     createOn: Date;
     createBy: string;

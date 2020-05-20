@@ -150,6 +150,14 @@
             <div>
               <h3 class="title">เวลาและจำนวนแรง</h3>
             </div>
+            <div class="ml-4">
+              <div class="form-group mb-0">
+                <input type="checkbox" id="self_checkin" formControlName="self_checkin">
+                <label class="self-checkin-label pl-2 mb-0" for="self_checkin">
+                  สามารถลงบันทึกเวลาตนเองได้
+                </label>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -201,6 +209,18 @@
           <div class="d-flex align-items-center my-2">
             <div>
               <h3 class="title">อัตราการจ้างพนักงาน</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="d-flex w-100">
+            <div class="p-2">
+              <div class="form-group">
+                <label for="minimum_wage">ค่าแรงขั้นต่ำ <span class="text-danger"><small>*</small></span></label>
+                <input type="number" class="form-control" formControlName="minimum_wage">
+              </div>
             </div>
           </div>
         </div>

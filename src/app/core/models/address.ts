@@ -4,7 +4,6 @@ export interface Province {
     name: string;
     nameEn: string;
     geoId: number;
-    minimumWage: number;
 }
 
 export interface Amphur {

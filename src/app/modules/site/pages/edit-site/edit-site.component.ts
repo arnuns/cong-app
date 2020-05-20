@@ -42,7 +42,9 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
     longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
     postcode: [{ value: '', disabled: true }],
+    minimum_wage: [undefined, [Validators.required]],
     is_monthly: [false],
+    self_checkin: [false],
     site_work_rates: this.fb.array([]),
     site_roles: this.fb.array([]),
   });
@@ -90,37 +92,40 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       this.districts = results[3];
       this.postcodes = results[4];
       this.roles = results[5];
-      (this.site);
-      this.siteForm.patchValue({
-        code: this.site.code,
-        full_name: this.site.fullName,
-        name: this.site.name,
-        address: this.site.address,
-        province_id: this.site.provinceId,
-        amphur_id: this.site.amphurId > 0 ? this.site.amphurId : undefined,
-        district_id: this.site.districtId > 0 ? this.site.districtId : undefined,
-        latitude: this.site.latitude,
-        longitude: this.site.longitude,
-        is_monthly: this.site.isMonthly
-      });
-      this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
-      this.user_districts = this.districts.filter(a => a.amphurId === this.site.amphurId);
-      const district = this.districts.filter(d => d.id === this.siteForm.get('district_id').value)[0];
-      if (district) {
-        const postcode = this.postcodes.filter(p => p.districtCode === district.code)[0];
-        if (postcode) {
-          this.siteForm.get('postcode').setValue(postcode.code);
+      if (this.site) {
+        this.siteForm.patchValue({
+          code: this.site.code,
+          full_name: this.site.fullName,
+          name: this.site.name,
+          address: this.site.address,
+          province_id: this.site.provinceId,
+          amphur_id: this.site.amphurId > 0 ? this.site.amphurId : undefined,
+          district_id: this.site.districtId > 0 ? this.site.districtId : undefined,
+          latitude: this.site.latitude,
+          longitude: this.site.longitude,
+          minimum_wage: this.site.minimumWage,
+          is_monthly: this.site.isMonthly,
+          self_checkin: this.site.selfCheckIn
+        });
+        this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
+        this.user_districts = this.districts.filter(a => a.amphurId === this.site.amphurId);
+        const district = this.districts.filter(d => d.id === this.siteForm.get('district_id').value)[0];
+        if (district) {
+          const postcode = this.postcodes.filter(p => p.districtCode === district.code)[0];
+          if (postcode) {
+            this.siteForm.get('postcode').setValue(postcode.code);
+          }
         }
-      }
-      if (this.site.siteWorkRates.length > 0) {
-        this.addSiteWorkRate(this.site.siteWorkRates);
-      } else {
-        this.addSiteWorkRate();
-      }
-      if (this.site.siteRoles.length > 0) {
-        this.addSiteRole(this.site.siteRoles);
-      } else {
-        this.addSiteRole();
+        if (this.site.siteWorkRates.length > 0) {
+          this.addSiteWorkRate(this.site.siteWorkRates);
+        } else {
+          this.addSiteWorkRate();
+        }
+        if (this.site.siteRoles.length > 0) {
+          this.addSiteRole(this.site.siteRoles);
+        } else {
+          this.addSiteRole();
+        }
       }
       this.spinner.hideLoadingSpinner(0);
     }, error => {
@@ -168,8 +173,10 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       province: null,
       latitude: this.siteForm.get('latitude').value,
       longitude: this.siteForm.get('longitude').value,
+      minimumWage: this.siteForm.get('minimum_wage').value,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
+      selfCheckIn: this.siteForm.get('self_checkin').value,
       status: true,
       createOn: undefined,
       createBy: undefined,
