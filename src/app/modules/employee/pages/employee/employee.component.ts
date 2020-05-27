@@ -207,9 +207,7 @@ export class EmployeeComponent implements OnDestroy, OnInit {
   }
 
   previewEmployeeCard(empNo: string) {
-    if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.send('view-employee-card', empNo);
-    }
+    this.userService.downloadEmployeeCard(empNo);
   }
 
   onExportUserToCsv() {
