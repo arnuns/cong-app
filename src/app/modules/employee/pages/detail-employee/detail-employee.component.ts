@@ -236,9 +236,7 @@ export class DetailEmployeeComponent implements OnDestroy, OnInit {
   }
 
   previewEmployeeCard(empNo: string) {
-    if (this.electronService.isElectronApp) {
-      this.electronService.ipcRenderer.send('view-employee-card', empNo);
-    }
+    this.userService.downloadEmployeeCard(empNo);
   }
 
   navigateMainToEditPage(empNo: string) {

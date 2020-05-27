@@ -6,6 +6,8 @@ import { User, Role, Document, BeginResign } from '../models/user';
 import { Company } from '../models/company';
 import { Hospital } from '../models/hospital';
 import { CookieService } from 'ngx-cookie-service';
+import { map } from 'rxjs/operators';
+import { SpinnerHelper } from '../helpers/spinner.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +17,7 @@ export class UserService extends BaseService {
   constructor(
     private cacheService: CacheService,
     private http: HttpClient,
+    private spinner: SpinnerHelper,
     cookieService: CookieService
   ) {
     super(cookieService);
@@ -108,5 +111,23 @@ export class UserService extends BaseService {
       .set('year', String(year))
       .set('month', String(month));
     return this.http.get<number>(`${this.serviceUrl}/user/countbymonthyear`, { params: params });
+  }
+
+  downloadEmployeeCard(empNo: string) {
+    this.spinner.showLoadingSpinner();
+    return this.http
+      .get(`${this.serviceUrl}/user/${empNo}/Report/EmployeeCard`, {
+        responseType: 'blob'
+      }).pipe(map(response => {
+        return {
+          filename: `${empNo}.pdf`,
+          data: response
+        };
+      })).subscribe(response => {
+        this.spinner.hideLoadingSpinner(0);
+        setTimeout(() => {
+          this.downloadFile(response);
+        }, 1000);
+      });
   }
 }
