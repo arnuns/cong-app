@@ -279,12 +279,16 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   imageProfileChange(event) {
     const input = event.target;
     if (input.files && input.files[0]) {
-      this.employeeForm.get('image_profile').setValue(input.files[0]);
-      const reader = new FileReader();
-      reader.onload = (e: Event) => {
-        this.previewImageProfileUrl.nativeElement.src = e.target['result'];
-      };
-      reader.readAsDataURL(input.files[0]);
+      this.spinner.showLoadingSpinner();
+      const formData = new FormData();
+      formData.append('file', input.files[0]);
+      this.userService.uploadImageProfile(formData).subscribe(result => {
+        this.employeeForm.get('image_profile').setValue(result.image_profile);
+        this.previewImageProfileUrl.nativeElement.src = result.image_profile;
+        this.spinner.hideLoadingSpinner(0);
+      }, error => {
+        this.spinner.hideLoadingSpinner(0);
+      });
     }
   }
 
@@ -330,7 +334,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       return that.employeeForm.get(controlName).value;
     }
     formData.append('isTemporary', getValue('is_temporary'));
-    formData.append('imageProfileFile', getValue('image_profile'));
+    formData.append('imageProfile', getValue('image_profile'));
     formData.append('companyId', getValue('company_id'));
     formData.append('siteId', getValue('site_id'));
     formData.append('roleId', getValue('role_id'));
