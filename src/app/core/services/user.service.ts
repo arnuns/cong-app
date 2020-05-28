@@ -130,4 +130,8 @@ export class UserService extends BaseService {
         }, 1000);
       });
   }
+
+  uploadImageProfile(formData) {
+    return this.http.post<any>(`${this.serviceUrl}/user/UploadImageProfile`, formData);
+  }
 }

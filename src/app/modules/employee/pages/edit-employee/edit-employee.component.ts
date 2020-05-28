@@ -330,7 +330,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
         this.titleEnSubscription = this.titleEnValueChanges();
         this.employeeForm.patchValue({
           is_temporary: this.user.isTemporary,
-          image_profile: null,
+          image_profile: this.user.imageProfile,
           company_id: this.user.companyId ? this.user.companyId : 'gmg',
           site_id: this.user.siteId,
           role_id: this.user.roleId ? this.user.roleId : 'security',
@@ -425,12 +425,17 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   imageProfileChange(event) {
     const input = event.target;
     if (input.files && input.files[0]) {
-      this.employeeForm.get('image_profile').setValue(input.files[0]);
-      const reader = new FileReader();
-      reader.onload = (e: Event) => {
-        this.previewImageProfileUrl.nativeElement.src = e.target['result'];
-      };
-      reader.readAsDataURL(input.files[0]);
+      this.spinner.showLoadingSpinner();
+      const formData = new FormData();
+      formData.append('file', input.files[0]);
+      formData.append('fileName', `${this.empNo}`);
+      this.userService.uploadImageProfile(formData).subscribe(result => {
+        this.employeeForm.get('image_profile').setValue(result.image_profile);
+        this.previewImageProfileUrl.nativeElement.src = result.image_profile;
+        this.spinner.hideLoadingSpinner(0);
+      }, error => {
+        this.spinner.hideLoadingSpinner(0);
+      });
     }
   }
 
@@ -533,9 +538,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       return that.employeeForm.get(controlName).value;
     }
     formData.append('isTemporary', getValue('is_temporary'));
-    if (getValue('image_profile')) {
-      formData.append('imageProfileFile', getValue('image_profile'));
-    }
+    formData.append('imageProfile', getValue('image_profile'));
     formData.append('companyId', getValue('company_id'));
     formData.append('siteId', getValue('site_id'));
     formData.append('roleId', getValue('role_id'));
@@ -759,10 +762,10 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('hospital_id')) {
       formData.append('hospitalId', getValue('hospital_id'));
     }
-    this.userService.updateUser(this.empNo, formData).subscribe(user => {
-      this.spinner.hideLoadingSpinner(0);
+    this.userService.updateUser(this.empNo, formData).toPromise().then(user => {
+      this.spinner.hideLoadingSpinner();
       this.router.navigate(['/employee']);
-    }, error => {
+    }).catch(() => {
       this.spinner.hideLoadingSpinner(0);
     });
   }
