@@ -230,7 +230,7 @@
                 <button type="button" class="btn btn-primary button__scan" (click)="scanNfcCardModal.open()">
                   <div class="d-flex justify-content-center">
                     <div>
-                      <img src="/assets/img/ico_scan_idcard.svg" alt="">
+                      <img [src]="defaultImagePath + '/img/ico_scan_idcard.svg'" alt="">
                     </div>
                     <div class="ml-2">ผูกบัตร NFC</div>
                   </div>
@@ -586,7 +586,9 @@
           <div class="col">
             <div>
               <div class="d-flex align-items-center">
-                <div><img class="nfc-scan-icon" src="/assets/img/ico_scan_idcard_greeny.svg" alt=""></div>
+                <div>
+                  <img class="nfc-scan-icon" [src]="defaultImagePath + '/img/ico_scan_idcard_greeny.svg'" alt="">
+                </div>
                 <div class="ml-2">
                   กรุณาแตะที่เครื่องอ่านบัตร
                 </div>
