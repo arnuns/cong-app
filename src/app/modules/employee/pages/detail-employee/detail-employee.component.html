@@ -219,18 +219,27 @@
                 </div>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6 text-left">
-                <button type="button" class="btn btn-outline-primary" (click)="navigateMainToEditPage(user?.empNo)">
-                  <small>
-                    แก้ไขข้อมูล
-                  </small>
+            <div class="d-flex w-100">
+              <div>
+                <button type="button" class="btn btn-outline-primary button__edit"
+                  (click)="navigateMainToEditPage(user?.empNo)">
+                  แก้ไขข้อมูล
                 </button>
               </div>
-              <div class="col-md-6 text-right">
+              <div class="ml-auto">
+                <button type="button" class="btn btn-primary button__scan" (click)="scanNfcCardModal.open()">
+                  <div class="d-flex justify-content-center">
+                    <div>
+                      <img src="/assets/img/ico_scan_idcard.svg" alt="">
+                    </div>
+                    <div class="ml-2">ผูกบัตร NFC</div>
+                  </div>
+                </button>
+              </div>
+              <div class="ml-2">
                 <div class="btn-group" dropdown [dropup]="true">
-                  <button id="button-basic" dropdownToggle type="button" class="btn btn-outline-primary dropdown-toggle"
-                    aria-controls="dropdown-basic">
+                  <button id="button-basic" dropdownToggle type="button"
+                    class="btn btn-outline-primary button__print dropdown-toggle" aria-controls="dropdown-basic">
                     พิมพ์เอกสาร <span class="caret"></span>
                   </button>
                   <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu"
@@ -568,3 +577,45 @@
       </tabset>
     </div>
   </div>
+
+  <ngx-smart-modal #scanNfcCardModal [identifier]="'scanNfcCardModal'" [closable]="true" [escapable]="false"
+    [dismissable]="false" [customClass]="'scan-nfc-card-dialog'">
+    <div class="dialog p-4">
+      <form [formGroup]="scanForm" (ngSubmit)="onScan()" #sc="ngForm">
+        <div class="row justify-content-center">
+          <div class="col">
+            <div>
+              <div class="d-flex align-items-center">
+                <div><img class="nfc-scan-icon" src="/assets/img/ico_scan_idcard_greeny.svg" alt=""></div>
+                <div class="ml-2">
+                  กรุณาแตะที่เครื่องอ่านบัตร
+                </div>
+              </div>
+            </div>
+            <div class="form-group my-3">
+              <input type="password" placeholder="หมายเลขบัตร NFC" class="form-control" formControlName="nfcRefId"
+                #nfcDecInput autofocus [readonly]="processing">
+            </div>
+            <div class="d-flex justify-content-center">
+              <div class="w-100">
+                <button type="submit" class="btn btn-block btn-primary button__save" [disabled]="processing">
+                  <div class="d-flex justify-content-center" *ngIf="processing; else showButtonText">
+                    <div class="mr-2">
+                      <div>
+                        <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </div>
+                    <div>
+                      กำลังบันทึก
+                    </div>
+                  </div>
+                  <ng-template #showButtonText>บันทึก</ng-template>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ngx-smart-modal>

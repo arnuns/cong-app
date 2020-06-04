@@ -82,6 +82,7 @@ export interface User {
     status: boolean;
     isComplete: boolean;
     registerOn: string;
+    nfcRefId: number;
     createBy: string;
     createOn: Date;
     updateBy: string;

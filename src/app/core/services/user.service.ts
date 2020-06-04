@@ -134,4 +134,8 @@ export class UserService extends BaseService {
   uploadImageProfile(formData) {
     return this.http.post<any>(`${this.serviceUrl}/user/UploadImageProfile`, formData);
   }
+
+  updateNfcRefId(empNo: number, nfcRefId: number) {
+    return this.http.put<User>(`${this.serviceUrl}/user/${empNo}/nfcCard/${nfcRefId}`, {});
+  }
 }

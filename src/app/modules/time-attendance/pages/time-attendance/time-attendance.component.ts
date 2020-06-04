@@ -380,7 +380,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onSubmit() {
-    this.spinner.showLoadingSpinner();
+    // this.spinner.showLoadingSpinner();
     const that = this;
     function getValue(controlName) {
       return that.editForm.get(controlName).value;
@@ -393,8 +393,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     const checkInTime: Date = getValue('checkin_time');
     const leaveDate: Date = getValue('leave_date');
     const leaveTime: Date = getValue('leave_time');
-    checkInDate.setHours(checkInTime.getHours(), checkInTime.getMinutes(), checkInTime.getMilliseconds());
-    leaveDate.setHours(leaveTime.getHours(), leaveTime.getMinutes(), leaveTime.getMilliseconds());
+    const checkInDateTime = `${this.moment.format(checkInDate, 'YYYY-MM-DD')}T${this.moment.format(checkInTime, 'HH:mm:00')}Z`;
+    const leaveDateTime = `${this.moment.format(leaveDate, 'YYYY-MM-DD')}T${this.moment.format(leaveTime, 'HH:mm:00')}Z`;
     if (this.editForm.get('id').value === 0) {
       const timeAttendance: TimeAttendance = {
         id: 0,
@@ -406,9 +406,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         workDate: this.moment.formatISO8601(getValue('work_date')),
         startTime: periodTime.startTime,
         endTime: periodTime.endTime,
-        checkInTime: this.moment.formatISO8601(checkInDate, true),
+        checkInTime: checkInDateTime,
         checkInByName: '',
-        leaveTime: this.moment.formatISO8601(leaveDate, true),
+        leaveTime: leaveDateTime,
         leaveByName: '',
         createBy: '',
         createOn: new Date(),
@@ -431,9 +431,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         workDate: this.moment.formatISO8601(getValue('work_date')),
         startTime: periodTime.startTime,
         endTime: periodTime.endTime,
-        checkInTime: this.moment.formatISO8601(checkInDate, true),
+        checkInTime: checkInDateTime,
         checkInByName: '',
-        leaveTime: this.moment.formatISO8601(leaveDate, true),
+        leaveTime: leaveDateTime,
         leaveByName: '',
         createBy: '',
         createOn: new Date(),
