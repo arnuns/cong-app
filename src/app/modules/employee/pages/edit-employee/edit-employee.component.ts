@@ -428,7 +428,6 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.showLoadingSpinner();
       const formData = new FormData();
       formData.append('file', input.files[0]);
-      formData.append('fileName', `${this.empNo}`);
       this.userService.uploadImageProfile(formData).subscribe(result => {
         this.employeeForm.get('image_profile').setValue(result.image_profile);
         this.previewImageProfileUrl.nativeElement.src = result.image_profile;

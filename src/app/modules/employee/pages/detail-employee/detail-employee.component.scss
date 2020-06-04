@@ -13,6 +13,11 @@
   .nav-tabs .nav-link.active {
     color: #000000;
   }
+
+  .scan-nfc-card-dialog {
+    max-width: 400px;
+  }
+
 }
 
 .tab-layout {
@@ -127,6 +132,46 @@
   background: #f25c62;
 }
 
+.button {
+  border-radius: 32px;
+  height: 42px;
+  font-size: 14px !important;
+}
+
+.button__edit {
+  @extend .button;
+  width: 160px;
+}
+
+.button__print {
+  @extend .button;
+  width: 160px;
+}
+
+.button__cancel {
+  @extend .button;
+  width: 120px;
+}
+
+.button__save {
+  @extend .button;
+}
+
+.button__scan {
+  @extend .button;
+  background-color: #05ca9d;
+  width: 160px;
+}
+
+.dropdown-menu>li {
+  height: 42px;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+
 @media screen and (max-width: 768px) {
   .container:before {
     left: 8px;
@@ -166,4 +211,8 @@
 
 .month-select {
   width: 120px;
+}
+
+.nfc-scan-icon {
+  width: 150px;
 }

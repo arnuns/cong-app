@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
@@ -12,14 +12,16 @@ import { Subject } from 'rxjs';
 import { TimeAttendance } from 'src/app/core/models/timeattendance';
 import { MonthHelper } from 'src/app/core/helpers/month.helper';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-detail-employee',
   templateUrl: './detail-employee.component.html',
   styleUrls: ['./detail-employee.component.scss']
 })
-export class DetailEmployeeComponent implements OnDestroy, OnInit {
+export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
+  @ViewChild('nfcDecInput', { static: false }) nfcDecInput: ElementRef;
   public defaultImagePath = environment.basePath;
   dtTrigger = new Subject();
   timeAttendances: TimeAttendance[] = [];
@@ -32,12 +34,17 @@ export class DetailEmployeeComponent implements OnDestroy, OnInit {
     year: [new Date().getFullYear(), [Validators.required]],
     month: [new Date().getMonth() + 1]
   });
+  scanForm = this.fb.group({
+    nfcRefId: ['', [Validators.required]]
+  });
+  processing = false;
   constructor(
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
     private electronService: ElectronService,
     private fb: FormBuilder,
     private monthHelper: MonthHelper,
+    private ngxSmartModalService: NgxSmartModalService,
     private spinner: SpinnerHelper,
     private timeAttendanceService: TimeAttendanceService,
     private userService: UserService,
@@ -45,6 +52,20 @@ export class DetailEmployeeComponent implements OnDestroy, OnInit {
     this.updateView();
     this.sub = this.activatedRoute.params.subscribe(params => {
       this.empNo = Number(params['empNo']);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.ngxSmartModalService.getModal('scanNfcCardModal').onOpen.subscribe((event: Event) => {
+      setTimeout(() => {
+        this.nfcDecInput.nativeElement.focus();
+      }, 300);
+    });
+
+    this.ngxSmartModalService.getModal('scanNfcCardModal').onClose.subscribe((event: Event) => {
+      this.scanForm.reset({
+        id: ''
+      });
     });
   }
 
@@ -119,6 +140,16 @@ export class DetailEmployeeComponent implements OnDestroy, OnInit {
 
   onMonthSelectionChange() {
     this.onLoadTimeAttendance();
+  }
+
+  onScan() {
+    this.processing = true;
+    this.userService.updateNfcRefId(this.empNo, this.scanForm.get('nfcRefId').value).subscribe(user => {
+      this.processing = false;
+      this.ngxSmartModalService.getModal('scanNfcCardModal').close();
+    }, error => {
+      this.processing = false;
+    });
   }
 
   get dtOptions(): DataTables.Settings {
