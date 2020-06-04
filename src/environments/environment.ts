@@ -15,5 +15,5 @@ export const environment = {
   companyEmail: 'office@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '28/05/2020'
+  releaseDate: '04/06/2020'
 };
