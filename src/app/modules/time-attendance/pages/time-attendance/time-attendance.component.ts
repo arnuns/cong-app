@@ -44,9 +44,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     emp_no: [undefined, Validators.required],
     name: [''],
     checkin_date: [{ value: new Date(), disabled: true }],
-    leave_date: [undefined, [Validators.required]],
+    leave_date: [undefined],
     checkin_time: [undefined, [Validators.required]],
-    leave_time: [undefined, [Validators.required]]
+    leave_time: [undefined]
   });
 
   deleteForm = this.fb.group({
@@ -293,7 +293,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     if (workDate) {
       workDate.setHours(7);
     }
-    const leaveDate = new Date(timeAttendance.leaveTime);
+    const leaveDate = timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined;
     if (leaveDate) {
       leaveDate.setHours(7);
     }
@@ -305,9 +305,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         && r.endTime === timeAttendance.endTime)[0].viewValue,
       emp_no: timeAttendance.empNo,
       name: timeAttendance.employeeName,
-      leave_date: leaveDate,
+      leave_date: leaveDate ? leaveDate : undefined,
       checkin_time: new Date(timeAttendance.checkInTime),
-      leave_time: new Date(timeAttendance.leaveTime)
+      leave_time: timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined
     });
     this.editForm.get('site_id').disable();
     this.editForm.get('work_date').disable();
@@ -394,7 +394,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     const leaveDate: Date = getValue('leave_date');
     const leaveTime: Date = getValue('leave_time');
     const checkInDateTime = `${this.moment.format(checkInDate, 'YYYY-MM-DD')}T${this.moment.format(checkInTime, 'HH:mm:00')}Z`;
-    const leaveDateTime = `${this.moment.format(leaveDate, 'YYYY-MM-DD')}T${this.moment.format(leaveTime, 'HH:mm:00')}Z`;
+    const leaveDateTime = (!leaveDate || !leaveTime) ? undefined
+      : `${this.moment.format(leaveDate, 'YYYY-MM-DD')}T${this.moment.format(leaveTime, 'HH:mm:00')}Z`;
     if (this.editForm.get('id').value === 0) {
       const timeAttendance: TimeAttendance = {
         id: 0,
