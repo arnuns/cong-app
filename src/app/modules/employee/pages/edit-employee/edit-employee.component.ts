@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } fr
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { Role, User } from 'src/app/core/models/user';
+import { Role, User, UserPosition } from 'src/app/core/models/user';
 import { Company } from 'src/app/core/models/company';
 import { Site } from 'src/app/core/models/site';
 import { AvailableBank } from 'src/app/core/models/available-bank.model';
@@ -34,7 +34,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   sub: any;
   reading = false;
   updating = false;
-  roles: Role[] = [];
+  userPositions: UserPosition[] = [];
   companies: Company[] = [];
   sites: Site[] = [];
   banks: AvailableBank[] = [];
@@ -52,7 +52,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     image_profile: [null],
     company_id: ['gmg', Validators.required],
     site_id: [undefined, Validators.required],
-    role_id: ['security', Validators.required],
+    user_position_id: [undefined],
     idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
     dateissued: [null, Validators.required],
     expirydate: [null, Validators.required],
@@ -264,7 +264,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       [
         this.userService.getUser(this.empNo),
         this.siteService.getSites(),
-        this.userService.getUserRoles(),
+        this.userService.getUserPositions(),
         this.userService.getUserCompanies(),
         this.userService.getAvailableBanks(),
         this.userService.getHospitals()
@@ -273,7 +273,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       this.user = results[0];
       this.employeeForm.get('idcard_no').setAsyncValidators(existingIDCardNumberValidator(this.userService, this.user));
       this.sites = results[1];
-      this.roles = results[2];
+      this.userPositions = results[2];
       this.companies = results[3].filter(c => c.status);
       this.banks = results[4];
       this.hospitals = results[5];
@@ -333,7 +333,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           image_profile: this.user.imageProfile,
           company_id: this.user.companyId ? this.user.companyId : 'gmg',
           site_id: this.user.siteId,
-          role_id: this.user.roleId ? this.user.roleId : 'security',
+          user_position_id: this.user.userPositionId,
           idcard_no: this.user.idCardNumber ? this.user.idCardNumber : '',
           dateissued: this.user.dateIssued ? this.convertToDate(this.user.dateIssued) : null,
           expirydate: this.user.expiryDate ? this.convertToDate(this.user.expiryDate) : null,
@@ -429,8 +429,8 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       const formData = new FormData();
       formData.append('file', input.files[0]);
       this.userService.uploadImageProfile(formData).subscribe(result => {
-        this.employeeForm.get('image_profile').setValue(result.image_profile);
-        this.previewImageProfileUrl.nativeElement.src = result.image_profile;
+        this.employeeForm.get('image_profile').setValue(result.linkUrl);
+        this.previewImageProfileUrl.nativeElement.src = result.linkUrl;
         this.spinner.hideLoadingSpinner(0);
       }, error => {
         this.spinner.hideLoadingSpinner(0);
@@ -540,7 +540,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     formData.append('imageProfile', getValue('image_profile'));
     formData.append('companyId', getValue('company_id'));
     formData.append('siteId', getValue('site_id'));
-    formData.append('roleId', getValue('role_id'));
+    formData.append('userPositionId', getValue('user_position_id'));
     if (getValue('idcard_no')) {
       formData.append('idCardNumber', getValue('idcard_no'));
     }

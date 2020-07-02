@@ -1,6 +1,6 @@
 import { Province } from './address';
 import { PageFilter } from './page-filter.model';
-import { Role } from './user';
+import { Role, UserPosition } from './user';
 
 export interface Site {
     id: number;
@@ -22,14 +22,14 @@ export interface Site {
     createOn: Date;
     createBy: string;
     siteWorkRates: SiteWorkRate[];
-    siteRoles: SiteRole[];
+    siteUserPositions: SiteUserPosition[];
 }
 
-export interface SiteRole {
+export interface SiteUserPosition {
     siteId: number;
-    roleId: string;
+    userPositionId: number;
     site: Site;
-    role: Role;
+    userPosition: UserPosition;
     hiringRatePerDay: number;
     minimumManday: number;
     createOn: Date;

@@ -226,14 +226,14 @@
         </div>
       </div>
       <div class="row">
-        <div class="col" formArrayName="site_roles">
+        <div class="col" formArrayName="site_user_positions">
           <div class="d-flex align-items-center w-100"
-            *ngFor="let siteRoleForm of siteRoleForms.controls; let i = index" [formGroupName]="i">
+            *ngFor="let siteUserPositionForm of siteUserPositionForms.controls; let i = index" [formGroupName]="i">
             <div class="p-2">
               <div class="form-group">
-                <label for="role_id">ตำแหน่ง <span class="text-danger"><small>*</small></span></label>
-                <ng-select placeholder="ตำแหน่ง" class="role-select" [clearable]="false" [items]="roles"
-                  bindLabel="nameTH" bindValue="id" notFoundText="ไม่พบข้อมูล" formControlName="role_id">
+                <label for="user_position_id">ตำแหน่ง <span class="text-danger"><small>*</small></span></label>
+                <ng-select placeholder="ตำแหน่ง" class="role-select" [clearable]="false" [items]="userPositions"
+                  bindLabel="nameTH" bindValue="id" notFoundText="ไม่พบข้อมูล" formControlName="user_position_id">
                 </ng-select>
               </div>
             </div>
@@ -250,14 +250,14 @@
               </div>
             </div>
             <div class="p-2 remove-site" *ngIf="i > 0">
-              <i class="fa fa-times-circle" aria-hidden="true" (click)="removeSiteRole(i)"></i>
+              <i class="fa fa-times-circle" aria-hidden="true" (click)="removeSiteUserPosition(i)"></i>
             </div>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-primary button__add" (click)="addSiteRole()"><i class="fa fa-plus"
+          <button type="button" class="btn btn-primary button__add" (click)="addSiteUserPosition()"><i class="fa fa-plus"
               aria-hidden="true"></i>
             เพิ่มตำแหน่ง</button>
         </div>

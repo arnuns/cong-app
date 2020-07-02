@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { Role } from 'src/app/core/models/user';
+import { Role, UserPosition } from 'src/app/core/models/user';
 import { combineLatest } from 'rxjs';
 import { Company } from 'src/app/core/models/company';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -29,7 +29,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild('previewImageProfileUrl', { static: false }) previewImageProfileUrl: ElementRef;
   public defaultImagePath = environment.basePath;
   reading = false;
-  roles: Role[] = [];
+  userPositions: UserPosition[] = [];
   companies: Company[] = [];
   sites: Site[] = [];
   banks: AvailableBank[] = [];
@@ -40,7 +40,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     image_profile: [null],
     company_id: ['gmg', Validators.required],
     site_id: [undefined, Validators.required],
-    role_id: ['security', Validators.required],
+    user_position_id: [20, Validators.required],
     idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)],
       existingIDCardNumberValidator(this.userService)],
     dateissued: [null, Validators.required],
@@ -259,14 +259,14 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     combineLatest(
       [
         this.siteService.getSites(),
-        this.userService.getUserRoles(),
+        this.userService.getUserPositions(),
         this.userService.getUserCompanies(),
         this.userService.getAvailableBanks(),
         this.userService.getHospitals()
       ]
     ).subscribe(results => {
       this.sites = results[0];
-      this.roles = results[1];
+      this.userPositions = results[1];
       this.companies = results[2].filter(c => c.status);
       this.banks = results[3];
       this.hospitals = results[4];
@@ -283,8 +283,8 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       const formData = new FormData();
       formData.append('file', input.files[0]);
       this.userService.uploadImageProfile(formData).subscribe(result => {
-        this.employeeForm.get('image_profile').setValue(result.image_profile);
-        this.previewImageProfileUrl.nativeElement.src = result.image_profile;
+        this.employeeForm.get('image_profile').setValue(result.linkUrl);
+        this.previewImageProfileUrl.nativeElement.src = result.linkUrl;
         this.spinner.hideLoadingSpinner(0);
       }, error => {
         this.spinner.hideLoadingSpinner(0);
@@ -337,7 +337,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     formData.append('imageProfile', getValue('image_profile'));
     formData.append('companyId', getValue('company_id'));
     formData.append('siteId', getValue('site_id'));
-    formData.append('roleId', getValue('role_id'));
+    formData.append('userPositionId', getValue('user_position_id'));
     if (getValue('idcard_no')) {
       formData.append('idCardNumber', getValue('idcard_no'));
     }

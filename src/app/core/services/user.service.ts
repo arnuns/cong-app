@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
-import { User, Role, Document, BeginResign } from '../models/user';
+import { User, Role, Document, BeginResign, UserPosition } from '../models/user';
 import { Company } from '../models/company';
 import { Hospital } from '../models/hospital';
 import { CookieService } from 'ngx-cookie-service';
@@ -56,8 +56,8 @@ export class UserService extends BaseService {
     return this.http.get<User[]>(`${this.serviceUrl}/user/all`);
   }
 
-  getUserRoles() {
-    return this.cacheService.get('roles', this.http.get<Role[]>(`${this.serviceUrl}/user/roles`));
+  getUserPositions() {
+    return this.cacheService.get('roles', this.http.get<UserPosition[]>(`${this.serviceUrl}/user/userpositions`));
   }
 
   getUserCompanies() {
@@ -132,7 +132,7 @@ export class UserService extends BaseService {
   }
 
   uploadImageProfile(formData) {
-    return this.http.post<any>(`${this.serviceUrl}/user/UploadImageProfile`, formData);
+    return this.http.post<any>(`${this.serviceUrl}/user/storage/UploadImageProfile`, formData);
   }
 
   updateNfcRefId(empNo: number, nfcRefId: number) {

@@ -259,8 +259,8 @@ export class EmployeeComponent implements OnDestroy, OnInit {
         'เลขที่ใบอนุญาต': !u.licenseNo ? '' : u.licenseNo,
         'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
         'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
-        'เงินเดือน': (!u.siteRole || !u.site || !u.site.province) ? 0 : u.siteRole.minimumManday * u.site.minimumWage,
-        'วันทำงานต่อเดือน': !u.siteRole ? 0 : u.siteRole.minimumManday,
+        'เงินเดือน': (!u.siteUserPosition || !u.site || !u.site.province) ? 0 : u.siteUserPosition.minimumManday * u.site.minimumWage,
+        'วันทำงานต่อเดือน': !u.siteUserPosition ? 0 : u.siteUserPosition.minimumManday,
         'ค่าแรงขั้นต่ำ': (!u.site || !u.site.province) ? 0 : u.site.minimumWage
       }));
       const BOM = '\uFEFF';

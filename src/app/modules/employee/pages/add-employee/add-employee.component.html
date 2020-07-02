@@ -63,13 +63,13 @@
           <div class="d-flex">
             <div class="p-2">
               <div class="form-group">
-                <label for="role">ตำแหน่ง
+                <label for="user_position_id">ตำแหน่ง
                   <span class="text-danger">
                     <small>*</small>
                   </span>
                 </label>
-                <ng-select class="role-select" [clearable]="false" [items]="roles" bindLabel="nameTH" bindValue="id"
-                  formControlName="role_id">
+                <ng-select class="role-select" [clearable]="false" [items]="userPositions" bindLabel="nameTH"
+                  bindValue="id" formControlName="user_position_id">
                 </ng-select>
               </div>
             </div>

@@ -1,5 +1,5 @@
 import { Site } from './site';
-import { Role, User } from './user';
+import { Role, User, UserPosition } from './user';
 import { PageFilter } from './page-filter.model';
 
 export interface PayrollCycle {
@@ -18,8 +18,8 @@ export interface Salary {
     siteCode: string;
     siteName: string;
     site: Site;
-    roleId: string;
-    roleNameTH: string;
+    userPositionId: number;
+    userPosition: UserPosition;
     role: Role;
     empNo: number;
     user: User;

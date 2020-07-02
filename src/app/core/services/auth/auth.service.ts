@@ -51,8 +51,8 @@ export class AuthService extends BaseService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(empNo: number, password: string) {
-    return this.http.post<User>(`${this.serviceUrl}/authen`, { empNo, password }, {
+  login(username: string, password: string) {
+    return this.http.post<User>(`${this.serviceUrl}/authen`, { username, password }, {
       headers: new HttpHeaders(
         {
           'api-version': environment.apiVersion

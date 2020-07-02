@@ -59,7 +59,7 @@
           <tr *ngFor="let t of timeAttendances; let i = index">
             <td>{{ i + 1 }}</td>
             <td>{{ t.employeeName }}</td>
-            <td>{{ t.user.role.nameTH }}</td>
+            <td>{{ t.user.userPosition.nameTH }}</td>
             <td>{{ t.site.name }}</td>
             <td>{{ t.workDate | date: 'dd/MM/yyyy' }}</td>
             <td class="text-success">{{ t.checkInTime | date:'HH:mm' }}</td>

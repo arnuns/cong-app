@@ -5,8 +5,8 @@ import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
 import { SiteService } from 'src/app/core/services/site.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { environment } from 'src/environments/environment';
-import { Role } from 'src/app/core/models/user';
-import { Site, SiteWorkRate, SiteRole } from 'src/app/core/models/site';
+import { UserPosition } from 'src/app/core/models/user';
+import { Site, SiteWorkRate, SiteUserPosition } from 'src/app/core/models/site';
 import { combineLatest } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { Province, Amphur, District, Postcode } from 'src/app/core/models/address';
@@ -29,7 +29,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
   postcodes: Postcode[] = [];
   user_amphurs: Amphur[] = [];
   user_districts: District[] = [];
-  roles: Role[] = [];
+  userPositions: UserPosition[] = [];
 
   siteForm = this.fb.group({
     code: [''],
@@ -46,7 +46,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     is_monthly: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
-    site_roles: this.fb.array([]),
+    site_user_positions: this.fb.array([]),
   });
 
   constructor(
@@ -83,7 +83,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         this.siteService.getAmphurs(),
         this.siteService.getDistricts(),
         this.siteService.getPostcodes(),
-        this.userService.getUserRoles(),
+        this.userService.getUserPositions(),
       ]
     ).subscribe(results => {
       this.site = results[0];
@@ -91,7 +91,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       this.amphurs = results[2];
       this.districts = results[3];
       this.postcodes = results[4];
-      this.roles = results[5];
+      this.userPositions = results[5];
       if (this.site) {
         this.siteForm.patchValue({
           code: this.site.code,
@@ -121,10 +121,10 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         } else {
           this.addSiteWorkRate();
         }
-        if (this.site.siteRoles.length > 0) {
-          this.addSiteRole(this.site.siteRoles);
+        if (this.site.siteUserPositions.length > 0) {
+          this.addSiteUserPosition(this.site.siteUserPositions);
         } else {
-          this.addSiteRole();
+          this.addSiteUserPosition();
         }
       }
       this.spinner.hideLoadingSpinner(0);
@@ -146,13 +146,13 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         createBy: undefined
       }));
     }
-    let siteRoles: SiteRole[];
-    if (this.siteRoleForms.controls.length > 0) {
-      siteRoles = this.siteRoleForms.controls.map(c => ({
+    let siteUserPositions: SiteUserPosition[];
+    if (this.siteUserPositionForms.controls.length > 0) {
+      siteUserPositions = this.siteUserPositionForms.controls.map(c => ({
         siteId: this.siteId,
-        roleId: c.get('role_id').value,
+        userPositionId: c.get('user_position_id').value,
         site: null,
-        role: null,
+        userPosition: null,
         hiringRatePerDay: c.get('hiring_rate_per_day').value,
         minimumManday: c.get('minimum_manday').value,
         createOn: new Date(),
@@ -181,7 +181,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       createOn: undefined,
       createBy: undefined,
       siteWorkRates: siteWorkRates,
-      siteRoles: siteRoles
+      siteUserPositions: siteUserPositions
     }).subscribe(site => {
       this.spinner.hideLoadingSpinner(0);
       this.router.navigate(['/site']);
@@ -241,30 +241,30 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     this.siteWorkRateForms.removeAt(index);
   }
 
-  get siteRoleForms() {
-    return this.siteForm.get('site_roles') as FormArray;
+  get siteUserPositionForms() {
+    return this.siteForm.get('site_user_positions') as FormArray;
   }
 
-  addSiteRole(siteRoles: SiteRole[] = null) {
-    if (siteRoles && siteRoles.length > 0) {
-      siteRoles.forEach(siteRole => {
-        this.siteRoleForms.controls.push(this.fb.group({
-          role_id: [siteRole.roleId, [Validators.required]],
-          minimum_manday: [siteRole.minimumManday, [Validators.required]],
-          hiring_rate_per_day: [siteRole.hiringRatePerDay, [Validators.required]]
+  addSiteUserPosition(siteUserPositions: SiteUserPosition[] = null) {
+    if (siteUserPositions && siteUserPositions.length > 0) {
+      siteUserPositions.forEach(siteUserPosition => {
+        this.siteUserPositionForms.controls.push(this.fb.group({
+          user_position_id: [siteUserPosition.userPositionId, [Validators.required]],
+          minimum_manday: [siteUserPosition.minimumManday, [Validators.required]],
+          hiring_rate_per_day: [siteUserPosition.hiringRatePerDay, [Validators.required]]
         }));
       });
     } else {
-      this.siteRoleForms.controls.push(this.fb.group({
-        role_id: [undefined, Validators.required],
+      this.siteUserPositionForms.controls.push(this.fb.group({
+        user_position_id: [undefined, Validators.required],
         minimum_manday: [26, Validators.required],
         hiring_rate_per_day: [undefined, Validators.required]
       }));
     }
   }
 
-  removeSiteRole(index: number) {
-    this.siteRoleForms.removeAt(index);
+  removeSiteUserPosition(index: number) {
+    this.siteUserPositionForms.removeAt(index);
   }
 
   clearFormArray = (formArray: FormArray) => {

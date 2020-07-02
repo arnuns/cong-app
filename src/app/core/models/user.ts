@@ -1,4 +1,4 @@
-import { Site, SiteRole } from './site';
+import { Site, SiteUserPosition } from './site';
 import { Company } from './company';
 import { Hospital } from './hospital';
 import { PageFilter } from './page-filter.model';
@@ -7,6 +7,8 @@ export interface User {
     empNo: number;
     roleId: string;
     role: Role;
+    userPositionId: number;
+    userPosition: UserPosition;
     companyId: string;
     company: Company;
     siteId: number;
@@ -92,7 +94,7 @@ export interface User {
     jobHistories: JobHistory[];
     languageAbilities: LanguageAbility[];
     timelineUsers: TimelineUser[];
-    siteRole: SiteRole;
+    siteUserPosition: SiteUserPosition;
     workExperience: number;
 }
 
@@ -161,6 +163,12 @@ export interface BeginResign {
     oldEndDate: string;
     startDate: string;
     description: string;
+}
+
+export interface UserPosition {
+    id: number;
+    name: string;
+    nameTH: string;
 }
 
 export interface UserFilter extends PageFilter {
