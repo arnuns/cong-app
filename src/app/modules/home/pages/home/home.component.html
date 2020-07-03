@@ -14,10 +14,10 @@
             <span class="sr-only">Loading...</span>
           </div>
           <ng-template #showTotalUser>
-            <span class="ml-2">{{ totalUser | number }}</span> คน
+            <span class="ml-2">{{ activeUser | number }}</span> คน
           </ng-template>
         </h4>
-        <p class="card-text">จำนวนพนักงานทั้งหมดในระบบ</p>
+        <p class="card-text">จากพนักงานทั้งหมดในระบบ {{ totalUser | number }} คน</p>
       </div>
     </div>
   </div>
@@ -31,10 +31,10 @@
             <span class="sr-only">Loading...</span>
           </div>
           <ng-template #showTotalSite>
-            <span class="ml-2">{{ totalSite | number }}</span> แห่ง
+            <span class="ml-2">{{ activeSite | number }}</span> แห่ง
           </ng-template>
         </h4>
-        <p class="card-text">จำนวนหน่วยงานทั้งหมดในระบบ</p>
+        <p class="card-text">จากหน่วยงานทั้งหมดในระบบ {{ totalSite | number }} แห่ง</p>
       </div>
     </div>
   </div>

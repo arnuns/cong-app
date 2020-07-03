@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { FormBuilder, Validators, FormArray, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
 import { SiteService } from 'src/app/core/services/site.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { environment } from 'src/environments/environment';
@@ -220,6 +220,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
   }
 
   addSiteWorkRate(siteWorkRates: SiteWorkRate[] = null) {
+    
     if (siteWorkRates && siteWorkRates.length > 0) {
       siteWorkRates.forEach(siteWorkRate => {
         this.siteWorkRateForms.controls.push(this.fb.group({

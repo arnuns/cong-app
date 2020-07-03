@@ -245,7 +245,8 @@
             </div>
             <div class="p-2">
               <div class="form-group">
-                <label for="hiring_rate_per_day">อัตราจ้างวันละ <span class="text-danger"><small>*</small></span></label>
+                <label for="hiring_rate_per_day">อัตราจ้างวันละ <span
+                    class="text-danger"><small>*</small></span></label>
                 <input type="number" class="form-control" formControlName="hiring_rate_per_day">
               </div>
             </div>
@@ -257,14 +258,23 @@
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-primary button__add" (click)="addSiteUserPosition()"><i class="fa fa-plus"
-              aria-hidden="true"></i>
+          <button type="button" class="btn btn-primary button__add" (click)="addSiteUserPosition()"><i
+              class="fa fa-plus" aria-hidden="true"></i>
             เพิ่มตำแหน่ง</button>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <div class="line"></div>
+        </div>
+      </div>
+      <div class="row" *ngIf="!f.form.valid">
+        <div class="col">
+          <p class="text-left">
+            <alert type="warning">
+              <strong>คำเตือน!</strong> กรุณากรอกข้อมูลที่มีเครื่องหมายดอกจันทร์ (*) ให้ครบถ้วน
+            </alert>
+          </p>
         </div>
       </div>
       <div class="row mb-5">

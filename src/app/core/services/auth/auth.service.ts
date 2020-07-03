@@ -62,6 +62,10 @@ export class AuthService extends BaseService {
       .pipe(map(response => {
         this.setUserDataStorage(response);
         this.currentUserSubject.next(response);
+        const allowedRoleId = ['admin', 'hr'];
+        if (!allowedRoleId.includes(response.roleId)) {
+          this.logoutUser();
+        }
         return response;
       }));
   }
