@@ -51,8 +51,8 @@ export class AuthService extends BaseService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(empNo: number, password: string) {
-    return this.http.post<User>(`${this.serviceUrl}/authen`, { empNo, password }, {
+  login(username: string, password: string) {
+    return this.http.post<User>(`${this.serviceUrl}/authen`, { username, password }, {
       headers: new HttpHeaders(
         {
           'api-version': environment.apiVersion
@@ -62,6 +62,10 @@ export class AuthService extends BaseService {
       .pipe(map(response => {
         this.setUserDataStorage(response);
         this.currentUserSubject.next(response);
+        const allowedRoleId = ['admin', 'hr'];
+        if (!allowedRoleId.includes(response.roleId)) {
+          this.logoutUser();
+        }
         return response;
       }));
   }

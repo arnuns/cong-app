@@ -75,7 +75,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     search: [''],
     salary_id: [undefined],
     empno: [0, [Validators.required]],
-    role_id: ['', [Validators.required]],
+    user_position_id: ['', Validators.required],
     is_temporary: [false],
     idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
     title: ['นาย', Validators.required],
@@ -204,7 +204,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.showLoadingSpinner();
       if (!this.updateSalaryForm.get('salary_id').value) {
         this.addSite();
-        const siteRole = this.site.siteRoles.filter(r => r.roleId === 'security')[0];
+        const siteRole = this.site.siteUserPositions.filter(r => r.userPositionId === 20)[0];
         const hiringRatePerDay = siteRole ? siteRole.hiringRatePerDay : this.site.minimumWage;
         this.hiringRatePerDay = hiringRatePerDay.toFixed(2);
       }
@@ -226,7 +226,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         search: '',
         salary_id: undefined,
         empno: 0,
-        role_id: '',
         is_temporary: false,
         idcard_no: '',
         title: 'นาย',
@@ -391,18 +390,18 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
           this.userService.getUserByIdCardNumber(val).subscribe(user => {
             this.updateSalaryForm.patchValue({
               empno: user.empNo,
-              role_id: user.roleId
+              user_position_name: user.userPosition.nameTH
             });
           }, error => {
             this.updateSalaryForm.patchValue({
               empno: 0,
-              role_id: ''
+              user_position_name: ''
             });
           });
         } else {
           this.updateSalaryForm.patchValue({
             empno: 0,
-            role_id: ''
+            user_position_name: ''
           });
         }
       });
@@ -450,7 +449,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       search: '',
       salary_id: salary.id,
       empno: salary.empNo,
-      role_id: salary.roleId,
+      user_position_id: salary.userPositionId,
       is_temporary: salary.isTemporary,
       idcard_no: salary.idCardNumber,
       title: salary.title,
@@ -655,8 +654,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       return that.updateSalaryForm.get(controlName).value;
     }
     this.spinner.showLoadingSpinner();
-    const siteRole = this.site.siteRoles.filter(r => r.roleId === this.updateSalaryForm.get('role_id').value)[0];
-    const minimumManday = siteRole ? siteRole.minimumManday : 26;
+    const userPosition = this.site.siteUserPositions.filter(r => r.userPositionId
+      === this.updateSalaryForm.get('user_position_id').value)[0];
+    const minimumManday = userPosition ? userPosition.minimumManday : 26;
     const hiringRatePerDay = this.hiringRatePerDay ? Number(this.hiringRatePerDay) : this.site.minimumWage;
     const salary: Salary = {
       id: getValue('salary_id') ? getValue('salary_id') : 0,
@@ -665,8 +665,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       siteCode: this.site.code,
       siteName: this.site.name,
       site: null,
-      roleId: getValue('role_id'),
-      roleNameTH: null,
+      userPositionId: getValue('user_position_id'),
+      userPosition: null,
       role: null,
       empNo: getValue('empno'),
       user: null,
@@ -757,7 +757,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   onClickSearchUser(user: User) {
     this.updateSalaryForm.patchValue({
       empno: user.empNo,
-      role_id: user.roleId,
+      user_position_id: user.userPositionId,
       idcard_no: user.idCardNumber,
       title: user.title,
       firstname: user.firstName,
@@ -784,7 +784,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     if (sites && sites.length > 0) {
       sites.forEach(site => {
         const hiringRatePerDay =
-          site.siteRoles.length > 0 ? site.siteRoles.filter(r => r.roleId === 'security')[0].hiringRatePerDay : 0;
+          site.siteUserPositions.length > 0 ? site.siteUserPositions.filter(r => r.userPositionId
+            === 20)[0].hiringRatePerDay : 0;
         this.siteForms.controls.push(this.fb.group({
           id: [site.id, [Validators.required]],
           site_code: [site.code],
@@ -794,7 +795,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       });
     } else {
       const hiringRatePerDay =
-        this.site.siteRoles.length > 0 ? this.site.siteRoles.filter(r => r.roleId === 'security')[0].hiringRatePerDay : 0;
+        this.site.siteUserPositions.length > 0 ? this.site.siteUserPositions.filter(r => r.userPositionId
+          === 20)[0].hiringRatePerDay : 0;
       this.siteForms.controls.push(this.fb.group({
         id: [this.site.id, [Validators.required]],
         site_code: [this.site.code],
@@ -903,8 +905,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         .reduce((prevVal, val) => prevVal + val)
       : 0;
     if (!this.site) { return 0; }
-    const siteRole = this.site.siteRoles.filter(r => r.roleId === this.updateSalaryForm.get('role_id').value)[0];
-    const minimumManday = siteRole ? siteRole.minimumManday : 26;
+    const siteUserPosition = this.site.siteUserPositions.filter(r => r.userPositionId
+      === this.updateSalaryForm.get('user_position_id').value)[0];
+    const minimumManday = siteUserPosition ? siteUserPosition.minimumManday : 26;
     const minimumWage = this.site.minimumWage;
     const positionValue = this.updateSalaryForm.get('position_value').value
       ? Number(this.updateSalaryForm.get('position_value').value) : 0;

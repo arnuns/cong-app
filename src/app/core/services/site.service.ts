@@ -24,8 +24,12 @@ export class SiteService extends BaseService {
     return this.cacheService.get('site_count', this.http.get<number>(`${this.serviceUrl}/site/count`));
   }
 
+  getCountActiveSite() {
+    return this.cacheService.get('active_site_count', this.http.get<number>(`${this.serviceUrl}/site/active/count`));
+  }
+
   getSites() {
-    return this.cacheService.get('site_all', this.http.get<Site[]>(`${this.serviceUrl}/site/all`));
+    return this.cacheService.get('site_all', this.http.get<Site[]>(`${this.serviceUrl}/site/backoffice/all`));
   }
 
   getSite(siteId: number) {

@@ -281,7 +281,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       const data = salaries.map(s => ({
         'รหัสพนักงาน': s.empNo,
         'หน่วยงาน': s.siteName,
-        'ตำแหน่ง': s.roleNameTH,
+        'ตำแหน่ง': s.userPosition.nameTH,
         'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
         'คำนำหน้าชื่อ': s.title,
         'ชื่อ': s.firstName,
@@ -383,7 +383,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       const data = salaries.map(s => ({
         'รหัสพนักงาน': s.empNo,
         'หน่วยงาน': s.siteName,
-        'ตำแหน่ง': s.roleNameTH,
+        'ตำแหน่ง': s.userPosition.nameTH,
         'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
         'คำนำหน้าชื่อ': s.title,
         'ชื่อ': s.firstName,

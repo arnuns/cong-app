@@ -327,7 +327,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           'หน่วยงาน': s.site.name,
           'วันที่': this.moment.format(s.workDate, 'DD/MM/YYYY'),
           'รหัสพนักงาน': `'${s.empNo}`,
-          'ตำแหน่ง': s.user.role.nameTH,
+          'ตำแหน่ง': s.user.userPosition.nameTH,
           'ชื่อ-สกุล': s.employeeName,
           'รอบเวลา': `${s.startTime.substr(0, 5)} - ${s.endTime.substr(0, 5)} `,
           'เวลาเข้า': s.checkInTime === undefined ? '' : this.moment.format(s.checkInTime, 'HH:mm:ss'),
