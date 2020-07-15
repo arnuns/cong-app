@@ -6,6 +6,7 @@ import { ApplicationStateService } from 'src/app/core/services/application-state
 import { ElectronService } from 'ngx-electron';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { UserService } from 'src/app/core/services/user.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-employee-transfer',
@@ -34,6 +35,7 @@ export class EmployeeTransferComponent implements OnDestroy, OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
+    private sanitizer: DomSanitizer,
     private electronService: ElectronService,
     private spinner: SpinnerHelper,
     private userService: UserService) {
@@ -59,6 +61,10 @@ export class EmployeeTransferComponent implements OnDestroy, OnInit {
         }
       });
     });
+  }
+
+  getImageProfileSanitize(imageProfile: string) {
+    return this.sanitizer.bypassSecurityTrustStyle(`url(${imageProfile})`);
   }
 
   ngOnDestroy() {

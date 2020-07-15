@@ -19,14 +19,15 @@
     <div class="col-md-6">
       <div class="d-flex">
         <div class="p-2">
-          <div class="img-profile" [style.backgroundImage]="'url('+ user?.imageProfile +')'">
-          </div>
-          <!-- <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
+          <!-- <div class="img-profile" [style.backgroundImage]="getImageProfileSanitize(user?.imageProfile)">
+            {{ getImageProfileSanitize(user?.imageProfile) }}
+          </div> -->
+          <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile"
             class="img-profile">
           <ng-template #elseNoProfileImage>
             <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt=""
               class="img-profile">
-          </ng-template> -->
+          </ng-template>
         </div>
         <div class="p-2">
           <div class="img-idcard"></div>
