@@ -15,6 +15,15 @@ import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { Router } from '@angular/router';
 import { ElectronService } from 'ngx-electron';
 
+export interface PayrollFilter {
+  payroll_cycle_id: number;
+  search: string;
+  status: string;
+  sort_by: string;
+  page: number;
+  page_size: number;
+}
+
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
   'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม');
@@ -36,6 +45,9 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   selectedSiteItems = [];
   deleteSiteId = 0;
   deleteSiteName = '';
+
+  payrollFilter: PayrollFilter;
+  filterSessionName = 'payrollFilter';
 
   payrollForm = this.fb.group({
     payroll_cycle_id: [undefined],
@@ -91,6 +103,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   ngOnDestroy() {
     this.dtTrigger.unsubscribe();
     $.fn['dataTable'].ext.search.pop();
+
+    if (this.payrollFilter) {
+      sessionStorage.setItem(this.filterSessionName, JSON.stringify(this.payrollFilter));
+    }
   }
 
   ngAfterViewInit() {
@@ -227,12 +243,13 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   addSite() {
     this.spinner.showLoadingSpinner();
-    this.payrollService.addMultipleSiteSalary(this.payrollCycle.id, this.selectedSiteItems).subscribe(salaries => {
-      this.getPayrollCycleSalary(this.payrollCycle.id, true);
-      this.ngxSmartModalService.getModal('addSiteModal').close();
-    }, error => {
-      this.spinner.hideLoadingSpinner(0);
-    });
+    this.payrollService.addMultipleSiteSalary(this.payrollForm.get('payroll_cycle_id').value,
+      this.selectedSiteItems).subscribe(salaries => {
+        this.getPayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value, true);
+        this.ngxSmartModalService.getModal('addSiteModal').close();
+      }, error => {
+        this.spinner.hideLoadingSpinner(0);
+      });
   }
 
   onClickAddNewSite() {
@@ -247,8 +264,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   onDeleteSite() {
     this.spinner.showLoadingSpinner();
-    this.payrollService.deleteSitePayroll(this.payrollCycle.id, this.deleteSiteId).subscribe(_ => {
-      this.getPayrollCycleSalary(this.payrollCycle.id, true);
+    this.payrollService.deleteSitePayroll(this.payrollForm.get('payroll_cycle_id').value, this.deleteSiteId).subscribe(_ => {
+      this.getPayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value, true);
       this.ngxSmartModalService.getModal('deleteModal').close();
     }, error => {
       this.spinner.hideLoadingSpinner(0);
@@ -277,7 +294,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   onExportAllSalaryToCsv() {
     this.spinner.showLoadingSpinner();
-    this.payrollService.getPayrollCycleSalary(this.payrollCycle.id).subscribe(salaries => {
+    this.payrollService.getPayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value).subscribe(salaries => {
       const data = salaries.map(s => ({
         'รหัสพนักงาน': s.empNo,
         'หน่วยงาน': s.siteName,
@@ -326,7 +343,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `salary_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      FileSaver.saveAs(blob, `salary_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
       this.spinner.hideLoadingSpinner();
@@ -335,7 +352,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   onExportSummaryBySiteToCsv() {
     this.spinner.showLoadingSpinner();
-    this.payrollService.getSummaryPayrollSalaryBySite(this.payrollCycle.id).subscribe(salaries => {
+    this.payrollService.getSummaryPayrollSalaryBySite(this.payrollForm.get('payroll_cycle_id').value).subscribe(salaries => {
       const data = salaries.map(s => ({
         'หน่วยงาน': s.siteName,
         'รหัสหน่วยงาน': !s.siteCode ? '' : s.siteCode,
@@ -370,7 +387,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `summary_salary_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      FileSaver.saveAs(blob, `summary_salary_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
       this.spinner.hideLoadingSpinner();
@@ -379,7 +396,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   onExportSiteSalaryToCsv(siteId: number) {
     this.spinner.showLoadingSpinner();
-    this.payrollService.getSitePayrollCycleSalary(this.payrollCycle.id, siteId).subscribe(salaries => {
+    this.payrollService.getSitePayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value, siteId).subscribe(salaries => {
       const data = salaries.map(s => ({
         'รหัสพนักงาน': s.empNo,
         'หน่วยงาน': s.siteName,
@@ -428,7 +445,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `salary_site_${siteId}_${this.payrollCycle.id}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      FileSaver.saveAs(blob, `salary_site_${siteId}_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
       this.spinner.hideLoadingSpinner();
