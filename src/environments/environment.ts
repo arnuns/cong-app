@@ -12,8 +12,8 @@ export const environment = {
   companyTel: '02-210-0004',
   companyFax: '02-117-4248',
   companyMobile: '064-586-9938',
-  companyEmail: 'office@gmgroup.co.th',
+  companyEmail: 'info@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '22/07/2020'
+  releaseDate: '19/08/2020'
 };
