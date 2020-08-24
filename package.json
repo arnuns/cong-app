@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Application",
   "description": "Cong Application",
-  "version": "2.5.4",
+  "version": "2.6.0",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -40,12 +40,14 @@
     "directories": {
       "output": "release/"
     },
-    "publish": [{
-      "provider": "github",
-      "owner": "arnuns",
-      "repo": "cong-app",
-      "token": "9b05ff4153ae66484d6a57a1491b7c0ae1cb873e"
-    }]
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "arnuns",
+        "repo": "cong-app",
+        "token": "9b05ff4153ae66484d6a57a1491b7c0ae1cb873e"
+      }
+    ]
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
