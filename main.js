@@ -38,7 +38,8 @@ function createWindow() {
     icon: `file://${__dirname}/dist/assets/icons/png/64x64.png`,
     title: 'CONG',
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      webSecurity: false
     }
   })
   
