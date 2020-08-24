@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Application",
   "description": "Cong Application",
-  "version": "2.5.4",
+  "version": "2.5.5",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -17,8 +17,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "electron-builder build --mac --win --publish never",
-    "deploy": "electron-builder build --mac --win --publish always",
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always",
     "build:patch": "npm version patch --force",
     "build:minor": "npm version minor --force",
     "build:major": "npm version major --force",
@@ -34,6 +34,19 @@
     "create-installer-win": "node installers/windows/createinstaller.js"
   },
   "private": true,
+  "build": {
+    "appId": "com.ubakong.congapp",
+    "productName": "Cong Application",
+    "directories": {
+      "output": "release/"
+    },
+    "publish": [{
+      "provider": "github",
+      "owner": "arnuns",
+      "repo": "cong-app",
+      "token": "9b05ff4153ae66484d6a57a1491b7c0ae1cb873e"
+    }]
+  },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
     "@angular/animations": "~8.2.12",
