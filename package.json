@@ -1,7 +1,7 @@
 {
   "name": "cong-app",
-  "productName": "Cong Application Employee Management System",
-  "description": "Cong Application Employee Management System",
+  "productName": "Cong Application",
+  "description": "Cong Application",
   "version": "2.5.4",
   "license": "MIT",
   "author": {
@@ -57,6 +57,7 @@
     "file-saver": "^2.0.2",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "macos-alias": "^0.2.11",
     "moment": "^2.24.0",
     "ng2-pdf-viewer": "^6.0.1",
     "ngx-bootstrap": "^5.2.0",
