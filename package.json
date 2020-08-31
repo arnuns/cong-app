@@ -44,8 +44,16 @@
       "provider": "github",
       "owner": "arnuns",
       "repo": "cong-app",
-      "token": "b38a62f4cef23976ed8f7b1a7688f61c7832fcc4"
-    }]
+      "token": "24a8130fdbff6022a6b0af382af9d77665d40a67"
+    }],
+    "win": {
+      "target": [{
+        "target": "nsis",
+        "arch": [
+          "x64"
+        ]
+      }]
+    }
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
