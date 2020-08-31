@@ -43,8 +43,7 @@
     "publish": [{
       "provider": "github",
       "owner": "arnuns",
-      "repo": "cong-app",
-      "token": "24a8130fdbff6022a6b0af382af9d77665d40a67"
+      "repo": "cong-app"
     }],
     "win": {
       "target": [{
