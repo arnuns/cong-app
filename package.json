@@ -40,25 +40,12 @@
     "directories": {
       "output": "release/"
     },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "arnuns",
-        "repo": "cong-app",
-        "token": "d4e6935cb367cb552e8a3ea52e65566553bc9f25"
-      }
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
-    }
+    "publish": [{
+      "provider": "github",
+      "owner": "arnuns",
+      "repo": "cong-app",
+      "token": "b38a62f4cef23976ed8f7b1a7688f61c7832fcc4"
+    }]
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
