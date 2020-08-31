@@ -46,17 +46,7 @@
         "owner": "arnuns",
         "repo": "cong-app"
       }
-    ],
-    "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        }
-      ]
-    }
+    ]
   },
   "dependencies": {
     "@angular-devkit/build-angular": "^0.803.14",
