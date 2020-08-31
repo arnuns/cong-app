@@ -876,7 +876,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   hiringRateModelChanged(rate) {
     if (rate) {
       if (parseFloat(rate) > 999) {
-        this.hiringRatePerDay = '999.00';
+        this.hiringRatePerDay = '0.00';
       }
     }
   }
