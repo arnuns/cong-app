@@ -1,0 +1,45 @@
+.dialog-header {
+  background-color: #00ca9d;
+  color: #ffffff;
+  padding: 1rem;
+  letter-spacing: normal;
+}
+
+.dialog {
+  padding: 1rem 1.75rem;
+}
+
+.dialog-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0;
+  letter-spacing: normal;
+}
+
+.button__close {
+  width: 120px;
+  height: 48px;
+  background-color: #bbc6dc;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: normal;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: normal;
+}
+
+::ng-deep {
+  .success-modal {
+    max-width: 400px;
+  }
+
+  .success-modal .nsm-content {
+    padding: 0;
+  }
+}

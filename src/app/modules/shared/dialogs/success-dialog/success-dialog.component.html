@@ -1,0 +1,14 @@
+<ngx-smart-modal #successModal [identifier]="'successModal'" [closable]="false" [escapable]="true"
+  [dismissable]="true" [customClass]="'success-modal'">
+  <div class="d-flex align-items-center w-100 dialog-header">
+    <div class="dialog-title">ข้อมูล</div>
+  </div>
+  <div class="d-flex flex-column justify-content-center align-items-center w-100 px-2 py-4">
+    <div>
+      <p>{{ message }}</p>
+    </div>
+    <div>
+      <div><button type="button" class="btn button__close" (click)="successModal.close()">ปิด</button></div>
+    </div>
+  </div>
+</ngx-smart-modal>
