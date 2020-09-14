@@ -1,3 +1,5 @@
+<app-confirm-dialog></app-confirm-dialog>
+<app-success-dialog></app-success-dialog>
 <div class="row menu-title">
   <div class="col px-0">
     <div class="d-flex align-items-center w-100">
@@ -114,6 +116,16 @@
                         <i class="fa fa-address-book" aria-hidden="true"></i>
                       </div>
                       <div class="ml-2">ดูประวัติ</div>
+                    </div>
+                  </a>
+                </li>
+                <li *ngIf="HasAdminPerrmission">
+                  <a class="dropdown-item text-danger" (click)="onClickCreateUserPasword(user.empNo)">
+                    <div class="d-flex align-items-center w-100">
+                      <div>
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                      </div>
+                      <div class="ml-2">สร้างรหัสผู้ใช้งาน</div>
                     </div>
                   </a>
                 </li>

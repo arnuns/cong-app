@@ -69,4 +69,8 @@ export class AuthService extends BaseService {
         return response;
       }));
   }
+
+  createDefaultUserPassword(empNo: string) {
+    return this.http.post<User>(`${this.serviceUrl}/Authen/${empNo}/defaultpassword`, {});
+  }
 }

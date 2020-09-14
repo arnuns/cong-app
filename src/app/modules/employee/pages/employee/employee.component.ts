@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { User, UserFilter } from 'src/app/core/models/user';
 import { Subject } from 'rxjs';
@@ -15,13 +15,14 @@ import { Papa } from 'ngx-papaparse';
 import * as FileSaver from 'file-saver';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss']
 })
-export class EmployeeComponent implements OnDestroy, OnInit {
+export class EmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
   public defaultImagePath = environment.basePath;
   user: User;
@@ -44,6 +45,7 @@ export class EmployeeComponent implements OnDestroy, OnInit {
     private electronService: ElectronService,
     private fb: FormBuilder,
     private moment: MomentHelper,
+    private ngxSmartModalService: NgxSmartModalService,
     private papa: Papa,
     private router: Router,
     private siteService: SiteService,
@@ -66,6 +68,17 @@ export class EmployeeComponent implements OnDestroy, OnInit {
     if (this.userFilter) {
       localStorage.setItem(this.filterSessionName, JSON.stringify(this.userFilter));
     }
+  }
+
+  ngAfterViewInit() {
+    this.ngxSmartModalService.getModal('confirmModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
+      const data = modal.getData();
+      if (data) {
+        if (data.isSuccess) {
+          this.createUserPassword(data.empNo);
+        }
+      }
+    });
   }
 
   initialData() {
@@ -180,6 +193,29 @@ export class EmployeeComponent implements OnDestroy, OnInit {
 
   editUserInfo(empNo: string) {
     this.router.navigate(['/employee/edit', empNo]);
+  }
+
+  onClickCreateUserPasword(empNo: string) {
+    this.ngxSmartModalService.getModal('confirmModal').setData({
+      title: 'ยืนยันข้อมูล',
+      message: 'คุณต้องการสร้างรหัสผู้ใช้งานนี้ใช่หรือไม่',
+      isSuccess: false,
+      empNo: empNo
+    }, true);
+    this.ngxSmartModalService.getModal('confirmModal').open();
+  }
+
+  createUserPassword(empNo: string) {
+    this.spinner.showLoadingSpinner();
+    this.authService.createDefaultUserPassword(empNo).subscribe(_ => {
+      this.ngxSmartModalService.getModal('confirmModal').setData(null, true);
+      this.spinner.hideLoadingSpinner(0);
+      this.ngxSmartModalService.getModal('successModal').setData('สร้างรหัสผู้ใช้งานสำเร็จ', true);
+      this.ngxSmartModalService.getModal('successModal').open();
+    }, error => {
+      this.ngxSmartModalService.getModal('confirmModal').setData(null, true);
+      this.spinner.hideLoadingSpinner();
+    });
   }
 
   previewTransferReport(empNo: string) {
@@ -298,6 +334,10 @@ export class EmployeeComponent implements OnDestroy, OnInit {
   get HasEmployeePermission() {
     const allowed = ['registrar', 'hr', 'hrm', 'admin'];
     return this.matchingRole(this.user.role.id, allowed);
+  }
+
+  get HasAdminPerrmission() {
+    return this.matchingRole(this.user.role.id, ['admin']);
   }
 
   private matchingRole(role, allowedRoles): boolean {

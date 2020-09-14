@@ -25,11 +25,15 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
+import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     SafePipe,
+    ConfirmDialogComponent,
+    SuccessDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -76,7 +80,9 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
     TabsModule,
     PdfViewerModule,
     NgxQRCodeModule,
-    RoundProgressModule
+    RoundProgressModule,
+    ConfirmDialogComponent,
+    SuccessDialogComponent
   ]
 })
 export class SharedModule {

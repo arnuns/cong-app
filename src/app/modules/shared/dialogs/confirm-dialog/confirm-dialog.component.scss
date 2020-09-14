@@ -1,0 +1,91 @@
+.dialog-header {
+  background-color: #00ca9d;
+  color: #ffffff;
+  padding: 1rem;
+  letter-spacing: normal;
+}
+
+.dialog {
+  padding: 1rem 1.75rem;
+}
+
+.dialog-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0;
+  letter-spacing: normal;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 500;
+  color: #212529;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: normal;
+}
+
+.button__cancel {
+  width: 120px;
+  height: 48px;
+  background-color: #bbc6dc;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: normal;
+}
+
+.button__save {
+  width: 175px;
+  height: 48px;
+  background-color: #4b74ff;
+  border-radius: 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: normal;
+}
+
+.button__save:hover,
+.button__cancel:hover {
+  opacity: .9;
+}
+
+.icon-status {
+  display: inline;
+  margin-right: 5px;
+
+  i {
+    font-size: 12px !important;
+  }
+
+  i.active {
+    color: #93c94e;
+  }
+
+  i.inactive {
+    color: #858585;
+  }
+}
+
+::ng-deep {
+  .confirm-modal {
+    max-width: 450px;
+  }
+
+  .form-group.select {
+    .ng-select .ng-select-container {
+      min-height: 48px;
+    }
+
+    .ng-select.ng-select-single .ng-select-container {
+      height: 48px;
+      border-radius: 2px;
+    }
+  }
+}
