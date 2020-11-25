@@ -37,7 +37,7 @@
                       <strong>{{ user.title + ' ' + user.firstName + ' ' + user.lastName }}</strong></div>
                   </div>
                   <div>ตำแหน่ง
-                    <strong>{{ user.roleNameTH }}</strong></div>
+                    <strong>{{ user.role.nameTH }}</strong></div>
                   <div>
                     ประจำงวด
                     <strong>{{ convertToStartEndDateString(payrollCycle?.start, payrollCycle?.end) }}</strong>
@@ -154,17 +154,30 @@
             </div>
             <div>
               <div class="d-flex">
-                <div class="mr-auto">5. อื่นๆ</div>
-                <div>{{ ((user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
-                        > 0) ? ((user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
+                <div class="mr-auto pb-1">5. นักขัตฤกษ์</div>
+                <div class="pb-1">{{ (user.annualHoliday > 0) ? (user.annualHoliday | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto pb-1">6. ชดเชยรายได้</div>
+                <div class="pb-1">{{ (user.incomeCompensation > 0) ? (user.incomeCompensation | number:'1.2-2') : "-" }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex">
+                <div class="mr-auto">7. อื่นๆ</div>
+                <div>{{ ((user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
+                        > 0) ? ((user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome)
                         | number:'1.2-2') : "-" }}</div>
               </div>
             </div>
-            <div
-              *ngIf="(user.annualHoliday + user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome) > 0">
+            <div *ngIf="(user.telephoneCharge + user.refund + user.dutyAllowance + user.bonus + user.otherIncome) > 0">
               <div class="d-flex">
                 <div class="mr-auto">
-                  <small>( {{ (user.annualHoliday > 0) ? "นักขัตฤกษ์ " + (user.annualHoliday | number) + " บาท" : "" }} {{ (user.telephoneCharge
+                  <small>( {{ (user.telephoneCharge
                           > 0) ? "ค่าโทรศัพท์ " + (user.telephoneCharge | number) + " บาท" : "" }} {{ (user.refund > 0) ? "คืนเงินหัก
                           " + (user.refund | number) + " บาท" : "" }} {{ (user.dutyAllowance > 0) ? "เบี้ยขยัน " + (user.dutyAllowance
                           | number) + " บาท" : "" }}

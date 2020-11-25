@@ -526,6 +526,26 @@
                     formControlName="point_value" />
                 </div>
               </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="annual_holiday">นักขัตฤกษ์
+                  </label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="จำนวนวัน" (change)="setNumber($event)"
+                      formControlName="annual_holiday_day">
+                    <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                      formControlName="annual_holiday" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="income_compensation">ชดเชยรายได้
+                  </label>
+                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
+                    formControlName="income_compensation" />
+                </div>
+              </div>
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_overtime').value">
                 <div class="form-group mb-0">
                   <label for="overtime">ค่าล่วงเวลา (OT) <i class="fa fa-times text-danger button__remove"
@@ -533,15 +553,6 @@
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="overtime" />
-                </div>
-              </div>
-              <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_annual_holiday').value">
-                <div class="form-group mb-0">
-                  <label for="annual_holiday">นักขัตฤกษ์ <i class="fa fa-times text-danger button__remove"
-                      (click)="toggleShowControl('is_annual_holiday')"></i>
-                  </label>
-                  <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
-                    formControlName="annual_holiday" />
                 </div>
               </div>
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_telephone_charge').value">
@@ -596,15 +607,16 @@
                     (change)="onSelectionOther($event)" formControlName="income_other">
                     <ng-option value="is_overtime" *ngIf="!updateSalaryForm.get('is_overtime').value">ค่าล่วงเวลา (OT)
                     </ng-option>
-                    <ng-option value="is_annual_holiday" *ngIf="!updateSalaryForm.get('is_annual_holiday').value">
-                      นักขัตฤกษ์</ng-option>
+                    <!-- <ng-option value="is_annual_holiday" *ngIf="!updateSalaryForm.get('is_annual_holiday').value">
+                      นักขัตฤกษ์</ng-option> -->
                     <ng-option value="is_telephone_charge" *ngIf="!updateSalaryForm.get('is_telephone_charge').value">
                       ค่าโทรศัพท์</ng-option>
                     <ng-option value="is_refund" *ngIf="!updateSalaryForm.get('is_refund').value">คืนเงินหัก</ng-option>
                     <ng-option value="is_duty_allowance" *ngIf="!updateSalaryForm.get('is_duty_allowance').value">
                       เบี้ยขยัน</ng-option>
                     <ng-option value="is_bonus" *ngIf="!updateSalaryForm.get('is_bonus').value">เงินโบนัส</ng-option>
-                    <ng-option value="is_other_income" *ngIf="!updateSalaryForm.get('is_other_income').value">อื่นๆ</ng-option>
+                    <ng-option value="is_other_income" *ngIf="!updateSalaryForm.get('is_other_income').value">อื่นๆ
+                    </ng-option>
                   </ng-select>
                 </div>
               </div>
@@ -631,6 +643,8 @@
               <div class="col-md-6 mt-2">
                 <div class="form-group mb-0">
                   <label>ประกันสังคม</label>
+                  <input type="checkbox" id="is_sso_annual_holiday" formControlName="is_sso_annual_holiday" class="ml-3 mr-2" /> <label
+                    for="is_sso_annual_holiday" class="label">รวมนักขัตฤกษ์</label>
                   <input type="number" class="form-control" [value]="socialSecurity" readonly />
                 </div>
               </div>
@@ -785,8 +799,7 @@
                 aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
           </div>
           <div class="ml-auto">
-            <button class="btn btn-primary button__add"
-              [disabled]="!uf.form.valid">
+            <button class="btn btn-primary button__add" [disabled]="!uf.form.valid">
               บันทึกข้อมูล</button>
           </div>
         </div>

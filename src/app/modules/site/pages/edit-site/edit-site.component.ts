@@ -44,6 +44,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     postcode: [{ value: '', disabled: true }],
     minimum_wage: [undefined, [Validators.required]],
     is_monthly: [false],
+    is_sso_annual_holiday: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
     site_user_positions: this.fb.array([]),
@@ -105,6 +106,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
           longitude: this.site.longitude,
           minimum_wage: this.site.minimumWage,
           is_monthly: this.site.isMonthly,
+          is_sso_annual_holiday: this.site.isSsoAnnualHoliday,
           self_checkin: this.site.selfCheckIn
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
@@ -176,6 +178,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       minimumWage: this.siteForm.get('minimum_wage').value,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
+      isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
       selfCheckIn: this.siteForm.get('self_checkin').value,
       status: true,
       createOn: undefined,
@@ -220,7 +223,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
   }
 
   addSiteWorkRate(siteWorkRates: SiteWorkRate[] = null) {
-    
+
     if (siteWorkRates && siteWorkRates.length > 0) {
       siteWorkRates.forEach(siteWorkRate => {
         this.siteWorkRateForms.controls.push(this.fb.group({

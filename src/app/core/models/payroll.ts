@@ -38,12 +38,14 @@ export interface Salary {
     totalWage: number;
     positionValue: number;
     pointValue: number;
+    annualHolidayDay: number;
     annualHoliday: number;
     telephoneCharge: number;
     refund: number;
     dutyAllowance: number;
     bonus: number;
     overtime: number;
+    incomeCompensation: number;
     otherIncome: number;
     extraReplaceValue: number;
     extraOvertime: number;
@@ -67,6 +69,7 @@ export interface Salary {
     isSuspend: boolean;
     isTemporary: boolean;
     isSocialSecurity: boolean;
+    isSsoAnnualHoliday: boolean;
     createBy: string;
     createOn: Date;
     updateBy: string;
