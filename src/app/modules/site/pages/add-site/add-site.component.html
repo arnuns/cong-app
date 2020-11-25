@@ -258,8 +258,8 @@
       </div>
       <div class="row">
         <div class="col">
-          <button type="button" class="btn btn-primary button__add" (click)="addSiteUserPosition()"><i class="fa fa-plus"
-              aria-hidden="true"></i>
+          <button type="button" class="btn btn-primary button__add" (click)="addSiteUserPosition()"><i
+              class="fa fa-plus" aria-hidden="true"></i>
             เพิ่มตำแหน่ง</button>
         </div>
       </div>
@@ -272,11 +272,23 @@
         <div class="col">
           <div class="d-flex w-100">
             <div>
-              <div class="form-group">
-                <input type="checkbox" id="is_monthly" formControlName="is_monthly">
-                <label class="pl-2" for="is_monthly">
-                  จ่ายเงินรายเดือน
-                </label>
+              <div class="d-flex flex-column">
+                <div>
+                  <div class="form-group">
+                    <input type="checkbox" id="is_monthly" formControlName="is_monthly">
+                    <label class="pl-2" for="is_monthly">
+                      จ่ายเงินรายเดือน
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <div class="form-group">
+                    <input type="checkbox" id="is_sso_annual_holiday" formControlName="is_sso_annual_holiday">
+                    <label class="pl-2" for="is_sso_annual_holiday">
+                      คำนวณประกันสังคมโดยรวมรายรับ <u>นักขัตฤกษ์</u>
+                    </label>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="ml-auto">

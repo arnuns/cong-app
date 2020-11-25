@@ -89,8 +89,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     point_value: ['0.00', [Validators.required, Validators.min(0)]],
     is_overtime: [false],
     overtime: ['0.00', [Validators.required, Validators.min(0)]],
-    is_annual_holiday: [false],
-    annual_holiday: ['0.00', [Validators.required, Validators.min(0)]],
+    annual_holiday_day: [0, [Validators.required, Validators.min(0)]],
+    annual_holiday: [{ value: '0.00', disabled: true }, [Validators.required, Validators.min(0)]],
+    income_compensation: ['0.00', [Validators.required, Validators.min(0)]],
     is_telephone_charge: [false],
     telephone_charge: ['0.00', [Validators.required, Validators.min(0)]],
     is_refund: [false],
@@ -121,6 +122,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     other: ['0.00', [Validators.required, Validators.min(0)]],
     fee_other: [undefined],
     is_social_security: [true],
+    is_sso_annual_holiday: [false],
     remark: [''],
     is_complete: [false],
     is_suspend: [false],
@@ -238,8 +240,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         point_value: '0.00',
         is_overtime: false,
         overtime: '0.00',
-        is_annual_holiday: false,
+        annual_holiday_day: 0,
         annual_holiday: '0.00',
+        income_compensation: '0.00',
         is_telephone_charge: false,
         telephone_charge: '0.00',
         is_refund: false,
@@ -270,6 +273,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         other: '0.00',
         fee_other: undefined,
         is_social_security: true,
+        is_sso_annual_holiday: false,
         remark: '',
         is_complete: false,
         is_suspend: false,
@@ -309,12 +313,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.updateSalaryForm.get('is_overtime').valueChanges.subscribe(val => {
       if (!val) {
         this.updateSalaryForm.get('overtime').setValue('0.00');
-      }
-    });
-
-    this.updateSalaryForm.get('is_annual_holiday').valueChanges.subscribe(val => {
-      if (!val) {
-        this.updateSalaryForm.get('annual_holiday').setValue('0.00');
       }
     });
 
@@ -381,6 +379,18 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.updateSalaryForm.get('is_other').valueChanges.subscribe(val => {
       if (!val) {
         this.updateSalaryForm.get('other').setValue('0.00');
+      }
+    });
+
+    this.updateSalaryForm.get('annual_holiday_day').valueChanges.subscribe(val => {
+      const number = Number(val);
+      if (!val || isNaN(number)) {
+        this.updateSalaryForm.get('annual_holiday').setValue(0);
+      } else {
+        const hiringRatePerDay = this.hiringRatePerDay
+          ? Number(this.hiringRatePerDay)
+          : 0;
+        this.updateSalaryForm.get('annual_holiday').setValue(hiringRatePerDay * number);
       }
     });
 
@@ -462,8 +472,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       point_value: salary.pointValue.toFixed(2),
       is_overtime: salary.overtime > 0,
       overtime: salary.overtime.toFixed(2),
-      is_annual_holiday: salary.annualHoliday > 0,
       annual_holiday: salary.annualHoliday.toFixed(2),
+      income_compensation: salary.incomeCompensation.toFixed(2),
       is_telephone_charge: salary.telephoneCharge > 0,
       telephone_charge: salary.telephoneCharge.toFixed(2),
       is_refund: salary.refund > 0,
@@ -494,11 +504,18 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       other: salary.otherFee.toFixed(2),
       fee_other: undefined,
       is_social_security: salary.isSocialSecurity,
+      is_sso_annual_holiday: salary.isSsoAnnualHoliday,
       remark: salary.remark,
       is_complete: salary.isComplete,
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
+    const annualHoliday = parseFloat(this.updateSalaryForm.get('annual_holiday').value);
+    let annualHolidayDay = 0;
+    if (annualHoliday > 0 && salary.annualHolidayDay <= 0) {
+      annualHolidayDay = Math.floor(annualHoliday / salary.hiringRatePerDay);
+    }
+    this.updateSalaryForm.get('annual_holiday_day').setValue(annualHolidayDay);
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
@@ -685,12 +702,14 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       totalWage: 0,
       positionValue: getValue('position_value'),
       pointValue: getValue('point_value'),
+      annualHolidayDay: getValue('annual_holiday_day'),
       annualHoliday: getValue('annual_holiday'),
       telephoneCharge: getValue('telephone_charge'),
       refund: getValue('refund'),
       dutyAllowance: getValue('duty_allowance'),
       bonus: getValue('bonus'),
       overtime: getValue('overtime'),
+      incomeCompensation: getValue('income_compensation'),
       otherIncome: getValue('other_income'),
       extraReplaceValue: 0,
       extraOvertime: 0,
@@ -714,6 +733,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       isSuspend: getValue('is_suspend'),
       isTemporary: getValue('is_temporary'),
       isSocialSecurity: getValue('is_social_security'),
+      isSsoAnnualHoliday: getValue('is_sso_annual_holiday'),
       createBy: null,
       createOn: null,
       updateBy: null,
@@ -842,6 +862,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
+  setNumber($event) {
+    const number = Number($event.target.value);
+    if (isNaN(number)) {
+      $event.target.value = 0;
+    }
+  }
+
   setTwoNumberDecimal($event) {
     $event.target.value = parseFloat($event.target.value).toFixed(2);
   }
@@ -875,9 +902,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   hiringRateModelChanged(rate) {
     if (rate) {
-      if (parseFloat(rate) > 999) {
+      const hiringRatePerday = parseFloat(rate);
+      if (hiringRatePerday > 999) {
         this.hiringRatePerDay = '0.00';
       }
+      const annualHolidayDay = this.updateSalaryForm.get('annual_holiday_day').value;
+      this.updateSalaryForm.get('annual_holiday').setValue((annualHolidayDay ? annualHolidayDay : 0) * hiringRatePerday);
     }
   }
 
@@ -896,6 +926,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       + (this.updateSalaryForm.get('point_value').value ? Number(this.updateSalaryForm.get('point_value').value) : 0)
       + (this.updateSalaryForm.get('overtime').value ? Number(this.updateSalaryForm.get('overtime').value) : 0)
       + (this.updateSalaryForm.get('annual_holiday').value ? Number(this.updateSalaryForm.get('annual_holiday').value) : 0)
+      + (this.updateSalaryForm.get('income_compensation').value ? Number(this.updateSalaryForm.get('income_compensation').value) : 0)
       + (this.updateSalaryForm.get('telephone_charge').value ? Number(this.updateSalaryForm.get('telephone_charge').value) : 0)
       + (this.updateSalaryForm.get('refund').value ? Number(this.updateSalaryForm.get('refund').value) : 0)
       + (this.updateSalaryForm.get('duty_allowance').value ? Number(this.updateSalaryForm.get('duty_allowance').value) : 0)
@@ -940,8 +971,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       minimumSocialSecurity = minimumSocialSecurity / 2;
       maximumSocialSecurity = maximumSocialSecurity / 2;
     }
-
-    result = (resultWage + positionValue) * rateSocialSecurity;
+    const isSsoAnnualHoliday = Boolean(this.updateSalaryForm.get('is_sso_annual_holiday').value);
+    let totalWage = resultWage + positionValue;
+    if (isSsoAnnualHoliday) {
+      totalWage = totalWage + this.updateSalaryForm.get('annual_holiday').value;
+    }
+    result = totalWage * rateSocialSecurity;
     if (result < minimumSocialSecurity) {
       result = minimumSocialSecurity;
     } else if (result > maximumSocialSecurity) {
@@ -968,7 +1003,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   get noOtherItem() {
     return this.updateSalaryForm.get('is_overtime').value
-      && this.updateSalaryForm.get('is_annual_holiday').value
       && this.updateSalaryForm.get('is_telephone_charge').value
       && this.updateSalaryForm.get('is_refund').value
       && this.updateSalaryForm.get('is_duty_allowance').value
