@@ -58,7 +58,7 @@ export class PayslipComponent implements OnDestroy, OnInit {
       }, () => {
         this.payrollService.getSitePayrollCycleSalary(payrollCycleId, siteId).subscribe(salaries => {
           this.userSalarys = salaries.filter(s => s.siteId === siteId);
-          this.spinner.hideLoadingSpinner();
+          this.spinner.hideLoadingSpinner(0);
           if (this.electronService.isElectronApp) {
             setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 5000);
           }
