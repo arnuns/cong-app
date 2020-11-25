@@ -16,7 +16,7 @@ import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 export class PayslipComponent implements OnDestroy, OnInit {
   public baseImagePath = environment.basePath;
   payrollCycle: PayrollCycle;
-  userSalarys: Salary[];
+  userSalarys: Salary[] = [];
   salary: number;
   thaiMonth = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม',
     'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -51,20 +51,20 @@ export class PayslipComponent implements OnDestroy, OnInit {
       this.spinner.showLoadingSpinner();
       const payrollCycle = this.cacheService.get(`payrollCycle_${payrollCycleId}`,
         this.payrollService.getPayrollCycle(payrollCycleId), 50000);
-      payrollCycle.subscribe(result => {
+      payrollCycle.toPromise().then((result: PayrollCycle) => {
         this.payrollCycle = result;
-      }, error => {
+      }).then(_ => {
+        return this.payrollService.getSitePayrollCycleSalary(payrollCycleId, siteId).toPromise();
+      }).then(salaries => {
+        this.userSalarys = salaries.filter(s => s.siteId === siteId);
+        this.spinner.hideLoadingSpinner();
+        if (this.electronService.isElectronApp) {
+          setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 5000);
+        }
+      }).catch(() => {
         this.spinner.hideLoadingSpinner(0);
-      }, () => {
-        this.payrollService.getSitePayrollCycleSalary(payrollCycleId, siteId).subscribe(salaries => {
-          this.userSalarys = salaries.filter(s => s.siteId === siteId);
-          this.spinner.hideLoadingSpinner(0);
-          if (this.electronService.isElectronApp) {
-            setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 5000);
-          }
-        }, error => {
-          this.spinner.hideLoadingSpinner(0);
-        });
+      }).finally(() => {
+        this.spinner.hideLoadingSpinner(0);
       });
     });
   }
