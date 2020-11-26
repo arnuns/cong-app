@@ -104,7 +104,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       this.editForm.reset({
         id: 0,
         site_id: undefined,
-        work_date: new Date(),
+        work_date: [new Date(), new Date()],
         period_time: undefined,
         search: '',
         emp_no: undefined,
@@ -260,7 +260,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   onClickAdd() {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
-    const wDate: Date = this.timeAttendanceForm.get('work_date').value;
+    const workDate: Date[] = this.timeAttendanceForm.get('work_date').value;
+    const wDate = workDate[0];
     wDate.setHours(7);
     this.editForm.patchValue({
       id: 0,
@@ -352,9 +353,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   onExportWorkingSiteMonthlyReport() {
     if (this.electronService.isElectronApp) {
-      const workDate: Date = this.timeAttendanceForm.get('work_date').value;
+      const workDate: Date[] = this.timeAttendanceForm.get('work_date').value;
       this.electronService.ipcRenderer.send('view-working-site-report'
-        , this.timeAttendanceForm.get('site_id').value, workDate.getFullYear(), workDate.getMonth() + 1);
+        , this.timeAttendanceForm.get('site_id').value, workDate[0].getFullYear(), workDate[0].getMonth() + 1);
     }
   }
 
