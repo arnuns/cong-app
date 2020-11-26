@@ -13,10 +13,11 @@
         </div>
         <div class="ml-2">
           <div class="btn-group action--dropdown" dropdown #dropdown="bs-dropdown">
-            <button dropdownToggle type="button" class="btn btn-outline-primary button__export dropdown-toggle">
+            <button dropdownToggle type="button" class="btn btn-outline-primary button__export dropdown-toggle"
+              [class.disabled]="IsDisableExport">
               <i class="fa fa-cloud-download" aria-hidden="true"></i> ดาวน์โหลด <span class="caret"></span>
             </button>
-            <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual">
+            <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-triggers-manual" [hidden]="IsDisableExport">
               <li role="menuitem" *ngIf="timeAttendances.length > 0"><a class="dropdown-item"
                   (click)="onExport()">สรุปรายวัน</a></li>
               <li role="menuitem"><a class="dropdown-item" (click)="onExportWorkingSiteMonthlyReport()">สรุปรายเดือน</a>
@@ -38,7 +39,7 @@
           </div>
         </div>
         <div class="ml-2">
-          <input type="text" class="form-control mb-1" placeholder="คลิกเพื่อเลือกวัน" bsDatepicker
+          <input type="text" class="form-control work-date mb-1" placeholder="คลิกเพื่อเลือกวัน" bsDaterangepicker
             formControlName="work_date" (bsValueChange)="onWorkDateSelectionChange($event)" />
         </div>
       </div>

@@ -32,13 +32,13 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   siteWorkRates: any[] = [];
   timeAttendanceForm = this.fb.group({
     site_id: [undefined],
-    work_date: [new Date()]
+    work_date: [[new Date(), new Date()]]
   });
 
   editForm = this.fb.group({
     id: [0],
     site_id: [undefined],
-    work_date: [new Date(), [Validators.required]],
+    work_date: [[new Date(), new Date()], [Validators.required]],
     period_time: [undefined, [Validators.required]],
     search: [''],
     emp_no: [undefined, Validators.required],
@@ -185,15 +185,17 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
             const storageTimeAttendanceFillter = JSON.parse(timeAttendanceFilterString) as TimeAttendanceFilter;
             that.timeAttendanceForm.patchValue({
               site_id: storageTimeAttendanceFillter.siteId,
-              work_date: new Date(storageTimeAttendanceFillter.workDate)
+              work_date: [new Date(storageTimeAttendanceFillter.startDate), new Date(storageTimeAttendanceFillter.endDate)]
             });
             dtInstance.page(storageTimeAttendanceFillter.page);
             dtInstance.page.len(storageTimeAttendanceFillter.page_size);
             localStorage.removeItem(that.filterSessionName);
           }
+          const workDate = that.timeAttendanceForm.get('work_date').value;
           that.timeAttendanceFilter = {
             siteId: that.timeAttendanceForm.get('site_id').value,
-            workDate: that.timeAttendanceForm.get('work_date').value,
+            startDate: workDate[0],
+            endDate: workDate[1],
             sort_column: sortColumn,
             sort_by: sortBy,
             page: dtInstance.page.info().page,
@@ -202,7 +204,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
           that.timeAttendanceService.getTimeAttendanceFilter(
             that.timeAttendanceFilter.siteId,
-            that.timeAttendanceFilter.workDate,
+            that.timeAttendanceFilter.startDate,
+            that.timeAttendanceFilter.endDate,
             that.timeAttendanceFilter.sort_column,
             that.timeAttendanceFilter.sort_by,
             that.timeAttendanceFilter.page + 1,
@@ -319,9 +322,10 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     const site = this.sites.filter(s => s.id === this.timeAttendanceForm.get('site_id').value)[0];
     const workDate = this.timeAttendanceForm.get('work_date').value;
     if (site && workDate) {
-      this.timeAttendanceService.getSiteTimeAttendanceByWorkDate(
+      this.timeAttendanceService.getSiteTimeAttendanceByDateRange(
         site.id,
-        workDate
+        workDate[0],
+        workDate[1]
       ).subscribe(timeAttendances => {
         const data = timeAttendances.map(s => ({
           'หน่วยงาน': s.site.name,
@@ -466,5 +470,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   updateView() {
     this.applicationStateService.setIsHiddenSearch = true;
+  }
+
+  get IsDisableExport() {
+    return this.timeAttendanceForm.get('site_id').value <= 0 || !this.timeAttendanceForm.get('site_id').value;
   }
 }

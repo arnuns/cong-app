@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { TimeAttendance, WorkingSiteMonthly, WorkingDay, WorkingDaySummary } from '../models/timeattendance';
 import { MomentHelper } from '../helpers/moment.helper';
 import { Site } from '../models/site';
+import { start } from 'repl';
 
 @Injectable({
     providedIn: 'root'
@@ -40,6 +41,13 @@ export class TimeAttendanceService extends BaseService {
         return this.http.get<TimeAttendance[]>(`${this.serviceUrl}/timeattendance/site/${siteId}/workdate/${workDateString}`);
     }
 
+    getSiteTimeAttendanceByDateRange(siteId: number, startDate: Date, endDate: Date) {
+        const startDateString = this.moment.format(startDate, 'DDMMYYYY');
+        const endDateString = this.moment.format(endDate, 'DDMMYYYY');
+        return this.http.get<TimeAttendance[]>(
+            `${this.serviceUrl}/timeattendance/site/${siteId}/startdate/${startDateString}/enddate/${endDateString}`);
+    }
+
     createTimeAttendance(timeAttendance: TimeAttendance) {
         return this.http.post<TimeAttendance>(`${this.serviceUrl}/timeattendance`, timeAttendance);
     }
@@ -58,15 +66,18 @@ export class TimeAttendanceService extends BaseService {
 
     getTimeAttendanceFilter(
         site_id: number,
-        work_date: Date,
+        start_date: Date,
+        end_date: Date,
         sort_column: string,
         sort_by: string,
         page: number,
         page_size: number) {
-        const workDate = this.moment.format(work_date, 'YYYYMMDD');
+        const startDate = this.moment.format(start_date, 'YYYYMMDD');
+        const endDate = this.moment.format(end_date, 'YYYYMMDD');
         const params = new HttpParams()
             .set('site_id', (!site_id) ? '0' : String(site_id))
-            .set('work_date', workDate)
+            .set('start_date', startDate)
+            .set('end_date', endDate)
             .set('sort_column', sort_column)
             .set('sort_by', sort_by)
             .set('page', String(page))

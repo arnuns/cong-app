@@ -88,7 +88,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     ).subscribe(results => {
       this.payrollCycles = results[0];
       this.sites = results[1];
-      this.payrollCycleSelectList = this.payrollCycles.slice(0, 12).map(p => ({
+      this.payrollCycleSelectList = this.payrollCycles.slice(0, 24).map(p => ({
         value: p.id,
         viewValue: this.convertToStartEndDateString(p.start, p.end)
       }));

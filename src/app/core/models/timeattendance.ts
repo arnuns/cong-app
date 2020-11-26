@@ -25,7 +25,8 @@ export interface TimeAttendance {
 
 export interface TimeAttendanceFilter extends PageFilter {
     siteId: number;
-    workDate: Date;
+    startDate: Date;
+    endDate: Date;
 }
 
 export class WorkingSiteMonthly {
