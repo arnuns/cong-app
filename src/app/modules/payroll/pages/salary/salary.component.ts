@@ -950,6 +950,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     const minimumWage = this.site.minimumWage;
     const positionValue = this.updateSalaryForm.get('position_value').value
       ? Number(this.updateSalaryForm.get('position_value').value) : 0;
+    const incomeCompensation = this.updateSalaryForm.get('income_compensation').value
+      ? Number(this.updateSalaryForm.get('income_compensation').value) : 0;
     if (this.site.isMonthly) {
       if (sumSiteManday > minimumManday) {
         resultManday = minimumManday;
@@ -972,7 +974,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       maximumSocialSecurity = maximumSocialSecurity / 2;
     }
     const isSsoAnnualHoliday = Boolean(this.updateSalaryForm.get('is_sso_annual_holiday').value);
-    let totalWage = resultWage + positionValue;
+    let totalWage = resultWage + positionValue + incomeCompensation;
     if (isSsoAnnualHoliday) {
       totalWage = totalWage + this.updateSalaryForm.get('annual_holiday').value;
     }
