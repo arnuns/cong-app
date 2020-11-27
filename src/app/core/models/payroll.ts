@@ -152,6 +152,7 @@ export interface SummarySalaryBySite {
     dutyAllowance: number;
     bonus: number;
     overtime: number;
+    incomeCompensation: number;
     otherIncome: number;
     replaceValue: number;
     extraReplaceValue: number;
