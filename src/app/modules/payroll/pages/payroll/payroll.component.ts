@@ -426,6 +426,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'เบี้ยขยัน': s.dutyAllowance,
         'โบนัส': s.bonus,
         'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+        'ชดเชยรายได้': s.incomeCompensation,
         'รายได้อื่นๆ': s.otherIncome,
         'ค่าแทนจุด': s.extraReplaceValue,
         'รายได้จุดพิเศษ': s.extraPointValue,
