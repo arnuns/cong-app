@@ -331,9 +331,9 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   onReaderIdCard() {
     if (this.electronService.isElectronApp && this.electronService.isWindows) {
       this.spinner.showLoadingSpinner();
-      const reader: string = this.electronService.ipcRenderer.sendSync('read-card');
-      if (reader) {
-        try {
+      try {
+        const reader: string = this.electronService.ipcRenderer.sendSync('read-card');
+        if (reader) {
           const validTitles = ['นาย', 'นาง', 'นางสาว'];
           const validEnTitles = ['mr', 'ms', 'mrs', 'others'];
           const readers = reader.split(',');
@@ -365,9 +365,9 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
             birthdate: birthDate,
             permanent_address: permanentAddress,
           });
-        } catch (error) {
-          console.log(error);
         }
+      } catch (error) {
+        console.log(error);
       }
       this.spinner.hideLoadingSpinner(0);
     } else {
