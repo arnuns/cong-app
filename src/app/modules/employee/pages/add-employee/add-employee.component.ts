@@ -15,6 +15,7 @@ import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { Router } from '@angular/router';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { ElectronService } from 'ngx-electron';
+import { NgxSmartModalService } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-add-employee',
@@ -139,6 +140,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     private applicationStateService: ApplicationStateService,
     private electronService: ElectronService,
     private fb: FormBuilder,
+    private ngxSmartModalService: NgxSmartModalService,
     private moment: MomentHelper,
     private router: Router,
     private siteService: SiteService,
@@ -327,46 +329,51 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onReaderIdCard() {
-    this.spinner.showLoadingSpinner();
-    const reader: string = this.electronService.ipcRenderer.sendSync('read-card');
-    if (reader) {
-      try {
-        const validTitles = ['นาย', 'นาง', 'นางสาว'];
-        const validEnTitles = ['mr', 'ms', 'mrs', 'others'];
-        const readers = reader.split(',');
-        const title = readers[0].trim();
-        const firstname = readers[1].trim();
-        const lastname = readers[2].trim();
-        const titleEn = readers[3].trim();
-        const firstnameEn = readers[4].trim();
-        const lastnameEn = readers[5].trim();
-        const gender = readers[8].trim();
-        const birthDate = this.moment.toDate(readers[6].trim(), 'YYYYMMDD');
-        const permanentAddress = readers[7].trim();
-        const idCardNo = readers[9].trim();
-        const dateIssued = this.moment.toDate(readers[10].trim(), 'YYYYMMDD');
-        const expiryDate = this.moment.toDate(readers[11].trim(), 'YYYYMMDD');
-        this.employeeForm.patchValue({
-          idcard_no: idCardNo,
-          dateissued: dateIssued,
-          expirydate: expiryDate,
-          title: validTitles.indexOf(title) < 0 ? 'อื่นๆ' : title,
-          title_other: validTitles.indexOf(title) < 0 ? title : '',
-          firstname: firstname,
-          lastname: lastname,
-          title_en: validEnTitles.indexOf(titleEn) < 0 ? 'others' : titleEn,
-          title_other_en: validEnTitles.indexOf(titleEn) < 0 ? titleEn : '',
-          firstname_en: firstnameEn,
-          lastname_en: lastnameEn,
-          gender: gender,
-          birthdate: birthDate,
-          permanent_address: permanentAddress,
-        });
-      } catch (error) {
-        console.log(error);
+    if (this.electronService.isElectronApp && this.electronService.isWindows) {
+      this.spinner.showLoadingSpinner();
+      const reader: string = this.electronService.ipcRenderer.sendSync('read-card');
+      if (reader) {
+        try {
+          const validTitles = ['นาย', 'นาง', 'นางสาว'];
+          const validEnTitles = ['mr', 'ms', 'mrs', 'others'];
+          const readers = reader.split(',');
+          const title = readers[0].trim();
+          const firstname = readers[1].trim();
+          const lastname = readers[2].trim();
+          const titleEn = readers[3].trim();
+          const firstnameEn = readers[4].trim();
+          const lastnameEn = readers[5].trim();
+          const gender = readers[8].trim();
+          const birthDate = this.moment.toDate(`${readers[6].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+          const permanentAddress = readers[7].trim();
+          const idCardNo = readers[9].trim();
+          const dateIssued = this.moment.toDate(`${readers[10].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+          const expiryDate = this.moment.toDate(`${readers[11].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+          this.employeeForm.patchValue({
+            idcard_no: idCardNo,
+            dateissued: dateIssued,
+            expirydate: expiryDate,
+            title: validTitles.indexOf(title) < 0 ? 'อื่นๆ' : title,
+            title_other: validTitles.indexOf(title) < 0 ? title : '',
+            firstname: firstname,
+            lastname: lastname,
+            title_en: validEnTitles.indexOf(titleEn) < 0 ? 'others' : titleEn,
+            title_other_en: validEnTitles.indexOf(titleEn) < 0 ? titleEn : '',
+            firstname_en: firstnameEn,
+            lastname_en: lastnameEn,
+            gender: gender,
+            birthdate: birthDate,
+            permanent_address: permanentAddress,
+          });
+        } catch (error) {
+          console.log(error);
+        }
       }
+      this.spinner.hideLoadingSpinner(0);
+    } else {
+      this.ngxSmartModalService.getModal('successModal').setData('โปรแกรมของท่านไม่รองรับการอ่านบัตร', true);
+      this.ngxSmartModalService.getModal('successModal').open();
     }
-    this.spinner.hideLoadingSpinner(0);
   }
 
   onSubmit() {

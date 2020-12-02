@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
-
+import * as moment from 'moment-timezone';
+moment.tz.setDefault('Asia/Bangkok');
 @Injectable()
 
 export class MomentHelper {
