@@ -104,6 +104,9 @@ ipcMain.on('online-status-changed', (event, status) => {
 ipcMain.on('read-card', (event) => {
   var child = require('child_process').execFile;
   var executablePath = "C:\\cong\\CardReader.exe";
+  if (!fs.existsSync(executablePath)) {
+    return;
+  }
   child(executablePath, function (err, data) {
     if (err) {
       console.error(err);
