@@ -377,7 +377,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    this.spinner.showLoadingSpinner();
+    // this.spinner.showLoadingSpinner();
     const formData = new FormData();
     const that = this;
     function getValue(controlName) {
@@ -391,8 +391,8 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('idcard_no')) {
       formData.append('idCardNumber', getValue('idcard_no'));
     }
-    formData.append('dateIssued', getValue('dateissued') ? this.moment.formatISO8601(getValue('dateissued')) : '');
-    formData.append('expiryDate', getValue('expirydate') ? this.moment.formatISO8601(getValue('expirydate')) : '');
+    formData.append('dateIssued', getValue('dateissued') ? this.moment.format(getValue('dateissued'), 'YYYY-MM-DD') : '');
+    formData.append('expiryDate', getValue('expirydate') ? this.moment.format(getValue('expirydate'), 'YYYY-MM-DD') : '');
     const title = getValue('title');
     if (title) {
       if (title === 'อื่นๆ') {
@@ -424,7 +424,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('gender')) {
       formData.append('gender', getValue('gender'));
     }
-    formData.append('birthdate', getValue('birthdate') ? this.moment.formatISO8601(getValue('birthdate')) : '');
+    formData.append('birthdate', getValue('birthdate') ? this.moment.format(getValue('birthdate'), 'YYYY-MM-DD') : '');
     if (getValue('weight')) {
       formData.append('weight', getValue('weight'));
     }
@@ -594,17 +594,17 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('license_no')) {
       formData.append('licenseNo', getValue('license_no'));
     }
-    formData.append('licenseStartDate', getValue('license_start_date') ? this.moment.formatISO8601(getValue('license_start_date')) : '');
-    formData.append('licenseEndDate', getValue('license_end_date') ? this.moment.formatISO8601(getValue('license_end_date')) : '');
-    formData.append('registerDate', getValue('register_date') ? this.moment.formatISO8601(getValue('register_date')) : '');
-    formData.append('startDate', getValue('start_date') ? this.moment.formatISO8601(getValue('start_date')) : '');
-    formData.append('endDate', getValue('end_date') ? this.moment.formatISO8601(getValue('end_date')) : '');
+    formData.append('licenseStartDate', getValue('license_start_date') ? this.moment.format(getValue('license_start_date'), 'YYYY-MM-DD') : '');
+    formData.append('licenseEndDate', getValue('license_end_date') ? this.moment.format(getValue('license_end_date'), 'YYYY-MM-DD') : '');
+    formData.append('registerDate', getValue('register_date') ? this.moment.format(getValue('register_date'), 'YYYY-MM-DD') : '');
+    formData.append('startDate', getValue('start_date') ? this.moment.format(getValue('start_date'), 'YYYY-MM-DD') : '');
+    formData.append('endDate', getValue('end_date') ? this.moment.format(getValue('end_date'), 'YYYY-MM-DD') : '');
     if (getValue('resignation_cause')) {
       formData.append('resignationCause', getValue('resignation_cause'));
     }
     formData.append('isSocialSecurity', getValue('is_social_security'));
-    formData.append('ssoStartDate', getValue('sso_start_date') ? this.moment.formatISO8601(getValue('sso_start_date')) : '');
-    formData.append('ssoEndDate', getValue('sso_end_date') ? this.moment.formatISO8601(getValue('sso_end_date')) : '');
+    formData.append('ssoStartDate', getValue('sso_start_date') ? this.moment.format(getValue('sso_start_date'), 'YYYY-MM-DD') : '');
+    formData.append('ssoEndDate', getValue('sso_end_date') ? this.moment.format(getValue('sso_end_date'), 'YYYY-MM-DD') : '');
     if (getValue('hospital_id')) {
       formData.append('hospitalId', getValue('hospital_id'));
     }
