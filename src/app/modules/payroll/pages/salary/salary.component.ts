@@ -472,6 +472,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       point_value: salary.pointValue.toFixed(2),
       is_overtime: salary.overtime > 0,
       overtime: salary.overtime.toFixed(2),
+      annual_holiday_day: salary.annualHolidayDay,
       annual_holiday: salary.annualHoliday.toFixed(2),
       income_compensation: salary.incomeCompensation.toFixed(2),
       is_telephone_charge: salary.telephoneCharge > 0,
@@ -510,12 +511,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
-    const annualHoliday = parseFloat(this.updateSalaryForm.get('annual_holiday').value);
-    let annualHolidayDay = 0;
-    if (annualHoliday > 0 && salary.annualHolidayDay <= 0) {
-      annualHolidayDay = Math.floor(annualHoliday / salary.hiringRatePerDay);
-    }
-    this.updateSalaryForm.get('annual_holiday_day').setValue(annualHolidayDay);
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
