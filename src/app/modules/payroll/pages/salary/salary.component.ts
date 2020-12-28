@@ -969,7 +969,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     const isSsoAnnualHoliday = Boolean(this.updateSalaryForm.get('is_sso_annual_holiday').value);
     let totalWage = resultWage + positionValue + incomeCompensation;
     if (isSsoAnnualHoliday) {
-      totalWage = totalWage + this.updateSalaryForm.get('annual_holiday').value;
+      totalWage = totalWage + Number(this.updateSalaryForm.get('annual_holiday').value);
     }
     result = totalWage * rateSocialSecurity;
     if (result < minimumSocialSecurity) {
