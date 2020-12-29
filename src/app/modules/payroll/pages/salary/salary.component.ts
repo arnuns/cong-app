@@ -387,10 +387,10 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       if (!val || isNaN(number)) {
         this.updateSalaryForm.get('annual_holiday').setValue(0);
       } else {
-        const minimumWage = this.site.minimumWage
-          ? Number(this.site.minimumWage)
+        const hiringRatePerday = this.hiringRatePerDay
+          ? Number(this.hiringRatePerDay)
           : 0;
-        this.updateSalaryForm.get('annual_holiday').setValue(minimumWage * number);
+        this.updateSalaryForm.get('annual_holiday').setValue(number * hiringRatePerday);
       }
     });
 
@@ -969,7 +969,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     const isSsoAnnualHoliday = Boolean(this.updateSalaryForm.get('is_sso_annual_holiday').value);
     let totalWage = resultWage + positionValue + incomeCompensation;
     if (isSsoAnnualHoliday) {
-      totalWage = totalWage + Number(this.updateSalaryForm.get('annual_holiday').value);
+      totalWage = totalWage + (Number(this.updateSalaryForm.get('annual_holiday_day').value) * minimumWage);
     }
     result = totalWage * rateSocialSecurity;
     if (result < minimumSocialSecurity) {
