@@ -332,7 +332,12 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (this.electronService.isElectronApp && this.electronService.isWindows) {
       this.spinner.showLoadingSpinner();
       try {
+        const that = this;
         const reader: string = this.electronService.ipcRenderer.sendSync('read-card');
+        const convertDate = (dateString: string) => {
+          const result = (Number(dateString.substring(0, 4)) - 543) + dateString.substr(dateString.length - 4);
+          return that.moment.toDate(`${result}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+        };
         if (reader) {
           const validTitles = ['นาย', 'นาง', 'นางสาว'];
           const validEnTitles = ['mr', 'ms', 'mrs', 'others'];
@@ -344,11 +349,11 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           const firstnameEn = readers[4].trim();
           const lastnameEn = readers[5].trim();
           const gender = readers[8].trim();
-          const birthDate = this.moment.toDate(`${readers[6].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+          const birthDate = convertDate(readers[6].trim());
           const permanentAddress = readers[7].trim();
           const idCardNo = readers[9].trim();
-          const dateIssued = this.moment.toDate(`${readers[10].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
-          const expiryDate = this.moment.toDate(`${readers[11].trim()}T00:00:00Z`, 'YYYYMMDDTHH:mm:ssZ');
+          const dateIssued = convertDate(readers[10].trim());
+          const expiryDate = convertDate(readers[11].trim());
           this.employeeForm.patchValue({
             idcard_no: idCardNo,
             dateissued: dateIssued,
@@ -377,7 +382,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    // this.spinner.showLoadingSpinner();
+    this.spinner.showLoadingSpinner();
     const formData = new FormData();
     const that = this;
     function getValue(controlName) {
