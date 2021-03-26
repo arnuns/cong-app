@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "cong-app": {
+      "hosting": {
+        "cong-app": [
+          "cong-app"
+        ]
+      }
+    }
+  }
+}

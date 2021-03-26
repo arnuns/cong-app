@@ -1,4 +1,4 @@
-<pdf-viewer *ngIf="document?.fileType === '.pdf'; else elseImageFile" [src]="document?.filePath"></pdf-viewer>
+<pdf-viewer *ngIf="document?.fileType === '.pdf'; else elseImageFile" [src]="document?.filePath | storageUrl"></pdf-viewer>
 <ng-template #elseImageFile>
-  <img [src]="document?.filePath" alt="" class="img-fluid">
+  <img [src]="document?.filePath | storageUrl" alt="" class="img-fluid">
 </ng-template>
