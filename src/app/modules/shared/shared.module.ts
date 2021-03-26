@@ -27,11 +27,13 @@ import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
+import { StorageUrlPipe } from 'src/app/core/pipes/storage-url.pipe';
 
 @NgModule({
   declarations: [
     LayoutComponent,
     SafePipe,
+    StorageUrlPipe,
     ConfirmDialogComponent,
     SuccessDialogComponent,
   ],
@@ -67,6 +69,7 @@ import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.
     ReactiveFormsModule,
     RouterModule,
     SafePipe,
+    StorageUrlPipe,
     AlertModule,
     NgSelectModule,
     NgxSpinnerModule,

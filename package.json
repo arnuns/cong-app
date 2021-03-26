@@ -58,7 +58,6 @@
     ]
   },
   "dependencies": {
-    "@types/moment-timezone": "^0.5.13",
     "@angular-devkit/build-angular": "^0.803.14",
     "@angular/animations": "~8.2.12",
     "@angular/common": "~8.2.12",
@@ -69,6 +68,7 @@
     "@angular/platform-browser-dynamic": "~8.2.12",
     "@angular/router": "~8.2.12",
     "@ng-select/ng-select": "^3.3.0",
+    "@types/moment-timezone": "^0.5.13",
     "angular-datatables": "^8.0.0",
     "angular-svg-round-progressbar": "^3.0.1",
     "asar": "^2.0.3",
@@ -79,6 +79,7 @@
     "datatables.net-dt": "^1.10.20",
     "electron-updater": "^4.2.0",
     "file-saver": "^2.0.2",
+    "firebase": ">= 5.5.7 <8",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "macos-alias": "^0.2.11",
@@ -122,6 +123,11 @@
     "protractor": "~5.4.0",
     "ts-node": "~8.4.1",
     "tslint": "~5.20.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0",
+    "firebase-tools": "^7.12.0",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^6.2.2",
+    "inquirer-autocomplete-prompt": "^1.0.1"
   }
 }
