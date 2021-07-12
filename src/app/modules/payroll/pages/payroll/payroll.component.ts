@@ -14,6 +14,8 @@ import * as FileSaver from 'file-saver';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { Router } from '@angular/router';
 import { ElectronService } from 'ngx-electron';
+import { AvailableBank } from 'src/app/core/models/available-bank.model';
+import { UserService } from 'src/app/core/services/user.service';
 
 export interface PayrollFilter {
   payroll_cycle_id: number;
@@ -62,6 +64,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
 
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
+  banks: AvailableBank[] = [];
 
   constructor(
     private electronService: ElectronService,
@@ -72,7 +75,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     private payrollService: PayrollService,
     private router: Router,
     private spinner: SpinnerHelper,
-    private siteService: SiteService
+    private siteService: SiteService,
+    private userService: UserService
   ) {
     this.spinner.showLoadingSpinner();
   }
@@ -84,10 +88,12 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       [
         this.payrollService.getPayrollCycles(),
         this.siteService.getSites(),
+        this.userService.getAvailableBanks()
       ]
     ).subscribe(results => {
       this.payrollCycles = results[0];
       this.sites = results[1];
+      this.banks = results[2];
       this.payrollCycleSelectList = this.payrollCycles.slice(0, 24).map(p => ({
         value: p.id,
         viewValue: this.convertToStartEndDateString(p.start, p.end)
@@ -295,53 +301,57 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   onExportAllSalaryToCsv() {
     this.spinner.showLoadingSpinner();
     this.payrollService.getPayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value).subscribe(salaries => {
-      const data = salaries.map(s => ({
-        'รหัสพนักงาน': s.empNo,
-        'หน่วยงาน': s.siteName,
-        'ตำแหน่ง': s.userPosition.nameTH,
-        'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
-        'คำนำหน้าชื่อ': s.title,
-        'ชื่อ': s.firstName,
-        'นามสกุล': s.lastName,
-        'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
-        'เลขที่ใบอนุญาต': !s.user.licenseNo ? '' : `${s.user.licenseNo}`,
-        'วันเริ่มต้นใบอนุญาต': !s.user.licenseStartDate ? '' : this.convertToDateString(s.user.licenseStartDate),
-        'วันสิ้นสุดใบอนุญาต': !s.user.licenseEndDate ? '' : this.convertToDateString(s.user.licenseEndDate),
-        'ธนาคาร': (s.bankId === 0) ? '' : (s.bankId === 1 ? 'กสิกร' : (s.bankId === 2 ? 'icbc' : (s.bankId === 3 ? 'ธนชาต' : ''))),
-        'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
-        'วันทำงานต่อเดือน': s.minimumManday,
-        'ค่าแรงขั้นต่ำ': s.minimumWage,
-        'แรงละ': s.hiringRatePerDay,
-        'จำนวนแรง': s.manday,
-        'ค่าแรงปกติ': s.totalWage,
-        'ค่าตำแหน่ง': s.positionValue,
-        'ค่าจุด': s.pointValue,
-        'นักขัตฤกษ์': s.annualHoliday,
-        'ค่าโทรศัพท์': s.telephoneCharge,
-        'คืนเงินหัก': s.refund,
-        'เบี้ยขยัน': s.dutyAllowance,
-        'โบนัส': s.bonus,
-        'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
-        'ชดเชยรายได้': s.incomeCompensation,
-        'รายได้อื่นๆ': s.otherIncome,
-        'ค่าแทนจุด': s.extraReplaceValue,
-        'รายได้จุดพิเศษ': s.extraPointValue,
-        'ประกันสังคม': s.socialSecurity,
-        'ค่าอุปกรณ์': s.inventory,
-        'ผิดวินัย': s.discipline,
-        'ค่าธรรมเนียม': s.transferFee,
-        'ขาดงาน': s.absence,
-        'ใบอนุญาต': s.licenseFee,
-        'เบิกล่วงหน้า': s.advance,
-        'ค่าเช่าบ้าน': s.rentHouse,
-        'พิธีการทางศาสนา': s.cremationFee,
-        'รายการหักอื่นๆ': s.otherFee,
-        'หมายเหตุ': !s.remark ? '' : s.remark,
-        'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': s.totalIncome,
-        'รวมรายการหัก': s.totalDeductible,
-        'เงินได้สุทธิ': s.totalAmount
-      }));
+      const data = salaries.map(s => {
+        let bankName = (s.bankId === 0 || (!this.banks.filter(b => b.id === s.bankId)[0]))
+          ? '' : this.banks.filter(b => b.id === s.bankId)[0].name;
+        return {
+          'รหัสพนักงาน': s.empNo,
+          'หน่วยงาน': s.siteName,
+          'ตำแหน่ง': s.userPosition.nameTH,
+          'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
+          'คำนำหน้าชื่อ': s.title,
+          'ชื่อ': s.firstName,
+          'นามสกุล': s.lastName,
+          'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
+          'เลขที่ใบอนุญาต': !s.user.licenseNo ? '' : `${s.user.licenseNo}`,
+          'วันเริ่มต้นใบอนุญาต': !s.user.licenseStartDate ? '' : this.convertToDateString(s.user.licenseStartDate),
+          'วันสิ้นสุดใบอนุญาต': !s.user.licenseEndDate ? '' : this.convertToDateString(s.user.licenseEndDate),
+          'ธนาคาร': bankName,
+          'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
+          'วันทำงานต่อเดือน': s.minimumManday,
+          'ค่าแรงขั้นต่ำ': s.minimumWage,
+          'แรงละ': s.hiringRatePerDay,
+          'จำนวนแรง': s.manday,
+          'ค่าแรงปกติ': s.totalWage,
+          'ค่าตำแหน่ง': s.positionValue,
+          'ค่าจุด': s.pointValue,
+          'นักขัตฤกษ์': s.annualHoliday,
+          'ค่าโทรศัพท์': s.telephoneCharge,
+          'คืนเงินหัก': s.refund,
+          'เบี้ยขยัน': s.dutyAllowance,
+          'โบนัส': s.bonus,
+          'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+          'ชดเชยรายได้': s.incomeCompensation,
+          'รายได้อื่นๆ': s.otherIncome,
+          'ค่าแทนจุด': s.extraReplaceValue,
+          'รายได้จุดพิเศษ': s.extraPointValue,
+          'ประกันสังคม': s.socialSecurity,
+          'ค่าอุปกรณ์': s.inventory,
+          'ผิดวินัย': s.discipline,
+          'ค่าธรรมเนียม': s.transferFee,
+          'ขาดงาน': s.absence,
+          'ใบอนุญาต': s.licenseFee,
+          'เบิกล่วงหน้า': s.advance,
+          'ค่าเช่าบ้าน': s.rentHouse,
+          'พิธีการทางศาสนา': s.cremationFee,
+          'รายการหักอื่นๆ': s.otherFee,
+          'หมายเหตุ': !s.remark ? '' : s.remark,
+          'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
+          'รวมรายได้': s.totalIncome,
+          'รวมรายการหัก': s.totalDeductible,
+          'เงินได้สุทธิ': s.totalAmount
+        };
+      });
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
       FileSaver.saveAs(blob, `salary_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
@@ -399,53 +409,57 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   onExportSiteSalaryToCsv(siteId: number) {
     this.spinner.showLoadingSpinner();
     this.payrollService.getSitePayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value, siteId).subscribe(salaries => {
-      const data = salaries.map(s => ({
-        'รหัสพนักงาน': s.empNo,
-        'หน่วยงาน': s.siteName,
-        'ตำแหน่ง': s.userPosition.nameTH,
-        'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
-        'คำนำหน้าชื่อ': s.title,
-        'ชื่อ': s.firstName,
-        'นามสกุล': s.lastName,
-        'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
-        'เลขที่ใบอนุญาต': !s.user.licenseNo ? '' : `${s.user.licenseNo}`,
-        'วันเริ่มต้นใบอนุญาต': !s.user.licenseStartDate ? '' : this.convertToDateString(s.user.licenseStartDate),
-        'วันสิ้นสุดใบอนุญาต': !s.user.licenseEndDate ? '' : this.convertToDateString(s.user.licenseEndDate),
-        'ธนาคาร': (s.bankId === 0) ? '' : (s.bankId === 1 ? 'กสิกร' : (s.bankId === 2 ? 'icbc' : (s.bankId === 3 ? 'ธนชาต' : ''))),
-        'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
-        'วันทำงานต่อเดือน': s.minimumManday,
-        'ค่าแรงขั้นต่ำ': s.minimumWage,
-        'แรงละ': s.hiringRatePerDay,
-        'จำนวนแรง': s.manday,
-        'ค่าแรงปกติ': s.totalWage,
-        'ค่าตำแหน่ง': s.positionValue,
-        'ค่าจุด': s.pointValue,
-        'นักขัตฤกษ์': s.annualHoliday,
-        'ค่าโทรศัพท์': s.telephoneCharge,
-        'คืนเงินหัก': s.refund,
-        'เบี้ยขยัน': s.dutyAllowance,
-        'โบนัส': s.bonus,
-        'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
-        'ชดเชยรายได้': s.incomeCompensation,
-        'รายได้อื่นๆ': s.otherIncome,
-        'ค่าแทนจุด': s.extraReplaceValue,
-        'รายได้จุดพิเศษ': s.extraPointValue,
-        'ประกันสังคม': s.socialSecurity,
-        'ค่าอุปกรณ์': s.inventory,
-        'ผิดวินัย': s.discipline,
-        'ค่าธรรมเนียม': s.transferFee,
-        'ขาดงาน': s.absence,
-        'ใบอนุญาต': s.licenseFee,
-        'เบิกล่วงหน้า': s.advance,
-        'ค่าเช่าบ้าน': s.rentHouse,
-        'พิธีการทางศาสนา': s.cremationFee,
-        'รายการหักอื่นๆ': s.otherFee,
-        'หมายเหตุ': !s.remark ? '' : s.remark,
-        'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
-        'รวมรายได้': s.totalIncome,
-        'รวมรายการหัก': s.totalDeductible,
-        'เงินได้สุทธิ': s.totalAmount
-      }));
+      const data = salaries.map(s => {
+        let bankName = (s.bankId === 0 || (!this.banks.filter(b => b.id === s.bankId)[0]))
+          ? '' : this.banks.filter(b => b.id === s.bankId)[0].name;
+        return {
+          'รหัสพนักงาน': s.empNo,
+          'หน่วยงาน': s.siteName,
+          'ตำแหน่ง': s.userPosition.nameTH,
+          'เลขที่บัตรประชาชน': `'${s.idCardNumber}`,
+          'คำนำหน้าชื่อ': s.title,
+          'ชื่อ': s.firstName,
+          'นามสกุล': s.lastName,
+          'วันเริ่มงาน': !s.startDate ? '' : this.convertToDateString(s.startDate),
+          'เลขที่ใบอนุญาต': !s.user.licenseNo ? '' : `${s.user.licenseNo}`,
+          'วันเริ่มต้นใบอนุญาต': !s.user.licenseStartDate ? '' : this.convertToDateString(s.user.licenseStartDate),
+          'วันสิ้นสุดใบอนุญาต': !s.user.licenseEndDate ? '' : this.convertToDateString(s.user.licenseEndDate),
+          'ธนาคาร': bankName,
+          'เลขที่บัญชี': !s.bankAccount ? '' : `'${s.bankAccount}`,
+          'วันทำงานต่อเดือน': s.minimumManday,
+          'ค่าแรงขั้นต่ำ': s.minimumWage,
+          'แรงละ': s.hiringRatePerDay,
+          'จำนวนแรง': s.manday,
+          'ค่าแรงปกติ': s.totalWage,
+          'ค่าตำแหน่ง': s.positionValue,
+          'ค่าจุด': s.pointValue,
+          'นักขัตฤกษ์': s.annualHoliday,
+          'ค่าโทรศัพท์': s.telephoneCharge,
+          'คืนเงินหัก': s.refund,
+          'เบี้ยขยัน': s.dutyAllowance,
+          'โบนัส': s.bonus,
+          'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+          'ชดเชยรายได้': s.incomeCompensation,
+          'รายได้อื่นๆ': s.otherIncome,
+          'ค่าแทนจุด': s.extraReplaceValue,
+          'รายได้จุดพิเศษ': s.extraPointValue,
+          'ประกันสังคม': s.socialSecurity,
+          'ค่าอุปกรณ์': s.inventory,
+          'ผิดวินัย': s.discipline,
+          'ค่าธรรมเนียม': s.transferFee,
+          'ขาดงาน': s.absence,
+          'ใบอนุญาต': s.licenseFee,
+          'เบิกล่วงหน้า': s.advance,
+          'ค่าเช่าบ้าน': s.rentHouse,
+          'พิธีการทางศาสนา': s.cremationFee,
+          'รายการหักอื่นๆ': s.otherFee,
+          'หมายเหตุ': !s.remark ? '' : s.remark,
+          'ภาษีหัก ณ ที่จ่าย': s.withholdingTax,
+          'รวมรายได้': s.totalIncome,
+          'รวมรายการหัก': s.totalDeductible,
+          'เงินได้สุทธิ': s.totalAmount
+        };
+      });
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
       FileSaver.saveAs(blob, `salary_site_${siteId}_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
