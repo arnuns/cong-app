@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
-import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { ActivatedRoute } from '@angular/router';
-import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
-import { UserService } from 'src/app/core/services/user.service';
-import { User } from 'src/app/core/models/user';
-import { environment } from 'src/environments/environment';
-import { ElectronService } from 'ngx-electron';
-import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
-import { DataTableDirective } from 'angular-datatables';
-import { Subject } from 'rxjs';
-import { TimeAttendance } from 'src/app/core/models/timeattendance';
-import { MonthHelper } from 'src/app/core/helpers/month.helper';
-import { FormBuilder, Validators } from '@angular/forms';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import {Component, OnInit, OnDestroy, ViewChild, AfterViewInit, ElementRef} from '@angular/core';
+import {ApplicationStateService} from 'src/app/core/services/application-state.service';
+import {ActivatedRoute} from '@angular/router';
+import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
+import {UserService} from 'src/app/core/services/user.service';
+import {User} from 'src/app/core/models/user';
+import {environment} from 'src/environments/environment';
+import {ElectronService} from 'ngx-electron';
+import {TimeAttendanceService} from 'src/app/core/services/time-attendance.service';
+import {DataTableDirective} from 'angular-datatables';
+import {Subject} from 'rxjs';
+import {TimeAttendance} from 'src/app/core/models/timeattendance';
+import {MonthHelper} from 'src/app/core/helpers/month.helper';
+import {FormBuilder, Validators} from '@angular/forms';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-detail-employee',
@@ -20,8 +20,8 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
   styleUrls: ['./detail-employee.component.scss']
 })
 export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
-  @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
-  @ViewChild('nfcDecInput', { static: false }) nfcDecInput: ElementRef;
+  @ViewChild(DataTableDirective, {static: false}) private datatableElement: DataTableDirective;
+  @ViewChild('nfcDecInput', {static: false}) nfcDecInput: ElementRef;
   public defaultImagePath = environment.basePath;
   dtTrigger = new Subject();
   timeAttendances: TimeAttendance[] = [];
@@ -85,7 +85,7 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
     const currentYear = new Date().getFullYear();
     this.months = this.monthHelper.months;
     for (let year = currentYear - 5; year < currentYear + 5; year++) {
-      this.years.push({ view: year, viewValue: year });
+      this.years.push({view: year, viewValue: year});
     }
     this.userService.getUser(this.empNo).subscribe(user => {
       this.user = user;
@@ -175,9 +175,9 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
       pageLength: 10,
       pagingType: 'simple',
       columns: [
-        { width: '150px' },
-        { orderable: false, width: '200px' },
-        { orderable: false, width: '250px' }
+        {width: '150px'},
+        {orderable: false, width: '200px'},
+        {orderable: false, width: '250px'}
       ]
     };
   }
@@ -234,6 +234,15 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
         break;
       case 'CopyOfTranscript':
         documentTypeName = 'หลักฐานการศึกษา';
+        break;
+      case 'CopyOfTp7':
+        documentTypeName = 'ธภ.7';
+        break;
+      case 'CopyOfTp12':
+        documentTypeName = 'ธภ.12';
+        break;
+      case 'CopyOfCriminal':
+        documentTypeName = 'ประวัติอาชญากรรม';
         break;
       default:
         documentTypeName = 'อื่นๆ';

@@ -113,7 +113,8 @@
             <small
               [hidden]="employeeForm.get('idcard_no').valid || (employeeForm.get('idcard_no').pristine && !addForm.submitted)"
               class="text-danger">
-              {{ employeeForm.get('idcard_no').hasError('idCardNumberExists') ? 'เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว' : 'กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง'}}
+              {{ employeeForm.get('idcard_no').hasError('idCardNumberExists') ? 'เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว' :
+              'กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง'}}
             </small>
             <div class="form-group">
               <label for="idcard_no">เลขที่บัตรประจำตัวประชาชน
@@ -997,7 +998,49 @@
             </div>
           </div>
         </div>
-        <div class="row mb-2">
+        <div class="row px-2 my-2 align-items-center">
+          <div class="col-md-3">
+            ธภ.7 ใบอนุญาตพนักงานรักษาความปลอดภัยรับอนุญาต
+          </div>
+          <div class="col-md-5">
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="copyOfTp7" name="copyOfTp7" accept=".pdf"
+                  (change)="fileChangeEvent($event)" #copyOfTp7>
+                <label class="custom-file-label" for="copyOfTp7">เลือกไฟล์</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row px-2 my-2 align-items-center">
+          <div class="col-md-3">
+            ธภ.12 คำร้องขอให้เปรียบเทียบ
+          </div>
+          <div class="col-md-5">
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="copyOfTp12" name="copyOfTp12" accept=".pdf"
+                  (change)="fileChangeEvent($event)" #copyOfTp12>
+                <label class="custom-file-label" for="copyOfTp12">เลือกไฟล์</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row px-2 my-2 align-items-center">
+          <div class="col-md-3">
+            ประวัติอาชญากรรม
+          </div>
+          <div class="col-md-5">
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="copyOfCriminal" name="copyOfCriminal" accept=".pdf"
+                  (change)="fileChangeEvent($event)" #copyOfCriminal>
+                <label class="custom-file-label" for="copyOfCriminal">เลือกไฟล์</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-4 mb-2">
           <div class="col">
             <h3 class="subtitle">ใบอนุญาตพนักงานรักษาความปลอดภัย</h3>
           </div>
