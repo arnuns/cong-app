@@ -1,20 +1,20 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { Role, User, UserPosition } from 'src/app/core/models/user';
-import { Company } from 'src/app/core/models/company';
-import { Site } from 'src/app/core/models/site';
-import { AvailableBank } from 'src/app/core/models/available-bank.model';
-import { Hospital } from 'src/app/core/models/hospital';
-import { Validators, FormBuilder } from '@angular/forms';
-import { existingIDCardNumberValidator } from 'src/app/core/validators/idcard-no.validator';
-import { MomentHelper } from 'src/app/core/helpers/moment.helper';
-import { SiteService } from 'src/app/core/services/site.service';
-import { UserService } from 'src/app/core/services/user.service';
-import { combineLatest, Subscribable, Subscription } from 'rxjs';
-import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+import {Component, OnInit, AfterViewInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {environment} from 'src/environments/environment';
+import {ApplicationStateService} from 'src/app/core/services/application-state.service';
+import {Role, User, UserPosition} from 'src/app/core/models/user';
+import {Company} from 'src/app/core/models/company';
+import {Site} from 'src/app/core/models/site';
+import {AvailableBank} from 'src/app/core/models/available-bank.model';
+import {Hospital} from 'src/app/core/models/hospital';
+import {Validators, FormBuilder} from '@angular/forms';
+import {existingIDCardNumberValidator} from 'src/app/core/validators/idcard-no.validator';
+import {MomentHelper} from 'src/app/core/helpers/moment.helper';
+import {SiteService} from 'src/app/core/services/site.service';
+import {UserService} from 'src/app/core/services/user.service';
+import {combineLatest, Subscribable, Subscription} from 'rxjs';
+import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
+import {NgxSmartModalService} from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-edit-employee',
@@ -22,12 +22,15 @@ import { NgxSmartModalService } from 'ngx-smart-modal';
   styleUrls: ['./edit-employee.component.scss']
 })
 export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild('copyOfBookBank', { static: false }) copyOfBookBank: ElementRef;
-  @ViewChild('copyOfIdCardNumber', { static: false }) copyOfIdCardNumber: ElementRef;
-  @ViewChild('copyOfHouseRegistration', { static: false }) copyOfHouseRegistration: ElementRef;
-  @ViewChild('copyOfTranscript', { static: false }) copyOfTranscript: ElementRef;
-  @ViewChild('imageProfileUpload', { static: false }) imageProfileUpload: ElementRef;
-  @ViewChild('previewImageProfileUrl', { static: false }) previewImageProfileUrl: ElementRef;
+  @ViewChild('copyOfBookBank', {static: false}) copyOfBookBank: ElementRef;
+  @ViewChild('copyOfIdCardNumber', {static: false}) copyOfIdCardNumber: ElementRef;
+  @ViewChild('copyOfHouseRegistration', {static: false}) copyOfHouseRegistration: ElementRef;
+  @ViewChild('copyOfTranscript', {static: false}) copyOfTranscript: ElementRef;
+  @ViewChild('copyOfTp7', {static: false}) copyOfTp7: ElementRef;
+  @ViewChild('copyOfTp12', {static: false}) copyOfTp12: ElementRef;
+  @ViewChild('copyOfCriminal', {static: false}) copyOfCriminal: ElementRef;
+  @ViewChild('imageProfileUpload', {static: false}) imageProfileUpload: ElementRef;
+  @ViewChild('previewImageProfileUrl', {static: false}) previewImageProfileUrl: ElementRef;
   public defaultImagePath = environment.basePath;
   empNo: number;
   user: User;
@@ -130,6 +133,9 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     copy_of_idcard_no: null,
     copy_of_house_registration: null,
     copy_of_transcript: null,
+    copy_of_tp7: null,
+    copy_of_tp12: null,
+    copy_of_criminal: null,
     license_no: [''],
     license_start_date: [null],
     license_end_date: [null],
@@ -465,6 +471,21 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
         fileInputLabel = this.copyOfTranscript.nativeElement.nextElementSibling as HTMLInputElement;
         fileInputLabel.innerHTML = fileName;
         break;
+      case 'copyOfTp7':
+        this.employeeForm.get('copy_of_tp7').setValue(file);
+        fileInputLabel = this.copyOfTp7.nativeElement.nextElementSibling as HTMLInputElement;
+        fileInputLabel.innerHTML = fileName;
+        break;
+      case 'copyOfTp12':
+        this.employeeForm.get('copy_of_tp12').setValue(file);
+        fileInputLabel = this.copyOfTp12.nativeElement.nextElementSibling as HTMLInputElement;
+        fileInputLabel.innerHTML = fileName;
+        break;
+      case 'copyOfCriminal':
+        this.employeeForm.get('copy_of_criminal').setValue(file);
+        fileInputLabel = this.copyOfCriminal.nativeElement.nextElementSibling as HTMLInputElement;
+        fileInputLabel.innerHTML = fileName;
+        break;
       default:
         break;
     }
@@ -743,6 +764,9 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     formData.append('copyOfIdCardNumberFile', getValue('copy_of_idcard_no'));
     formData.append('copyOfHouseRegistrationFile', getValue('copy_of_house_registration'));
     formData.append('copyOfTranscriptFile', getValue('copy_of_transcript'));
+    formData.append('copyOfTp7File', getValue('copy_of_tp7'));
+    formData.append('copyOfTp12File', getValue('copy_of_tp12'));
+    formData.append('copyOfCriminalFile', getValue('copy_of_criminal'));
 
     if (getValue('license_no')) {
       formData.append('licenseNo', getValue('license_no'));
