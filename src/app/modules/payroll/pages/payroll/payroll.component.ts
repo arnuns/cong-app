@@ -1,21 +1,21 @@
-import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
-import { PayrollService } from 'src/app/core/services/payroll.service';
-import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
-import { combineLatest, Subject } from 'rxjs';
-import { PayrollCycle, SitePayrollCycleSalary, Salary } from 'src/app/core/models/payroll';
-import { SiteService } from 'src/app/core/services/site.service';
-import { Site } from 'src/app/core/models/site';
-import { DataTableDirective } from 'angular-datatables';
-import { FormBuilder, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { NgxSmartModalService } from 'ngx-smart-modal';
-import { Papa } from 'ngx-papaparse';
+import {Component, OnInit, ViewChild, OnDestroy, AfterViewInit} from '@angular/core';
+import {PayrollService} from 'src/app/core/services/payroll.service';
+import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
+import {combineLatest, Subject} from 'rxjs';
+import {PayrollCycle, SitePayrollCycleSalary, Salary} from 'src/app/core/models/payroll';
+import {SiteService} from 'src/app/core/services/site.service';
+import {Site} from 'src/app/core/models/site';
+import {DataTableDirective} from 'angular-datatables';
+import {FormBuilder, Validators} from '@angular/forms';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {NgxSmartModalService} from 'ngx-smart-modal';
+import {Papa} from 'ngx-papaparse';
 import * as FileSaver from 'file-saver';
-import { MomentHelper } from 'src/app/core/helpers/moment.helper';
-import { Router } from '@angular/router';
-import { ElectronService } from 'ngx-electron';
-import { AvailableBank } from 'src/app/core/models/available-bank.model';
-import { UserService } from 'src/app/core/services/user.service';
+import {MomentHelper} from 'src/app/core/helpers/moment.helper';
+import {Router} from '@angular/router';
+import {ElectronService} from 'ngx-electron';
+import {AvailableBank} from 'src/app/core/models/available-bank.model';
+import {UserService} from 'src/app/core/services/user.service';
 
 export interface PayrollFilter {
   payroll_cycle_id: number;
@@ -36,7 +36,7 @@ const thaiMonth = new Array('มกราคม', 'กุมภาพันธ�
   styleUrls: ['./payroll.component.scss']
 })
 export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
+  @ViewChild(DataTableDirective, {static: false}) private datatableElement: DataTableDirective;
   payrollCycleSelectList: any[] = [];
 
   payrollCycle: PayrollCycle;
@@ -144,13 +144,13 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       autoWidth: false,
       dom: 'tr<\'d-flex align-items-center w-100 mt-4\'<l><\'ml-auto pr-2\'i><p>\'>',
       columns: [
-        { width: '30px' },
-        { width: '100px' },
+        {width: '30px'},
+        {width: '100px'},
         null,
-        { orderable: false, width: '120px' },
-        { orderable: false, width: '120px' },
-        { orderable: false, width: '120px' },
-        { orderable: false, width: '20px' }
+        {orderable: false, width: '120px'},
+        {orderable: false, width: '120px'},
+        {orderable: false, width: '120px'},
+        {orderable: false, width: '20px'}
       ],
       lengthMenu: [10, 20, 50],
       language: {
@@ -329,6 +329,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           'ค่าโทรศัพท์': s.telephoneCharge,
           'คืนเงินหัก': s.refund,
           'เบี้ยขยัน': s.dutyAllowance,
+          'เบี้ยขยันรายวัน': s.dutyAllowanceDaily,
           'โบนัส': s.bonus,
           'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
           'ชดเชยรายได้': s.incomeCompensation,
@@ -353,7 +354,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         };
       });
       const BOM = '\uFEFF';
-      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      const blob = new Blob([BOM + this.papa.unparse(data)], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, `salary_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
@@ -376,6 +377,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'ค่าโทรศัพท์': s.telephoneCharge,
         'คืนเงินหัก': s.refund,
         'เบี้ยขยัน': s.dutyAllowance,
+        'เบี้ยขยันรายวัน': s.dutyAllowanceDaily,
         'โบนัส': s.bonus,
         'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
         'ชดเชยรายได้': s.incomeCompensation,
@@ -398,7 +400,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         'เงินได้สุทธิ': s.totalAmount
       }));
       const BOM = '\uFEFF';
-      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      const blob = new Blob([BOM + this.papa.unparse(data)], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, `summary_salary_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
@@ -437,6 +439,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           'ค่าโทรศัพท์': s.telephoneCharge,
           'คืนเงินหัก': s.refund,
           'เบี้ยขยัน': s.dutyAllowance,
+          'เบี้ยขยันรายวัน': s.dutyAllowanceDaily,
           'โบนัส': s.bonus,
           'ค่าล่วงเวลา (OT)': s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
           'ชดเชยรายได้': s.incomeCompensation,
@@ -461,7 +464,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         };
       });
       const BOM = '\uFEFF';
-      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      const blob = new Blob([BOM + this.papa.unparse(data)], {type: 'text/csv;charset=utf-8'});
       FileSaver.saveAs(blob, `salary_site_${siteId}_${this.payrollForm.get('payroll_cycle_id').value}_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
     }, error => {
@@ -495,7 +498,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     if (dateString === null || dateString === undefined || dateString === '') {
       return '';
     }
-    function pad(s) { return (s < 10) ? '0' + s : s; }
+    function pad(s) {return (s < 10) ? '0' + s : s;}
     const d = new Date(dateString);
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
   }
@@ -512,12 +515,12 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   get summaryTotalManday() {
-    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) { return 0; }
+    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) {return 0;}
     return this.allSitePayrollCycleSalary.map(s => s.totalManday).reduce((a, b) => a + b, 0);
   }
 
   get summaryTotalAmount() {
-    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) { return 0; }
+    if (!this.allSitePayrollCycleSalary || this.allSitePayrollCycleSalary.length <= 0) {return 0;}
     return this.allSitePayrollCycleSalary.map(s => s.totalAmount).reduce((a, b) => a + b, 0);
   }
 }

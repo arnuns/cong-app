@@ -1,6 +1,6 @@
-import { Site } from './site';
-import { Role, User, UserPosition } from './user';
-import { PageFilter } from './page-filter.model';
+import {Site} from './site';
+import {Role, User, UserPosition} from './user';
+import {PageFilter} from './page-filter.model';
 
 export interface PayrollCycle {
     id: number;
@@ -43,6 +43,7 @@ export interface Salary {
     telephoneCharge: number;
     refund: number;
     dutyAllowance: number;
+    dutyAllowanceDaily: number;
     bonus: number;
     overtime: number;
     incomeCompensation: number;
@@ -150,6 +151,7 @@ export interface SummarySalaryBySite {
     telephoneCharge: number;
     refund: number;
     dutyAllowance: number;
+    dutyAllowanceDaily: number;
     bonus: number;
     overtime: number;
     incomeCompensation: number;
