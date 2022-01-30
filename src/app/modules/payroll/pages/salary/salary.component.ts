@@ -1,21 +1,21 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
-import { combineLatest, Subject } from 'rxjs';
-import { PayrollService } from 'src/app/core/services/payroll.service';
-import { PayrollCycle, Salary, SitePayrollCycleSalary, SocialSecurityRate } from 'src/app/core/models/payroll';
-import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { SiteService } from 'src/app/core/services/site.service';
-import { Site } from 'src/app/core/models/site';
-import { FormBuilder, Validators, FormArray } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { DataTableDirective } from 'angular-datatables';
-import { NgxSmartModalService } from 'ngx-smart-modal';
-import { User } from 'src/app/core/models/user';
-import { UserService } from 'src/app/core/services/user.service';
-import { AvailableBank } from 'src/app/core/models/available-bank.model';
-import { IDCardNumber } from 'src/app/core/validators/idcard-no.validator';
-import { ElectronService } from 'ngx-electron';
+import {Component, OnInit, OnDestroy, AfterViewInit, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
+import {combineLatest, Subject} from 'rxjs';
+import {PayrollService} from 'src/app/core/services/payroll.service';
+import {PayrollCycle, Salary, SitePayrollCycleSalary, SocialSecurityRate} from 'src/app/core/models/payroll';
+import {ApplicationStateService} from 'src/app/core/services/application-state.service';
+import {SiteService} from 'src/app/core/services/site.service';
+import {Site} from 'src/app/core/models/site';
+import {FormBuilder, Validators, FormArray} from '@angular/forms';
+import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {DataTableDirective} from 'angular-datatables';
+import {NgxSmartModalService} from 'ngx-smart-modal';
+import {User} from 'src/app/core/models/user';
+import {UserService} from 'src/app/core/services/user.service';
+import {AvailableBank} from 'src/app/core/models/available-bank.model';
+import {IDCardNumber} from 'src/app/core/validators/idcard-no.validator';
+import {ElectronService} from 'ngx-electron';
 
 const thaiMonth = new Array('มกราคม', 'กุมภาพันธ์', 'มีนาคม',
   'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -27,7 +27,7 @@ const thaiMonth = new Array('มกราคม', 'กุมภาพันธ�
   styleUrls: ['./salary.component.scss']
 })
 export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
-  @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
+  @ViewChild(DataTableDirective, {static: false}) private datatableElement: DataTableDirective;
 
   searching = false;
 
@@ -90,7 +90,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     is_overtime: [false],
     overtime: ['0.00', [Validators.required, Validators.min(0)]],
     annual_holiday_day: [0, [Validators.required, Validators.min(0)]],
-    annual_holiday: [{ value: '0.00', disabled: true }, [Validators.required, Validators.min(0)]],
+    annual_holiday: [{value: '0.00', disabled: true}, [Validators.required, Validators.min(0)]],
     income_compensation: ['0.00', [Validators.required, Validators.min(0)]],
     is_telephone_charge: [false],
     telephone_charge: ['0.00', [Validators.required, Validators.min(0)]],
@@ -98,6 +98,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     refund: ['0.00', [Validators.required, Validators.min(0)]],
     is_duty_allowance: [false],
     duty_allowance: ['0.00', [Validators.required, Validators.min(0)]],
+    is_duty_allowance_daily: [false],
+    duty_allowance_daily: ['0.00', [Validators.required, Validators.min(0)]],
     is_bonus: [false],
     bonus: ['0.00', [Validators.required, Validators.min(0)]],
     is_other_income: [false],
@@ -249,6 +251,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         refund: '0.00',
         is_duty_allowance: false,
         duty_allowance: '0.00',
+        is_duty_allowance_daily: false,
+        duty_allowance_daily: '0.00',
         is_bonus: false,
         bonus: '0.00',
         is_other_income: false,
@@ -331,6 +335,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.updateSalaryForm.get('is_duty_allowance').valueChanges.subscribe(val => {
       if (!val) {
         this.updateSalaryForm.get('duty_allowance').setValue('0.00');
+      }
+    });
+
+    this.updateSalaryForm.get('is_duty_allowance_daily').valueChanges.subscribe(val => {
+      if (!val) {
+        this.updateSalaryForm.get('duty_allowance_daily').setValue('0.00');
       }
     });
 
@@ -481,6 +491,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       refund: salary.refund.toFixed(2),
       is_duty_allowance: salary.dutyAllowance > 0,
       duty_allowance: salary.dutyAllowance.toFixed(2),
+      is_duty_allowance_daily: salary.dutyAllowanceDaily > 0,
+      duty_allowance_daily: salary.dutyAllowanceDaily.toFixed(2),
       is_bonus: salary.bonus > 0,
       bonus: salary.bonus.toFixed(2),
       is_other_income: salary.otherIncome > 0,
@@ -548,17 +560,17 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       autoWidth: false,
       dom: 'tr<\'d-flex align-items-center w-100 mt-4\'<l><\'ml-auto pr-2\'i><p>\'>',
       columns: [
-        { orderable: false, width: '30px' },
-        { width: '30px' },
-        { width: '200px' },
-        { width: '100px' },
-        { width: '100px' },
-        { width: '120px' },
-        { orderable: false, width: '120px' },
-        { width: '120px' },
-        { orderable: false, width: '120px' },
-        { width: '120px' },
-        { orderable: false, width: '20px' }
+        {orderable: false, width: '30px'},
+        {width: '30px'},
+        {width: '200px'},
+        {width: '100px'},
+        {width: '100px'},
+        {width: '120px'},
+        {orderable: false, width: '120px'},
+        {width: '120px'},
+        {orderable: false, width: '120px'},
+        {width: '120px'},
+        {orderable: false, width: '20px'}
       ],
       lengthMenu: [20, 50, 100],
       language: {
@@ -702,6 +714,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       telephoneCharge: getValue('telephone_charge'),
       refund: getValue('refund'),
       dutyAllowance: getValue('duty_allowance'),
+      dutyAllowanceDaily: getValue('duty_allowance_daily'),
       bonus: getValue('bonus'),
       overtime: getValue('overtime'),
       incomeCompensation: getValue('income_compensation'),
@@ -923,12 +936,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       + (this.updateSalaryForm.get('telephone_charge').value ? Number(this.updateSalaryForm.get('telephone_charge').value) : 0)
       + (this.updateSalaryForm.get('refund').value ? Number(this.updateSalaryForm.get('refund').value) : 0)
       + (this.updateSalaryForm.get('duty_allowance').value ? Number(this.updateSalaryForm.get('duty_allowance').value) : 0)
+      + (this.updateSalaryForm.get('duty_allowance_daily').value ? Number(this.updateSalaryForm.get('duty_allowance_daily').value) : 0)
       + (this.updateSalaryForm.get('bonus').value ? Number(this.updateSalaryForm.get('bonus').value) : 0)
       + (this.updateSalaryForm.get('other_income').value ? Number(this.updateSalaryForm.get('other_income').value) : 0);
   }
 
   get socialSecurity() {
-    if (!this.updateSalaryForm.get('is_social_security').value) { return 0; }
+    if (!this.updateSalaryForm.get('is_social_security').value) {return 0;}
     let result = 0;
     let resultWage = 0;
     let resultManday = 0;
@@ -936,7 +950,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       ? this.siteForms.controls.filter(c => c.get('id').value === this.site.id).map(s => s.get('manday').value)
         .reduce((prevVal, val) => prevVal + val)
       : 0;
-    if (!this.site) { return 0; }
+    if (!this.site) {return 0;}
     const siteUserPosition = this.site.siteUserPositions.filter(r => r.userPositionId
       === this.updateSalaryForm.get('user_position_id').value)[0];
     const minimumManday = siteUserPosition ? siteUserPosition.minimumManday : 26;
@@ -1001,6 +1015,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       && this.updateSalaryForm.get('is_telephone_charge').value
       && this.updateSalaryForm.get('is_refund').value
       && this.updateSalaryForm.get('is_duty_allowance').value
+      && this.updateSalaryForm.get('is_duty_allowance_daily').value
       && this.updateSalaryForm.get('is_bonus').value
       && this.updateSalaryForm.get('is_other_income').value;
   }
@@ -1016,12 +1031,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   get summaryTotalManday() {
-    if (!this.salaries || this.salaries.length <= 0) { return 0; }
+    if (!this.salaries || this.salaries.length <= 0) {return 0;}
     return this.salaries.map(s => s.manday).reduce((a, b) => a + b, 0);
   }
 
   get summaryTotalAmount() {
-    if (!this.salaries || this.salaries.length <= 0) { return 0; }
+    if (!this.salaries || this.salaries.length <= 0) {return 0;}
     return this.salaries.map(s => s.totalAmount).reduce((a, b) => a + b, 0);
   }
 
