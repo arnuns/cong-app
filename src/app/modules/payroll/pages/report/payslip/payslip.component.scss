@@ -45,6 +45,7 @@ table>tbody>tr>td {
 
 .signature-box {
   font-size: 0.8rem;
+  width: 240px;
 }
 
 .page-break {
@@ -61,4 +62,12 @@ table>tbody>tr>td {
 .bg-highlight {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.e-signature {
+  height: 50px;
+}
+
+.bottom-dotted-line {
+  border-bottom: 2px dotted #212529;
 }
