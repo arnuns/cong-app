@@ -9,10 +9,10 @@ export const environment = {
   companyAddress2: '757/5-6 ถนนสุทธิสารวินิจฉัย ซอยรัชดาภิเษก 18 แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10310',
   companyTel: '02-210-0004',
   companyFax: '02-117-4248',
-  companyMobile: '064-586-9938',
+  companyMobile: '064-301-1391',
   companyEmail: 'info@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '12/04/2022',
+  releaseDate: '06/05/2022',
   storageBucketUrl: 'https://storage.googleapis.com/cong-app.appspot.com'
 };
