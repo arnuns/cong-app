@@ -13,6 +13,7 @@ import { EmployeeLicenseComponent } from './pages/report/employee-license/employ
 import { EmployeeProfileComponent } from './pages/report/employee-profile/employee-profile.component';
 import { EmployeeProfileMiniComponent } from './pages/report/employee-profile-mini/employee-profile-mini.component';
 import { EmployeeTransferComponent } from './pages/report/employee-transfer/employee-transfer.component';
+import { EmployeeAplicationFormComponent } from './pages/report/employee-aplication-form/employee-aplication-form.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { EmployeeTransferComponent } from './pages/report/employee-transfer/empl
     EmployeeLicenseComponent,
     EmployeeProfileComponent,
     EmployeeProfileMiniComponent,
-    EmployeeTransferComponent],
+    EmployeeTransferComponent,
+    EmployeeAplicationFormComponent],
   imports: [
     CommonModule,
     EmployeeRoutingModule,

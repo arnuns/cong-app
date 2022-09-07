@@ -10,6 +10,7 @@ import { EmployeeLicenseComponent } from './pages/report/employee-license/employ
 import { EmployeeProfileComponent } from './pages/report/employee-profile/employee-profile.component';
 import { EmployeeProfileMiniComponent } from './pages/report/employee-profile-mini/employee-profile-mini.component';
 import { EmployeeTransferComponent } from './pages/report/employee-transfer/employee-transfer.component';
+import { EmployeeAplicationFormComponent } from './pages/report/employee-aplication-form/employee-aplication-form.component';
 
 
 const routes: Routes = [
@@ -52,6 +53,10 @@ const routes: Routes = [
   {
     path: ':empNo/report/employee-transfer',
     component: EmployeeTransferComponent
+  },
+  {
+    path: ':empNo/report/employee-application-form',
+    component: EmployeeAplicationFormComponent
   }
 ];
 

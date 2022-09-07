@@ -279,6 +279,12 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
     this.userService.downloadEmployeeCard(empNo);
   }
 
+  previewEmployeeApplicationForm(empNo: string) {
+    if (this.electronService.isElectronApp) {
+      this.electronService.ipcRenderer.send('view-employee-application-form', empNo);
+    }
+  }
+
   navigateMainToEditPage(empNo: string) {
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.send('navigate-main-to-edit-employee', empNo);

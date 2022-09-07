@@ -1,0 +1,138 @@
+.logo-header {
+    height: 120px;
+}
+
+.header-text {
+    font-size: 0.9rem;
+}
+
+.report-header {
+    background-color: #eaeaea;
+}
+
+.page {
+    height: 875px !important;
+}
+
+.page-break {
+    page-break-before: always;
+}
+
+* {
+    font-size: 18px;
+    letter-spacing: normal;
+}
+
+ol {
+    padding-left: 20px;
+}
+
+ol li {
+    margin-top: 10px;
+}
+
+.label {
+    font-weight: bold;
+}
+
+.text-input {
+    font-size: 16px;
+}
+
+.dotted-bottom {
+    border-bottom: 2px dotted #000000;
+}
+
+.mw-100 {
+    min-width: 100px;
+}
+
+.mw-200 {
+    min-width: 200px;
+}
+
+.mw-300 {
+    min-width: 300px;
+}
+
+.mw-400 {
+    min-width: 400px;
+}
+
+.blank-dotted-bottom {
+    border-bottom: 2px dotted #000000;
+    margin-top: 10px;
+    height: 29px;
+}
+
+.number-dotted-bottom {
+    border-bottom: 2px dotted #000000;
+    width: 40px;
+    text-align: center;
+    margin-left: 5px;
+}
+
+.content {
+    border: 2px solid #000000;
+    position: relative;
+}
+
+.employee-image {
+    position: absolute;
+    height: 230px;
+    width: 180px;
+    top: 20px;
+    right: 20px;
+    border: 1px solid #000000;
+}
+
+.employee-image > img {
+    width: 100%;
+    height: 100%;
+}
+
+.box {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #000000;
+    display:block;
+    line-height: 1;
+}
+
+.report-top {
+    position: relative;
+    height: 110px;
+}
+
+.report-logo {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.application-form-row > div {
+    margin: 0.25em 0;
+}
+
+.table-bordered th {
+    text-align: center;
+}
+
+.table-bordered th, .table-bordered td {
+    border-color: #212529;
+    
+}
+
+.col-40 {
+    width: 40%;
+}
+
+.col-20 {
+    width: 20%;
+}
+
+.span-label {
+    white-space: nowrap;
+    display: block;
+}

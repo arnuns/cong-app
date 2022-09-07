@@ -319,6 +319,27 @@ ipcMain.on('view-working-site-report', (event, siteId, year, month) => {
   })
 })
 
+ipcMain.on('view-employee-application-form', (event, empNo) => {
+  let winEmployeeApplicationForm = new BrowserWindow({
+    width: 1068,
+    height: 1562,
+    minWidth: 1068,
+    minHeight: 1562,
+    maxWidth: 1068,
+    maxHeight: 1562,
+    parent: 'top',
+    modal: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
+  winEmployeeApplicationForm.loadURL(`file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-application-form`)
+  winEmployeeApplicationForm.once('ready-to-show', () => {
+    winEmployeeApplicationForm.show()
+  })
+})
+
 ipcMain.on('print-to-pdf', (event) => {
   const dd = new Date();
   const dateString = '' + dd.getFullYear() + (dd.getMonth() + 1) + (dd.getDate()) + dd.getHours() + dd.getMinutes() + dd.getSeconds();

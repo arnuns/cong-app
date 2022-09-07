@@ -246,6 +246,12 @@ export class EmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
     this.userService.downloadEmployeeCard(empNo);
   }
 
+  previewEmployeeApplicationForm(empNo: string) {
+    if (this.electronService.isElectronApp) {
+      this.electronService.ipcRenderer.send('view-employee-application-form', empNo);
+    }
+  }
+
   onExportUserToCsv() {
     this.spinner.showLoadingSpinner();
     this.userService.getUsers().subscribe(users => {

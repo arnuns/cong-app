@@ -1,0 +1,708 @@
+<div class="container-fluid page-break">
+    <div class="d-flex justify-content-between align-items-start report-top">
+        <div class="align-self-end">
+            <div class="d-flex flex-column">
+                <div class="label">
+                    ประจำหน่วยงาน
+                </div>
+                <div class="text-input dotted-bottom">
+                    {{ user?.site?.fullName }}
+                </div>
+            </div>
+        </div>
+        <div class="report-logo">
+            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+        </div>
+        <div class="align-self-end">
+            <div class="d-flex flex-column">
+                <div>
+                    <div class="d-flex">
+                        <div class="label"><span>เริ่มงานวันที่</span></div>
+                        <div class="text-input dotted-bottom ml-2">
+                            {{ toThaiDateString(user?.startDate) }}
+                        </div>
+                    </div>
+                    <div>
+                        <div class="d-flex w-100">
+                            <div class="label"><span>ตำแหน่ง</span></div>
+                            <div class="text-input dotted-bottom ml-2 w-100">
+                                {{ user?.userPosition.nameTH }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex w-100 application-form-row">
+            <div class="label">
+                <span>ใบสมัครงานภายใต้ พรบ.ธุรกิจรักษาความปลอดภัย พ.ศ.2558 และ พรบ.คุ้มครองแรงงาน พ.ศ.2541</span>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-2 p-3">
+        <div class="employee-image">
+            <ng-container *ngIf="user?.imageProfile != null; else elseNoProfileImage">
+                <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="profile">
+            </ng-container>
+            <ng-template #elseNoProfileImage>
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="label">
+                        รูปถ่าย
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+        <div class="d-flex w-100 application-form-row">
+            <div>
+                <div class="d-flex flex-column">
+                    <div class="label">
+                        <span>วิธีกรอกใบสมัคร</span>
+                    </div>
+                    <div class="text-input">
+                        <ol>
+                            <li>กรอกข้อความทุกช่องให้ละเอียด</li>
+                            <li>โปรดเขียน</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex">
+            <div class="mr-3">
+                <div class="d-flex flex-column application-form-row">
+                    <div class="label">ตำแหน่งที่สมัคร</div>
+                    <div class="text-input">
+                        <ol>
+                            <li class="dotted-bottom mw-200">{{ user?.userPosition.nameTH }}</li>
+                            <li class="dotted-bottom mw-200"></li>
+                            <li class="dotted-bottom mw-200"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="mr-3">
+                <div class="d-flex flex-column application-form-row">
+                    <div>
+                        <div class="label">เงินเดือนที่ต้องการ</div>
+                    </div>
+                    <div>
+                        <div class="text-input">
+                            <div class="blank-dotted-bottom mw-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-column application-form-row">
+                    <div>
+                        <div class="label">วันที่สมัครงาน</div>
+                    </div>
+                    <div>
+                        <div class="text-input">
+                            <div class="blank-dotted-bottom mw-200">{{toThaiDateString(user?.registerOn)}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between w-100 application-form-row">
+            <div>
+                <div class="d-flex flex-column">
+                    <div class="label">
+                        <span>เบอร์โทรศัพท์ที่สามารถติดต่อได้</span>
+                    </div>
+                    <div class="text-input dotted-bottom mw-200">
+                        {{ user?.phoneNo }}
+                    </div>
+                    <div class="blank-dotted-bottom mw-200">
+
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-column justify-content-between h-100 application-form-row">
+                    <div class="label">ลายเซ็นต์</div>
+                    <div>
+                        <div class="d-flex">
+                            <div class="text-input">อายุ</div>
+                            <div class="text-input number-dotted-bottom">{{age}}</div>
+                            <div class="text-input">ส่วนสูง</div>
+                            <div class="text-input number-dotted-bottom">{{user?.height}}</div>
+                            <div class="text-input">น้ำหนัก</div>
+                            <div class="text-input number-dotted-bottom">{{user?.weight}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-2 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div class="label">
+                <span>ข้อมูลส่วนตัว</span>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ชื่อ นาง / นางสาว / นาย</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.firstName}}</div>
+                    <div class="ml-2">นามสกุล</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.lastName}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>เชื้อชาติ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.ethnicity}}</div>
+                    <div class="ml-2">สัญชาติ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.nationality}}</div>
+                    <div class="ml-2">ศาสนา</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.religion}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>วัน /เดือน /ปี (เกิด)</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{toThaiDateString(user?.birthdate)}}</div>
+                    <div>สถานที่เกิด</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>เลขประจำตัวประชาชน</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.idCardNumber}}</div>
+                    <div>วันที่ออกบัตร</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{toThaiDateString(user?.dateIssued)}}
+                    </div>
+                    <div>วันหมดอายุ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{toThaiDateString(user?.expiryDate)}}
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.currentAddress}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>เบอร์โทรศัพท์ที่สามารถติดต่อได้</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.phoneNo}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>สถานะของที่อยู่อาศัย</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.residenceStatus === 'owner'">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">อาศัยผู้อื่น</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.residenceStatus === 'rental'">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">บ้านเช่า</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.residenceStatus === 'parents'">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">ของบิดา-มารดา</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.residenceStatus === 'others'">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">อื่นๆ</div>
+                    <div class="blank-dotted-bottom mw-200"></div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ชื่อบิดา</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentName_1}}</div>
+                    <div class="ml-2">อายุ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentAge_1}}</div>
+                    <div class="ml-2">อาชีพ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentJob_1}}</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">ยังมีชีวิต</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">เสียชีวิต</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ชื่อมารดา</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentName_2}}</div>
+                    <div class="ml-2">อายุ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentAge_2}}</div>
+                    <div class="ml-2">อาชีพ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.parentJob_2}}</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">ยังมีชีวิต</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">เสียชีวิต</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>สถานภาพครอบครัว</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">โสด</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">หม้าย</div>
+                    <div class="ml-2">
+                        <div class="box"></div>
+                    </div>
+                    <div class="ml-2">สมรส ชื่อคู่สมรส</div>
+                    <div class="blank-dotted-bottom mw-200"></div>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="d-flex justify-content-center">
+        <div class="p-1">หน้า 1 จาก 4</div>
+    </div>
+</div>
+<div class="container-fluid page-break">
+    <div class="d-flex justify-content-center align-items-start report-top">
+        <div class="report-logo">
+            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div class="label">
+                <span>ข้อมูลทั่วไป</span>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ท่านมีร่างกายไม่สมประกอบ หรือไม่</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center" *ngIf="!user?.disability">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">ไม่มี</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center" *ngIf="user?.disability">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">มี คือ</div>
+                    <div class="blank-dotted-bottom mw-200">{{user?.disability}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ท่านมีโรคประจำตัวเรื้อรัง หรือไม่</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="!user?.congenitalDisease">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">ไม่มี</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.congenitalDisease">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">มี คือ</div>
+                    <div class="blank-dotted-bottom mw-200">{{user?.congenitalDisease}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ท่านเคยต้องโทษทางคดีอาญา หรือ คดีแพ่ง หรือไม่</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="!user?.isPreviousConviction">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">ไม่มี</div>
+                    <div class="ml-2">
+                        <div class="box">
+                            <div class="d-flex align-items-center justify-content-center"
+                                *ngIf="user?.isPreviousConviction">
+                                <div><img [src]="baseImagePath + '/img/check-symbol.png'" alt="Logo"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ml-2">มี คือ</div>
+                    <div class="blank-dotted-bottom mw-200">{{user?.convictionCause}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-column mt-2 text-input">
+                    <div>เนื้อหาของคดีคือ</div>
+                    <div class="blank-dotted-bottom w-100"></div>
+                    <div class="mt-3">บุคคลที่สามารถติดต่อได้ทันทีเมื่อเกิดเหตุการณ์ฉุกเฉินเกี่ยวกับตัวท่าน
+                        (ระบุอย่างน้อย 2 คน)</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ชื่อ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.refName_1}}</div>
+                    <div class="ml-2">เกี่ยวข้องเป็น</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.refRelation_1}}</div>
+                    <div class="ml-2">เบอร์โทรศัพท์</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200">{{user?.refPhoneNo_1}}</div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div>ชื่อ</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                    <div class="ml-2">เกี่ยวข้องเป็น</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                    <div class="ml-2">เบอร์โทรศัพท์</div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex justify-content-center">
+                    <div class="label">
+                        <p class="text-center mb-0">
+                            ข้าพเจ้าขอรับรองว่าข้อความและเนื้อหาที่ข้าพเจ้าได้แจ้งไว้ในใบสมัครนี้เป็นความจริงทุกประการ<br />หากสืบพบว่าข้าพเจ้าได้แจ้งข้อความเท็จไว้
+                            ข้าพเจ้ายินยอมที่จะให้ปลดข้าพเจ้าออกจากงานได้ทันที</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <div class="d-flex">
+                    <div class="ml-auto">
+                        <div class="d-flex align-items-end justify-content-center">
+                            <div>ลงชื่อ</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                            <div class="ml2">ผู้สมัคร</div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center">
+                            <div>วันที่</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="p-1">หน้า 2 จาก 4</div>
+    </div>
+</div>
+<div class="container-fluid page-break">
+    <div class="d-flex justify-content-center align-items-start report-top">
+        <div class="report-logo">
+            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div class="label">
+                <span>ข้อมูลด้านการศึกษา</span>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-40">ชื่อสถาบันการศึกษา</th>
+                            <th class="col-20">ระดับการศึกษา / วุฒิ</th>
+                            <th class="col-20">สาขาที่เรียน</th>
+                            <th class="col-20">ปีที่จบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{user?.graduateSchool}}</td>
+                            <td class="text-center">{{user?.education}}</td>
+                            <td class="text-center">{{user?.faculty}}</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="label">
+                <span>ความสามารถทางด้านภาษา</span>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-40">ความสามารถด้านภาษา</th>
+                            <th class="col-20">อ่าน</th>
+                            <th class="col-20">เขียน</th>
+                            <th class="col-20">พูด</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ภาษาไทย</td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('Thai', 'read')"></td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('Thai', 'write')"></td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('Thai', 'conversation')"></td>
+                        </tr>
+                        <tr>
+                            <td>ภาษาอังกฤษ</td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('English', 'read')"></td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('English', 'write')"></td>
+                            <td class="text-center" [innerHTML]="getLanguageAbility('English', 'conversation')"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex flex-wrap align-items-end text-input">
+                                    <div>อื่นๆ</div>
+                                    <div class="blank-dotted-bottom mw-200"></div>
+                                </div>
+                            </td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="label">
+                <span>ความสามารถพิเศษ</span>
+                <div class="d-flex flex-wrap align-items-end text-input">
+                    <div class="blank-dotted-bottom w-100"></div>
+                </div>
+            </div>
+            <div class="label">
+                <span>ประสบการณ์ทำงาน</span>
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="col-40">ชื่อสถานประกอบการ</th>
+                            <th class="col-20">ตำแหน่ง</th>
+                            <th class="col-20">ระยะเวลา</th>
+                            <th class="col-20">สาเหตุที่ลาออก</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td [innerHTML]="spaceIfNull(getJobHistory(1)?.companyName)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(1)?.position)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(1)?.duration)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(1)?.resignationCause)"></td>
+                        </tr>
+                        <tr>
+                            <td [innerHTML]="spaceIfNull(getJobHistory(2)?.companyName)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(2)?.position)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(2)?.duration)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(2)?.resignationCause)"></td>
+                        </tr>
+                        <tr>
+                            <td [innerHTML]="spaceIfNull(getJobHistory(3)?.companyName)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(3)?.position)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(3)?.duration)"></td>
+                            <td class="text-center" [innerHTML]="spaceIfNull(getJobHistory(3)?.resignationCause)"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div class="label">
+                <span>การสัมภาษณ์</span>
+            </div>
+            <div class="d-flex align-items-end text-input">
+                <div><span class="span-label">ลักษณะท่าทาง / การพูด</span></div>
+                <div class="blank-dotted-bottom w-100"></div>
+            </div>
+            <div class="d-flex align-items-end text-input">
+                <div><span class="span-label">ลักษณะการแต่งกาย / ความสะอาด</span></div>
+                <div class="blank-dotted-bottom w-100"></div>
+            </div>
+            <div class="d-flex align-items-end text-input">
+                <div><span class="span-label">ลักษณะรูปล่าง</span></div>
+                <div class="blank-dotted-bottom w-100"></div>
+            </div>
+            <div class="d-flex align-items-end text-input">
+                <div><span class="span-label">ความสามารถพิเศษ</span></div>
+                <div class="blank-dotted-bottom w-100"></div>
+            </div>
+            <div class="d-flex align-items-end text-input">
+                <div><span class="span-label">ความรู้เกี่ยวกับตำแหน่งที่สมัคร</span></div>
+                <div class="blank-dotted-bottom w-100"></div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="p-1">หน้า 3 จาก 4</div>
+    </div>
+</div>
+<div class="container-fluid page-break">
+    <div class="d-flex justify-content-center align-items-start report-top">
+        <div class="report-logo">
+            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div class="label">
+                <span>เฉพาะเจ้าหน้าที่</span>
+            </div>
+            <div>
+                <div class="d-flex align-items-end text-input">
+                    <div><span class="span-label mw-300">นัดสัมภาษณ์</span></div>
+                    <div><span class="span-label ml-2">วันที่</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label ml-4">ผู้ดำเนินการ</span></div>
+                    <div class="blank-dotted-bottom mw-300"></div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex align-items-end text-input">
+                    <div><span class="span-label mw-300">นัดรายงานตัวเพื่อเข้าทำงาน</span></div>
+                    <div><span class="span-label ml-2">วันที่</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label ml-4">ผู้ดำเนินการ</span></div>
+                    <div class="blank-dotted-bottom mw-300"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3 p-3">
+        <div class="d-flex flex-column w-100 application-form-row">
+            <div>
+                <div class="d-flex align-items-end text-input">
+                    <div><span class="span-label">รับเข้าทํางานในตําแหน่ง</span></div>
+                    <div class="ml-2 blank-dotted-bottom text-center w-100"></div>
+                    <div class="ml-2"><span class="span-label">เริ่มงาน</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div><span class="span-label">/</span></div>
+                    <div class="blank-dotted-bottom mw-100"></div>
+                    <div class="ml-2"><span class="span-label">ระยะเวลาทดลองงาน</span></div>
+                    <div class="ml-2 blank-dotted-bottom text-center w-100"></div>
+                </div>
+            </div>
+            <div>
+                <div class="d-flex align-items-end text-input">
+                    <div><span class="span-label">เงินเดือนขณะทดลอง</span></div>
+                    <div class="ml-2 blank-dotted-bottom text-center w-100"></div>
+                    <div><span class="span-label">เงินเดือนเมื่อผ่านการทดลองงาน</span></div>
+                    <div class="ml-2 blank-dotted-bottom text-center w-100"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center p-3">
+        <div class="col-5 mr-2 p-0">
+            <div class="content p-3">
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label">ลงชื่อ</span></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                            <div class="ml-2"><span class="span-label">ผู้สัมภาษณ์</span></div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label">ตำแหน่ง</span></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label ml-2">วันที่</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                            <div><span class="span-label">/</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                            <div><span class="span-label">/</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-5 ml-2 p-0">
+            <div class="content p-3">
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label">ลงชื่อ</span></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                            <div class="ml-2"><span class="span-label">ผู้อนุมัติ</span></div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label">ตำแหน่ง</span></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                        </div>
+                        <div class="d-flex align-items-end justify-content-center my-3">
+                            <div><span class="span-label ml-2">วันที่</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                            <div><span class="span-label">/</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                            <div><span class="span-label">/</span></div>
+                            <div class="blank-dotted-bottom mw-100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="p-1">หน้า 4 จาก 4</div>
+    </div>
+</div>
