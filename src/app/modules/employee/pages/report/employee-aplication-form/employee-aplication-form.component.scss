@@ -216,6 +216,10 @@ ol li {
     padding: 0 50px 0 50px;
 }
 
+.px100px {
+    padding: 0 100px 0 100px;
+}
+
 .px150px {
     padding: 0 150px 0 150px;
 }
@@ -232,7 +236,7 @@ ol li {
     font-weight: 900;
 }
 
-.attachment-paragraph {
+.attachment-paragraph, .rule-paragraph {
     text-indent: 100px;
     margin-bottom: 0;
     text-align: justify;
@@ -298,4 +302,37 @@ ul {
 
 .attachment-paragraph.lh {
     line-height: 2.5rem;
+}
+
+.job-page-title {
+    font-size: 36px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.responsibility-list li::before {
+    content: counters(item, "");
+    padding: 0 1.4em;
+}
+
+.rule-item li:before {
+    content: "1." + counters(item, "");
+}
+
+.rule-item-right {
+    counter-reset: my-sec-counter 24 !important;
+}
+
+.rule-item-right li:before {
+    counter-increment: my-sec-counter !important;
+    content: "1." counter(my-sec-counter) !important;
+}
+
+.rule-ol {
+    counter-reset: item 1 !important;
+}
+
+.rule-content * {
+    font-size: 18px !important;
+    line-height: 1.75rem;
 }
