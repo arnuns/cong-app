@@ -43,12 +43,20 @@ ol li {
     border-bottom: 2px dotted #000000;
 }
 
+.mw-80 {
+    min-width:80px;
+}
+
 .mw-100 {
     min-width: 100px;
 }
 
 .mw-200 {
     min-width: 200px;
+}
+
+.mw-260 {
+    min-width: 260px;
 }
 
 .mw-300 {
@@ -169,6 +177,10 @@ ol li {
     background-color: #d0d0d0;
     text-align: center;
     vertical-align: middle;
+}
+
+.interview-assessment-table td {
+    padding: 0.25rem 0.5rem;
 }
 
 .col-no {
