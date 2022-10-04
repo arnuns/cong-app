@@ -456,4 +456,5 @@ ul.dashed>li:before {
 
 .well-known-list li:before {
     content: "รับทราบ " counters(item, "") ".";
+    width: 105px;
 }
