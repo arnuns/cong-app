@@ -14,6 +14,11 @@
     height: 875px !important;
 }
 
+.container-fluid {
+    padding: 60px 25px;
+    position: relative;
+}
+
 .page-break {
     page-break-before: always;
 }
@@ -21,6 +26,10 @@
 * {
     font-size: 20px;
     letter-spacing: normal;
+}
+
+hr {
+    border-top: 2px solid #000000;
 }
 
 ol {
@@ -44,15 +53,19 @@ ol li {
 }
 
 .mw-80 {
-    min-width:80px;
+    min-width: 80px;
 }
 
 .mw-90 {
-    min-width:90px;
+    min-width: 90px;
 }
 
 .mw-100 {
     min-width: 100px;
+}
+
+.mw-150 {
+    min-width: 150px;
 }
 
 .mw-200 {
@@ -81,6 +94,10 @@ ol li {
     height: 29px;
 }
 
+.blank-dotted-bottom.inline {
+    display: inline-block;
+}
+
 .number-dotted-bottom {
     border-bottom: 2px dotted #000000;
     width: 40px;
@@ -95,8 +112,8 @@ ol li {
 
 .employee-image {
     position: absolute;
-    height: 230px;
-    width: 180px;
+    height: 320px;
+    width: 240px;
     top: 20px;
     right: 20px;
     border: 1px solid #000000;
@@ -120,11 +137,26 @@ ol li {
     height: 150px;
 }
 
+.report-top-last {
+    position: relative;
+    height: 120px;
+}
+
 .report-logo {
     position: absolute;
     top: 0;
     left: 50%;
     transform: translate(-50%, 0);
+}
+
+.report-iso-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.report-iso-logo > img {
+    width: 160px;
 }
 
 .report-logo-start {
@@ -152,7 +184,7 @@ ol li {
 
 .table-bordered th,
 .table-bordered td {
-    border: 2px solid #212529;
+    border: 2px solid #212529 !important;
 }
 
 .col-40 {
@@ -212,6 +244,7 @@ ol li {
     text-indent: 100px;
     margin-bottom: 0;
     text-align: justify;
+    line-height: 2em;
 }
 
 .report-paragraph>strong {
@@ -248,11 +281,12 @@ ol li {
 }
 
 .attachment-subtitle {
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 900;
 }
 
-.attachment-paragraph, .rule-paragraph {
+.attachment-paragraph,
+.rule-paragraph {
     text-indent: 100px;
     margin-bottom: 0;
     text-align: justify;
@@ -304,17 +338,20 @@ li ol>li:before {
 
 ul {
     margin: 0;
-  }
-  ul.dashed {
+}
+
+ul.dashed {
     list-style-type: none;
-  }
-  ul.dashed > li {
+}
+
+ul.dashed>li {
     text-indent: -20px;
-  }
-  ul.dashed > li:before {
-    content: "-" " ";
+}
+
+ul.dashed>li:before {
+    content: "-"" ";
     text-indent: -20px;
-  }
+}
 
 .attachment-paragraph.lh {
     line-height: 2.5rem;
@@ -351,4 +388,29 @@ ul {
 .rule-content * {
     font-size: 18px !important;
     line-height: 1.75rem;
+}
+
+.radio-checklist {
+    margin-left: 100px;
+}
+
+.attachment1-second {
+    counter-reset: second-counter 14 !important;
+}
+
+.attachment1-second li:before {
+    counter-increment: second-counter !important;
+    content: counter(second-counter) "." !important;
+}
+
+.signature-bracket {
+    font-size: 20px;
+    min-width: 200px;
+    display: inline-block;
+    text-align: center;
+}
+
+.padding120px {
+    padding-left: 120px;
+    padding-right: 120px;
 }

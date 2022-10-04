@@ -4,7 +4,6 @@ import { ElectronService } from 'ngx-electron';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { UserService } from 'src/app/core/services/user.service';
-import { switchMap } from 'rxjs/operators';
 import { JobHistory, LanguageAbility, User } from 'src/app/core/models/user';
 import { environment } from 'src/environments/environment';
 
@@ -20,6 +19,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
   empNoString = '';
   birthDateString: string;
   age: number;
+  currentDate = new Date();
   companyReportHeader = {
     FullName: environment.companyFullName,
     FullNameEn: environment.companyFullNameEn,
