@@ -433,6 +433,15 @@ ul.dashed>li:before {
     content: counter(second-counter) "." !important;
 }
 
+.attachment1-second ol {
+    counter-reset: nested-att-counter 0 !important;
+}
+
+.attachment1-second ol li:before {
+    counter-increment: nested-att-counter !important;
+    content: counter(second-counter) "." counter(nested-att-counter) !important; 
+}
+
 .signature-bracket {
     font-size: 20px;
     min-width: 200px;
@@ -443,4 +452,8 @@ ul.dashed>li:before {
 .padding120px {
     padding-left: 120px;
     padding-right: 120px;
+}
+
+.well-known-list li:before {
+    content: "รับทราบ " counters(item, "") ".";
 }
