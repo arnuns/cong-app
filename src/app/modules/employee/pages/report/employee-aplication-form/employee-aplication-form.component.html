@@ -26,11 +26,8 @@
                     <div class="ml-2 blank-dotted-bottom text-center mw-300"><span
                             class="employee-data">{{user?.firstName}} {{user?.lastName}}</span></div>
                     <div class="ml-2">วันที่</div>
-                    <div class="ml-2 blank-dotted-bottom text-center mw-100"></div>
-                    <div class="ml-2">เดือน</div>
-                    <div class="ml-2 blank-dotted-bottom text-center mw-100"></div>
-                    <div class="ml-2">พ.ศ.</div>
-                    <div class="ml-2 blank-dotted-bottom text-center mw-100"></div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-300"><span
+                            class="employee-data">{{toThaiDateString(currentDate)}}</span></div>
                 </div>
             </div>
             <div>
@@ -139,15 +136,15 @@
                     <td></td>
                 </tr>
                 <tr>
-                    <td colspan="6">
-                        <div class="d-flex flex-column mt-2 text-input">
+                    <td colspan="6" class="p-3">
+                        <div class="d-flex flex-column text-input">
                             <div>ความคิดเห็นเพิ่มเติม</div>
                             <div class="blank-dotted-bottom w-100"></div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="6" class="p-3">
                         <div class="d-flex">
                             <div>
                                 <div class="box">
@@ -156,30 +153,34 @@
                                 </div>
                             </div>
                             <div class="ml-3">
-                                <div class="d-flex align-items-end">
-                                    <div>ควรจ้างในตำแหน่ง</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
-                                    <div class="ml-2">หน่วยงาน</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
-                                </div>
-                                <div class="d-flex align-items-end">
-                                    <div>เริ่มงานตั้งแต่วันที่</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
-                                    <div class="ml-2">อัตราจ้างรายวัน</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
-                                    <div>บาท</div>
-                                </div>
-                                <div class="d-flex align-items-end">
-                                    <div>ค่าอื่นๆ</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
-                                    <div class="ml-2">จำนวนเงิน</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-100"></div>
-                                    <div>บาท มีผลตั้งแต่วันที่</div>
-                                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <div class="d-flex align-items-end">
+                                            <div>ควรจ้างในตำแหน่ง</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-300 mt-0"></div>
+                                            <div class="ml-2">หน่วยงาน</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-300 mt-0"></div>
+                                        </div>
+                                        <div class="d-flex align-items-end mt-2">
+                                            <div>เริ่มงานตั้งแต่วันที่</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
+                                            <div class="ml-2">อัตราจ้างรายวัน</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
+                                            <div>บาท</div>
+                                        </div>
+                                        <div class="d-flex align-items-end mt-2">
+                                            <div>ค่าอื่นๆ</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                                            <div class="ml-2">จำนวนเงิน</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-100"></div>
+                                            <div>บาท มีผลตั้งแต่วันที่</div>
+                                            <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex mt-1">
+                        <div class="d-flex align-items-center mt-2">
                             <div>
                                 <div class="box">
                                     <div class="d-flex align-items-center justify-content-center">
@@ -190,7 +191,7 @@
                                 รอพิจารณา
                             </div>
                         </div>
-                        <div class="d-flex mt-1">
+                        <div class="d-flex align-items-center mt-2">
                             <div>
                                 <div class="box">
                                     <div class="d-flex align-items-center justify-content-center">
@@ -201,7 +202,7 @@
                                 เหมาะสมกับตำแหน่งอื่น
                             </div>
                         </div>
-                        <div class="d-flex mt-1">
+                        <div class="d-flex align-items-center mt-2">
                             <div>
                                 <div class="box">
                                     <div class="d-flex align-items-center justify-content-center">
@@ -212,7 +213,7 @@
                                 ปฏิเสธ
                             </div>
                         </div>
-                        <div class="d-flex align-items-end mt-1">
+                        <div class="d-flex align-items-end mt-2">
                             <div>ลงชื่อ</div>
                             <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
                             <div>ผู้สัมภาษณ์</div>
@@ -252,6 +253,9 @@
                 <div>โทรศัพท์ : 02-210-0004 โทรศัพท์ : 064-586-9938 E – Mail : info@gmgroup.co.th</div>
             </div>
         </div>
+        <div class="report-iso-logo">
+            <img [src]="baseImagePath + '/img/gmg_iso_report_logo.jpg'" alt="ISO Logo">
+        </div>
     </div>
     <hr>
     <div class="d-flex justify-content-end mt-4">
@@ -271,16 +275,17 @@
             <div>
                 <div class="d-flex flex-wrap align-items-end text-input">
                     <div>ชื่อ-สกุล ( <ng-container *ngIf="user?.title === 'นาย'; else elseFemale">
-                        <u>นาย</u>/นาง/นางสาว
-                    </ng-container>
-                    <ng-template #elseFemale>
-                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                            นาย/<u>นาง</u>/นางสาว
+                            <u>นาย</u>/นาง/นางสาว
                         </ng-container>
-                    </ng-template>
-                    <ng-template #elseFemale2>
-                        นาย/นาง/<u>นางสาว</u>
-                    </ng-template>)</div>
+                        <ng-template #elseFemale>
+                            <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
+                                นาย/<u>นาง</u>/นางสาว
+                            </ng-container>
+                        </ng-template>
+                        <ng-template #elseFemale2>
+                            นาย/นาง/<u>นางสาว</u>
+                        </ng-template>)
+                    </div>
                     <div class="ml-2 blank-dotted-bottom text-center mw-400"><span
                             class="employee-data">{{user?.firstName}} {{user?.lastName}}</span></div>
                 </div>
@@ -292,9 +297,9 @@
                         <span class="employee-data">{{ user?.userPosition.nameTH }}</span>
                     </div>
                     <div class="ml-2">ค่าแรง</div>
-                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-150"></div>
                     <div class="ml-2">บาท ต่อ วัน อื่นๆ</div>
-                    <div class="ml-2 blank-dotted-bottom text-center mw-300"></div>
+                    <div class="ml-2 blank-dotted-bottom text-center mw-200"></div>
                 </div>
             </div>
             <div>
@@ -533,6 +538,10 @@
                 <div class="text-input dotted-bottom">
                     <span class="employee-data">{{ user?.site?.fullName }}</span>
                 </div>
+                <div class="label mt-2">
+                    ผู้แนะนำ
+                </div>
+                <div class="blank-dotted-bottom text-center mw-200 mt-0"></div>
             </div>
         </div>
         <div class="report-logo">
@@ -635,7 +644,7 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-between w-100 application-form-row">
+        <div class="d-flex justify-content-between align-items-end w-100 application-form-row">
             <div>
                 <div class="d-flex flex-column">
                     <div class="label">
@@ -651,7 +660,6 @@
             </div>
             <div>
                 <div class="d-flex flex-column justify-content-between h-100 application-form-row">
-                    <div class="label">ลายเซ็นต์</div>
                     <div>
                         <div class="d-flex">
                             <div class="text-input">อายุ</div>
@@ -834,7 +842,7 @@
                         <div class="box"></div>
                     </div>
                     <div class="ml-2">สมรส ชื่อคู่สมรส</div>
-                    <div class="blank-dotted-bottom mw-200"></div>
+                    <div class="blank-dotted-bottom mw-400"></div>
                 </div>
             </div>
         </div>
@@ -1292,7 +1300,18 @@
             <strong>บริษัท รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 จํากัด</strong> โดยละเอียดและยินยอมที่
             จะปฏิบัติตามกฎระเบียบข้อบังคับต่าง ๆ ตามหัวข้อดังต่อไปนี้
         </p>
-        <div class="d-flex mt-3">
+        <div class="mt-3">
+            <ol class="radio-checklist">
+                <li>อัตราค่าจ้างลักษณะการทํางาน</li>
+                <li>วันจ่าย / สถานที่จ้าง รายวันวิค 1-15 จ่าย สิ้นเดือน วิค 16 - สิ้นเดือนจ่าย 15
+                    ของเดือนถัดไปรายเดือนจ่ายค่าจ้างทุกวันที่ 30 หรือ 31 ของเดือน</li>
+                <li>รายการซื้ออุปกรณ์ต่าง ๆ</li>
+                <li>การดําเนินการตามรายงานสภาพหนี้ต่าง ๆ</li>
+                <li>สวัสดิการต่าง ๆ ที่ได้รับ</li>
+                <li>กฎระเบียบข้อบังคับในการทํางาน ฉบับลงวันที่ 1 มกราคม 2560</li>
+            </ol>
+        </div>
+        <!-- <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1305,7 +1324,7 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1319,7 +1338,7 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1332,7 +1351,7 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1345,7 +1364,7 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1358,7 +1377,7 @@
                 </span>
             </div>
         </div>
-        <div class="d-flex mt-3">
+        <div class="d-flex mt-3 radio-list">
             <div>
                 <div class="box">
                     <div class="d-flex align-items-center justify-content-center">
@@ -1370,7 +1389,7 @@
                     <strong>รับทราบ</strong> 6. กฎระเบียบข้อบังคับในการทํางาน ฉบับลงวันที่ 1 มกราคม 2560
                 </span>
             </div>
-        </div>
+        </div> -->
     </div>
     <div class="row justify-content-center p-3 mt-5">
         <div class="col-5 mr-2 p-0">
@@ -1382,10 +1401,11 @@
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">ผู้ยินยอม</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
                             <div>
-                                <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                                <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                                    {{user?.lastName}}</span>
                             </div>
                             <div>)</div>
                         </div>
@@ -1410,12 +1430,12 @@
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">นายจ้าง/ผู้รับมอบอำนาจ</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label ml-2">วันที่</span></div>
                             <div class="blank-dotted-bottom mw-100"></div>
                             <div><span class="span-label">/</span></div>
@@ -1435,15 +1455,15 @@
                     <div>
                         <div class="d-flex align-items-end justify-content-center my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label ml-2">วันที่</span></div>
                             <div class="blank-dotted-bottom mw-100"></div>
                             <div><span class="span-label">/</span></div>
@@ -1491,7 +1511,7 @@
             <li><u>การขาดงานเกิน 3 วัน</u> ปลดออกให้พ้นสภาพการเป็นลูกจ้าง ไม่จ่ายค่าแรงตามจำนวนวันที่ขาดงาน และ
                 ติดต่อรับเงินที่บริษัทด้วยตัวเอง</li>
             <li><u>ต้องคืนอุปกรณ์ให้ครบทุกอย่าง</u> จึงขอรับค่าจ้างตามรอบเดือนที่ผ่านมาได้ (กรณีชำระไม่หมด)</li>
-            <li><u>มาทำงานสาย กลับก่อน ทิ้งงาน ทิ้งจุดรักษาการณ์ทำงานไม่ครบตามกำหนดเวลาจ้าง</u> สงวนสิทธิ์
+            <li><u>มาทำงานสาย กลับก่อน ทิ้งงาน ทิ้งจุดรักษาการ ทำงานไม่ครบตามกำหนดเวลาจ้าง</u> สงวนสิทธิ์
                 ไม่จ่ายค่าจ้าง และ/หรือ ดำเนินการตามข้อตกลงของลูกจ้างตามเอกสารแนบท้ายสัญญาจ้างที่ 3</li>
             <li><u>ทำงานขาดความรับผิดชอบต่อหน้าที่ไม่มีประสิทธิภาพ ทำผิดระเบียบวินัยบริษัท</u>
                 ทำให้บริษัทต้องถูกเลิกจ้าง เช่น หลับยาม ถูกผู้ว่าจ้างของนายจ้างตำหนิ
@@ -1505,12 +1525,12 @@
             <li>
                 <u>วิธีคิดค่าจ้าง</u>
                 <ol>
-                    <li>ค่าจ้างต่อวันตามที่คณะกรรมการค่าจ้างประกาศต่อวัน วันละ 8 ชั่วโมงมีชั่วโมงพัก 1 ชั่วโมง </li>
+                    <li>ค่าจ้างต่อวันตามที่คณะกรรมการค่าจ้างประกาศต่อวัน วันละ 8 ชั่วโมง มีชั่วโมงพัก 1 ชั่วโมง </li>
                     <li>โอที = ค่าจ้างต่อวันหารด้วยแปดเป็นค่าจ้างต่อชั่วโมง พนักงานที่ทำงานหลังชั่วโมงการทำงานปกติ
                         ให้มีช่วงเวลาพัก 20 นาที(ไม่นำมาคำนวณโอที) หลังจากนั้นคำนวณโอทีตามที่กฎหมายที่เกี่ยวข้องกำหนด
                     </li>
                     <li>วันหยุด 4 วัน/เดือน โดยไม่ได้รับค่าจ้าง เนื่องจากเป็นพนักงานรายวัน</li>
-                    <li>รายได้อื่น ๆ ที่เกินจากนี้เป็นรายได้อื่น ๆ (ถ้ามี เช่นค่า ตำแหน่ง ค่าบริหาร ค่าจุด เป็นต้น)</li>
+                    <li>รายได้อื่น ๆ ที่เกินจากนี้เป็นรายได้อื่น ๆ (ถ้ามี เช่น ค่าตำแหน่ง ค่าบริหาร ค่าจุด เป็นต้น)</li>
                 </ol>
             </li>
             <li>
@@ -1518,26 +1538,43 @@
                 <ol>
                     <li>วิคที่ 1 วันที่ 1-15 ของเดือน จ่ายค่าจ้างทุกวันสิ้นเดือนของทุกเดือน</li>
                     <li>วิคที่ 2 วันที่ 16-สิ้นเดือน จ่ายค่าจ้างทุกวันที่ 15 ของเดือนถัดไป</li>
-                    <li>ในกรณีที่ค่าจ้าง ผิดพลาด หริอมีปัญหา เช่น เงินเดือนตกหล่น ไม่ถูกต้อง ต้องมีการดำเนินการแก้ไข
+                    <li>ในกรณีที่ค่าจ้าง ผิดพลาด หรือมีปัญหา เช่น เงินเดือนตกหล่น ไม่ถูกต้อง ต้องมีการดำเนินการแก้ไข
                         ภายใน 24 ชั่วโมง</li>
                 </ol>
+                <div class="d-flex justify-content-end">
+                    <div>
+                        ( ต่อ / 15 เรื่องวันหยุด ... )
+                    </div>
+                </div>
             </li>
+        </ol>
+    </div>
+
+</div>
+<div class="container-fluid page-break">
+    <div class="d-flex justify-content-center align-items-start report-top">
+        <div class="report-logo">
+            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
+        </div>
+    </div>
+    <div class="mt-4">
+        <ol class="attachment1-second">
             <li>
                 <u>เรื่องวันหยุดของ ลูกจ้าง</u>
                 <ol>
                     <li>บริษัท จัดวันหยุดพักผ่อนให้พนักงานสัปดาห์ละ 1 วัน โดยไม่ได้รับค่าจ้าง เนื่องจากเป็นพนักงานรายวัน
                     </li>
-                    <li>กรณีลูกจ้างลาป่วยโดยมีใบรับรองแพทย์โดยบริษทรักษาความปลอดภัย จี.เอ็ม กรุ๊ป 999 จำกัด
-                        จะจ่ายค่าจ้าง ให้แก่ ลูกจ้างวันที่ลาให้แก่ ลูกจ้าง ตามจำนวนวันที่ระบุในใบรับรองแพทย์
-                        <u>(เฉพาะโรงพยาบาลที่ขึ้นทะเบียนประกันสังคมเท่านั้น)</u> แต่ไม่เกิน 30 วัน ตามข้อ 12.1
-                        (ตามค่าจ้างขั้นต่ำ ที่กฎหมายกำหนด)</li>
-                    <li>ประกันสังคม ทาง บจ.รักษาความปลอดภัย จี.เอ็มกรุ๊ป 999 จำกัด โดยกำหนดให้ ลูกจ้าง
-                        เลือกโรงพยาบาลที่ใกล้ที่พัก</li>
+                    <li>กรณีลูกจ้างลาป่วยโดยมีใบรับรองแพทย์ โดยบริษัท จะจ่ายค่าจ้าง ให้แก่ ลูกจ้างวันที่ลาให้แก่ ลูกจ้าง
+                        ตามจำนวนวันที่ระบุในใบรับรองแพทย์
+                        <u>(เฉพาะโรงพยาบาลที่ขึ้นทะเบียนประกันสังคมเท่านั้น)</u> แต่ไม่เกิน 30 วัน ตามข้อ 13.1
+                        (ตามค่าจ้างขั้นต่ำ ที่กฎหมายกำหนด)
+                    </li>
+                    <li>ประกันสังคม ทางบริษัท โดยกำหนดให้ลูกจ้างเลือกโรงพยาบาลที่ใกล้ที่พัก</li>
                 </ol>
             </li>
             <li>บริษัท จะประเมินผลการปฏิบัติงานของพนักงานทุก ๆ เดือน
                 หากไม่ผ่านเกณฑ์ให้พ้นจากการเป็นสภาพการเป็นพนักงานทันที</li>
-            <li>ไม่หยุดในวันนักขัตฤกษ์ 13 วัน ได้รับค่าจ้างตามข้อ 12.1</li>
+            <li>ไม่หยุดในวันนักขัตฤกษ์ 13 วัน ได้รับค่าจ้างตามข้อ 13.1</li>
             <li>สวัสดิการอื่น ๆ จะพิจารณาให้ตามความเหมาะสมต่อไป</li>
             <li><u>สวัสดิการของลูกจ้าง</u>
                 ค่าอุปกรณ์ราคาตามรายละเอียดในใบสั่งซื้อของพนักงาน,พนักงานเข้าใหม่คิดราคาปกติค่าชุดลูกจ้างตกลงและยินยอมให้หักจากค่าจ้างตาม
@@ -1568,7 +1605,9 @@
             </ng-template>
             <ng-template #elseFemale2>
                 นาย/นาง/<u>นางสาว</u>
-            </ng-template>) <span class="employee-data blank-dotted-bottom px50px">{{user?.firstName}} {{user?.lastName}}</span> ได้อ่านและทำความเข้าใจแล้วได้ตกลง และยินยอมให้ทาง บจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 ดำเนินการตามข้อตกลง ได้ทุกประการ
+            </ng-template>) <span class="employee-data blank-dotted-bottom px50px">{{user?.firstName}}
+                {{user?.lastName}}</span> ได้อ่านและทำความเข้าใจแล้วได้ตกลง และยินยอมให้ทางบริษัท ดำเนินการตามข้อตกลง
+            ได้ทุกประการ
         </p>
     </div>
     <div class="mt-4">
@@ -1577,11 +1616,13 @@
                 <div class="d-flex align-items-end justify-content-center">
                     <div>ลงชื่อ</div>
                     <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
+                    <div class="ml-2"><span class="span-label">ผู้ยินยอม</span></div>
                 </div>
-                <div class="d-flex align-items-end justify-content-center">
-                    <div>(</div>
+                <div class="d-flex align-items-end">
+                    <div class="ml-5">(</div>
                     <div>
-                        <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                        <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                            {{user?.lastName}}</span>
                     </div>
                     <div>)</div>
                 </div>
@@ -1620,19 +1661,29 @@
         <div class="d-flex flex-column">
             <div>เรียน กรรมการผู้จัดการ/ฝ่ายทรัพยากรบุคคล</div>
             <div>
-                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container *ngIf="user?.title === 'นาย'; else elseFemale">
-                    <u>นาย</u>/นาง/นางสาว
-                </ng-container>
-                <ng-template #elseFemale>
-                    <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                        นาย/<u>นาง</u>/นางสาว
+                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container
+                        *ngIf="user?.title === 'นาย'; else elseFemale">
+                        <u>นาย</u>/นาง/นางสาว
                     </ng-container>
-                </ng-template>
-                <ng-template #elseFemale2>
-                    นาย/นาง/<u>นางสาว</u>
-                </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}} {{user?.lastName}}</span> รับทราบข้อกำหนดของทางบริษัทฯ แล้วว่าทางบริษัทมีข้อกำหนดให้มีการจ่ายค่าจ้าง ณ ที่ทำการของบริษัท</p>
-                <p class="attachment-paragraph mt-4">แต่ด้วยข้าพเจ้าไม่สะดวกในการเดินทางเข้ามารับค่าจ้างเอง ณ ที่ทำการของบริษัทฯ ดังนั้นข้าพเจ้า จึงขอความอนุเคราะห์ให้ท่าน โอนเงินค่าจ้างหรือเงินต่าง ๆ ที่มีผลผูกพันระหว่างข้าพเจ้าและบริษัทฯ ผ่านบัญชีธนาคาร ชื่อบัญชีธนาคาร และ หมายเลขบัญชีธนาคารที่ข้าพเจ้าได้จัดส่งให้กับฝ่ายทรัพยากรบุคคลของบริษัทฯ และ ข้าพเจ้ายินดีจ่ายค่าธรรมเนียมในการโอนเงินค่าจ้างครั้งละ.................บาท เพื่อเป็นเป็นการอำนวยความสะดวกให้กับข้าพเจ้าโดยไม่ต้องเดินทางเข้ามารับค่าจ้างตามข้อบังคับของบริษัทฯ </p>
-                <p class="attachment-paragraph mt-4">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
+                    <ng-template #elseFemale>
+                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
+                            นาย/<u>นาง</u>/นางสาว
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #elseFemale2>
+                        นาย/นาง/<u>นางสาว</u>
+                    </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                        {{user?.lastName}}</span> รับทราบข้อกำหนดของทางบริษัท
+                    แล้วว่าทางบริษัทมีข้อกำหนดให้มีการจ่ายค่าจ้าง ณ ที่ทำการของบริษัท
+                </p>
+                <p class="attachment-paragraph mt-4">แต่ด้วยข้าพเจ้าไม่สะดวกในการเดินทางเข้ามารับค่าจ้างเอง ณ
+                    ที่ทำการของบริษัท ดังนั้นข้าพเจ้า จึงขอความอนุเคราะห์ให้ท่าน โอนเงินค่าจ้างหรือเงินต่าง ๆ
+                    ที่มีผลผูกพันระหว่างข้าพเจ้าและบริษัทฯ ผ่านบัญชีธนาคาร ชื่อบัญชีธนาคาร
+                    และหมายเลขบัญชีธนาคารที่ข้าพเจ้าได้จัดส่งให้กับฝ่ายทรัพยากรบุคคลของบริษัทฯ
+                    และข้าพเจ้ายินดีจ่ายค่าธรรมเนียมในการโอนเงินค่าจ้างครั้งละ.................บาท
+                    เพื่อเป็นเป็นการอำนวยความสะดวกให้กับข้าพเจ้าโดยไม่ต้องเดินทางเข้ามารับค่าจ้างตามข้อบังคับของบริษัท
+                </p>
+                <p class="attachment-paragraph mt-5">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
             </div>
         </div>
     </div>
@@ -1646,10 +1697,11 @@
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">ผู้ยินยอม</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
                             <div>
-                                <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                                <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                                    {{user?.lastName}}</span>
                             </div>
                             <div>)</div>
                         </div>
@@ -1658,9 +1710,9 @@
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1671,24 +1723,24 @@
             <div class="p-3">
                 <div class="d-flex justify-content-center">
                     <div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">นายจ้าง/ผู้รับมอบอำนาจ</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1728,20 +1780,44 @@
         <div class="d-flex flex-column">
             <div>เรียน กรรมการผู้จัดการ/ฝ่ายทรัพยากรบุคคล</div>
             <div>
-                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container *ngIf="user?.title === 'นาย'; else elseFemale">
-                    <u>นาย</u>/นาง/นางสาว
-                </ng-container>
-                <ng-template #elseFemale>
-                    <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                        นาย/<u>นาง</u>/นางสาว
+                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container
+                        *ngIf="user?.title === 'นาย'; else elseFemale">
+                        <u>นาย</u>/นาง/นางสาว
                     </ng-container>
-                </ng-template>
-                <ng-template #elseFemale2>
-                    นาย/นาง/<u>นางสาว</u>
-                </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}} {{user?.lastName}}</span> รับทราบข้อกำหนดของทางบริษัทฯ แล้วว่าทางบริษัทมีข้อกำหนดให้มีการจ่ายค่าจ้าง ณ ที่ทำการของบริษัท</p>
-                <p class="mt-3">ยินดีให้นายจ้างคือบจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 หักเงินจากค่าจ้าง กรณีดังต่อไปนี้</p>
-                <p class="attachment-paragraph mt-3">ข้าพเจ้าได้อ่านข้อความข้างต้นทั้งหมดแล้วเข้าใจทุกประการและหากเกิดความเสียหายตามข้อความข้างต้น ข้าพเจ้ายินดีให้ทาง บริษัท รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 จำกัด หักเงินส่วนนั้นเสียจากค่าจ้าง และ/หรือ เงินประกัน และ/หรือ รายรับอื่นใดที่ข้าพเจ้ามีกับบริษัทฯ จนครบตามความเสียหายที่เกิดขึ้น</p>
-                <p class="attachment-paragraph mt-2">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
+                    <ng-template #elseFemale>
+                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
+                            นาย/<u>นาง</u>/นางสาว
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #elseFemale2>
+                        นาย/นาง/<u>นางสาว</u>
+                    </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                        {{user?.lastName}}</span> รับทราบข้อกำหนดของทางบริษัทฯ
+                    แล้วว่าทางบริษัทมีข้อกำหนดให้มีการจ่ายค่าจ้าง ณ ที่ทำการของบริษัท
+                </p>
+                <p class="mt-3">ยินดีให้นายจ้างคือบจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 หักเงินจากค่าจ้าง
+                    กรณีดังต่อไปนี้</p>
+                <div class="mt-3">
+                    <ol class="radio-checklist">
+                        <li>ค่าซื้ออุปกรณ์จากบจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 (ตามรายการใบสั่งซื้อ)</li>
+                        <li>เงินเบิกล่วงหน้า หรือ เงินสำรองจ่ายต่าง ๆ ที่บจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 จ่าย
+                            หรือสำรองจ่ายให้กับข้าพเจ้าเพื่อประโยชน์ส่วนตัวของข้าพเจ้าเอง</li>
+                        <li>กรณีทำให้ทรัพยฺสินของนายจ้างคือบจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 เสียหาย หรือสูญหาย
+                        </li>
+                        <li>กรณีทำให้ทรัพย์สินของผู้ว่าจ้างของนายจ้างที่ข้าพเจ้าปฏิบัติหน้าที่อยู่ได้รับความเสียหาย
+                            และ/หรือสูญหาย </li>
+                        <li>กรณีที่ข้าพเจ้าเป็นผู้กระทำความผิดข้อตกลงหรือผิดระเบียบการทำงานของผู้ว่าจ้างของนายจ้างทำให้เกิดความเสียหาย
+                            หรือเบี้ยปรับต่อนายจ้าง</li>
+                        <li>การกระทำอื่นใดของข้าพเจ้าที่เป็นผลกระทบโดยตรงกับผู้ว่าจ้างของนายจ้างที่ข้าพเจ้าเข้าไปปฏิบัติหน้าที่
+                            และ/หรือกับนายจ้าง และ/หรือบริวารของนายจ้างคือ บริษัท รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999
+                            จำกัด</li>
+                    </ol>
+                </div>
+                <p class="attachment-paragraph mt-3">
+                    ข้าพเจ้าได้อ่านข้อความข้างต้นทั้งหมดแล้วเข้าใจทุกประการและหากเกิดความเสียหายตามข้อความข้างต้น
+                    ข้าพเจ้ายินดีให้ทาง บริษัท รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 จำกัด หักเงินส่วนนั้นเสียจากค่าจ้าง
+                    และ/หรือ เงินประกัน และ/หรือ รายรับอื่นใดที่ข้าพเจ้ามีกับบริษัทฯ จนครบตามความเสียหายที่เกิดขึ้น</p>
+                <p class="attachment-paragraph mt-5">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
             </div>
         </div>
     </div>
@@ -1750,26 +1826,27 @@
             <div class="p-3">
                 <div class="d-flex justify-content-center">
                     <div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">ผู้ยินยอม</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
                             <div>
-                                <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                                <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                                    {{user?.lastName}}</span>
                             </div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1780,24 +1857,24 @@
             <div class="p-3">
                 <div class="d-flex justify-content-center">
                     <div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">นายจ้าง/ผู้รับมอบอำนาจ</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1837,17 +1914,20 @@
         <div class="d-flex flex-column">
             <div>เรียน กรรมการผู้จัดการ/ฝ่ายทรัพยากรบุคคล</div>
             <div>
-                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container *ngIf="user?.title === 'นาย'; else elseFemale">
-                    <u>นาย</u>/นาง/นางสาว
-                </ng-container>
-                <ng-template #elseFemale>
-                    <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                        นาย/<u>นาง</u>/นางสาว
+                <p class="attachment-paragraph mt-3">ข้าพเจ้า ( <ng-container
+                        *ngIf="user?.title === 'นาย'; else elseFemale">
+                        <u>นาย</u>/นาง/นางสาว
                     </ng-container>
-                </ng-template>
-                <ng-template #elseFemale2>
-                    นาย/นาง/<u>นางสาว</u>
-                </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}} {{user?.lastName}}</span> มีความประสงค์ในการกู้ยืมจาก บริษัท รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999 จำกัด รายละเอียดดังนี้</p>
+                    <ng-template #elseFemale>
+                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
+                            นาย/<u>นาง</u>/นางสาว
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #elseFemale2>
+                        นาย/นาง/<u>นางสาว</u>
+                    </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                        {{user?.lastName}}</span> มีความประสงค์ในการกู้ยืมจากบริษัท รายละเอียดดังนี้
+                </p>
                 <div class="d-flex report-indent-checkbox mt-3">
                     <div>
                         <ol>
@@ -1860,7 +1940,9 @@
                                 </div>
                                 ค่าชุดและอุปกรณ์
                                 <ol>
-                                    <li>เริ่มหักวิคที่ 4 ของการจ่ายค่าแรง วิคละ <span class="pl-4 pr-2">750</span> บาท จนกว่าจะหักครบ <br />หมายเหตุ กรณีมีค่าเช่าบ้านจะเริ่มหักในรอบที่มีการจ่ายค่าแรง</li>
+                                    <li>เริ่มหักวิคที่ 4 ของการจ่ายค่าแรง วิคละ <span class="px-2">750</span> บาท
+                                        จนกว่าจะหักครบ <br />หมายเหตุ กรณีมีค่าเช่าบ้านจะเริ่มหักในรอบที่มีการจ่ายค่าแรง
+                                    </li>
                                 </ol>
                             </li>
                             <li class="mt-0 report-checkvalue">
@@ -1870,9 +1952,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                ค่าจัดทำใบอนุญาต พนักงานรักษาความปลอดภัย ยอด 4,000 บาท
+                                ค่าจัดทำใบอนุญาต พนักงานรักษาความปลอดภัย ยอด 3,500 บาท
                                 <ol>
-                                    <li>เริ่มหักวิคที่ 4 ของการจ่ายค่าแรง วิคละ <span class="pl-4 pr-2">500</span> บาท</li>
+                                    <li>เริ่มหักวิคที่ 4 ของการจ่ายค่าแรง วิคละ <span class="px-2">500</span> บาท
+                                        จนกว่าจะหักครบ</li>
                                 </ol>
                             </li>
                             <li class="mt-0 report-checkvalue">
@@ -1882,13 +1965,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                การขาดงาน <span class="pl-4 pr-2">1,500</span> บาท
+                                การขาดงาน <span class="px-2">1,500</span> บาท
                             </li>
                         </ol>
                     </div>
                 </div>
-                <p class="attachment-paragraph mt-3">ข้าพเจ้าประสงค์นำเงินดังกล่าวไปใช้เพื่อประโยชน์ของข้าพเจ้าเองและ ข้าพเจ้ายินดีให้หักเงินส่วนนั้นเสียจากค่าจ้าง และ/หรือ เงินประกัน และ/หรือ รายรับอื่นใดที่ข้าพเจ้ามีกับบริษัทฯ จนครบตามจำนวนที่เกิดขึ้น</p>
-                <p class="attachment-paragraph mt-2">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
+                <p class="attachment-paragraph mt-3">ข้าพเจ้าประสงค์นำเงินดังกล่าวไปใช้เพื่อประโยชน์ของข้าพเจ้าเองและ
+                    ข้าพเจ้ายินดีให้หักเงินส่วนนั้นเสียจากค่าจ้าง และ/หรือ เงินประกัน และ/หรือ
+                    รายรับอื่นใดที่ข้าพเจ้ามีกับบริษัทฯ จนครบตามจำนวนที่เกิดขึ้น</p>
+                <p class="attachment-paragraph mt-5">จึงเรียนมาเพื่อทราบและโปรดพิจารณา</p>
             </div>
         </div>
     </div>
@@ -1897,26 +1982,27 @@
             <div class="p-3">
                 <div class="d-flex justify-content-center">
                     <div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">ผู้ยินยอม</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
                             <div>
-                                <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                                <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                                    {{user?.lastName}}</span>
                             </div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1927,24 +2013,24 @@
             <div class="p-3">
                 <div class="d-flex justify-content-center">
                     <div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">นายจ้าง/ผู้รับมอบอำนาจ</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
+                        <div class="d-flex align-items-end my-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
                             <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div class="ml-2"><span class="span-label">พยาน</span></div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center my-3">
-                            <div>(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-400"></div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5">(</div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                             <div>)</div>
                         </div>
                     </div>
@@ -1954,7 +2040,7 @@
     </div>
 </div>
 <div class="container-fluid page-break">
-    <div class="mt-3 report-top">
+    <div class="mt-3 pt-4 report-top">
         <div class="d-flex justify-content-center">
             <div>
                 <span class="attachment-subtitle">หนังสือยินยอมให้ตรวจประวัติบุคคล</span>
@@ -1964,42 +2050,56 @@
     <div class="mt-3">
         <div class="d-flex flex-column">
             <div class="align-self-end">เขียนที่..................................................</div>
-            <div class="align-self-end">วันที่..................เดือน..................พ.ศ...................</div>
+            <div class="align-self-end">
+                <div class="d-flex">
+                    <div>วันที่</div>
+                    <div class="ml-2 mt-0 blank-dotted-bottom text-center mw-300"><span
+                            class="employee-data">{{toThaiDateString(currentDate)}}</span></div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="mt-3">
         <div class="d-flex flex-column">
             <div>เรียน ผู้บังคับการกองทะเบียนประวัติอาชญากร</div>
             <div>
-                <p class="attachment-paragraph lh mt-3">ข้าพเจ้า ( <ng-container *ngIf="user?.title === 'นาย'; else elseFemale">
-                    <u>นาย</u>/นาง/นางสาว
-                </ng-container>
-                <ng-template #elseFemale>
-                    <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                        นาย/<u>นาง</u>/นางสาว
+                <p class="attachment-paragraph lh mt-3">ข้าพเจ้า ( <ng-container
+                        *ngIf="user?.title === 'นาย'; else elseFemale">
+                        <u>นาย</u>/นาง/นางสาว
                     </ng-container>
-                </ng-template>
-                <ng-template #elseFemale2>
-                    นาย/นาง/<u>นางสาว</u>
-                </ng-template>) <span class="employee-data blank-dotted-bottom px150px">{{user?.firstName}} {{user?.lastName}}</span> บัตรประชาชนเลขที่ <span class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
-                อยู่บ้านเลขที่............................ หมู่ที่.................... ซอย......................................... ถนน......................................... ตำบล/แขวง..................... อำเภอ/เขต.......................................... จังหวัด.......................................... โทรศัพท์..........................................
-                ขอยินยอมให้บริษัทฯ ที่ข้าพเจ้ามาสมัครงาน มีสิทธิ์ในการดำเนินงานใดๆ ในการตรวจสอบประวัติของข้าพเจ้ากับกองทะเบียนประวัติอาญชากร โดยไม่มีเงื่อนไขใดๆทั้งสิ้น</p>
+                    <ng-template #elseFemale>
+                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
+                            นาย/<u>นาง</u>/นางสาว
+                        </ng-container>
+                    </ng-template>
+                    <ng-template #elseFemale2>
+                        นาย/นาง/<u>นางสาว</u>
+                    </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                        {{user?.lastName}}</span> บัตรประชาชนเลขที่ <span
+                        class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
+                    <span>ที่อยู่</span><span
+                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
+                    <span>โทรศัพท์</span><span class="blank-dotted-bottom padding120px mw-200"></span>
+                    ขอยินยอมให้บริษัทฯ ที่ข้าพเจ้ามาสมัครงาน มีสิทธิ์ในการดำเนินงานใดๆ
+                    ในการตรวจสอบประวัติของข้าพเจ้ากับกองทะเบียนประวัติอาญชากร โดยไม่มีเงื่อนไขใดๆทั้งสิ้น
+                </p>
                 <p class="attachment-paragraph mt-2">หมายเหตุ กรุณากรอกรายละเอียดให้ครบทุกช่อง</p>
             </div>
         </div>
     </div>
-    <div class="mt-4">
+    <div class="mt-5 pt-5">
         <div class="d-flex">
             <div class="ml-auto">
-                <div class="d-flex align-items-end justify-content-center">
+                <div class="d-flex align-items-end">
                     <div>ลงชื่อ</div>
-                    <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
+                    <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
                     <div class="ml-2">ผู้ให้ความยินยอม</div>
                 </div>
-                <div class="d-flex align-items-end justify-content-center">
-                    <div>(</div>
+                <div class="d-flex align-items-end">
+                    <div class="ml-5">(</div>
                     <div>
-                        <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                        <span class="employee-data blank-dotted-bottom signature-bracket">{{user?.firstName}}
+                            {{user?.lastName}}</span>
                     </div>
                     <div>)</div>
                 </div>
@@ -2011,78 +2111,91 @@
     <div class="d-flex justify-content-center align-items-start report-top">
     </div>
     <table class="table table-bordered">
-        <tr>
-            <td class="text-center" colspan="4">
-                <span class="job-page-title">Job Description</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center" colspan="2">
-                <strong>บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด</strong>
-            </td>
-            <td colspan="2">
-                <span><strong>ชื่อผู้รับผิดชอบ</strong> : ผู้จัดการฝ่ายปฏิบัติการ</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <strong>ตำแหน่ง</strong>
-            </td>
-            <td>
-                <span>พนักงานรักษาความปลอดภัย (รปภ.)</span>
-            </td>
-            <td>
-                <span>ฝ่าย : ปฏิบัติการ</span>
-            </td>
-            <td>
-                <strong>ฝ่ายบุคคล</strong>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4">
-                <strong>หน้าที่และความรับผิดชอบ</strong>
-                <ol class="responsibility-list">
-                    <li>ดูแล ป้องกัน รักษา ทรัพย์สินของผู้ว่าจ้างให้รอดพ้นจากการโจรกรรม อัคคีภัย และเหตุร้ายอื่นๆ</li>
-                    <li>ดูแล รักษาความสงบเรียบร้อยภายในบริเวณที่รับผิดชอบตลอด 24 ชั่วโมง</li>
-                    <li>ดูแล การผ่านเข้า-ออก ของบุคคลและยานหาพนะ</li>
-                    <li>อำนวยความสะดวกการจราจร ทางเข้า-ออก และภายในบริเวณพื้นที่รับผิดชอบ</li>
-                    <li>เดินตรวจตราตามจุดต่างๆ ภายในบริเวณหน่วยงานที่รับผิดชอบให้ทั่วถึงอยู่เสมอ ทั้งในเวลา กลางคืน กลางวัน มิให้เกิดการโจรกรรม หรือผู้หนึ่งผู้ใดมาทำอันตรายแก่ทรัพย์สิน</li>
-                    <li>ดูแล ป้องกัน การเกิดเพลิงไหม้ โดยเจ้าหน้าที่รักษาความปลอดภัยทุกนายที่เข้าปฏิบัติหน้าที่รักษาความปลอดภัยจะต้องผ่านการฝึกอบรมในการดับเพลิงเบื้องต้น</li>
-                    <li>บันทึกและรายงานเหตุการณ์ประจำวันในการปฏิบัติหน้าที่ต่อผู้บังคับบัญชาเป็นประจำทุกวัน</li>
-                    <li>ปฏิบัติตามระเบียบ คำสั่งของผู้บังคับบัญชาและผู้ว่าจ้างอย่างเคร่งครัด</li>
-                    <li>งานอื่นๆ ตามที่ผู้บังคับบัญชามอบหมาย</li>
-                </ol>
-                <strong>คุณสมบัติ ปฏิบัติตน พระราชบัญญัติ ธุรกิจรักษาความปลอดภัย พ.ศ.๒๕๕๘</strong>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center"><strong>การศึกษา</strong></td>
-            <td class="text-center"><strong>สาขา</strong></td>
-            <td class="text-center" colspan="2"><strong>ทักษาที่ต้องมี</strong></td>
-        </tr>
-        <tr>
-            <td class="text-center">
-                <span>
-                    ม.3 - ปวส.<br />
-                    ปริญญาตรี
-                </span>
-            </td>
-            <td class="text-center">
-                <span>
-                    ทุกสาขา
-                </span>
-            </td>
-            <td class="text-center" colspan="2">
-                <span>
-                    มีทักษะในการปฏิบัติการรักษาความปลอดภัยอย่างดี<br />
-                    ประสบการณ์งานรักษาความปลอดภัยอย่างน้อย 1 ปีขึ้นไป
-                </span>
-            </td>
-        </tr>
+        <tbody>
+            <tr>
+                <td class="text-center" colspan="4">
+                    <span class="job-page-title">Job Description</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center" colspan="2">
+                    <strong>บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด</strong>
+                </td>
+                <td colspan="2">
+                    <span><strong>ชื่อผู้รับผิดชอบ</strong> : ผู้จัดการฝ่ายปฏิบัติการ</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>ตำแหน่ง</strong>
+                </td>
+                <td>
+                    <span>พนักงานรักษาความปลอดภัย (รปภ.)</span>
+                </td>
+                <td>
+                    <span>ฝ่าย : ปฏิบัติการ</span>
+                </td>
+                <td>
+                    <strong>ฝ่ายบุคคล</strong>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <strong>หน้าที่และความรับผิดชอบ</strong>
+                    <ol class="responsibility-list">
+                        <li>ดูแล ป้องกัน รักษา ทรัพย์สินของผู้ว่าจ้างให้รอดพ้นจากการโจรกรรม อัคคีภัย และเหตุร้ายอื่นๆ
+                        </li>
+                        <li>ดูแล รักษาความสงบเรียบร้อยภายในบริเวณที่รับผิดชอบตลอด 24 ชั่วโมง</li>
+                        <li>ดูแล การผ่านเข้า-ออก ของบุคคลและยานหาพนะ</li>
+                        <li>อำนวยความสะดวกการจราจร ทางเข้า-ออก และภายในบริเวณพื้นที่รับผิดชอบ</li>
+                        <li>เดินตรวจตราตามจุดต่างๆ ภายในบริเวณหน่วยงานที่รับผิดชอบให้ทั่วถึงอยู่เสมอ ทั้งในเวลา กลางคืน
+                            กลางวัน มิให้เกิดการโจรกรรม หรือผู้หนึ่งผู้ใดมาทำอันตรายแก่ทรัพย์สิน</li>
+                        <li>ดูแล ป้องกัน การเกิดเพลิงไหม้
+                            โดยพนักงานรักษาความปลอดภัยทุกนายที่เข้าปฏิบัติหน้าที่รักษาความปลอดภัยจะต้องผ่านการฝึกอบรมในการดับเพลิงเบื้องต้น
+                        </li>
+                        <li>บันทึกและรายงานเหตุการณ์ประจำวันในการปฏิบัติหน้าที่ต่อผู้บังคับบัญชาเป็นประจำทุกวัน</li>
+                        <li>ปฏิบัติตามระเบียบ คำสั่งของผู้บังคับบัญชาและผู้ว่าจ้างอย่างเคร่งครัด</li>
+                        <li>งานอื่นๆ ตามที่ผู้บังคับบัญชามอบหมาย</li>
+                    </ol>
+                    <div class="mt-4">
+                        <strong>คุณสมบัติ ปฏิบัติตน พระราชบัญญัติ ธุรกิจรักษาความปลอดภัย พ.ศ.๒๕๕๘</strong>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center"><strong>การศึกษา</strong></td>
+                <td class="text-center"><strong>สาขา</strong></td>
+                <td class="text-center" colspan="2"><strong>ทักษาที่ต้องมี</strong></td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <span>
+                        ม.3 - ปวส.<br />
+                        ปริญญาตรี
+                    </span>
+                </td>
+                <td class="text-center">
+                    <span>
+                        ทุกสาขา
+                    </span>
+                </td>
+                <td class="text-center" colspan="2">
+                    <span>
+                        มีทักษะในการปฏิบัติการรักษาความปลอดภัยอย่างดี<br />
+                        ประสบการณ์งานรักษาความปลอดภัยอย่างน้อย 1 ปีขึ้นไป
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <br/><br/><br/><br/><br/><br/><br/>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </div>
 <div class="container-fluid page-break">
-    <div class="d-flex justify-content-center align-items-start report-top">
+    <div class="d-flex justify-content-center align-items-start report-top-last">
         <div class="report-logo">
             <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
         </div>
@@ -2094,22 +2207,24 @@
             </div>
         </div>
     </div>
-    <div class="d-flex flex-column mt-3 rule-content">
+    <div class="d-flex flex-column mt-4 rule-content">
         <div>
-            <p class="rule-paragraph">เมื่อเป็นพนักงานบริษัทฯ และได้ปฏิบัติหน้าที่แล้ว ถ้า คนใดทำผิดกฎระเบียบข้อบังคับกับ บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด
-                ตั้งอยู่ที่ 211/41 ถนนสุดบรรทัด ตำบลปากเพรียว อำเภอเมืองสระบุรี จังหวัดสระบุรี 18000 ซึ่งต่อไปนี้ให้เรียกว่า <strong>“ผู้ว่าจ้าง“</strong> ซึ่ง รปภ. ทุกคน
+            <p class="rule-paragraph">เมื่อเป็นพนักงานบริษัทฯ และได้ปฏิบัติหน้าที่แล้ว ถ้า
+                คนใดทำผิดกฎระเบียบข้อบังคับกับ บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด
+                ตั้งอยู่ที่ 211/41 ถนนสุดบรรทัด ตำบลปากเพรียว อำเภอเมืองสระบุรี จังหวัดสระบุรี 18000
+                ซึ่งต่อไปนี้ให้เรียกว่า <strong>“ผู้ว่าจ้าง“</strong> ซึ่ง รปภ. ทุกคน
                 จะต้องยินยอมทำตามเงื่อนไขและกฎระเบียบข้อบังคับ ดังต่อไปนี้</p>
         </div>
         <div>
             <ol>
                 <li>
-                    หารกระทำความผิดตามระเบียบข้อบังคับของทางบริษัทฯ ทั้งหมด 48 ข้อ เช่น
+                    หากกระทำความผิดตามระเบียบข้อบังคับของทางบริษัทฯ ทั้งหมด 48 ข้อ เช่น
                     <div class="d-flex">
                         <div>
                             <ol class="rule-item">
                                 <li>ห้ามยืนพิงหรือท้าวสิ่งใด ต้องยืนอย่างสง่าผ่าเผยองอาจอยู่ตลอดเวลา</li>
                                 <li>ห้ามอ่านหนังสือ หรือขีดเส้นใดๆ อันไม่เกี่ยวกับการปฏิบัติหน้าที่</li>
-                                <li>ห้ามเข้าไปในหน่วยงานที่ประจำอยู่ เมื่อพน้หน้าที่หรือวันหยุด</li>
+                                <li>ห้ามเข้าไปในหน่วยงานที่ประจำอยู่ เมื่อพ้นหน้าที่หรือวันหยุด</li>
                                 <li>ห้ามดื่ม หรือกินขนมหรือกินอาหารขณะปฏิบัติหน้าที่</li>
                                 <li>ห้ามเหม่อมองดูสิ่งใดจนเพลิดเพลินหรือนานเกินควร</li>
                                 <li>ห้ามกระทำการทุจริตหรือกระทำการส่อไปในทางทุจริตต่อหน้าที่</li>
@@ -2117,7 +2232,7 @@
                                 <li>ห้ามดื่มสุราของมึนเมา หรือยาเสพติดทุกชนิดอย่างเด็ดขาด</li>
                                 <li>ห้ามใช้กริยาวาจาหยาบคาย หรือส่งเสียงเอะอะในลักษณะที่ไม่เหมาะสม</li>
                                 <li>ห้ามนินทาว่าร้ายหรือใส่ความผู้บังคับบัญชาในทางเสียหาย</li>
-                                <li>ห้ามนำทรัพย์สินของทางบริษัทฯ หรือหน่วยงานไปใข้เป็นการส่วนตัว</li>
+                                <li>ห้ามนำทรัพย์สินของทางบริษัทฯ หรือหน่วยงานไปใช้เป็นการส่วนตัว</li>
                                 <li>ห้ามสนิทสนมกับพนักงานของผู้ว่าจ้างเป็นการส่วนตัวเกินความจำเป็น</li>
                                 <li>ห้ามแสดงกิริยาท่าทางส่อไปในทางชู้สาวกับผู้ที่มาติดต่อในขณะปฏิบัติหน้าที่</li>
                                 <li>ห้ามแสดงอาการเกียจคร้าน เช่น บิดขี้เกียจ หาว หรือแสดงอาการเหนื่อยล้า</li>
@@ -2168,18 +2283,27 @@
                 <li>
                     หากกระทำผิดระเบียบการลาซึ่งบริษัทฯ กำหนดไว้ 3 ลักษณะ คือ
                     <ol>
-                        <li><u>การลากิจ</u> ต้องเขียนใบลาด้วยตัวเองที่บริษัทฯ ไว้ล่วงหน้า 3 วัน เมื่อได้รับอุนญาตจึงสามารถหยุดงานได้ เมื่อครบกำหนดการลาให้มารายงานตัวที่บริษัทฯ ทราบว่าพร้อมที่จะปฏิบัติหน้าที่ตามเดิม</li>
-                        <li><u>การลาป่วย</u> ต้องลาล่วงหน้าก่อน 3 ชั่วโมง เมื่อหายป่วยแล้วแล้วให้เข้ามาที่บริษัทฯ เพื่อเขียนใบลาย้อนหลัง พร้อมนำใบรับรองแพทย์มาแสดงด้วย</li>
-                        <li><u>การลาออก</u> ต้องลาล่วงหน้าก่อน 30 วัน หากพนักงานรักษาความปลอดภัยปฏิบัติไม่ถูกต้องตามระเบียบการลาของทางบริษัทฯ จะต้องพิจารณาโทษผิดตามระเบียบการลานั้น</li>
+                        <li><u>การลากิจ</u> ต้องเขียนใบลาด้วยตัวเองที่บริษัทฯ ไว้ล่วงหน้า 3 วัน
+                            เมื่อได้รับอุนญาตจึงสามารถหยุดงานได้ เมื่อครบกำหนดการลาให้มารายงานตัวที่บริษัทฯ
+                            ทราบว่าพร้อมที่จะปฏิบัติหน้าที่ตามเดิม</li>
+                        <li><u>การลาป่วย</u> ต้องลาล่วงหน้าก่อน 3 ชั่วโมง เมื่อหายป่วยแล้วแล้วให้เข้ามาที่บริษัทฯ
+                            เพื่อเขียนใบลาย้อนหลัง พร้อมนำใบรับรองแพทย์มาแสดงด้วย</li>
+                        <li><u>การลาออก</u> ต้องลาล่วงหน้าก่อน 30 วัน
+                            หากพนักงานรักษาความปลอดภัยปฏิบัติไม่ถูกต้องตามระเบียบการลาของทางบริษัทฯ
+                            จะต้องพิจารณาโทษผิดตามระเบียบการลานั้น</li>
                     </ol>
                 </li>
-                <li>หากขาดงานโดยไม่ลาหรือละทิ้งหน้าที่ในขณะปฏิบัติหน้าที่ ซึ่งทำให้เสื่อมเสียและเกิดความเสียหายให้กับบริษัทฯ ยินยอมให้ตัดค่าแรง</li>
-                <li>ตกลงยินยอมรับจ้างทำงานวันละ  12 ชั่วโมงทุกวัน โดยไม่มีวันหยุด  และจะไม่เรียกร้องค่าตอบแทนใดๆ ทั้งสิ้น</li>
+                <li>หากขาดงานโดยไม่ลาหรือละทิ้งหน้าที่ในขณะปฏิบัติหน้าที่
+                    ซึ่งทำให้เสื่อมเสียและเกิดความเสียหายให้กับบริษัทฯ ยินยอมให้ตัดค่าแรง</li>
+                <li>ตกลงยินยอมรับจ้างทำงานวันละ 12 ชั่วโมงทุกวัน โดยไม่มีวันหยุด และจะไม่เรียกร้องค่าตอบแทนใดๆ ทั้งสิ้น
+                </li>
             </ol>
-            <p class="rule-paragraph">หาก รปภ. คนใดกระทำผิดกฎระเบียบข้อบังคับข้อใดข้อหนึ่งที่ทางบริษัทฯ กำหนดไว้ ซึ่งเป็นการทำให้เกิดความเสื่อมเสียหรือความเสียหายต่อบริษัทฯ รปภ. ที่กระทำผิด ตกลงยินยอมชดใช้ค่าเสียหายครั้งละไม่ต่ำกว่า 1,000 บาทขึ้นไป ไม่ว่ากรณีใดๆ ทั้งสิ้น</p>
+            <p class="rule-paragraph">หาก พนักงานรักษาความปลอดภัย คนใดกระทำผิดกฎระเบียบข้อบังคับข้อใดข้อหนึ่งที่ทางบริษัทฯ กำหนดไว้
+                ซึ่งเป็นการทำให้เกิดความเสื่อมเสียหรือความเสียหายต่อบริษัทฯ พนักงานรักษาความปลอดภัย ที่กระทำผิด
+                ตกลงยินยอมชดใช้ค่าเสียหายครั้งละไม่ต่ำกว่า 1,000 บาทขึ้นไป ไม่ว่ากรณีใดๆ ทั้งสิ้น</p>
         </div>
     </div>
-    <div class="mt-4">
+    <div>
         <div class="d-flex">
             <div class="ml-auto">
                 <div class="d-flex align-items-end justify-content-center">
