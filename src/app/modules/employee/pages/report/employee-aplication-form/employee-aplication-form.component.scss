@@ -488,6 +488,11 @@ ul.dashed>li:before {
     display: inline-block;
 }
 
+.pdpa-signature-position {
+    width: 150px;
+    display: inline-block;
+}
+
 .pdpa-signature-container {
     position: relative;
     height: 80px;
@@ -498,5 +503,4 @@ ul.dashed>li:before {
     top: 50px;
     left: 65%;
     transform: translate(-45%, 0);
-
 }
