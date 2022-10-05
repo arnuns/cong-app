@@ -58,7 +58,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
         this.spinner.hideLoadingSpinner(0);
       }, () => {
         if (this.electronService.isElectronApp) {
-          setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 1000);
+          setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf'), 1500);
         }
       });
     });
