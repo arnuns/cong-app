@@ -479,7 +479,24 @@ ul.dashed>li:before {
 
 .report-header-pdpa {
     position: absolute;
-    top: 0;
     left: 65%;
     transform: translate(-45%, 0);
+}
+
+.pdpa-head-label {
+    width: 58px;
+    display: inline-block;
+}
+
+.pdpa-signature-container {
+    position: relative;
+    height: 80px;
+}
+
+.pdpa-signature {
+    position: absolute;
+    top: 50px;
+    left: 65%;
+    transform: translate(-45%, 0);
+
 }
