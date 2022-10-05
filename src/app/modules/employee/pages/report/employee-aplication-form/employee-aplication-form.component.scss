@@ -29,7 +29,7 @@
 }
 
 .container-fluid {
-    padding: 25px 40px;
+    padding: 25px 25px 25px 70px;
     position: relative;
 }
 
@@ -66,6 +66,10 @@ ol li {
     border-bottom: 2px dotted #000000;
 }
 
+.mw-50 {
+    min-width: 50px;
+}
+
 .mw-80 {
     min-width: 80px;
 }
@@ -96,6 +100,10 @@ ol li {
 
 .mw-400 {
     min-width: 400px;
+}
+
+.mw-420 {
+    min-width: 420px;
 }
 
 .mw-600 {
@@ -457,4 +465,16 @@ ul.dashed>li:before {
 .well-known-list li:before {
     content: "รับทราบ " counters(item, "") ".";
     width: 105px;
+}
+
+.report-header-pdpa-container {
+    position: relative;
+    height: 80px;
+}
+
+.report-header-pdpa {
+    position: absolute;
+    top: 0;
+    left: 65%;
+    transform: translate(-45%, 0);
 }

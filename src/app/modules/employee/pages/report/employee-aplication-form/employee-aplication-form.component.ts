@@ -31,6 +31,9 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     Email: environment.companyEmail,
     Website: environment.companyWebsite
   };
+  thaiMonth = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม',
+    'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
+    'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -99,6 +102,20 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     return result;
   }
 
+  checkIsLongName(user: User): boolean {
+    let stringLength = 0;
+    if (user) {
+      stringLength += user.firstName.length;
+      stringLength += user.lastName.length;
+    }
+    return stringLength > 24;
+  }
+
+  signatureName(user: User): string {
+    if (!user) return '';
+    return `${user.title}${user.firstName} ${user.lastName}`;
+  }
+
   getJobHistory(sequence: number): JobHistory {
     if (!this.user || this.user.jobHistories.length <= 0) return null;
     return this.user.jobHistories.filter(j => j.seq === sequence)[0];
@@ -112,6 +129,11 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     if (!date) { return '' };
     date = new Date(date);
     return date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 543}` : '';
+  }
+
+  convertToDateString(d: Date): string {
+    const date = new Date(d);
+    return `${date.getDate()} ${this.thaiMonth[date.getMonth()]} ${date.getFullYear() + 543}`;
   }
 
   convertToAge(birthdate: Date): number {
