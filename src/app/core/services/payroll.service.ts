@@ -47,6 +47,10 @@ export class PayrollService extends BaseService {
         return this.http.get<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/all`);
     }
 
+    getSitePayrollCycleSalaryPayslip(payrollCycleId: number, siteId: number) {
+        return this.http.get<Salary[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/all?isPayslip=true`);
+    }
+
     getSummaryPayrollSalaryBySite(payrollCycleId: number) {
         return this.http.get<SummarySalaryBySite[]>(`${this.serviceUrl}/payroll/${payrollCycleId}/summary/bysite`);
     }

@@ -524,6 +524,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       is_paid: salary.isPaid
     });
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
+      console.log(siteSalaries);
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
         siteSalaries.forEach(siteSalary => {
@@ -531,7 +532,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
             id: siteSalary.siteId,
             site_code: siteSalary.siteCode,
             site_name: siteSalary.siteName,
-            manday: siteSalary.manday
+            manday: siteSalary.manday,
+            is_default: siteSalary.isDefault
           }));
         });
         this.ngxSmartModalService.getModal('salaryModal').open();
@@ -706,6 +708,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       hiringRatePerDay: hiringRatePerDay,
       siteManday: 0,
       manday: 0,
+      otherSiteManday: 0,
       totalWage: 0,
       positionValue: getValue('position_value'),
       pointValue: getValue('point_value'),
@@ -755,7 +758,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         siteCode: c.get('site_code').value,
         siteName: c.get('site_name').value,
         manday: c.get('manday').value,
-        isDefault: false,
+        isDefault: c.get('is_default').value,
         createOn: null,
         createBy: null,
         updateOn: null,
@@ -818,7 +821,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
           id: [site.id, [Validators.required]],
           site_code: [site.code],
           site_name: [site.name],
-          manday: [0, [Validators.required, Validators.min(1)]]
+          manday: [0, [Validators.required, Validators.min(1)]],
+          is_default: [false]
         }));
       });
     } else {
@@ -829,7 +833,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         id: [this.site.id, [Validators.required]],
         site_code: [this.site.code],
         site_name: [this.site.name],
-        manday: [0, [Validators.required, Validators.min(1)]]
+        manday: [0, [Validators.required, Validators.min(1)]],
+        is_default: [false]
       }));
     }
   }
@@ -946,8 +951,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     let result = 0;
     let resultWage = 0;
     let resultManday = 0;
-    const sumSiteManday = this.siteForms.controls.length > 0
-      ? this.siteForms.controls.filter(c => c.get('id').value === this.site.id).map(s => s.get('manday').value)
+    const sumSiteManday = this.siteForms.controls.filter(c => Boolean(c.get('is_default').value)).length > 0
+      ? this.siteForms.controls.filter(c => Boolean(c.get('is_default').value)).map(s => s.get('manday').value)
         .reduce((prevVal, val) => prevVal + val)
       : 0;
     if (!this.site) {return 0;}

@@ -54,7 +54,7 @@ export class PayslipComponent implements OnDestroy, OnInit {
       payrollCycle.toPromise().then((result: PayrollCycle) => {
         this.payrollCycle = result;
       }).then(_ => {
-        return this.payrollService.getSitePayrollCycleSalary(payrollCycleId, siteId).toPromise();
+        return this.payrollService.getSitePayrollCycleSalaryPayslip(payrollCycleId, siteId).toPromise();
       }).then(salaries => {
         this.userSalarys = salaries.filter(s => s.siteId === siteId);
         this.spinner.hideLoadingSpinner();

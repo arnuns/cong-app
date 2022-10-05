@@ -35,6 +35,7 @@ export interface Salary {
     hiringRatePerDay: number;
     siteManday: number;
     manday: number;
+    otherSiteManday: number;
     totalWage: number;
     positionValue: number;
     pointValue: number;
