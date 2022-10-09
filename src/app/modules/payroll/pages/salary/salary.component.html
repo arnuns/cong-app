@@ -505,8 +505,7 @@
                     <label for="hiring_rate_per_day" class="label">
                       อัตราวันละ
                     </label>
-                    <input type="number" class="form-control" [(ngModel)]="hiringRatePerDay"
-                      [ngModelOptions]="{standalone: true}" (ngModelChange)="hiringRateModelChanged($event)">
+                    <input type="number" class="form-control" formControlName="hiringRatePerDay" (ngModelChange)="hiringRateModelChanged($event, i)">
                   </div>
                 </div>
               </div>

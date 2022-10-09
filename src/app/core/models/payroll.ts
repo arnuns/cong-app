@@ -36,6 +36,7 @@ export interface Salary {
     siteManday: number;
     manday: number;
     otherSiteManday: number;
+    otherAdvance: number;
     totalWage: number;
     positionValue: number;
     pointValue: number;
@@ -91,6 +92,7 @@ export interface SiteSalary {
     siteCode: string;
     siteName: string;
     manday: number;
+    hiringRatePerDay: number;
     isDefault: boolean;
     createOn: Date;
     createBy: string;
