@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   apiUrl: 'https://api.congapps.com',
+  // apiUrl: 'http://localhost:5000',
   apiVersion: '2.0',
   basePath: '../assets',
   companyFullName: 'บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด',
@@ -13,6 +14,6 @@ export const environment = {
   companyEmail: 'info@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '06/10/2022',
+  releaseDate: '10/10/2022',
   storageBucketUrl: 'https://storage.googleapis.com/cong-app.appspot.com'
 };
