@@ -38,7 +38,7 @@
                     </div>
                     <div class="ml-2">หน่วยงาน</div>
                     <div class="ml-2 blank-dotted-bottom text-center mw-300">
-                        <span class="employee-data">{{ user?.site?.fullName }}</span>
+                        <span class="employee-data">{{ user?.site?.name }}</span>
                     </div>
                 </div>
             </div>
@@ -309,7 +309,7 @@
                 <div class="d-flex flex-wrap align-items-end text-input">
                     <div>ประจำหน่วยงาน</div>
                     <div class="ml-2 blank-dotted-bottom text-center mw-600">
-                        <span class="employee-data">{{ user?.site?.fullName }}</span>
+                        <span class="employee-data">{{ user?.site?.name }}</span>
                     </div>
                     <div class="ml-2">ฝ่ายปฏิบัติการ</div>
                 </div>
@@ -542,7 +542,7 @@
                     ประจำหน่วยงาน
                 </div>
                 <div class="text-input dotted-bottom">
-                    <span class="employee-data">{{ user?.site?.fullName }}</span>
+                    <span class="employee-data">{{ user?.site?.name }}</span>
                 </div>
                 <div class="label mt-2">
                     ผู้แนะนำ
@@ -2208,8 +2208,10 @@
                                             <div class="ml-2"><span class="span-label">ผู้ดำรงตำแหน่ง</span></div>
                                         </div>
                                         <div class="d-flex align-items-end my-3">
-                                            <div class="ml-5">(</div>
-                                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
+                                            <div [class.ml-3]="checkIsLongName(user)" [class.ml-5]="!checkIsLongName(user)">(</div>
+                                            <div>
+                                                <span class="employee-data blank-dotted-bottom signature-bracket">{{signatureName(user)}}</span>
+                                            </div>
                                             <div>)</div>
                                         </div>
                                         <div class="d-flex align-items-end my-3">
