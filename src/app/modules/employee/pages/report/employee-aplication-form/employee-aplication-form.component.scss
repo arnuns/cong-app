@@ -62,6 +62,10 @@ ol li {
     font-size: 18px;
 }
 
+.text-input-18, .text-input-18 * {
+    font-size: 18px;
+}
+
 .dotted-bottom {
     border-bottom: 2px dotted #000000;
 }
@@ -123,6 +127,11 @@ ol li {
 
 .blank-dotted-bottom.inline {
     display: inline-block;
+}
+
+.blank-dotted-bottom.inline-h0 {
+    display: inline-block;
+    height: 0;
 }
 
 .number-dotted-bottom {
@@ -503,4 +512,138 @@ ul.dashed>li:before {
     top: 50px;
     left: 65%;
     transform: translate(-50%, 0);
+}
+
+.col-subject-lesson {
+    width: 190px;
+}
+
+.col-progress {
+    width: 85px;
+}
+
+.checkbox-utf {
+    font-size: 32px;
+}
+
+.equipment-table * {
+    font-size: 18px;
+}
+
+.equipment-table tr th, .equipment-table tr td {
+    padding: 3px 6px;
+}
+
+.equipment-table tr td {
+    font-size: 16px;
+}
+
+.col-no-center {
+    text-align: center;
+    width: 72px;
+}
+
+.col-description {
+    width: 280px;
+}
+
+.col-number-right {
+    text-align: right;
+    width: 80px
+}
+
+.f18px {
+    font-size: 18px;
+}
+
+.f32px {
+    font-size: 32px !important;
+}
+.f26px {
+    font-size: 26px !important;
+}
+
+.sso-table {
+    width: 100%;
+}
+
+.sso-table tr td {
+    border: 2px solid #000000;
+    padding: 0 5px;
+}
+
+.mt-10 {
+    margin-top: 10px;
+}
+
+.sm-bold {
+    font-size: 14px !important;
+    font-weight: bold;
+}
+
+.sm-text, .sm-text * {
+    font-size: 16px;
+}
+
+.sso-table tr td * {
+    font-size: 16px;
+}
+
+.sso-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.sso-paragraph {
+    text-indent: 50px;
+    margin-bottom: 0;
+    text-align: justify;
+    line-height: 1.5em;
+}
+
+.sso-logo {
+    height: 100px;
+}
+
+.sso-top {
+    height: 100px;
+}
+
+.blank-dotted-bottom-sso {
+    border-bottom: 2px dotted #000000;
+    margin: 2px 0;
+    height: 24px;
+}
+
+.blank-dotted-bottom-sso.inline {
+    display: inline-block;
+}
+
+.blank-dotted-bottom-sso.inline-h0 {
+    display: inline-block;
+    height: 0;
+}
+
+.checkboxtick {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    background-size: contain;
+    background-image: url(/assets/img/checkboxtick.png);
+}
+
+.image-container-1-inch {
+    width: 300px;
+    height: 450px;
+}
+
+.employee-image-1inch {
+    height: 180px;
+    width: 150px;
+    border: 1px solid #000000;
+}
+
+.employee-image-1inch>img {
+    width: 100%;
+    height: 100%;
 }
