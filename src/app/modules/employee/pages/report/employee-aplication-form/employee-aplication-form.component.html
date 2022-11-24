@@ -2546,7 +2546,7 @@
                         <div><span>วันที่ผู้ประกันตนเข้าทำงาน</span></div>
                         <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">{{ (!user?.startDate) ? '-' : toThaiDateString(user?.startDate) }}</span></div>
                         <div class="ml-2"><span>ประเภทการจ้าง</span></div>
-                        <div class="ml-2"><span class="checkboxtick"></span></div>
+                        <div class="ml-2"><img [src]="baseImagePath + '/img/checkboxtick.png'" class="checkboxtick" alt="checkbox tick"></div>
                         <div class="ml-2"><span>รายวัน</span></div>
                         <div class="ml-2"><span >&#9634;</span></div>
                         <div class="ml-2"><span>รายเดือน</span></div>
@@ -2584,11 +2584,11 @@
                         <div class="ml-2">
                             <div class="d-flex align-items-end">
                                 <div><span>นาย</span></div>
-                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นาย';else elseBlankCheckbox"><span class="checkboxtick"></span></ng-container></div>
+                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นาย';else elseBlankCheckbox"><img [src]="baseImagePath + '/img/checkboxtick.png'" class="checkboxtick" alt="checkbox tick"></ng-container></div>
                                 <div class="ml-2"><span>นางสาว</span></div>
-                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นางสาว';else elseBlankCheckbox"><span class="checkboxtick"></span></ng-container></div>
+                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นางสาว';else elseBlankCheckbox"><img [src]="baseImagePath + '/img/checkboxtick.png'" class="checkboxtick" alt="checkbox tick"></ng-container></div>
                                 <div class="ml-2"><span>นาง</span></div>
-                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นาง';else elseBlankCheckbox"><span class="checkboxtick"></span></ng-container></div>
+                                <div class="ml-2"><ng-container *ngIf="user?.title === 'นาง';else elseBlankCheckbox"><img [src]="baseImagePath + '/img/checkboxtick.png'" class="checkboxtick" alt="checkbox tick"></ng-container></div>
                                 <div class="ml-2"><span>ชื่อ</span></div>
                                 <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">{{user?.firstName}}</span></div>
                                 <div class="ml-2"><span>ชื่อสกุล</span></div>
