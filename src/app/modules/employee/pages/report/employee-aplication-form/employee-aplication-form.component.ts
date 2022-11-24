@@ -35,6 +35,31 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
     'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
+  equipments = [
+    {sort_no_left: 1, description_left: 'เสื้อเชิ้ตแขนยาว ไซส์ ..................', qty_left: null, price_left: 550, sort_no_right: 23, description_right: 'หมวกแก็ป Security', qty_right: null, price_right: 200},
+    {sort_no_left: 2, description_left: 'เสื้อยืดคอกลม สีขาว ไซส์ ..................', qty_left: null, price_left: 130, sort_no_right: 24, description_right: 'รองเท้า Safety ไซส์ ..................', qty_right: null, price_right: 500},
+    {sort_no_left: 3, description_left: 'เสื้อยืดคอกลม สีดำ ไซส์ ..................', qty_left: null, price_left: 130, sort_no_right: 25, description_right: 'รองเท้าหนังมัน ไซส์ ..................', qty_right: null, price_right: 700},
+    {sort_no_left: 4, description_left: 'เสื้อเชิ้ตแขนสั้น ไซส์ ..................', qty_left: null, price_left: 500, sort_no_right: 26, description_right: 'รองเท้าบูธ ไซส์ ..................', qty_right: null, price_right: 200},
+    {sort_no_left: 5, description_left: 'เสื้อแจ๊คแก็ต ไซส์ ..................', qty_left: null, price_left: 800, sort_no_right: 27, description_right: 'เสื้อจราจร สีดำ', qty_right: null, price_right: 300},
+    {sort_no_left: 6, description_left: 'เสื้อสูท HP / BOT ไซส์ ..................', qty_left: null, price_left: 800, sort_no_right: 28, description_right: 'เสื้อจราจร สีส้ม สกีนGM', qty_right: null, price_right: 480},
+    {sort_no_left: 7, description_left: 'เสื้อโปโล ไซส์​ ..................', qty_left: null, price_left: 380, sort_no_right: 29, description_right: 'วิทยุ I-COM, V-TECH', qty_right: null, price_right: 1900},
+    {sort_no_left: 8, description_left: 'เสื้อซาฟารี ไซส์ ..................', qty_left: null, price_left: 550, sort_no_right: 30, description_right: 'วิทยุ TCOM TC-092', qty_right: null, price_right: 1800},
+    {sort_no_left: 9, description_left: 'เสื้อราชปะแตน ไซส์ ..................', qty_left: null, price_left: 650, sort_no_right: 31, description_right: 'วิทยุ BENISON', qty_right: null, price_right: 1800},
+    {sort_no_left: 10, description_left: 'หมวกหม้อตาล ขาว ไซส์ ..................', qty_left: null, price_left: 350, sort_no_right: 32, description_right: 'แบตเตอร์รี่ รุ่น ..................', qty_right: null, price_right: 500},
+    {sort_no_left: 11, description_left: 'หมวกหม้อตาล กรม ไซส์ ..................', qty_left: null, price_left: 350, sort_no_right: 33, description_right: 'กุญแจมือ', qty_right: null, price_right: 200},
+    {sort_no_left: 12, description_left: 'กางเกงขายาว สีดำ ไซส์ ..................', qty_left: null, price_left: 380, sort_no_right: 34, description_right: 'ไฟฉายเล็ก แบบชาร์จ', qty_right: null, price_right: 300},
+    {sort_no_left: 13, description_left: 'เข็มขัดหนัง ไซส์ ..................', qty_left: null, price_left: 180, sort_no_right: 35, description_right: 'ไฟฉาย สปอตไลท์', qty_right: null, price_right: 250},
+    {sort_no_left: 14, description_left: 'เข็มขัดสนาม ..................', qty_left: null, price_left: 300, sort_no_right: 36, description_right: 'กระบองไฟ แบบชาร์จ', qty_right: null, price_right: 500},
+    {sort_no_left: 15, description_left: 'เนคไท', qty_left: null, price_left: 200, sort_no_right: 37, description_right: 'กระบองเหล็ก (ดิ้ว)', qty_right: null, price_right: 250},
+    {sort_no_left: 16, description_left: 'อินธนู   1   2   3   ขีดสั้น', qty_left: null, price_left: 165, sort_no_right: 38, description_right: 'ป้ายชื่อ', qty_right: null, price_right: 200},
+    {sort_no_left: 17, description_left: 'อินธนู   1   2   3   ขีดยาว', qty_left: null, price_left: 165, sort_no_right: 39, description_right: 'ป้าย security', qty_right: null, price_right: 200},
+    {sort_no_left: 18, description_left: 'เสื้อกันฝนแบบแยกชิ้น', qty_left: null, price_left: 500, sort_no_right: 40, description_right: 'ป้าย superviser', qty_right: null, price_right: 200},
+    {sort_no_left: 19, description_left: 'เสื้อกันฝนแบบโค้ช', qty_left: null, price_left: 450, sort_no_right: 41, description_right: 'บัตรพนักงาน', qty_right: null, price_right: 0},
+    {sort_no_left: 20, description_left: 'นกหวีดพร้อมสาย', qty_left: null, price_left: 65, sort_no_right: 42, description_right: 'อื่นๆ', qty_right: null, price_right: 0},
+    {sort_no_left: 21, description_left: 'ถุงมือ', qty_left: null, price_left: 50, sort_no_right: 43, description_right: '', qty_right: null, price_right: 0},
+    {sort_no_left: 22, description_left: 'อาร์มคู่ละ (โลโก้)', qty_left: null, price_left: 50, sort_no_right: 44, description_right: '', qty_right: null, price_right: 0},
+  ];
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
@@ -125,6 +150,11 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     return text || '&nbsp;';
   }
 
+  thaiYearString(): string {
+    const date = new Date();
+    return `${date.getFullYear() + 543}`;
+   }
+
   toThaiDateString(date: Date): string {
     if (!date) { return '' };
     date = new Date(date);
@@ -148,6 +178,21 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
       age--;
     }
     return age;
+  }
+
+  toDayOfMonth(date: Date): number {
+    date = new Date(date);
+    return date.getDate();
+  }
+
+  toThaiMonth(date: Date): string {
+    date = new Date(date);
+    return this.thaiMonth[date.getMonth()];
+  }
+
+  toThaiYear(date: Date): string {
+    date = new Date(date);
+    return `${date.getFullYear() + 543}`;
   }
 
 }
