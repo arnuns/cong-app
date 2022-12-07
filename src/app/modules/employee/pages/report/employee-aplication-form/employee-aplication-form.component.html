@@ -1,10 +1,13 @@
 <div class="container-fluid page-break">
-    <div class="d-flex justify-content-center align-items-start report-top">
-        <div class="report-logo-start">
+    <div class="d-flex justify-content-between align-items-start report-top">
+        <div>
             <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
         </div>
         <div class="align-self-end">
             <span class="report-title">แบบประเมินการสัมภาษณ์ผู้สมัครงาน</span>
+        </div>
+        <div>
+            <span class="employee-data">รหัสพนักงาน {{ user?.company.name.toUpperCase() + user?.empNo }}</span>
         </div>
     </div>
     <div class="mt-2 p-3">
@@ -2538,9 +2541,9 @@
                     </div>
                     <div class="d-flex align-items-end">
                         <div><span>เลขทะเบียนบุคคล/นิติบุคคล</span></div>
-                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">{{user?.idCardNumber}}</span></div>
+                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">3330700398050</span></div>
                         <div class="ml-2"><span>ลำดับที่สาขา</span></div>
-                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-150">100001</span></div>
+                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-150">100003</span></div>
                     </div>
                     <div class="d-flex align-items-end">
                         <div><span>วันที่ผู้ประกันตนเข้าทำงาน</span></div>
@@ -2702,7 +2705,7 @@
                                         </div>
                                         <div class="d-flex align-items-end">
                                             <div><span class="span-label">ตำแหน่ง</span></div>
-                                            <div class="blank-dotted-bottom text-input ml-2 mw-200 text-center employee-data">เจ้าหน้าที่ทรัพยากรบุคคล</div>
+                                            <div class="blank-dotted-bottom text-input ml-2 mw-200 text-center employee-data">เจ้าหน้าที่ฝ่ายทรัพยากรบุคคล</div>
                                         </div>
                                         <div class="d-flex align-items-end mb-1">
                                             <div><span class="span-label">วันที่</span></div>
@@ -3495,12 +3498,9 @@
                         กรุ๊ป 999</span>
                 </p>
                 <p class="attachment-paragraph lh mt-3">&#9634; ข้าพเจ้า บริษัทรักษาความปลอดภัย <span
-                        class="employee-data blank-dotted-bottom px100px">บจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999</span>
-                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
-                        {{user?.lastName}}</span> <span>เป็นกรรมการผู้มีอำนาจ อยู่บ้านเลขที่</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
-                    <span>โทรศัพท์</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.phoneNo}}</span><br />
+                        class="employee-data blank-dotted-bottom px100px"></span>
+                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom px100px"></span> <span>เป็นกรรมการผู้มีอำนาจ อยู่บ้านเลขที่</span><span class="employee-data blank-dotted-bottom px100px"></span>
+                    <span>โทรศัพท์</span><span class="employee-data blank-dotted-bottom px100px"></span><br />
                     <span>โดยหนังสือฉบับนี้</span>
                 </p>
                 <p class="attachment-paragraph lh mt-3">
@@ -3588,14 +3588,11 @@
             <div>เรียน หัวหน้าพิสูจน์หลักฐาน 1 จังหวัดปทุมธานี</div>
             <div class="mt-4">
 
-                <p class="attachment-paragraph lh mt-3">ข้าพเจ้า บริษัทรักษาความปลอดภัย <span
-                        class="employee-data blank-dotted-bottom px100px">บจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999</span>
-                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
-                        {{user?.lastName}}</span> <span>ที่อยู่</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
-                    <span>โทรศัพท์</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.phoneNo}}</span><br />
-                    <span>โดยหนังสือฉบับนี้</span>
+                <p class="attachment-paragraph lh mt-3">ด้วยบริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด ประกอบธุรกิจเกี่ยวกับรักษาความปลอดภัย มีความประสงค์ที่จะว่าจ้าง
+                     <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                        {{user?.lastName}}</span> <span>เลขบัตรประจำตัวประชาชน</span><span
+                        class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
+                    <span>เข้าทำงานในบริษัทฯ ตำแหน่งพนักงานรักษาความปลอดภัย จึงขอความอนุเคราะห์ท่านให้เจ้าหน้าที่ตรวจสอบประวัติอาชญากรโดยการพิมพ์ลายนิ้วมือแก่บุคคลดังกล่าว</span>
                 </p>
                 <p class="attachment-paragraph lh mt-3">
                     และโปรดส่งผลการตรวจสอบประวัติอาชญากรโดยการพิมพ์ลายนิ้วมือนี้ มายังบริษัทฯ ตามที่อยู่บริษัท
@@ -3625,10 +3622,9 @@
                                 ขอแสดงความนับถือ
                             </div>
                         </div>
-                        <div class="d-flex align-items-end justify-content-center mt-5 mb-3">
+                        <div class="d-flex align-items-end mt-5 mb-3">
                             <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div class="ml-2"><span class="span-label">เจ้าหน้าที่ทรัพยากรบุคคล</span></div>
+                            <div class="blank-dotted-bottom text-input ml-2 mw-300"></div>
                         </div>
                         <div class="d-flex align-items-end my-3">
                             <div class="ml-5">(</div>
@@ -3637,6 +3633,9 @@
                                     อำพันธ์พึ่ง</span>
                             </div>
                             <div>)</div>
+                        </div>
+                        <div class="d-flex align-items-end my-3">
+                            <div class="ml-5"><span class="span-label">เจ้าหน้าที่ฝ่ายทรัพยากรบุคคล</span></div>
                         </div>
                         <div class="my-3">
                             บริษัท รักษาความปลอดภ้ย จี.เอ็ม.กรุ๊ป 999 จำกัด
@@ -3649,7 +3648,7 @@
     <div class="mt-3">
         <div class="d-flex flex-column">
             <div>ผู้ติดต่อ : คุณแหวน / คุณสีนะ</div>
-            <div>โทรศัพท์ : 02-210-000-4</div>
+            <div>โทรศัพท์ : 02-210-0004</div>
         </div>
     </div>
 </div>
@@ -4040,198 +4039,6 @@
                             <div>6</div>
                             <div class="ml-3 checkbox-utf">&#9634;</div>
                             <div class="ml-2">วิทยุสื่อสาร,ไฟฉาย,กระบอง (ดิ้ว)</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>7</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">รองเท้า Safety,รองเท้าหนังแก้ว</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>8</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">เอกสารของบริษัท</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>9</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">อื่นๆ</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <p class="attachment-paragraph mt-2">ทั้งนี้ ข้าพเจ้าขอทำสัญญานี้ให้กับบริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด ซึ่งเป็นนายจ้างของข้าพเจ้า หากข้าพเจ้าลาออกหรือพ้นสภาพ ข้าพเจ้าจะนำทรัพย์สินที่ได้รับมาคืนให้กับบริษัททันที และหากข้าพเจ้าได้ทำความเสียหายหรือสูญหายแก่ทรัพย์สินที่ได้รับจากบริษัท ไม่ว่าด้วยเหตุใดก็ตาม ข้าพเจ้าตกลงยินยอมที่จะรับผิดชอบชดใช้ในความเสียหายหรือสูญหาย รวมถึงข้าพเจ้ายินยอมให้ทางบริษัทฯ (นายจ้าง) ดำเนินคดีทางกฎหมายทั้งทางแพ่งและอาญา</p>
-        <p class="attachment-paragraph mt-2">สัญญานี้ได้ทำขึ้นเป็นสองฉบับมีข้อความตรงกันทุกประการ ซึ่งทั้งสองฝ่ายได้อ่านและเข้าใจข้อความของสัญญานี้ดีโดยตลอดแล้ว เพื่อเป็นหลักฐานจึงได้ลงลายมือชื่อไว้เป็นหลักฐานต่อหน้าพยาน</p>
-    </div>
-    <div class="row justify-content-center p-3">
-        <div class="col-5 mr-2 p-0">
-            <div class="p-3">
-                <div class="d-flex justify-content-center">
-                    <div>
-                        <div class="d-flex align-items-end my-3">
-                            <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div class="ml-2"><span class="span-label">ผู้รับทรัพย์สิน</span></div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div [class.ml-3]="checkIsLongName(user)" [class.ml-5]="!checkIsLongName(user)">(</div>
-                            <div>
-                                <span
-                                    class="employee-data blank-dotted-bottom signature-bracket">{{signatureName(user)}}</span>
-                            </div>
-                            <div>)</div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div><span class="span-label ml-2">วันที่</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                            <div><span class="span-label">/</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                            <div><span class="span-label">/</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                        </div>
-                        <div class="d-flex align-items-end mt-5 mb-3">
-                            <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div class="ml-2"><span class="span-label">พยาน</span></div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div class="ml-5">(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div>)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-5 ml-2 p-0">
-            <div class="p-3">
-                <div class="d-flex justify-content-center">
-                    <div>
-                        <div class="d-flex align-items-end my-3">
-                            <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div class="ml-2"><span class="span-label">ผู้มอบทรัพย์สิน</span></div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div class="ml-5">(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div>)</div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div><span class="span-label ml-2">วันที่</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                            <div><span class="span-label">/</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                            <div><span class="span-label">/</span></div>
-                            <div class="blank-dotted-bottom mw-80"></div>
-                        </div>
-                        <div class="d-flex align-items-end mt-5 mb-3">
-                            <div><span class="span-label">ลงชื่อ</span></div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div class="ml-2"><span class="span-label">พยาน</span></div>
-                        </div>
-                        <div class="d-flex align-items-end my-3">
-                            <div class="ml-5">(</div>
-                            <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                            <div>)</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container-fluid page-break">
-    <div class="d-flex justify-content-center align-items-start report-top">
-        <div class="report-logo-start">
-            <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
-        </div>
-        <div class="align-self-end">
-            <span class="report-title">สัญญารับทรัพย์สินของบริษัท</span>
-        </div>
-    </div>
-    <div class="mt-5">
-        <div class="report-header-pdpa-container">
-            <div class="d-flex flex-column report-header-pdpa">
-                <div>
-                    <div class="d-flex">
-                        <div><span class="pdpa-head-label">เขียนที่</span></div>
-                        <div class="ml-2 mt-0 blank-dotted-bottom mw-400"><span
-                                class="employee-data">บจก.รักษาความปลอดภัย จี.เอ็ม. กรุ๊ป 999</span></div>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="d-flex">
-                        <div><span class="pdpa-head-label">วันที่</span></div>
-                        <div class="ml-2 mt-0 blank-dotted-bottom mw-400"><span
-                                class="employee-data">{{convertToDateString(currentDate)}}</span></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mt-4">
-        <p class="attachment-paragraph lh mt-3">โดยสัญญาฉบับนี้ ข้าพเจ้า ( <ng-container
-                *ngIf="user?.title === 'นาย'; else elseFemale">
-                <u>นาย</u>/นาง/นางสาว
-            </ng-container>
-            <ng-template #elseFemale>
-                <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                    นาย/<u>นาง</u>/นางสาว
-                </ng-container>
-            </ng-template>
-            <ng-template #elseFemale2>
-                นาย/นาง/<u>นางสาว</u>
-            </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
-                {{user?.lastName}}</span> <span>ตำแหน่ง</span> <span
-                class="employee-data blank-dotted-bottom px50px">{{user?.userPosition.nameTH}}</span>
-                <span>อายุ</span> <span
-                class="employee-data blank-dotted-bottom px50px">{{age}}</span> ปี
-            <span>อยู่บ้านเลขที่</span><span
-                class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
-                <span>บัตรประจำตัวประชาชนเลขที่</span> <span
-                class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
-                <span>เบอร์โทรศัพท์</span><span
-                class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.phoneNo}}</span>
-        </p>
-        <p class="attachment-paragraph mt-2">
-            <span>ข้าพเจ้าได้รับทรัพย์สินของบริษัทฯ ดังต่อไปนี้</span>
-        </p>
-        <div class="d-flex mt-2">
-            <div class="w-100">
-                <div class="row justify-content-center">
-                    <div class="col-5 pl-5">
-                        <div class="d-flex align-items-center w-100">
-                            <div>1</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">เสื้อ เนคไท อินธนู หมวก</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>2</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">กางเกง เข็มขัด</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>3</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">บัตรพนักงาน</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>4</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">ป้ายชื่อ นกหวีด ถุงมือ</div>
-                        </div>
-                        <div class="d-flex align-items-center w-100">
-                            <div>5</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">เสื้อจราจร เสื้อกันฝน</div>
-                        </div>
-                    </div>
-                    <div class="col-5">
-                        <div class="d-flex align-items-center w-100">
-                            <div>6</div>
-                            <div class="ml-3 checkbox-utf">&#9634;</div>
-                            <div class="ml-2">วิทยุเสื่อสาร,ไฟฉาย,กระบอง (ดิ้ว)</div>
                         </div>
                         <div class="d-flex align-items-center w-100">
                             <div>7</div>
