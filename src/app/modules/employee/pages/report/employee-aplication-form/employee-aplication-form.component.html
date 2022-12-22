@@ -2544,13 +2544,13 @@
                     </div>
                     <div class="d-flex align-items-end">
                         <div><span>เลขทะเบียนบุคคล/นิติบุคคล</span></div>
-                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">3330700398050</span></div>
+                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">0195556001137</span></div>
                         <div class="ml-2"><span>ลำดับที่สาขา</span></div>
-                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-150">100003</span></div>
+                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-150">&nbsp;</span></div>
                     </div>
                     <div class="d-flex align-items-end">
                         <div><span>วันที่ผู้ประกันตนเข้าทำงาน</span></div>
-                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">{{ (!user?.startDate) ? '-' : toThaiDateString(user?.startDate) }}</span></div>
+                        <div class="ml-2"><span class="blank-dotted-bottom-sso inline employee-data text-center mw-200">&nbsp;</span></div>
                         <div class="ml-2"><span>ประเภทการจ้าง</span></div>
                         <div class="ml-2"><img [src]="baseImagePath + '/img/checkboxtick.png'" class="checkboxtick" alt="checkbox tick"></div>
                         <div class="ml-2"><span>รายวัน</span></div>
@@ -2878,9 +2878,9 @@
             <ng-template #elseFemale2>
                 นาย/นาง/<u>นางสาว</u>
             </ng-template>)
-            <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+            <span class="employee-data blank-dotted-bottom f20x25px">{{user?.firstName}} {{user?.lastName}}</span>
             <span>ตำแหน่ง</span><span
-                class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.userPosition?.nameTH}}</span>
+                class="blank-dotted-bottom text-center px-2 mw-300 employee-data">{{user?.userPosition?.nameTH}}</span>
             ได้เข้ารับการฝึกอบรมวิชาชีพรักษาความปลอดภัย กับ บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด
             ตามหลักสูตรเบื้องต้นดังนี้
         </p>
@@ -2998,7 +2998,7 @@
             </tbody>
         </table>
         <p class="report-paragraph">
-            พนักงานรักษาความปลอดภัยเข้ารับการฝึกอบรมตามหลักสูตรที่บริษัทกำหนดเพื่อนำไปพัฒนาการปฏิบัติหน้าที่ภายในหน่วยอย่างมีประสิทธิภาพ
+            พนักงานรักษาความปลอดภัยเข้ารับการฝึกอบรมตามหลักสูตรที่บริษัทกำหนดเพื่อนำไปพัฒนาการปฏิบัติหน้าที่ภายในหน่วยงานอย่างมีประสิทธิภาพ
         </p>
     </div>
     <div class="row justify-content-center p-3 mt-5">
@@ -3115,8 +3115,8 @@
                     <span class="ml-2">บัตรประจำตัวประชาชนเลขที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-200">{{user?.idCardNumber}}</span>
                     <span class="ml-2">ที่อยู่ปัจจุบัน</span><span class="blank-dotted-bottom inline employee-data text-center mw-200">{{user?.currentAddress}}</span>
                     <span class="ml-2">เป็นพนักงานรักษาความปลอดภัยของ</span><span class="blank-dotted-bottom inline employee-data text-center mw-200">บริษัท รักษาความปลอดภ้ย จี.เอ็ม.กรุ๊ป 999 จำกัด</span>
-                    <span class="ml-2">ใบอนุญาตประกอบธุรกิจรักษาความปลอดภัย เลขที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-100">สบ 2600001</span>
-                    <span class="ml-2">ตั้งอยู่ อาคาร</span><span class="blank-dotted-bottom inline employee-data text-center mw-300">&nbsp;</span>
+                    <span class="ml-2">ใบอนุญาตประกอบธุรกิจรักษาความปลอดภัย เลขที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-100">สบ 2600001</span><br />
+                    <span>ตั้งอยู่ อาคาร</span><span class="blank-dotted-bottom inline employee-data text-center mw-300">&nbsp;</span>
                     <span class="ml-2">ชั้นที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-100">&nbsp;</span>
                     <span class="ml-2">เลขที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-200">211/41</span>
                     <span class="ml-2">หมู่ที่</span><span class="blank-dotted-bottom inline employee-data text-center mw-100">&nbsp;</span><br />
@@ -3496,7 +3496,7 @@
                     <ng-template #elseFemale2>
                         นาย/นาง/<u>น.ส.</u>
                     </ng-template>) <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
-                        {{user?.lastName}}</span> เลขบัตรประจำตัวประชาชน <span
+                        {{user?.lastName}}</span><br /> เลขบัตรประจำตัวประชาชน <span
                         class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
                     <span>อยู่บ้านเลขที่</span><span
                         class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
@@ -3507,9 +3507,9 @@
                         กรุ๊ป 999</span>
                 </p>
                 <p class="attachment-paragraph lh mt-3">&#9634; ข้าพเจ้า บริษัทรักษาความปลอดภัย <span
-                        class="employee-data blank-dotted-bottom px100px"></span>
-                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom px100px"></span> <span>เป็นกรรมการผู้มีอำนาจ อยู่บ้านเลขที่</span><span class="employee-data blank-dotted-bottom px100px"></span>
-                    <span>โทรศัพท์</span><span class="employee-data blank-dotted-bottom px100px"></span><br />
+                        class="employee-data blank-dotted-bottom mw-200 inline">&nbsp;</span>
+                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom mw-260 inline">&nbsp;</span><br /><span>เป็นกรรมการผู้มีอำนาจ อยู่บ้านเลขที่</span><span class="employee-data blank-dotted-bottom mw-260 inline"></span>
+                    <span>โทรศัพท์</span><span class="employee-data blank-dotted-bottom mw-200 inline">&nbsp;</span><br />
                     <span>โดยหนังสือฉบับนี้</span>
                 </p>
                 <p class="attachment-paragraph lh mt-3">
@@ -3601,7 +3601,7 @@
             <div class="mt-4">
 
                 <p class="attachment-paragraph lh mt-3">ด้วยบริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด ประกอบธุรกิจเกี่ยวกับรักษาความปลอดภัย มีความประสงค์ที่จะว่าจ้าง
-                     <span class="employee-data blank-dotted-bottom px100px">{{user?.firstName}}
+                     <span class="employee-data blank-dotted-bottom px100px">{{user?.title}}{{user?.firstName}}
                         {{user?.lastName}}</span> <span>เลขบัตรประจำตัวประชาชน</span><span
                         class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
                     <span>เข้าทำงานในบริษัทฯ ตำแหน่งพนักงานรักษาความปลอดภัย จึงขอความอนุเคราะห์ท่านให้เจ้าหน้าที่ตรวจสอบประวัติอาชญากรโดยการพิมพ์ลายนิ้วมือแก่บุคคลดังกล่าว</span>
@@ -3650,7 +3650,7 @@
                             <div class="ml-5"><span class="span-label">เจ้าหน้าที่ฝ่ายทรัพยากรบุคคล</span></div>
                         </div>
                         <div class="my-3">
-                            บริษัท รักษาความปลอดภ้ย จี.เอ็ม.กรุ๊ป 999 จำกัด
+                            บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด
                         </div>
                     </div>
                 </div>
@@ -3724,7 +3724,7 @@
                     <ng-template #elseFemale2>
                         นาย/นาง/<u>นางสาว</u>
                     </ng-template>)
-                    <span class="employee-data blank-dotted-bottom f20x">{{user?.firstName}} {{user?.lastName}}</span>
+                    <span class="employee-data blank-dotted-bottom f20x25px">{{user?.firstName}} {{user?.lastName}}</span>
                     บัตรประจำตัวประชาชนเลขที่ <span
                         class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
                     <span>ที่อยู่ปัจจุบัน</span> <span
@@ -4013,7 +4013,7 @@
                 <span>อายุ</span> <span
                 class="employee-data blank-dotted-bottom px50px">{{age}}</span> ปี
             <span>อยู่บ้านเลขที่</span><span
-                class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span>
+                class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span><br />
                 <span>บัตรประจำตัวประชาชนเลขที่</span> <span
                 class="employee-data blank-dotted-bottom px50px">{{user?.idCardNumber}}</span>
                 <span>เบอร์โทรศัพท์</span><span
@@ -4077,7 +4077,7 @@
                 </div>
             </div>
         </div>
-        <p class="attachment-paragraph mt-2">ทั้งนี้ ข้าพเจ้าขอทำสัญญานี้ให้กับบริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด ซึ่งเป็นนายจ้างของข้าพเจ้า หากข้าพเจ้าลาออกหรือพ้นสภาพ ข้าพเจ้าจะนำทรัพย์สินที่ได้รับมาคืนให้กับบริษัททันที และหากข้าพเจ้าได้ทำความเสียหายหรือสูญหายแก่ทรัพย์สินที่ได้รับจากบริษัท ไม่ว่าด้วยเหตุใดก็ตาม ข้าพเจ้าตกลงยินยอมที่จะรับผิดชอบชดใช้ในความเสียหายหรือสูญหาย รวมถึงข้าพเจ้ายินยอมให้ทางบริษัทฯ (นายจ้าง) ดำเนินคดีทางกฎหมายทั้งทางแพ่งและอาญา</p>
+        <p class="attachment-paragraph mt-2">ทั้งนี้ ข้าพเจ้าขอทำสัญญานี้ให้กับบริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด ซึ่งเป็นนายจ้างของข้าพเจ้า หากข้าพเจ้าลาออก หรือพ้นสภาพ ข้าพเจ้าจะนำทรัพย์สินที่ได้รับมาคืนให้กับบริษัททันที และหากข้าพเจ้าได้ทำความเสียหายหรือสูญหายแก่ทรัพย์สินที่ได้รับจากบริษัท ไม่ว่าด้วยเหตุใดก็ตาม ข้าพเจ้าตกลงยินยอมที่จะรับผิดชอบชดใช้ในความเสียหายหรือสูญหาย รวมถึงข้าพเจ้ายินยอมให้ทางบริษัทฯ (นายจ้าง) ดำเนินคดีทางกฎหมายทั้งทางแพ่งและอาญา</p>
         <p class="attachment-paragraph mt-2">สัญญานี้ได้ทำขึ้นเป็นสองฉบับมีข้อความตรงกันทุกประการ ซึ่งทั้งสองฝ่ายได้อ่านและเข้าใจข้อความของสัญญานี้ดีโดยตลอดแล้ว เพื่อเป็นหลักฐานจึงได้ลงลายมือชื่อไว้เป็นหลักฐานต่อหน้าพยาน</p>
     </div>
     <div class="row justify-content-center p-3">

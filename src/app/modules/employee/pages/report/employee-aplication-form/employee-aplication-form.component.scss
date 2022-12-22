@@ -29,7 +29,7 @@
 }
 
 .container-fluid {
-    padding: 25px 25px 25px 70px;
+    padding: 25px 50px 25px 50px;
     position: relative;
 }
 
@@ -300,6 +300,11 @@ ol li {
 .report-label,
 .report-label>strong {
     font-size: 20px;
+}
+
+.f20x25px {
+    font-size: 20px;
+    padding: 0 25px 0 25px;
 }
 
 .f20x {
