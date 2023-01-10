@@ -13,6 +13,6 @@ export const environment = {
   companyEmail: 'info@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '22/12/2022',
+  releaseDate: '10/01/2023',
   storageBucketUrl: 'https://storage.googleapis.com/cong-app.appspot.com'
 };
