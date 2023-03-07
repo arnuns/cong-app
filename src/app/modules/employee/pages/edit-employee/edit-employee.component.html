@@ -1071,6 +1071,43 @@
             </div>
           </div>
         </div>
+        <div class="row mt-4 mb-2">
+          <div class="col">
+            <h3 class="subtitle">หนังสือรับรองการฝึกอบรมหลักสูตรการรักษาความปลอดภัย</h3>
+          </div>
+        </div>
+        <div class="row px-2">
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="certificate_no">เลขที่หนังสือรับรอง</label>
+              <input type="text" class="form-control" maxlength="50" formControlName="certificate_no" />
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="certificate_start_date">ฝึกเมื่อวันที่</label>
+            <div class="input-group">
+              <input class="form-control form-control--date" onkeydown="return false" #csdp="bsDatepicker" bsDatepicker
+                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+                formControlName="certificate_start_date">
+              <div class="input-group-append">
+                <span class="input-group-text pointer" (click)="csdp.toggle()"><i class="fa fa-calendar text-dark"
+                    aria-hidden="true"></i></span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label for="certificate_end_date">ถึงวันที่</label>
+            <div class="input-group">
+              <input class="form-control form-control--date" onkeydown="return false" #cedp="bsDatepicker" bsDatepicker
+                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
+                formControlName="certificate_end_date">
+              <div class="input-group-append">
+                <span class="input-group-text pointer" (click)="cedp.toggle()"><i class="fa fa-calendar text-dark"
+                    aria-hidden="true"></i></span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col">
             <div class="line"></div>

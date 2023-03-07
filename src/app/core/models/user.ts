@@ -75,6 +75,9 @@ export interface User {
     licenseNo: string;
     licenseStartDate: string;
     licenseEndDate: string;
+    certificateNo: string;
+    certificateStartDate: string;
+    certificateEndDate: string;
     socialSecurityStartDate: string;
     socialSecurityEndDate: string;
     socialHospitalId: number;

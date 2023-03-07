@@ -1,0 +1,80 @@
+<div class="container-fluid page-break certificate-bg" [ngStyle]="{'background-image':'url(assets/img/cert-gm-bg.jpg)'}">
+    <div class="page">
+        <div class="d-flex w-100">
+            <div class="top-certificate ml-auto">
+                <div class="d-flex flex-column align-items-end">
+                    <div>แบบ ธภ. ๑๒</div>
+                    <div>หนังสือรับรองเลขที่ {{convertNumberToArabic(user?.certificateNo)}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex justify-content-end">
+                    <img src="assets/img/cert-gm-logo.jpg" class="logo" alt="">
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="d-flex flex-column">
+                    <div>
+                        <h1>
+                            หนังสือรับรองการฝึกอบรมหลักสูตรการรักษาความปลอดภัย <br />
+                            สถานฝึกอบรม จี.เอ็ม.กรุ๊ป 999
+                        </h1>
+                    </div>
+                    <div class="mt-2">
+                        <h2 class="subtitle">(หนังสือรับรองเลขที่ กท๙๖๑๐๐๒๖)</h2>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div>
+                    <span class="subtitle-bold">หนังสือรับรองฉบับนี้ออกให้เพื่อแสดงว่า</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <div class="d-flex justify-content-end">
+                    <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile"
+                        alt="profile" class="img-profile">
+                    <ng-template #elseNoProfileImage>
+                        <img *ngIf="user?.imageProfile == null" src="assets/img/img-profile.svg" alt=""
+                            class="img-profile">
+                    </ng-template>
+                </div>
+            </div>
+            <div class="col-9">
+                <div>
+                    <h1 class="name">
+                        {{ user?.firstName }} {{ user?.lastName }}
+                    </h1>
+                </div>
+                <div>
+                    <span class="subtitle-bold">เป็นผู้ผ่านการฝึกอบรมตามหลักสูตรการรักษาความปลอดภัย</span>
+                </div>
+                <div class="mt-5">
+                    <span class="period">เมื่อ
+                        <strong>{{convertDateToThaiArabicDate(user?.certificateStartDate)}}</strong></span>
+                </div>
+                <div class="mt-2">
+                    <span class="period">ถึง
+                        <strong>{{convertDateToThaiArabicDate(user?.certificateEndDate)}}</strong></span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-end justify-content-between w-100 footer-certicate">
+            <div>
+                <span>ให้ไว้ ณ {{convertDateToThaiArabicDate(user?.certificateStartDate)}}</span>
+            </div>
+            <div>
+                <div class="d-flex flex-column align-items-center">
+                    <div class="signature-space">
+                        
+                    </div>
+                    <div>(พล.ท.สุเมธ ไมตรีประศาสน์)</div>
+                    <div>ผู้อำนวยการสถานฝึกอบรม</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

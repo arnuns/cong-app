@@ -139,6 +139,9 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     license_no: [''],
     license_start_date: [null],
     license_end_date: [null],
+    certificate_no: [''],
+    certificate_start_date: [null],
+    certificate_end_date: [null],
     register_date: [new Date()],
     start_date: [null, [Validators.required]],
     end_date: [null],
@@ -412,6 +415,9 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           license_no: this.user.licenseNo ? this.user.licenseNo : '',
           license_start_date: this.user.licenseStartDate ? this.convertToDate(this.user.licenseStartDate) : null,
           license_end_date: this.user.licenseEndDate ? this.convertToDate(this.user.licenseEndDate) : null,
+          certificate_no: this.user.certificateNo ? this.user.certificateNo : '',
+          certificate_start_date: this.user.certificateStartDate ? this.convertToDate(this.user.certificateStartDate): null,
+          certificate_end_date: this.user.certificateEndDate ? this.convertToDate(this.user.certificateEndDate): null,
           register_date: this.user.registerOn ? this.convertToDate(this.user.registerOn) : new Date(),
           start_date: this.user.startDate ? this.convertToDate(this.user.startDate) : null,
           end_date: this.user.endDate ? this.convertToDate(this.user.endDate) : null,
@@ -773,6 +779,11 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     }
     formData.append('licenseStartDate', getValue('license_start_date') ? this.moment.format(getValue('license_start_date'), 'YYYY-MM-DD') : '');
     formData.append('licenseEndDate', getValue('license_end_date') ? this.moment.format(getValue('license_end_date'), 'YYYY-MM-DD') : '');
+    if (getValue('certificate_no')) {
+      formData.append('certificateNo', getValue('certificate_no'));
+    }
+    formData.append('certificateStartDate', getValue('certificate_start_date') ? this.moment.format(getValue('certificate_start_date'), 'YYYY-MM-DD') : '');
+    formData.append('certificateEndDate', getValue('certificate_end_date') ? this.moment.format(getValue('certificate_end_date'), 'YYYY-MM-DD') : '');
     formData.append('registerDate', getValue('register_date') ? this.moment.format(getValue('register_date'), 'YYYY-MM-DD') : '');
     formData.append('startDate', getValue('start_date') ? this.moment.format(getValue('start_date'), 'YYYY-MM-DD') : '');
     formData.append('endDate', getValue('end_date') ? this.moment.format(getValue('end_date'), 'YYYY-MM-DD') : '');
