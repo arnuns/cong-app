@@ -93,7 +93,7 @@ export class EmployeeCertificateComponent implements OnInit {
         var width = pdf.internal.pageSize.getWidth();
         var height = pdf.internal.pageSize.getHeight();
         pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
-        pdf.addImage(imageProfile, 'PNG', 90, 240, 100, 128);
+        pdf.addImage(imageProfile, 'PNG', 95, 250, 100, 128);
         pdf.save(`cong_${this.empNo}_certificate_${+new Date()}.pdf`); // Generated PDF
       });
     }
