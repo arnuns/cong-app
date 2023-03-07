@@ -155,7 +155,7 @@
 <ngx-smart-modal #searchNfcCardModal [identifier]="'searchNfcCardModal'" [closable]="true" [escapable]="false"
     [dismissable]="false" [customClass]="'search-nfc-card-dialog'">
     <div class="dialog p-4">
-      <form [formGroup]="nfcSearchForm" (ngSubmit)="onScan()" #sc="ngForm">
+      <form [formGroup]="nfcSearchForm" #nfcsf="ngForm">
         <div class="row justify-content-center">
           <div class="col">
             <div>
