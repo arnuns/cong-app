@@ -85,30 +85,44 @@
         </a>
       </div>
       <div *ngIf="!isHiddenSearch">
-        <form [formGroup]="searchForm">
-          <div class="form-group mb-0 has-search">
-            <span class="fa fa-search form-control-feedback"></span>
-            <input type="text" class="form-control" autocomplete="off"
-              placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน, รหัสพนักงาน, หน่วยงาน" formControlName="search"
-              (keydown)="onSearchChange()">
-          </div>
-        </form>
-        <div class="list-group result-group" *ngIf="searchResults?.length > 0 || searching">
-          <a class="list-group-item list-group-item-action" *ngIf="searching">
-            <div class="loading">
-              <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
-              <span class="sr-only">Loading...</span>
-            </div>
-          </a>
-          <a (click)="viewUserInfo(result.empNo)" class="list-group-item list-group-item-action"
-            *ngFor="let result of searchResults">
-            <div class="d-flex w-100">
-              <div><strong>{{ result.firstName }} {{ result.lastName }}</strong></div>
-              <div class="ml-auto">
-                {{ result.site ? result.site.name : '-' }}
+        <div class="d-flex">
+          <div>
+            <form [formGroup]="searchForm">
+              <div class="form-group mb-0 has-search">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control" autocomplete="off"
+                  placeholder="ค้นหาพนักงาน: ชื่อ, บัตรประชาชน, รหัสพนักงาน, หน่วยงาน" formControlName="search"
+                  (keydown)="onSearchChange()">
               </div>
+            </form>
+            <div class="list-group result-group" *ngIf="searchResults?.length > 0 || searching">
+              <a class="list-group-item list-group-item-action" *ngIf="searching">
+                <div class="loading">
+                  <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </a>
+              <a (click)="viewUserInfo(result.empNo)" class="list-group-item list-group-item-action"
+                *ngFor="let result of searchResults">
+                <div class="d-flex w-100">
+                  <div><strong>{{ result.firstName }} {{ result.lastName }}</strong></div>
+                  <div class="ml-auto">
+                    {{ result.site ? result.site.name : '-' }}
+                  </div>
+                </div>
+              </a>
             </div>
-          </a>
+          </div>
+          <div class="ml-2">
+            <button type="button" class="btn btn-primary button__scan" (click)="searchNfcCardModal.open()">
+              <div class="d-flex justify-content-center align-items-center">
+                <div>
+                  <img src="assets/img/ico_scan_idcard.svg" alt="">
+                </div>
+                <div class="ml-2">ค้นหาด้วย NFC</div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
       <div class="ml-auto">
@@ -137,3 +151,29 @@
     </div>
   </ng-template>
 </div>
+
+<ngx-smart-modal #searchNfcCardModal [identifier]="'searchNfcCardModal'" [closable]="true" [escapable]="false"
+    [dismissable]="false" [customClass]="'search-nfc-card-dialog'">
+    <div class="dialog p-4">
+      <form [formGroup]="nfcSearchForm" (ngSubmit)="onScan()" #sc="ngForm">
+        <div class="row justify-content-center">
+          <div class="col">
+            <div>
+              <div class="d-flex align-items-center">
+                <div>
+                  <img class="nfc-scan-icon" src="assets/img/ico_scan_idcard_greeny.svg" alt="">
+                </div>
+                <div class="ml-2">
+                  กรุณาแตะที่เครื่องอ่านบัตร
+                </div>
+              </div>
+            </div>
+            <div class="form-group my-3">
+              <input type="password" placeholder="หมายเลขบัตร NFC" class="form-control" formControlName="nfcRefId"
+                #nfcSearchInput autofocus>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ngx-smart-modal>

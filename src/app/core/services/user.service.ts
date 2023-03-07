@@ -8,6 +8,7 @@ import { Hospital } from '../models/hospital';
 import { CookieService } from 'ngx-cookie-service';
 import { map } from 'rxjs/operators';
 import { SpinnerHelper } from '../helpers/spinner.helper';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -139,7 +140,15 @@ export class UserService extends BaseService {
     return this.http.post<any>(`${this.serviceUrl}/user/storage/UploadImageProfile`, formData);
   }
 
+  getUserByNfcRefId(nfcRefId: number) {
+    return this.http.get<User>(`${this.serviceUrl}/user/NfcRefId/${nfcRefId}`);
+  }
+
   updateNfcRefId(empNo: number, nfcRefId: number) {
     return this.http.put<User>(`${this.serviceUrl}/user/${empNo}/nfcCard/${nfcRefId}`, {});
+  }
+
+  getImageAsBlob(url: string): Observable<Blob> {
+    return this.http.get(url, { responseType: 'blob' })
   }
 }

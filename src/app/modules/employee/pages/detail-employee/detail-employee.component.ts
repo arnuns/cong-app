@@ -64,7 +64,7 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
 
     this.ngxSmartModalService.getModal('scanNfcCardModal').onClose.subscribe((event: Event) => {
       this.scanForm.reset({
-        id: ''
+        nfcRefId: ''
       });
     });
   }

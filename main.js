@@ -384,7 +384,7 @@ ipcMain.on('print-to-pdf-landscape', (event) => {
   const dateString = '' + dd.getFullYear() + (dd.getMonth() + 1) + (dd.getDate()) + dd.getHours() + dd.getMinutes() + dd.getSeconds();
   const pdfPath = `${os.tmpdir()}/print_${dateString}.pdf`;
   const win = BrowserWindow.fromWebContents(event.sender);
-  win.webContents.printToPDF({ landscape: true, pageSize: {width:296926, height:210058}, printBackground: true }, (error, data) => {
+  win.webContents.printToPDF({ landscape: true, marginsType: 2, pageSize: 'A4', printBackground: true }, (error, data) => {
     if (error) throw error
     fs.writeFile(pdfPath, data, (error) => {
       if (error) throw error
