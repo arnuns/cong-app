@@ -70,7 +70,11 @@ export class EmployeeCertificateComponent implements OnInit {
           });
           img.src = imgUrl;
         };
-        convertImage(this.user.imageProfile ?? 'assets/img/img-profile.svg', data => {
+        let userImagePath = 'assets/img/img-profile.svg';
+        if (this.user.imageProfile) {
+          userImagePath = this.user.imageProfile;
+        }
+        convertImage(userImagePath, data => {
           this.imageProfile = data;
           if (this.electronService.isElectronApp) {
             setTimeout(() => this.convertToPdf(), 1000);
