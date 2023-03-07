@@ -1,4 +1,12 @@
-<div class="container-fluid page-break certificate-bg" [ngStyle]="{'background-image':'url(assets/img/cert-gm-bg.jpg)'}">
+<div class="download-file-container">
+    <div class="d-flex w-100">
+        <div class="ml-auto">
+            <a (click)="convertToPdf()"><i class="fa fa-download" aria-hidden="true"></i> ดาวน์โหลดเอกสาร</a>
+        </div>
+    </div>
+</div>
+<div class="container-fluid page-break certificate-bg" [ngStyle]="{'background-image':'url(assets/img/cert-gm-bg.jpg)'}"
+    id="certificate-employee">
     <div class="page">
         <div class="d-flex w-100">
             <div class="top-certificate ml-auto">
@@ -8,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-3">
                 <div class="d-flex justify-content-end">
                     <img src="assets/img/cert-gm-logo.jpg" class="logo" alt="">
@@ -38,8 +46,7 @@
                     <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile"
                         alt="profile" class="img-profile">
                     <ng-template #elseNoProfileImage>
-                        <img *ngIf="user?.imageProfile == null" src="assets/img/img-profile.svg" alt=""
-                            class="img-profile">
+                        <img src="assets/img/img-profile.svg" alt="" class="img-profile">
                     </ng-template>
                 </div>
             </div>
@@ -62,17 +69,19 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex align-items-end justify-content-between w-100 footer-certicate">
-            <div>
-                <span>ให้ไว้ ณ {{convertDateToThaiArabicDate(user?.certificateStartDate)}}</span>
-            </div>
-            <div>
-                <div class="d-flex flex-column align-items-center">
-                    <div class="signature-space">
-                        
+        <div class="footer-container">
+            <div class="d-flex align-items-end justify-content-between w-100 footer-certicate">
+                <div>
+                    <span>ให้ไว้ ณ {{convertDateToThaiArabicDate(user?.certificateEndDate)}}</span>
+                </div>
+                <div>
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="signature-space">
+
+                        </div>
+                        <div>(พล.ท.สุเมธ ไมตรีประศาสน์)</div>
+                        <div>ผู้อำนวยการสถานฝึกอบรม</div>
                     </div>
-                    <div>(พล.ท.สุเมธ ไมตรีประศาสน์)</div>
-                    <div>ผู้อำนวยการสถานฝึกอบรม</div>
                 </div>
             </div>
         </div>

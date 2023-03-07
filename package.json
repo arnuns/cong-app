@@ -82,6 +82,8 @@
     "firebase": ">= 5.5.7 <8",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "macos-alias": "^0.2.11",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",

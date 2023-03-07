@@ -6,6 +6,8 @@ import { User } from 'src/app/core/models/user';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { environment } from 'src/environments/environment';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-employee-certificate',
@@ -17,17 +19,18 @@ export class EmployeeCertificateComponent implements OnInit {
   certificateNo: string = '๖๒๕๖๗๗๙';
   empNo: number;
   user: User;
+  imageProfile: string;
   numbArabicMapping: { num: string, arabic: string }[] = [
-    {num: '1', arabic: '๑'},
-    {num: '2', arabic: '๒'},
-    {num: '3', arabic: '๓'},
-    {num: '4', arabic: '๔'},
-    {num: '5', arabic: '๕'},
-    {num: '6', arabic: '๖'},
-    {num: '7', arabic: '๗'},
-    {num: '8', arabic: '๘'},
-    {num: '9', arabic: '๙'},
-    {num: '0', arabic: '๐'}
+    { num: '1', arabic: '๑' },
+    { num: '2', arabic: '๒' },
+    { num: '3', arabic: '๓' },
+    { num: '4', arabic: '๔' },
+    { num: '5', arabic: '๕' },
+    { num: '6', arabic: '๖' },
+    { num: '7', arabic: '๗' },
+    { num: '8', arabic: '๘' },
+    { num: '9', arabic: '๙' },
+    { num: '0', arabic: '๐' }
   ];
   thaiMonth = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม',
     'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน',
@@ -53,11 +56,43 @@ export class EmployeeCertificateComponent implements OnInit {
       }, error => {
         this.spinner.hideLoadingSpinner(0);
       }, () => {
-        if (this.electronService.isElectronApp) {
-          setTimeout(() => this.electronService.ipcRenderer.send('print-to-pdf-landscape'), 1000);
-        }
+        const convertImage = (imgUrl, callBack) => {
+          let img = new Image();
+          img.crossOrigin = 'anonymous';
+          img.addEventListener('load', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const dataUrl = canvas.toDataURL();
+            callBack && callBack(dataUrl);
+          });
+          img.src = imgUrl;
+        };
+        convertImage(this.user.imageProfile ?? 'assets/img/img-profile.svg', data => {
+          this.imageProfile = data;
+          if (this.electronService.isElectronApp) {
+            setTimeout(() => this.convertToPdf(), 1000);
+          }
+        });
       });
     });
+  }
+
+  convertToPdf(): void {
+    const imageProfile = this.imageProfile;
+    if (imageProfile) {
+      html2canvas(document.querySelector('#certificate-employee')).then(canvas => {
+        const contentDataURL = canvas.toDataURL('image/png')
+        let pdf = new jsPDF('l', 'pt', 'a4');
+        var width = pdf.internal.pageSize.getWidth();
+        var height = pdf.internal.pageSize.getHeight();
+        pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
+        pdf.addImage(imageProfile, 'PNG', 100, 220, 100, 128);
+        pdf.save(`cong_${this.empNo}_certificate_${+new Date()}.pdf`); // Generated PDF
+      });
+    }
   }
 
   convertNumberToArabic(str) {
@@ -93,4 +128,5 @@ export class EmployeeCertificateComponent implements OnInit {
     this.applicationStateService.setIsHiddenSearch = true;
     this.applicationStateService.setIsHiddenTopMenu = true;
   }
+
 }
