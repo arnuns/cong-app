@@ -11,6 +11,7 @@ import { EmployeeProfileComponent } from './pages/report/employee-profile/employ
 import { EmployeeProfileMiniComponent } from './pages/report/employee-profile-mini/employee-profile-mini.component';
 import { EmployeeTransferComponent } from './pages/report/employee-transfer/employee-transfer.component';
 import { EmployeeAplicationFormComponent } from './pages/report/employee-aplication-form/employee-aplication-form.component';
+import { EmployeeCertificateComponent } from './pages/report/employee-certificate/employee-certificate.component';
 
 
 const routes: Routes = [
@@ -57,6 +58,10 @@ const routes: Routes = [
   {
     path: ':empNo/report/employee-application-form',
     component: EmployeeAplicationFormComponent
+  },
+  {
+    path: ':empNo/report/employee-certificate',
+    component: EmployeeCertificateComponent
   }
 ];
 

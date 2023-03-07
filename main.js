@@ -5,7 +5,7 @@ const os = require('os');
 const url = require("url");
 const path = require("path");
 
-let win, winTwo, winThree, winReport;
+let win, winTwo, winThree, winReport, winCertificate;
 
 if (handleSquirrelEvent(app)) {
   // squirrel event handled and app will exit in 1000ms, so don't do anything else
@@ -340,6 +340,29 @@ ipcMain.on('view-employee-application-form', (event, empNo) => {
   })
 })
 
+ipcMain.on('view-employee-certificate-report', (event, empNo) => {
+  winCertificate = new BrowserWindow({
+    width: 1562,
+    height: 1068,
+    minWidth: 1562,
+    minHeight: 1068,
+    maxWidth: 1562,
+    maxHeight: 1068,
+    parent: 'top',
+    modal: true,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  })
+
+  winCertificate.loadURL(`file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-certificate`)
+  winCertificate.once('ready-to-show', () => {
+    winCertificate.show()
+    // winCertificate.webContents.openDevTools()
+  })
+})
+
 ipcMain.on('print-to-pdf', (event) => {
   const dd = new Date();
   const dateString = '' + dd.getFullYear() + (dd.getMonth() + 1) + (dd.getDate()) + dd.getHours() + dd.getMinutes() + dd.getSeconds();
@@ -361,7 +384,7 @@ ipcMain.on('print-to-pdf-landscape', (event) => {
   const dateString = '' + dd.getFullYear() + (dd.getMonth() + 1) + (dd.getDate()) + dd.getHours() + dd.getMinutes() + dd.getSeconds();
   const pdfPath = `${os.tmpdir()}/print_${dateString}.pdf`;
   const win = BrowserWindow.fromWebContents(event.sender);
-  win.webContents.printToPDF({ landscape: true, marginsType: 2, pageSize: 'A4', printBackground: true }, (error, data) => {
+  win.webContents.printToPDF({ landscape: true, pageSize: {width:296926, height:210058}, printBackground: true }, (error, data) => {
     if (error) throw error
     fs.writeFile(pdfPath, data, (error) => {
       if (error) throw error
