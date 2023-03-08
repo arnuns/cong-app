@@ -120,7 +120,8 @@ export class EmployeeCertificateComponent implements OnInit {
     let str = '';
     if (date) {
       date = new Date(date);
-      str = `วันที่ ${this.convertNumberToArabic(date.getDate())} เดือน ${this.thaiMonth[date.getMonth()]} พุทธศักราช ${date.getFullYear() + 543}`;
+      const year = date.getFullYear() + 543;
+      str = `วันที่ ${date.getDate()} เดือน ${this.thaiMonth[date.getMonth()]} พุทธศักราช ${year}`;
     } else {
       str = 'ไม่มีข้อมูล';
     }
