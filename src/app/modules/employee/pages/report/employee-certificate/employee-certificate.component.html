@@ -12,7 +12,7 @@
             <div class="top-certificate ml-auto">
                 <div class="d-flex flex-column align-items-end">
                     <div>แบบ ธภ. ๑๒</div>
-                    <div>หนังสือรับรองเลขที่ {{convertNumberToArabic(user?.certificateNo)}}</div>
+                    <div>หนังสือรับรองเลขที่ {{user?.certificateNo ? user?.certificateNo : 'ไม่มีข้อมูล'}}</div>
                 </div>
             </div>
         </div>
@@ -27,11 +27,11 @@
                     <div>
                         <h1>
                             หนังสือรับรองการฝึกอบรมหลักสูตรการรักษาความปลอดภัย <br />
-                            สถานฝึกอบรม จี.เอ็ม.กรุ๊ป 999
+                            สถานฝึกอบรม จี.เอ็ม.กรุ๊ป
                         </h1>
                     </div>
                     <div class="mt-2">
-                        <h2 class="subtitle">(หนังสือรับรองเลขที่ กท๙๖๑๐๐๒๖)</h2>
+                        <h2 class="subtitle">(หนังสือรับรองเลขที่ กท9630016)</h2>
                     </div>
                 </div>
                 <div class="line"></div>
@@ -53,7 +53,7 @@
             <div class="col-9">
                 <div>
                     <h1 class="name">
-                        {{ user?.firstName }} {{ user?.lastName }}
+                        {{ user?.title }} {{ user?.firstName }} {{ user?.lastName }}
                     </h1>
                 </div>
                 <div>
