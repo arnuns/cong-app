@@ -103,3 +103,47 @@ h2.subtitle {
 .download-file-container a:hover {
     color: #3eb995;
 }
+
+.period-regular {
+    display: inline-block;
+}
+
+.period-strong {
+    font-weight: bold;
+    display: inline-block;
+}
+
+.period-title {
+    @extend .period-regular;
+    width: 60px;
+}
+
+.period-title--date {
+    @extend .period-regular;
+    width: 60px;
+}
+
+.period-date {
+    @extend .period-strong;
+    width: 60px;
+}
+
+.period-title--month {
+    @extend .period-regular;
+    width: 70px;
+}
+
+.period-month {
+    @extend .period-strong;
+    width: 150px;
+}
+
+.period-title--year {
+    @extend .period-regular;
+    width: 130px;
+}
+
+.period-year {
+    @extend .period-strong;
+    width: 80px;
+}

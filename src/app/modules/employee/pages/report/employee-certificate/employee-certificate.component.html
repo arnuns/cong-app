@@ -60,12 +60,24 @@
                     <span class="subtitle-bold">เป็นผู้ผ่านการฝึกอบรมตามหลักสูตรการรักษาความปลอดภัย</span>
                 </div>
                 <div class="mt-5">
-                    <span class="period">เมื่อ
-                        <strong>{{convertDateToThaiArabicDate(user?.certificateStartDate)}}</strong></span>
-                </div>
-                <div class="mt-2">
-                    <span class="period">ถึง
-                        <strong>{{convertDateToThaiArabicDate(user?.certificateEndDate)}}</strong></span>
+                    <div class="d-flex period">
+                        <div class="period-title">เมื่อ</div>
+                        <div class="period-title--date">วันที่</div>
+                        <div class="period-date">{{ user?.certificateStartDate | date:'d' }}</div>
+                        <div class="period-title--month">เดือน</div>
+                        <div class="period-month">{{getThaiMonth(user?.certificateStartDate)}}</div>
+                        <div class="period-title--year">พุทธศักราช</div>
+                        <div class="period-year">{{getThaiYear(user?.certificateStartDate)}}</div>
+                    </div>
+                    <div class="d-flex period mt-2">
+                        <div class="period-title">ถึง</div>
+                        <div class="period-title--date">วันที่</div>
+                        <div class="period-date">{{ user?.certificateEndDate | date:'d' }}</div>
+                        <div class="period-title--month">เดือน</div>
+                        <div class="period-month">{{getThaiMonth(user?.certificateEndDate)}}</div>
+                        <div class="period-title--year">พุทธศักราช</div>
+                        <div class="period-year">{{getThaiYear(user?.certificateEndDate)}}</div>
+                    </div>
                 </div>
             </div>
         </div>

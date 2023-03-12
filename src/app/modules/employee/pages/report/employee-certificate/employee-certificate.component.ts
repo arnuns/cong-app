@@ -128,6 +128,24 @@ export class EmployeeCertificateComponent implements OnInit {
     return str;
   }
 
+  getThaiMonth(date: Date) {
+    let result = '';
+    if (date) {
+      date = new Date(date);
+      result = this.thaiMonth[date.getMonth()];
+    }
+    return  result;
+  }
+
+  getThaiYear(date: Date) {
+    let result = '';
+    if (date) {
+      date = new Date(date);
+      result = '' + (date.getFullYear() + 543);
+    }
+    return  result;
+  }
+
   updateView(): void {
     this.applicationStateService.setIsHiddenLeftMenu = true;
     this.applicationStateService.setIsHiddenSearch = true;
