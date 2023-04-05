@@ -3,8 +3,8 @@ export const environment = {
   apiUrl: 'https://api.congapps.com',
   apiVersion: '2.0',
   basePath: '../dist/assets',
-  companyFullName: 'บริษัท รักษาความปลอดภัย จี.เอ็ม.กรุ๊ป 999 จำกัด',
-  companyFullNameEn: 'SECURITY G.M.GROUP 999 CO.,LTD.',
+  companyFullName: 'บริษัท รักษาความปลอดภัย จีเซฟ จำกัด',
+  companyFullNameEn: 'G SAFE SECURITY CO.,LTD.',
   companyAddress1: '211/41 ถนนสุดบรรทัด ต.ปากเพรียว อ.เมืองสระบุรี จ.สระบุรี 18000',
   companyAddress2: '757/5-6 ถนนสุทธิสารวินิจฉัย ซอยรัชดาภิเษก 18 แขวงสามเสนนอก เขตห้วยขวาง กรุงเทพมหานคร 10310',
   companyTel: '02-210-0004',
@@ -13,6 +13,6 @@ export const environment = {
   companyEmail: 'info@gmgroup.co.th',
   companyWebsite: 'www.gmsecurity.co.th',
   appVersion: require('../../package.json').version,
-  releaseDate: '13/03/2023',
+  releaseDate: '05/05/2023',
   storageBucketUrl: 'https://storage.googleapis.com/cong-app.appspot.com'
 };
