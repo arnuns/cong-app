@@ -510,13 +510,13 @@ ul.dashed>li:before {
 }
 
 .pdpa-signature-position {
-    width: 150px;
+    width: 210px;
     display: inline-block;
 }
 
 .pdpa-signature-container {
     position: relative;
-    height: 80px;
+    height: 140px;
 }
 
 .pdpa-signature {
@@ -524,6 +524,12 @@ ul.dashed>li:before {
     top: 50px;
     left: 65%;
     transform: translate(-50%, 0);
+}
+
+.pdpa-warning {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
 }
 
 .col-subject-lesson {
