@@ -370,4 +370,16 @@ export class EditSiteComponent implements OnDestroy, OnInit {
   //   return invalid;
   // }
 
+  get alertSiteCheckpoint(): boolean {
+    let isAlert = false;
+    if (this.siteCheckpointForms.controls.length > 0) {
+      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      if (siteCheckpointTimes.filter(c => !siteWorkRateTimes.includes(c)).length > 0) {
+        isAlert = true;
+      }
+    }
+    return isAlert;
+  }
+
 }
