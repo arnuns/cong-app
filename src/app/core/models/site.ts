@@ -23,6 +23,7 @@ export interface Site {
     createOn: Date;
     createBy: string;
     siteWorkRates: SiteWorkRate[];
+    siteCheckpoints: SiteCheckpoint[];
     siteUserPositions: SiteUserPosition[];
 }
 
@@ -46,6 +47,23 @@ export interface SiteWorkRate {
     workerCount: number;
     createOn: Date;
     createBy: string;
+}
+
+export interface SiteCheckpoint {
+    id: number;
+    siteId: number;
+    startTime: string;
+    endTime: string;
+    checkpointName: string;
+    pointValue: number;
+    workerCount: number;
+    latitude: number;
+    longitude: number;
+    sequence: number;
+    createOn: Date;
+    createBy: string;
+    updateOn: Date;
+    updateBy: string;
 }
 
 export interface SiteFilter extends PageFilter {

@@ -6,7 +6,7 @@ import { SiteService } from 'src/app/core/services/site.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { environment } from 'src/environments/environment';
 import { UserPosition } from 'src/app/core/models/user';
-import { Site, SiteWorkRate, SiteUserPosition } from 'src/app/core/models/site';
+import { Site, SiteWorkRate, SiteUserPosition, SiteCheckpoint } from 'src/app/core/models/site';
 import { combineLatest } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { Province, Amphur, District, Postcode } from 'src/app/core/models/address';
@@ -47,6 +47,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     is_sso_annual_holiday: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
+    site_checkpoints: this.fb.array([]),
     site_user_positions: this.fb.array([]),
   });
 
@@ -123,6 +124,9 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         } else {
           this.addSiteWorkRate();
         }
+        if (this.site.siteCheckpoints.length > 0) {
+          this.addSiteCheckpoint(this.site.siteCheckpoints);
+        }
         if (this.site.siteUserPositions.length > 0) {
           this.addSiteUserPosition(this.site.siteUserPositions);
         } else {
@@ -146,6 +150,25 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         workerCount: c.get('worker_count').value,
         createOn: new Date(),
         createBy: undefined
+      }));
+    }
+    let siteCheckpoints: SiteCheckpoint[];
+    if (this.siteCheckpointForms.controls.length > 0) {
+      siteCheckpoints = this.siteCheckpointForms.controls.map(c => ({
+        id: c.get('id').value,
+        siteId: undefined,
+        startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
+        endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
+        checkpointName: c.get('checkpoint_name').value,
+        pointValue: c.get('point_value').value,
+        workerCount: c.get('worker_count').value,
+        latitude: c.get('latitude').value,
+        longitude: c.get('longitude').value,
+        sequence: c.get('sequence').value,
+        createOn: new Date(),
+        createBy: undefined,
+        updateOn: new Date(),
+        updateBy: undefined,
       }));
     }
     let siteUserPositions: SiteUserPosition[];
@@ -184,6 +207,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       createOn: undefined,
       createBy: undefined,
       siteWorkRates: siteWorkRates,
+      siteCheckpoints: siteCheckpoints,
       siteUserPositions: siteUserPositions
     }).subscribe(site => {
       this.spinner.hideLoadingSpinner(0);
@@ -243,6 +267,58 @@ export class EditSiteComponent implements OnDestroy, OnInit {
 
   removeSiteWorkRate(index: number) {
     this.siteWorkRateForms.removeAt(index);
+  }
+
+  get siteCheckpointForms() {
+    return this.siteForm.get('site_checkpoints') as FormArray;
+  }
+
+  addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
+    if (siteCheckpoints && siteCheckpoints.length > 0) {
+      siteCheckpoints.forEach((siteCheckpoint, i) => {
+        this.siteCheckpointForms.controls.push(this.fb.group({
+          id: [siteCheckpoint.id],
+          start_time: [this.moment.toDate(siteCheckpoint.startTime, 'HH:mm:ss'), [Validators.required]],
+          end_time: [this.moment.toDate(siteCheckpoint.endTime, 'HH:mm:ss'), [Validators.required]],
+          checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
+          point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
+          worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
+          latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          sequence: [i + 1]
+        }));
+      });
+    } else {
+      const i = this.siteCheckpointForms.controls.length;
+      const siteCheckpointForm = this.fb.group({
+        id : [undefined],
+        start_time: [undefined, [Validators.required]],
+        end_time: [undefined, [Validators.required]],
+        checkpoint_name: ['', [Validators.required]],
+        point_value: [0, [Validators.min(0)]],
+        worker_count: [1, [Validators.min(0)]],
+        latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+        longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+        sequence: [i]
+      });
+      if (this.siteWorkRateForms.controls.length === 1 || i === 0) {
+        siteCheckpointForm.patchValue({
+          start_time: this.siteWorkRateForms.at(0).get('start_time').value,
+          end_time: this.siteWorkRateForms.at(0).get('end_time').value
+        });
+      } else {
+        let d = new Date();
+        siteCheckpointForm.patchValue({
+          start_time: this.moment.format(d, 'HH:mm:ss'),
+          end_time: this.moment.format(d, 'HH:mm:ss')
+        });
+      }
+      this.siteCheckpointForms.controls.push(siteCheckpointForm);
+    }
+  }
+
+  removeSiteCheckpoint(index: number) {
+    this.siteCheckpointForms.removeAt(index);
   }
 
   get siteUserPositionForms() {

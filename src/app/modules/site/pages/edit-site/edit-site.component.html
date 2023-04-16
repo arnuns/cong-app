@@ -208,6 +208,78 @@
         <div class="col">
           <div class="d-flex align-items-center my-2">
             <div>
+              <h3 class="title">ค่าจุด</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col" formArrayName="site_checkpoints">
+          <div class="d-flex align-items-center w-100"
+            *ngFor="let siteCheckpointForm of siteCheckpointForms.controls; let i = index" [formGroupName]="i">
+            <div class="p-2">
+              <span class="badge badge-primary py-2 rounded-badge">{{ i + 1 }}</span>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="start_time">เข้างาน <span class="text-danger"><small>*</small></span></label>
+                <timepicker formControlName="start_time" [showMeridian]="false" [showSpinners]="false"></timepicker>
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="start_time">ออกงาน <span class="text-danger"><small>*</small></span></label>
+                <timepicker formControlName="end_time" [showMeridian]="false" [showSpinners]="false"></timepicker>
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="checkpoint_name">ชื่อจุด <span class="text-danger"><small>*</small></span></label>
+                  <input type="text" class="form-control" formControlName="checkpoint_name" maxlength="150">
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="point_value">ค่าจุด <span
+                    class="text-danger"><small>*</small></span></label>
+                <input type="number" class="form-control" formControlName="point_value">
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="worker_count">จำนวนแรง <span class="text-danger"><small>*</small></span></label>
+                <input type="number" class="form-control" formControlName="worker_count">
+              </div>
+            </div>
+            <div class="p-2 remove-site">
+              <i class="fa fa-times-circle" aria-hidden="true" (click)="removeSiteCheckpoint(i)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <button type="button" class="btn btn-primary button__add" [disabled]="siteWorkRateForms.controls.length < 1" (click)="addSiteCheckpoint()"><i class="fa fa-plus"
+              aria-hidden="true"></i>
+            เพิ่มค่าจุด</button>
+        </div>
+      </div>
+      <div class="row mt-2" *ngIf="alertSiteCheckpoint">
+        <div class="col">
+          <alert type="danger">
+            <strong>ขออภัย!</strong> กรุณากรอกเวลาเข้างาน-ออกงาน ให้ตรงกับข้อมูลเวลาและจำนวนแรงที่ระบุข้างต้น
+          </alert>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="d-flex align-items-center my-2">
+            <div>
               <h3 class="title">อัตราการจ้างพนักงาน</h3>
             </div>
           </div>
