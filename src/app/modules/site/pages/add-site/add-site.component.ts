@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, Validators, FormBuilder } from '@angular/forms';
-import { SiteWorkRate, SiteUserPosition } from 'src/app/core/models/site';
+import { SiteWorkRate, SiteUserPosition, SiteCheckpoint } from 'src/app/core/models/site';
 import { District, Province, Amphur, Postcode } from 'src/app/core/models/address';
 import { combineLatest } from 'rxjs';
 import { UserPosition } from 'src/app/core/models/user';
@@ -44,6 +44,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     is_sso_annual_holiday: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
+    site_checkpoints: this.fb.array([]),
     site_user_positions: this.fb.array([]),
   });
 
@@ -90,7 +91,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         siteId: undefined,
         startTime: this.moment.format(d, 'HH:mm:ss'),
         endTime: this.moment.format(d, 'HH:mm:ss'),
-        workerCount: 0,
+        workerCount: 1,
         createOn: new Date(),
         createBy: undefined
       }]);
@@ -123,6 +124,25 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         workerCount: c.get('worker_count').value,
         createOn: new Date(),
         createBy: undefined
+      }));
+    }
+    let siteCheckpoints: SiteCheckpoint[];
+    if (this.siteCheckpointForms.controls.length > 0) {
+      siteCheckpoints = this.siteCheckpointForms.controls.map(c => ({
+        id: undefined,
+        siteId: undefined,
+        startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
+        endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
+        checkpointName: c.get('checkpoint_name').value,
+        pointValue: c.get('point_value').value,
+        workerCount: c.get('worker_count').value,
+        latitude: c.get('latitude').value,
+        longitude: c.get('longitude').value,
+        sequence: c.get('sequence').value,
+        createOn: new Date(),
+        createBy: undefined,
+        updateOn: new Date(),
+        updateBy: undefined,
       }));
     }
     let siteUserPositions: SiteUserPosition[];
@@ -161,6 +181,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       createOn: undefined,
       createBy: undefined,
       siteWorkRates: siteWorkRates,
+      siteCheckpoints: siteCheckpoints,
       siteUserPositions: siteUserPositions
     }).subscribe(site => {
       this.spinner.hideLoadingSpinner(0);
@@ -212,7 +233,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       this.siteWorkRateForms.controls.push(this.fb.group({
         start_time: [undefined, [Validators.required]],
         end_time: [undefined, [Validators.required]],
-        worker_count: [0, [Validators.min(0)]]
+        worker_count: [1, [Validators.min(0)]]
       }));
     }
   }
@@ -221,6 +242,56 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     this.siteWorkRateForms.removeAt(index);
   }
 
+  get siteCheckpointForms() {
+    return this.siteForm.get('site_checkpoints') as FormArray;
+  }
+
+  addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
+    if (siteCheckpoints && siteCheckpoints.length > 0) {
+      siteCheckpoints.forEach((siteCheckpoint, i) => {
+        this.siteCheckpointForms.controls.push(this.fb.group({
+          start_time: [siteCheckpoint.startTime, [Validators.required]],
+          end_time: [siteCheckpoint.endTime, [Validators.required]],
+          checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
+          point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
+          worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
+          latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          sequence: [i + 1]
+        }));
+      });
+    } else {
+      const i = this.siteCheckpointForms.controls.length;
+      const siteCheckpointForm = this.fb.group({
+        start_time: [undefined, [Validators.required]],
+        end_time: [undefined, [Validators.required]],
+        checkpoint_name: ['', [Validators.required]],
+        point_value: [0, [Validators.min(0)]],
+        worker_count: [1, [Validators.min(0)]],
+        latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+        longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+        sequence: [i]
+      });
+      
+      if (this.siteWorkRateForms.controls.length === 1 || i === 0) {
+        siteCheckpointForm.patchValue({
+          start_time: this.siteWorkRateForms.at(0).get('start_time').value,
+          end_time: this.siteWorkRateForms.at(0).get('end_time').value
+        });
+      } else {
+        let d = new Date();
+        siteCheckpointForm.patchValue({
+          start_time: this.moment.format(d, 'HH:mm:ss'),
+          end_time: this.moment.format(d, 'HH:mm:ss')
+        });
+      }
+      this.siteCheckpointForms.controls.push(siteCheckpointForm);
+    }
+  }
+
+  removeSiteCheckpoint(index: number) {
+    this.siteCheckpointForms.removeAt(index);
+  }
   get siteUserPositionForms() {
     return this.siteForm.get('site_user_positions') as FormArray;
   }
@@ -236,9 +307,9 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       });
     } else {
       this.siteUserPositionForms.controls.push(this.fb.group({
-        user_position_id: [undefined, Validators.required],
-        minimum_manday: [26, Validators.required, Validators.min(0)],
-        hiring_rate_per_day: [undefined, Validators.required, Validators.min(0)]
+        user_position_id: [undefined, [Validators.required]],
+        minimum_manday: [26, [Validators.required, Validators.min(0)]],
+        hiring_rate_per_day: [undefined, [Validators.required, Validators.min(0)]]
       }));
     }
   }
@@ -256,5 +327,17 @@ export class AddSiteComponent implements OnDestroy, OnInit {
   updateView() {
     this.applicationStateService.setIsHiddenLeftMenu = true;
     this.applicationStateService.setIsHiddenSearch = true;
+  }
+
+  get alertSiteCheckpoint(): boolean {
+    let isAlert = false;
+    if (this.siteCheckpointForms.controls.length > 0) {
+      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      if (siteCheckpointTimes.filter(c => !siteWorkRateTimes.includes(c)).length > 0) {
+        isAlert = true;
+      }
+    }
+    return isAlert;
   }
 }
