@@ -56,8 +56,8 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     {sort_no_left: 18, description_left: 'เสื้อกันฝนแบบแยกชิ้น', qty_left: null, price_left: 500, sort_no_right: 40, description_right: 'ป้าย supervisor', qty_right: null, price_right: 200},
     {sort_no_left: 19, description_left: 'เสื้อกันฝนแบบโค้ช', qty_left: null, price_left: 450, sort_no_right: 41, description_right: 'บัตรพนักงาน', qty_right: null, price_right: 200},
     {sort_no_left: 20, description_left: 'นกหวีดพร้อมสาย', qty_left: null, price_left: 65, sort_no_right: 42, description_right: 'ชุดตรวจสารเสพติด', qty_right: null, price_right: 0},
-    {sort_no_left: 21, description_left: 'ถุงมือ', qty_left: null, price_left: 50, sort_no_right: 43, description_right: 'กางเกงขายาวสีขาว', qty_right: null, price_right: 350},
-    {sort_no_left: 22, description_left: 'อาร์มคู่ละ (โลโก้)', qty_left: null, price_left: 50, sort_no_right: 44, description_right: 'หมวกหม้อตาลมีช่อ ไซส์  ..................', qty_right: null, price_right: 380},
+    {sort_no_left: 21, description_left: 'ถุงมือ', qty_left: null, price_left: 50, sort_no_right: 43, description_right: 'กางเกงขายาวสีขาว', qty_right: null, price_right: 380},
+    {sort_no_left: 22, description_left: 'อาร์มคู่ละ (โลโก้)', qty_left: null, price_left: 50, sort_no_right: 44, description_right: 'หมวกหม้อตาลมีช่อ ไซส์  ..................', qty_right: null, price_right: 350},
   ];
 
   constructor(
