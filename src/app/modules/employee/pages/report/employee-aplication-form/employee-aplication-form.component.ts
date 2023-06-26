@@ -36,7 +36,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
   equipments = [
-    {sort_no_left: 1, description_left: 'เสื้อเชิ้ตแขนยาว ไซส์ ..................', qty_left: null, price_left: 550, sort_no_right: 23, description_right: 'หมวกแก็ป Security', qty_right: null, price_right: 200},
+    {sort_no_left: 1, description_left: 'เสื้อเชิ้ตแขนยาว ไซส์ ..................', qty_left: null, price_left: 600, sort_no_right: 23, description_right: 'หมวกแก็ป Security', qty_right: null, price_right: 200},
     {sort_no_left: 2, description_left: 'เสื้อยืดคอกลม สีขาว ไซส์ ..................', qty_left: null, price_left: 130, sort_no_right: 24, description_right: 'รองเท้า Safety ไซส์ ..................', qty_right: null, price_right: 500},
     {sort_no_left: 3, description_left: 'เสื้อยืดคอกลม สีดำ ไซส์ ..................', qty_left: null, price_left: 130, sort_no_right: 25, description_right: 'รองเท้าหนังมัน ไซส์ ..................', qty_right: null, price_right: 700},
     {sort_no_left: 4, description_left: 'เสื้อเชิ้ตแขนสั้น ไซส์ ..................', qty_left: null, price_left: 500, sort_no_right: 26, description_right: 'รองเท้าบูธ ไซส์ ..................', qty_right: null, price_right: 200},
