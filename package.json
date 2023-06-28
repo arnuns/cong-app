@@ -47,7 +47,8 @@
     "nsis": {
       "guid": "b32b2fcf-51ff-46c4-9203-dc54723b7f7c",
       "oneClick": true,
-      "perMachine": true
+      "perMachine": true,
+      "installerIcon": "build/icon.ico"
     },
     "publish": [
       {
