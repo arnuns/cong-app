@@ -43,7 +43,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     search: [''],
     emp_no: [undefined, Validators.required],
     name: [''],
-    checkin_date: [{ value: new Date(), disabled: true }],
+    checkin_date: [new Date(), [Validators.required]],
     leave_date: [undefined],
     checkin_time: [undefined, [Validators.required]],
     leave_time: [undefined]

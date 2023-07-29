@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Application",
   "description": "Cong Application",
-  "version": "2.18.5",
+  "version": "2.18.6",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -47,7 +47,8 @@
     "nsis": {
       "guid": "b32b2fcf-51ff-46c4-9203-dc54723b7f7c",
       "oneClick": true,
-      "perMachine": true
+      "perMachine": true,
+      "installerIcon": "build/icon.ico"
     },
     "publish": [
       {
