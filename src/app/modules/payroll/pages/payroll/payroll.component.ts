@@ -434,165 +434,304 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           };
           const data = [];
           salaries = salaries.sort((a, b) => a.siteId - b.siteId);
+          const sumSalary = salaries.reduce((a, b) => ({
+            id: 0,
+            payrollCycleId: 0,
+            siteId: 0,
+            siteCode: "",
+            siteName: "",
+            site: null!,
+            userPositionId: 0,
+            userPosition: null!,
+            role: null!,
+            empNo: 0,
+            user: null!,
+            title: "",
+            firstName: "",
+            lastName: "",
+            idCardNumber: "",
+            startDate: "",
+            bankAccount: "",
+            bankId: 0,
+            minimumWage: 0,
+            minimumManday: 0,
+            hiringRatePerDay: 0,
+            siteManday: 0,
+            manday: a.manday + b.manday,
+            otherSiteManday: a.otherSiteManday + b.otherSiteManday,
+            otherAdvance: 0,
+            totalWage: a.totalWage + b.totalWage,
+            positionValue: a.positionValue + (b.otherAdvance > 0 ? 0 : b.positionValue),
+            pointValue: a.pointValue + (b.otherAdvance > 0 ? 0 : b.pointValue),
+            annualHolidayDay: a.annualHolidayDay + b.annualHolidayDay,
+            annualHoliday: a.annualHoliday + (b.otherAdvance > 0 ? 0 : b.annualHoliday),
+            telephoneCharge: a.telephoneCharge + (b.otherAdvance > 0 ? 0 : b.telephoneCharge),
+            refund: a.refund + (b.otherAdvance > 0 ? 0 : b.refund),
+            dutyAllowance: a.dutyAllowance + (b.otherAdvance > 0 ? 0 : b.dutyAllowance),
+            dutyAllowanceDaily: a.dutyAllowanceDaily + (b.otherAdvance > 0 ? 0 : b.dutyAllowanceDaily),
+            bonus: a.bonus + (b.otherAdvance > 0 ? 0 : b.bonus),
+            overtime: a.overtime + (b.overtime + (!b.extraOvertime ? 0 : b.extraOvertime)),
+            incomeCompensation: a.incomeCompensation + (b.otherAdvance > 0 ? 0 : b.incomeCompensation),
+            otherIncome: a.otherIncome + (b.otherAdvance > 0 ? 0 : b.otherIncome),
+            extraReplaceValue: a.extraReplaceValue + b.extraReplaceValue,
+            extraOvertime: a.extraOvertime + b.extraOvertime,
+            extraPointValue: a.extraPointValue + b.extraPointValue,
+            socialSecurity: a.socialSecurity + (b.otherAdvance > 0 ? 0 : b.socialSecurity),
+            inventory: a.inventory + (b.otherAdvance > 0 ? 0 : b.inventory),
+            discipline: a.discipline + (b.otherAdvance > 0 ? 0 : b.discipline),
+            transferFee: a.transferFee + (b.otherAdvance > 0 ? 0 : b.transferFee),
+            absence: a.absence + (b.otherAdvance > 0 ? 0 : b.absence),
+            licenseFee: a.licenseFee + (b.otherAdvance > 0 ? 0 : b.licenseFee),
+            advance: a.advance + (b.otherAdvance > 0 ? 0 : b.advance),
+            rentHouse: a.rentHouse + (b.otherAdvance > 0 ? 0 : b.rentHouse),
+            cremationFee: a.cremationFee + (b.otherAdvance > 0 ? 0 : b.cremationFee),
+            otherFee: a.otherFee + (b.otherAdvance > 0 ? 0 : b.otherFee),
+            remark: "",
+            withholdingTax: a.withholdingTax + b.withholdingTax,
+            isComplete: false,
+            isPaid: false,
+            payDay: "",
+            isMonthly: false,
+            isSuspend: false,
+            isTemporary: false,
+            isSocialSecurity: false,
+            isSsoAnnualHoliday: false,
+            createBy: "",
+            createOn: null!,
+            updateBy: "",
+            updateOn: null!,
+            siteSalaries: [],
+            totalIncome: a.totalIncome + b.totalIncome,
+            totalDeductible: a.totalDeductible + b.totalDeductible,
+            totalAmount: a.totalAmount + b.totalAmount,
+          }));
           const totalLength = salaries.length;
-          salaries
-            .forEach((s, index) => {
-              let bankName =
-                s.bankId === 0 ||
-                !this.banks.filter((b) => b.id === s.bankId)[0]
-                  ? ""
-                  : this.banks.filter((b) => b.id === s.bankId)[0].name;
-              console.log(s.socialSecurity > 0 ? 0 : s.socialSecurity);
-              data.push({
-                รหัสพนักงาน: s.empNo,
-                หน่วยงาน: s.siteName,
-                ตำแหน่ง: s.userPosition.nameTH,
-                เลขที่บัตรประชาชน: `'${s.idCardNumber}`,
-                คำนำหน้าชื่อ: s.title,
-                ชื่อ: s.firstName,
-                นามสกุล: s.lastName,
-                วันเริ่มงาน: !s.startDate
-                  ? ""
-                  : this.convertToDateString(s.startDate),
-                เลขที่ใบอนุญาต: !s.user.licenseNo ? "" : `${s.user.licenseNo}`,
-                วันเริ่มต้นใบอนุญาต: !s.user.licenseStartDate
-                  ? ""
-                  : this.convertToDateString(s.user.licenseStartDate),
-                วันสิ้นสุดใบอนุญาต: !s.user.licenseEndDate
-                  ? ""
-                  : this.convertToDateString(s.user.licenseEndDate),
-                ธนาคาร: bankName,
-                เลขที่บัญชี: !s.bankAccount ? "" : `'${s.bankAccount}`,
-                วันทำงานต่อเดือน: s.minimumManday,
-                ค่าแรงขั้นต่ำ: s.minimumWage,
-                แรงละ: s.hiringRatePerDay,
-                จำนวนแรง: s.manday,
-                ค่าแรงปกติ: s.totalWage,
-                ค่าตำแหน่ง: s.otherAdvance > 0 ? 0 : s.positionValue,
-                ค่าจุด: s.otherAdvance > 0 ? 0 : s.pointValue,
-                นักขัตฤกษ์: s.otherAdvance > 0 ? 0 : s.annualHoliday,
-                ค่าโทรศัพท์: s.otherAdvance > 0 ? 0 : s.telephoneCharge,
-                คืนเงินหัก: s.otherAdvance > 0 ? 0 : s.refund,
-                เบี้ยขยัน: s.otherAdvance > 0 ? 0 : s.dutyAllowance,
-                เบี้ยขยันรายวัน:
-                  s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily,
-                โบนัส: s.otherAdvance > 0 ? 0 : s.bonus,
-                "ค่าล่วงเวลา (OT)":
-                  s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
-                ชดเชยรายได้:
-                  s.otherAdvance > 0 ? 0 : s.incomeCompensation,
-                รายได้อื่นๆ: s.otherAdvance > 0 ? 0 : s.otherIncome,
-                ค่าแทนจุด: s.extraReplaceValue,
-                รายได้จุดพิเศษ: s.extraPointValue,
-                ประกันสังคม: s.otherAdvance > 0 ? 0 : s.socialSecurity,
-                ค่าอุปกรณ์: s.otherAdvance > 0 ? 0 : s.inventory,
-                ผิดวินัย: s.otherAdvance > 0 ? 0 : s.discipline,
-                ค่าธรรมเนียม: s.otherAdvance > 0 ? 0 : s.transferFee,
-                ขาดงาน: s.otherAdvance > 0 ? 0 : s.absence,
-                ใบอนุญาต: s.otherAdvance > 0 ? 0 : s.licenseFee,
-                เบิกล่วงหน้า: s.otherAdvance > 0 ? s.advance : s.advance,
-                ค่าเช่าบ้าน: s.otherAdvance > 0 ? 0 : s.rentHouse,
-                พิธีการทางศาสนา: s.otherAdvance > 0 ? 0 : s.cremationFee,
-                รายการหักอื่นๆ: s.otherAdvance > 0 ? 0 : s.otherFee,
-                หมายเหตุ: !s.remark ? "" : s.remark,
-                "ภาษีหัก ณ ที่จ่าย": s.withholdingTax,
-                รวมรายได้: s.totalIncome,
-                รวมรายการหัก: s.totalDeductible,
-                เงินได้สุทธิ: s.totalAmount,
-              });
-              summary = {
-                siteName: s.siteName,
-                totalManday: summary.totalManday + s.manday,
-                totalWage: summary.totalWage + s.totalWage,
-                positionValue:  summary.positionValue + (s.otherAdvance > 0 ? 0 : s.positionValue),
-                pointValue: summary.pointValue + (s.otherAdvance > 0 ? 0 : s.pointValue),
-                annualHoliday: summary.annualHoliday + (s.otherAdvance > 0 ? 0 : s.annualHoliday),
-                telephoneCharge: summary.telephoneCharge + (s.otherAdvance > 0 ? 0 : s.telephoneCharge),
-                refund: summary.refund + (s.otherAdvance > 0 ? 0 : s.refund),
-                dutyAllowance: summary.dutyAllowance + (s.otherAdvance > 0 ? 0 : s.dutyAllowance),
-                dutyAllowanceDaily:
-                  summary.dutyAllowanceDaily + (s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily),
-                bonus: summary.bonus + (s.otherAdvance > 0 ? 0 : s.bonus),
-                ot:
-                  summary.ot +
-                  (s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime)),
-                incomeCompensation:
-                  summary.incomeCompensation + (s.otherAdvance > 0 ? 0 : s.incomeCompensation),
-                otherIncome: summary.otherIncome + (s.otherAdvance > 0 ? 0 : s.otherIncome),
-                extraReplaceValue:
-                  summary.extraReplaceValue + s.extraReplaceValue,
-                extraPointValue: summary.extraPointValue + s.extraPointValue,
-                socialSecurity: summary.socialSecurity + (s.otherAdvance > 0 ? 0 : s.socialSecurity),
-                inventory: summary.inventory + (s.otherAdvance > 0 ? 0 : s.inventory),
-                discipline: summary.discipline + (s.otherAdvance > 0 ? 0 : s.discipline),
-                transferFee: summary.transferFee + (s.otherAdvance > 0 ? 0 : s.transferFee),
-                absence: summary.absence + (s.otherAdvance > 0 ? 0 : s.absence),
-                licenseFee: summary.licenseFee + (s.otherAdvance > 0 ? 0 : s.licenseFee),
-                advance: summary.advance + (s.otherAdvance > 0 ? 0 : s.advance),
-                rentHouse: summary.rentHouse + (s.otherAdvance > 0 ? 0 : s.rentHouse),
-                cremationFee: summary.cremationFee + (s.otherAdvance > 0 ? 0 : s.cremationFee),
-                otherFee: summary.otherFee + (s.otherAdvance > 0 ? 0 : s.otherFee),
-                withholdingTax: summary.withholdingTax + s.withholdingTax,
-                totalIncome: summary.totalIncome + s.totalIncome,
-                totalDeductible: summary.totalDeductible + s.totalDeductible,
-                totalAmount: summary.totalAmount + s.totalAmount,
-              };
-              let nextIndex = index + 1;
-              const isLastRow = nextIndex === totalLength;
-              if (isLastRow || (!isLastRow && salaries[nextIndex].siteId !== s.siteId)) {
-                data.push({
-                  รหัสพนักงาน: "รวม",
-                  หน่วยงาน: "",
-                  ตำแหน่ง: "",
-                  เลขที่บัตรประชาชน: "",
-                  คำนำหน้าชื่อ: "",
-                  ชื่อ: "",
-                  นามสกุล: "",
-                  วันเริ่มงาน: "",
-                  เลขที่ใบอนุญาต: "",
-                  วันเริ่มต้นใบอนุญาต: "",
-                  วันสิ้นสุดใบอนุญาต: "",
-                  ธนาคาร: "",
-                  เลขที่บัญชี: "",
-                  วันทำงานต่อเดือน: "",
-                  ค่าแรงขั้นต่ำ: "",
-                  แรงละ: "",
-                  จำนวนแรง: summary.totalManday,
-                  ค่าแรงปกติ: summary.totalWage,
-                  ค่าตำแหน่ง: summary.positionValue,
-                  ค่าจุด: summary.pointValue,
-                  นักขัตฤกษ์: summary.annualHoliday,
-                  ค่าโทรศัพท์: summary.telephoneCharge,
-                  คืนเงินหัก: summary.refund,
-                  เบี้ยขยัน: summary.dutyAllowance,
-                  เบี้ยขยันรายวัน: summary.dutyAllowanceDaily,
-                  โบนัส: summary.bonus,
-                  "ค่าล่วงเวลา (OT)": summary.ot,
-                  ชดเชยรายได้: summary.incomeCompensation,
-                  รายได้อื่นๆ: summary.otherIncome,
-                  ค่าแทนจุด: summary.extraReplaceValue,
-                  รายได้จุดพิเศษ: summary.extraPointValue,
-                  ประกันสังคม: summary.socialSecurity,
-                  ค่าอุปกรณ์: summary.inventory,
-                  ผิดวินัย: summary.discipline,
-                  ค่าธรรมเนียม: summary.transferFee,
-                  ขาดงาน: summary.absence,
-                  ใบอนุญาต: summary.licenseFee,
-                  เบิกล่วงหน้า: summary.advance,
-                  ค่าเช่าบ้าน: summary.rentHouse,
-                  พิธีการทางศาสนา: summary.cremationFee,
-                  รายการหักอื่นๆ: summary.otherFee,
-                  หมายเหตุ: `*** บรรทัดสรุปรวมของหน่วยงาน ${summary.siteName}`,
-                  "ภาษีหัก ณ ที่จ่าย": summary.withholdingTax,
-                  รวมรายได้: summary.totalIncome,
-                  รวมรายการหัก: summary.totalDeductible,
-                  เงินได้สุทธิ: summary.totalAmount,
-                });
-                for (var key in summary) {
-                  summary[key] = 0;
-                }
-              }
+          salaries.forEach((s, index) => {
+            let bankName =
+              s.bankId === 0 || !this.banks.filter((b) => b.id === s.bankId)[0]
+                ? ""
+                : this.banks.filter((b) => b.id === s.bankId)[0].name;
+            data.push({
+              รหัสพนักงาน: s.empNo,
+              หน่วยงาน: s.siteName,
+              ตำแหน่ง: s.userPosition.nameTH,
+              เลขที่บัตรประชาชน: `'${s.idCardNumber}`,
+              คำนำหน้าชื่อ: s.title,
+              ชื่อ: s.firstName,
+              นามสกุล: s.lastName,
+              วันเริ่มงาน: !s.startDate
+                ? ""
+                : this.convertToDateString(s.startDate),
+              เลขที่ใบอนุญาต: !s.user.licenseNo ? "" : `${s.user.licenseNo}`,
+              วันเริ่มต้นใบอนุญาต: !s.user.licenseStartDate
+                ? ""
+                : this.convertToDateString(s.user.licenseStartDate),
+              วันสิ้นสุดใบอนุญาต: !s.user.licenseEndDate
+                ? ""
+                : this.convertToDateString(s.user.licenseEndDate),
+              ธนาคาร: bankName,
+              เลขที่บัญชี: !s.bankAccount ? "" : `'${s.bankAccount}`,
+              วันทำงานต่อเดือน: s.minimumManday,
+              ค่าแรงขั้นต่ำ: s.minimumWage,
+              แรงละ: s.hiringRatePerDay,
+              จำนวนแรง: s.manday,
+              ค่าแรงปกติ: s.totalWage,
+              ค่าตำแหน่ง: s.otherAdvance > 0 ? 0 : s.positionValue,
+              ค่าจุด: s.otherAdvance > 0 ? 0 : s.pointValue,
+              นักขัตฤกษ์: s.otherAdvance > 0 ? 0 : s.annualHoliday,
+              ค่าโทรศัพท์: s.otherAdvance > 0 ? 0 : s.telephoneCharge,
+              คืนเงินหัก: s.otherAdvance > 0 ? 0 : s.refund,
+              เบี้ยขยัน: s.otherAdvance > 0 ? 0 : s.dutyAllowance,
+              เบี้ยขยันรายวัน: s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily,
+              โบนัส: s.otherAdvance > 0 ? 0 : s.bonus,
+              "ค่าล่วงเวลา (OT)":
+                s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
+              ชดเชยรายได้: s.otherAdvance > 0 ? 0 : s.incomeCompensation,
+              รายได้อื่นๆ: s.otherAdvance > 0 ? 0 : s.otherIncome,
+              ค่าแทนจุด: s.extraReplaceValue,
+              รายได้จุดพิเศษ: s.extraPointValue,
+              ประกันสังคม: s.otherAdvance > 0 ? 0 : s.socialSecurity,
+              ค่าอุปกรณ์: s.otherAdvance > 0 ? 0 : s.inventory,
+              ผิดวินัย: s.otherAdvance > 0 ? 0 : s.discipline,
+              ค่าธรรมเนียม: s.otherAdvance > 0 ? 0 : s.transferFee,
+              ขาดงาน: s.otherAdvance > 0 ? 0 : s.absence,
+              ใบอนุญาต: s.otherAdvance > 0 ? 0 : s.licenseFee,
+              เบิกล่วงหน้า: s.otherAdvance > 0 ? s.advance : s.advance,
+              ค่าเช่าบ้าน: s.otherAdvance > 0 ? 0 : s.rentHouse,
+              พิธีการทางศาสนา: s.otherAdvance > 0 ? 0 : s.cremationFee,
+              รายการหักอื่นๆ: s.otherAdvance > 0 ? 0 : s.otherFee,
+              หมายเหตุ: !s.remark ? "" : s.remark,
+              "ภาษีหัก ณ ที่จ่าย": s.withholdingTax,
+              รวมรายได้: s.totalIncome,
+              รวมรายการหัก: s.totalDeductible,
+              เงินได้สุทธิ: s.totalAmount,
             });
+            summary = {
+              siteName: s.siteName,
+              totalManday: summary.totalManday + s.manday,
+              totalWage: summary.totalWage + s.totalWage,
+              positionValue:
+                summary.positionValue +
+                (s.otherAdvance > 0 ? 0 : s.positionValue),
+              pointValue:
+                summary.pointValue + (s.otherAdvance > 0 ? 0 : s.pointValue),
+              annualHoliday:
+                summary.annualHoliday +
+                (s.otherAdvance > 0 ? 0 : s.annualHoliday),
+              telephoneCharge:
+                summary.telephoneCharge +
+                (s.otherAdvance > 0 ? 0 : s.telephoneCharge),
+              refund: summary.refund + (s.otherAdvance > 0 ? 0 : s.refund),
+              dutyAllowance:
+                summary.dutyAllowance +
+                (s.otherAdvance > 0 ? 0 : s.dutyAllowance),
+              dutyAllowanceDaily:
+                summary.dutyAllowanceDaily +
+                (s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily),
+              bonus: summary.bonus + (s.otherAdvance > 0 ? 0 : s.bonus),
+              ot:
+                summary.ot +
+                (s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime)),
+              incomeCompensation:
+                summary.incomeCompensation +
+                (s.otherAdvance > 0 ? 0 : s.incomeCompensation),
+              otherIncome:
+                summary.otherIncome + (s.otherAdvance > 0 ? 0 : s.otherIncome),
+              extraReplaceValue:
+                summary.extraReplaceValue + s.extraReplaceValue,
+              extraPointValue: summary.extraPointValue + s.extraPointValue,
+              socialSecurity:
+                summary.socialSecurity +
+                (s.otherAdvance > 0 ? 0 : s.socialSecurity),
+              inventory:
+                summary.inventory + (s.otherAdvance > 0 ? 0 : s.inventory),
+              discipline:
+                summary.discipline + (s.otherAdvance > 0 ? 0 : s.discipline),
+              transferFee:
+                summary.transferFee + (s.otherAdvance > 0 ? 0 : s.transferFee),
+              absence: summary.absence + (s.otherAdvance > 0 ? 0 : s.absence),
+              licenseFee:
+                summary.licenseFee + (s.otherAdvance > 0 ? 0 : s.licenseFee),
+              advance: summary.advance + (s.otherAdvance > 0 ? 0 : s.advance),
+              rentHouse:
+                summary.rentHouse + (s.otherAdvance > 0 ? 0 : s.rentHouse),
+              cremationFee:
+                summary.cremationFee +
+                (s.otherAdvance > 0 ? 0 : s.cremationFee),
+              otherFee:
+                summary.otherFee + (s.otherAdvance > 0 ? 0 : s.otherFee),
+              withholdingTax: summary.withholdingTax + s.withholdingTax,
+              totalIncome: summary.totalIncome + s.totalIncome,
+              totalDeductible: summary.totalDeductible + s.totalDeductible,
+              totalAmount: summary.totalAmount + s.totalAmount,
+            };
+            let nextIndex = index + 1;
+            const isLastRow = nextIndex === totalLength;
+            if (
+              isLastRow ||
+              (!isLastRow && salaries[nextIndex].siteId !== s.siteId)
+            ) {
+              data.push({
+                รหัสพนักงาน: "รวม",
+                หน่วยงาน: "",
+                ตำแหน่ง: "",
+                เลขที่บัตรประชาชน: "",
+                คำนำหน้าชื่อ: "",
+                ชื่อ: "",
+                นามสกุล: "",
+                วันเริ่มงาน: "",
+                เลขที่ใบอนุญาต: "",
+                วันเริ่มต้นใบอนุญาต: "",
+                วันสิ้นสุดใบอนุญาต: "",
+                ธนาคาร: "",
+                เลขที่บัญชี: "",
+                วันทำงานต่อเดือน: "",
+                ค่าแรงขั้นต่ำ: "",
+                แรงละ: "",
+                จำนวนแรง: summary.totalManday,
+                ค่าแรงปกติ: summary.totalWage,
+                ค่าตำแหน่ง: summary.positionValue,
+                ค่าจุด: summary.pointValue,
+                นักขัตฤกษ์: summary.annualHoliday,
+                ค่าโทรศัพท์: summary.telephoneCharge,
+                คืนเงินหัก: summary.refund,
+                เบี้ยขยัน: summary.dutyAllowance,
+                เบี้ยขยันรายวัน: summary.dutyAllowanceDaily,
+                โบนัส: summary.bonus,
+                "ค่าล่วงเวลา (OT)": summary.ot,
+                ชดเชยรายได้: summary.incomeCompensation,
+                รายได้อื่นๆ: summary.otherIncome,
+                ค่าแทนจุด: summary.extraReplaceValue,
+                รายได้จุดพิเศษ: summary.extraPointValue,
+                ประกันสังคม: summary.socialSecurity,
+                ค่าอุปกรณ์: summary.inventory,
+                ผิดวินัย: summary.discipline,
+                ค่าธรรมเนียม: summary.transferFee,
+                ขาดงาน: summary.absence,
+                ใบอนุญาต: summary.licenseFee,
+                เบิกล่วงหน้า: summary.advance,
+                ค่าเช่าบ้าน: summary.rentHouse,
+                พิธีการทางศาสนา: summary.cremationFee,
+                รายการหักอื่นๆ: summary.otherFee,
+                หมายเหตุ: `*** บรรทัดสรุปรวมของหน่วยงาน ${summary.siteName}`,
+                "ภาษีหัก ณ ที่จ่าย": summary.withholdingTax,
+                รวมรายได้: summary.totalIncome,
+                รวมรายการหัก: summary.totalDeductible,
+                เงินได้สุทธิ: summary.totalAmount,
+              });
+              for (var key in summary) {
+                summary[key] = 0;
+              }
+            }
+          });
+          data.push({
+            รหัสพนักงาน: "รวมทั้งหมด",
+                หน่วยงาน: "",
+                ตำแหน่ง: "",
+                เลขที่บัตรประชาชน: "",
+                คำนำหน้าชื่อ: "",
+                ชื่อ: "",
+                นามสกุล: "",
+                วันเริ่มงาน: "",
+                เลขที่ใบอนุญาต: "",
+                วันเริ่มต้นใบอนุญาต: "",
+                วันสิ้นสุดใบอนุญาต: "",
+                ธนาคาร: "",
+                เลขที่บัญชี: "",
+                วันทำงานต่อเดือน: "",
+                ค่าแรงขั้นต่ำ: "",
+                แรงละ: "",
+                จำนวนแรง: sumSalary.manday,
+                ค่าแรงปกติ: sumSalary.totalWage,
+                ค่าตำแหน่ง: sumSalary.positionValue,
+                ค่าจุด: sumSalary.pointValue,
+                นักขัตฤกษ์: sumSalary.annualHoliday,
+                ค่าโทรศัพท์: sumSalary.telephoneCharge,
+                คืนเงินหัก: sumSalary.refund,
+                เบี้ยขยัน: sumSalary.dutyAllowance,
+                เบี้ยขยันรายวัน: sumSalary.dutyAllowanceDaily,
+                โบนัส: sumSalary.bonus,
+                "ค่าล่วงเวลา (OT)": sumSalary.overtime,
+                ชดเชยรายได้: sumSalary.incomeCompensation,
+                รายได้อื่นๆ: sumSalary.otherIncome,
+                ค่าแทนจุด: sumSalary.extraReplaceValue,
+                รายได้จุดพิเศษ: sumSalary.extraPointValue,
+                ประกันสังคม: sumSalary.socialSecurity,
+                ค่าอุปกรณ์: sumSalary.inventory,
+                ผิดวินัย: sumSalary.discipline,
+                ค่าธรรมเนียม: sumSalary.transferFee,
+                ขาดงาน: sumSalary.absence,
+                ใบอนุญาต: sumSalary.licenseFee,
+                เบิกล่วงหน้า: sumSalary.advance,
+                ค่าเช่าบ้าน: sumSalary.rentHouse,
+                พิธีการทางศาสนา: sumSalary.cremationFee,
+                รายการหักอื่นๆ: sumSalary.otherFee,
+                หมายเหตุ: '*** บรรทัดสรุปรวมทั้งหมด',
+                "ภาษีหัก ณ ที่จ่าย": sumSalary.withholdingTax,
+                รวมรายได้: sumSalary.totalIncome,
+                รวมรายการหัก: sumSalary.totalDeductible,
+                เงินได้สุทธิ: sumSalary.totalAmount,
+          });
           const BOM = "\uFEFF";
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
