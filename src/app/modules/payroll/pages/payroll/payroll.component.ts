@@ -433,7 +433,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
             totalAmount: 0,
           };
           const data = [];
-          salaries = salaries.sort((a, b) => a.siteId - b.siteId);
+          salaries = salaries.filter(s => s.siteId === 178).sort((a, b) => a.siteId - b.siteId);
           const sumSalary = salaries.reduce((a, b) => ({
             id: 0,
             payrollCycleId: 0,
@@ -556,7 +556,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
               ค่าธรรมเนียม: s.otherAdvance > 0 ? 0 : s.transferFee,
               ขาดงาน: s.otherAdvance > 0 ? 0 : s.absence,
               ใบอนุญาต: s.otherAdvance > 0 ? 0 : s.licenseFee,
-              เบิกล่วงหน้า: s.otherAdvance > 0 ? s.advance : s.advance,
+              เบิกล่วงหน้า: s.otherAdvance > 0 ? 0 : s.advance,
               ค่าเช่าบ้าน: s.otherAdvance > 0 ? 0 : s.rentHouse,
               พิธีการทางศาสนา: s.otherAdvance > 0 ? 0 : s.cremationFee,
               รายการหักอื่นๆ: s.otherAdvance > 0 ? 0 : s.otherFee,
