@@ -434,77 +434,39 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           };
           const data = [];
           salaries = salaries.sort((a, b) => a.siteId - b.siteId);
-          const sumSalary = salaries.reduce((a, b) => ({
-            id: 0,
-            payrollCycleId: 0,
-            siteId: 0,
-            siteCode: "",
-            siteName: "",
-            site: null!,
-            userPositionId: 0,
-            userPosition: null!,
-            role: null!,
-            empNo: 0,
-            user: null!,
-            title: "",
-            firstName: "",
-            lastName: "",
-            idCardNumber: "",
-            startDate: "",
-            bankAccount: "",
-            bankId: 0,
-            minimumWage: 0,
-            minimumManday: 0,
-            hiringRatePerDay: 0,
-            siteManday: 0,
-            manday: a.manday + b.manday,
-            otherSiteManday: a.otherSiteManday + b.otherSiteManday,
-            otherAdvance: 0,
-            totalWage: a.totalWage + b.totalWage,
-            positionValue: a.positionValue + (b.otherAdvance > 0 ? 0 : b.positionValue),
-            pointValue: a.pointValue + (b.otherAdvance > 0 ? 0 : b.pointValue),
-            annualHolidayDay: a.annualHolidayDay + b.annualHolidayDay,
-            annualHoliday: a.annualHoliday + (b.otherAdvance > 0 ? 0 : b.annualHoliday),
-            telephoneCharge: a.telephoneCharge + (b.otherAdvance > 0 ? 0 : b.telephoneCharge),
-            refund: a.refund + (b.otherAdvance > 0 ? 0 : b.refund),
-            dutyAllowance: a.dutyAllowance + (b.otherAdvance > 0 ? 0 : b.dutyAllowance),
-            dutyAllowanceDaily: a.dutyAllowanceDaily + (b.otherAdvance > 0 ? 0 : b.dutyAllowanceDaily),
-            bonus: a.bonus + (b.otherAdvance > 0 ? 0 : b.bonus),
-            overtime: a.overtime + (b.overtime + (!b.extraOvertime ? 0 : b.extraOvertime)),
-            incomeCompensation: a.incomeCompensation + (b.otherAdvance > 0 ? 0 : b.incomeCompensation),
-            otherIncome: a.otherIncome + (b.otherAdvance > 0 ? 0 : b.otherIncome),
-            extraReplaceValue: a.extraReplaceValue + b.extraReplaceValue,
-            extraOvertime: a.extraOvertime + b.extraOvertime,
-            extraPointValue: a.extraPointValue + b.extraPointValue,
-            socialSecurity: a.socialSecurity + (b.otherAdvance > 0 ? 0 : b.socialSecurity),
-            inventory: a.inventory + (b.otherAdvance > 0 ? 0 : b.inventory),
-            discipline: a.discipline + (b.otherAdvance > 0 ? 0 : b.discipline),
-            transferFee: a.transferFee + (b.otherAdvance > 0 ? 0 : b.transferFee),
-            absence: a.absence + (b.otherAdvance > 0 ? 0 : b.absence),
-            licenseFee: a.licenseFee + (b.otherAdvance > 0 ? 0 : b.licenseFee),
-            advance: a.advance + (b.otherAdvance > 0 ? 0 : b.advance),
-            rentHouse: a.rentHouse + (b.otherAdvance > 0 ? 0 : b.rentHouse),
-            cremationFee: a.cremationFee + (b.otherAdvance > 0 ? 0 : b.cremationFee),
-            otherFee: a.otherFee + (b.otherAdvance > 0 ? 0 : b.otherFee),
-            remark: "",
-            withholdingTax: a.withholdingTax + b.withholdingTax,
-            isComplete: false,
-            isPaid: false,
-            payDay: "",
-            isMonthly: false,
-            isSuspend: false,
-            isTemporary: false,
-            isSocialSecurity: false,
-            isSsoAnnualHoliday: false,
-            createBy: "",
-            createOn: null!,
-            updateBy: "",
-            updateOn: null!,
-            siteSalaries: [],
-            totalIncome: a.totalIncome + b.totalIncome,
-            totalDeductible: a.totalDeductible + b.totalDeductible,
-            totalAmount: a.totalAmount + b.totalAmount,
-          }));
+          let sumSalary = {
+            siteName: '',
+            totalManday: 0,
+            totalWage: 0,
+            positionValue: 0,
+            pointValue: 0,
+            annualHoliday: 0,
+            telephoneCharge: 0,
+            refund: 0,
+            dutyAllowance: 0,
+            dutyAllowanceDaily: 0,
+            bonus: 0,
+            ot: 0,
+            incomeCompensation: 0,
+            otherIncome: 0,
+            extraReplaceValue: 0,
+            extraPointValue: 0,
+            socialSecurity: 0,
+            inventory: 0,
+            discipline: 0,
+            transferFee: 0,
+            absence: 0,
+            licenseFee: 0,
+            advance: 0,
+            rentHouse: 0,
+            cremationFee: 0,
+            otherFee: 0,
+            withholdingTax: 0,
+            totalIncome: 0,
+            totalDeductible: 0,
+            totalAmount: 0,
+          };
+
           const totalLength = salaries.length;
           salaries.forEach((s, index) => {
             let bankName =
@@ -631,6 +593,35 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
               isLastRow ||
               (!isLastRow && salaries[nextIndex].siteId !== s.siteId)
             ) {
+              sumSalary.totalManday += summary.totalManday;
+              sumSalary.totalWage += summary.totalWage;
+              sumSalary.positionValue += summary.positionValue;
+              sumSalary.pointValue += summary.pointValue;
+              sumSalary.annualHoliday += summary.annualHoliday;
+              sumSalary.telephoneCharge += summary.telephoneCharge;
+              sumSalary.refund += summary.refund;
+              sumSalary.dutyAllowance += summary.dutyAllowance;
+              sumSalary.dutyAllowanceDaily += summary.dutyAllowanceDaily;
+              sumSalary.bonus += summary.bonus;
+              sumSalary.ot += summary.ot;
+              sumSalary.incomeCompensation += summary.incomeCompensation;
+              sumSalary.otherIncome += summary.otherIncome;
+              sumSalary.extraReplaceValue += summary.extraReplaceValue;
+              sumSalary.extraPointValue += summary.extraPointValue;
+              sumSalary.socialSecurity += summary.socialSecurity;
+              sumSalary.inventory += summary.inventory;
+              sumSalary.discipline += summary.discipline;
+              sumSalary.transferFee += summary.transferFee;
+              sumSalary.absence += summary.absence;
+              sumSalary.licenseFee += summary.licenseFee;
+              sumSalary.advance += summary.advance;
+              sumSalary.rentHouse += summary.rentHouse;
+              sumSalary.cremationFee += summary.cremationFee;
+              sumSalary.otherFee += summary.otherFee;
+              sumSalary.withholdingTax += summary.withholdingTax;
+              sumSalary.totalIncome += summary.totalIncome;
+              sumSalary.totalDeductible += summary.totalDeductible;
+              sumSalary.totalAmount += summary.totalAmount;
               data.push({
                 รหัสพนักงาน: "รวม",
                 หน่วยงาน: "",
@@ -686,51 +677,51 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           });
           data.push({
             รหัสพนักงาน: "รวมทั้งหมด",
-                หน่วยงาน: "",
-                ตำแหน่ง: "",
-                เลขที่บัตรประชาชน: "",
-                คำนำหน้าชื่อ: "",
-                ชื่อ: "",
-                นามสกุล: "",
-                วันเริ่มงาน: "",
-                เลขที่ใบอนุญาต: "",
-                วันเริ่มต้นใบอนุญาต: "",
-                วันสิ้นสุดใบอนุญาต: "",
-                ธนาคาร: "",
-                เลขที่บัญชี: "",
-                วันทำงานต่อเดือน: "",
-                ค่าแรงขั้นต่ำ: "",
-                แรงละ: "",
-                จำนวนแรง: sumSalary.manday,
-                ค่าแรงปกติ: sumSalary.totalWage,
-                ค่าตำแหน่ง: sumSalary.positionValue,
-                ค่าจุด: sumSalary.pointValue,
-                นักขัตฤกษ์: sumSalary.annualHoliday,
-                ค่าโทรศัพท์: sumSalary.telephoneCharge,
-                คืนเงินหัก: sumSalary.refund,
-                เบี้ยขยัน: sumSalary.dutyAllowance,
-                เบี้ยขยันรายวัน: sumSalary.dutyAllowanceDaily,
-                โบนัส: sumSalary.bonus,
-                "ค่าล่วงเวลา (OT)": sumSalary.overtime,
-                ชดเชยรายได้: sumSalary.incomeCompensation,
-                รายได้อื่นๆ: sumSalary.otherIncome,
-                ค่าแทนจุด: sumSalary.extraReplaceValue,
-                รายได้จุดพิเศษ: sumSalary.extraPointValue,
-                ประกันสังคม: sumSalary.socialSecurity,
-                ค่าอุปกรณ์: sumSalary.inventory,
-                ผิดวินัย: sumSalary.discipline,
-                ค่าธรรมเนียม: sumSalary.transferFee,
-                ขาดงาน: sumSalary.absence,
-                ใบอนุญาต: sumSalary.licenseFee,
-                เบิกล่วงหน้า: sumSalary.advance,
-                ค่าเช่าบ้าน: sumSalary.rentHouse,
-                พิธีการทางศาสนา: sumSalary.cremationFee,
-                รายการหักอื่นๆ: sumSalary.otherFee,
-                หมายเหตุ: '*** บรรทัดสรุปรวมทั้งหมด',
-                "ภาษีหัก ณ ที่จ่าย": sumSalary.withholdingTax,
-                รวมรายได้: sumSalary.totalIncome,
-                รวมรายการหัก: sumSalary.totalDeductible,
-                เงินได้สุทธิ: sumSalary.totalAmount,
+            หน่วยงาน: "",
+            ตำแหน่ง: "",
+            เลขที่บัตรประชาชน: "",
+            คำนำหน้าชื่อ: "",
+            ชื่อ: "",
+            นามสกุล: "",
+            วันเริ่มงาน: "",
+            เลขที่ใบอนุญาต: "",
+            วันเริ่มต้นใบอนุญาต: "",
+            วันสิ้นสุดใบอนุญาต: "",
+            ธนาคาร: "",
+            เลขที่บัญชี: "",
+            วันทำงานต่อเดือน: "",
+            ค่าแรงขั้นต่ำ: "",
+            แรงละ: "",
+            จำนวนแรง: sumSalary.totalManday,
+            ค่าแรงปกติ: sumSalary.totalWage,
+            ค่าตำแหน่ง: sumSalary.positionValue,
+            ค่าจุด: sumSalary.pointValue,
+            นักขัตฤกษ์: sumSalary.annualHoliday,
+            ค่าโทรศัพท์: sumSalary.telephoneCharge,
+            คืนเงินหัก: sumSalary.refund,
+            เบี้ยขยัน: sumSalary.dutyAllowance,
+            เบี้ยขยันรายวัน: sumSalary.dutyAllowanceDaily,
+            โบนัส: sumSalary.bonus,
+            "ค่าล่วงเวลา (OT)": sumSalary.ot,
+            ชดเชยรายได้: sumSalary.incomeCompensation,
+            รายได้อื่นๆ: sumSalary.otherIncome,
+            ค่าแทนจุด: sumSalary.extraReplaceValue,
+            รายได้จุดพิเศษ: sumSalary.extraPointValue,
+            ประกันสังคม: sumSalary.socialSecurity,
+            ค่าอุปกรณ์: sumSalary.inventory,
+            ผิดวินัย: sumSalary.discipline,
+            ค่าธรรมเนียม: sumSalary.transferFee,
+            ขาดงาน: sumSalary.absence,
+            ใบอนุญาต: sumSalary.licenseFee,
+            เบิกล่วงหน้า: sumSalary.advance,
+            ค่าเช่าบ้าน: sumSalary.rentHouse,
+            พิธีการทางศาสนา: sumSalary.cremationFee,
+            รายการหักอื่นๆ: sumSalary.otherFee,
+            หมายเหตุ: "*** บรรทัดสรุปรวมทั้งหมด",
+            "ภาษีหัก ณ ที่จ่าย": sumSalary.withholdingTax,
+            รวมรายได้: sumSalary.totalIncome,
+            รวมรายการหัก: sumSalary.totalDeductible,
+            เงินได้สุทธิ: sumSalary.totalAmount,
           });
           const BOM = "\uFEFF";
           const blob = new Blob([BOM + this.papa.unparse(data)], {
