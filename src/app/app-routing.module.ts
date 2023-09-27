@@ -53,6 +53,11 @@ const routes: Routes = [
         path: 'report',
         canLoad: [AuthGuardService],
         loadChildren: './modules/report/report.module#ReportModule'
+      },
+      {
+        path: 'income-tax',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/income-tax/income-tax.module#IncomeTaxModule'
       }
     ]
   }
