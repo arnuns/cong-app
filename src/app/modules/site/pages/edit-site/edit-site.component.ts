@@ -45,6 +45,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     minimum_wage: [undefined, [Validators.required]],
     is_monthly: [false],
     is_sso_annual_holiday: [false],
+    is_minimum_manday: [true],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
@@ -108,6 +109,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
           minimum_wage: this.site.minimumWage,
           is_monthly: this.site.isMonthly,
           is_sso_annual_holiday: this.site.isSsoAnnualHoliday,
+          is_minimum_manday: this.site.isMinimumManday,
           self_checkin: this.site.selfCheckIn
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
@@ -202,6 +204,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
       isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
+      isMinimumManday: this.siteForm.get('is_minimum_manday').value,
       selfCheckIn: this.siteForm.get('self_checkin').value,
       status: true,
       createOn: undefined,

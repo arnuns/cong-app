@@ -1,0 +1,99 @@
+<form [formGroup]="incomeTaxForm">
+    <div class="row menu-title">
+        <div class="col px-0">
+            <div class="d-flex align-items-center w-100">
+                <div>
+                    <h3 class="title noselect">รายการภาษีเงินได้</h3>
+                </div>
+                <div class="ml-3">
+                    <ng-select class="income-tax-type-select" [clearable]="false" formControlName="income_tax_type"
+                    (change)="onIncomeTaxTypeChange($event)">
+                        <ng-option [value]="'ภงด1'">ภ.ง.ด. 1</ng-option>
+                        <ng-option [value]="'ภงด1ก'">ภ.ง.ด. 1ก</ng-option>
+                      </ng-select>
+                </div>
+                <div class="ml-3" *ngIf="incomeTaxForm.get('income_tax_type')?.value === 'ภงด1'">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            รอบเดือน
+                        </div>
+                        <div class="ml-2 form-group mb-0">
+                            <ng-select class="month-select" [clearable]="false" [searchable]="false"
+                                [items]="nameMonths" bindLabel="view" bindValue="viewValue" formControlName="month_name"
+                                (change)="onMonthSelectionChange($event)">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-3" *ngIf="incomeTaxForm.get('income_tax_type')?.value === 'ภงด1ก'">
+                    <div class="d-flex align-items-center">
+                        <div>
+                            รอบปี
+                        </div>
+                        <div class="ml-2 form-group mb-0">
+                            <ng-select class="month-select" [clearable]="false" [searchable]="false"
+                                [items]="nameYears" bindLabel="view" bindValue="viewValue" formControlName="year_name"
+                                (change)="onMonthSelectionChange($event)">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-auto">
+                    <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()" [disabled]="userIncomeTaxes.length <= 0"><i
+                            class="fa fa-cloud-download" aria-hidden="true"></i>
+                        ดาวน์โหลด</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex align-items-center w-100">
+                <div>
+                  <div class="form-group mb-1">
+                    <input type="text" class="form-control search-control" formControlName="search"
+                      placeholder="ค้นหา: ชื่อ, เลขประจำตัวประชาชน">
+                  </div>
+                </div>
+                <div class="ml-2">
+                    <div class="form-group mb-1">
+                      <ng-select class="site-select" [clearable]="true" [items]="sites" bindLabel="name" bindValue="id"
+                        formControlName="site_id" placeholder="เลือกหน่วยงาน"
+                        (change)="onSiteSelectionChange($event)">
+                      </ng-select>
+                    </div>
+                  </div>
+            </div>
+            <table datatable [dtOptions]="dtOptions" class="table table-hover sso-table">
+                <thead>
+                  <tr>
+                    <th>เลขประจำตัวประชาชน</th>
+                    <th>ชื่อ - สกุล ผู้มีเงินได้</th>
+                    <th>หน่วยงาน</th>
+                    <!-- <th>วัน เดือน ปีที่จ่าย</th> -->
+                    <th class="text-right">จำนวนเงินได้ที่จ่าย{{IsMonthly?'ครั้งนี้':'ทั้งปี'}}</th>
+                    <th class="text-right">จำนวนเงินภาษีที่หัก<br />และนำส่ง{{IsMonthly?'ครั้งนี้':'ทั้งปี'}}</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let userIncomeTax of userIncomeTaxes; let i = index">
+                    <td>{{ userIncomeTax.employeeIdCardNumber }}</td>
+                    <td>{{ userIncomeTax.employeeFirstName }} {{ userIncomeTax.employeeLastName }}</td>
+                    <td>{{ userIncomeTax.siteName }}</td>
+                    <!-- <td>{{ IsMonthly ? getThaiDate(userIncomeTax.payrollDate) : '-' }}</td> -->
+                    <td class="text-right">{{ userIncomeTax.income | number:'1.2-2' }}</td>
+                    <td class="text-right">{{ userIncomeTax.tax | number:'1.2-2' }}</td>
+                    <td>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="userIncomeTaxes?.length == 0">
+                  <tr>
+                    <td colspan="6" class="text-center">Data not found!</td>
+                  </tr>
+                <tbody>
+              </table>
+        </div>
+    </div>
+</form>

@@ -73,6 +73,7 @@ export interface Salary {
     isTemporary: boolean;
     isSocialSecurity: boolean;
     isSsoAnnualHoliday: boolean;
+    isMinimumManday: boolean;
     createBy: string;
     createOn: Date;
     updateBy: string;

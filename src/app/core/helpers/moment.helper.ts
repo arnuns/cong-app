@@ -22,4 +22,8 @@ export class MomentHelper {
     toDate(input, format) {
         return moment(input, format).toDate();
     }
+
+    get currentDate() {
+        return moment();
+    }
 }
