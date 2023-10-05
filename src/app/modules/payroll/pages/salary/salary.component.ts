@@ -125,6 +125,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     fee_other: [undefined],
     is_social_security: [true],
     is_sso_annual_holiday: [false],
+    is_minimum_manday: [true],
     remark: [''],
     is_complete: [false],
     is_suspend: [false],
@@ -278,6 +279,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         fee_other: undefined,
         is_social_security: true,
         is_sso_annual_holiday: false,
+        is_minimum_manday: true,
         remark: '',
         is_complete: false,
         is_suspend: false,
@@ -397,7 +399,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       if (!val || isNaN(number)) {
         this.updateSalaryForm.get('annual_holiday').setValue(0);
       } else {
-        this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay;
+        // this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay;
         const hiringRatePerday = this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value).length > 0 
           ? Number(this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay)
           : 0;
@@ -519,13 +521,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       fee_other: undefined,
       is_social_security: salary.isSocialSecurity,
       is_sso_annual_holiday: salary.isSsoAnnualHoliday,
+      is_minimum_manday: salary.isMinimumManday,
       remark: salary.remark,
       is_complete: salary.isComplete,
       is_suspend: salary.isSuspend,
       is_paid: salary.isPaid
     });
     this.payrollService.getSiteSalary(this.payrollCycleId, salary.id).subscribe(siteSalaries => {
-      // console.log(siteSalaries);
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
         siteSalaries.forEach(siteSalary => {
@@ -749,6 +751,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       isTemporary: getValue('is_temporary'),
       isSocialSecurity: getValue('is_social_security'),
       isSsoAnnualHoliday: getValue('is_sso_annual_holiday'),
+      isMinimumManday: getValue('is_minimum_manday'),
       createBy: null,
       createOn: null,
       updateBy: null,
@@ -972,13 +975,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     const incomeCompensation = this.updateSalaryForm.get('income_compensation').value
       ? Number(this.updateSalaryForm.get('income_compensation').value) : 0;
     if (this.site.isMonthly) {
-      if (sumSiteManday > minimumManday) {
+      if (sumSiteManday > minimumManday && this.site.isMinimumManday) {
         resultManday = minimumManday;
       } else {
         resultManday = sumSiteManday;
       }
     } else {
-      if (sumSiteManday > (minimumManday / 2)) {
+      if (sumSiteManday > (minimumManday / 2) && this.site.isMinimumManday) {
         resultManday = (minimumManday / 2);
       } else {
         resultManday = sumSiteManday;

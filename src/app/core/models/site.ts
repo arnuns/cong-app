@@ -18,6 +18,7 @@ export interface Site {
     isPayroll: boolean;
     isMonthly: boolean;
     isSsoAnnualHoliday: boolean;
+    isMinimumManday: boolean;
     selfCheckIn: boolean;
     status: boolean;
     createOn: Date;
