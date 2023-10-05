@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="ml-auto">
-                    <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()"><i
+                    <button type="button" class="btn btn-outline-primary button__export" (click)="onExport()" [disabled]="userIncomeTaxes.length <= 0"><i
                             class="fa fa-cloud-download" aria-hidden="true"></i>
                         ดาวน์โหลด</button>
                 </div>
@@ -69,7 +69,8 @@
                   <tr>
                     <th>เลขประจำตัวประชาชน</th>
                     <th>ชื่อ - สกุล ผู้มีเงินได้</th>
-                    <th>วัน เดือน ปีที่จ่าย</th>
+                    <th>หน่วยงาน</th>
+                    <!-- <th>วัน เดือน ปีที่จ่าย</th> -->
                     <th class="text-right">จำนวนเงินได้ที่จ่าย{{IsMonthly?'ครั้งนี้':'ทั้งปี'}}</th>
                     <th class="text-right">จำนวนเงินภาษีที่หัก<br />และนำส่ง{{IsMonthly?'ครั้งนี้':'ทั้งปี'}}</th>
                     <th></th>
@@ -78,8 +79,9 @@
                 <tbody>
                   <tr *ngFor="let userIncomeTax of userIncomeTaxes; let i = index">
                     <td>{{ userIncomeTax.employeeIdCardNumber }}</td>
-                    <td>{{ userIncomeTax.employeeName }}</td>
-                    <td>{{ IsMonthly ? getThaiDate(userIncomeTax.payrollDate) : '-' }}</td>
+                    <td>{{ userIncomeTax.employeeFirstName }} {{ userIncomeTax.employeeLastName }}</td>
+                    <td>{{ userIncomeTax.siteName }}</td>
+                    <!-- <td>{{ IsMonthly ? getThaiDate(userIncomeTax.payrollDate) : '-' }}</td> -->
                     <td class="text-right">{{ userIncomeTax.income | number:'1.2-2' }}</td>
                     <td class="text-right">{{ userIncomeTax.tax | number:'1.2-2' }}</td>
                     <td>

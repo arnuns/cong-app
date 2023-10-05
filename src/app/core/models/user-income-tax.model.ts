@@ -5,6 +5,9 @@ export interface UserIncomeTax {
     payrollDate: Date;
     empNo: number;
     employeeIdCardNumber: string;
+    employeeTitle: string;
+    employeeFirstName: string;
+    employeeLastName: string;
     employeeName: string;
     siteId: number;
     sitetName: string;

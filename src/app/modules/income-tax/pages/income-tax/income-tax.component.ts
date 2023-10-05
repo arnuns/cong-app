@@ -22,6 +22,8 @@ import { ApplicationStateService } from "src/app/core/services/application-state
 import { PayrollService } from "src/app/core/services/payroll.service";
 import { SiteService } from "src/app/core/services/site.service";
 import { UserService } from "src/app/core/services/user.service";
+import * as FileSaver from "file-saver";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-income-tax",
@@ -105,7 +107,72 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
     this.refreshTable();
   }
 
-  onExport() {}
+  onExport() {
+    this.spinner.showLoadingSpinner();
+    const monthNameArray = this.userIncomeTaxFilter.monthName
+      ? this.userIncomeTaxFilter.monthName.split(",")
+      : undefined;
+    const isMonthly = this.userIncomeTaxFilter.incomeTaxType == "ภงด1";
+    let data = [];
+    this.payrollService
+      .getUserIncomeTaxFilter(
+        this.userIncomeTaxFilter.incomeTaxType,
+        this.userIncomeTaxFilter.search,
+        isMonthly
+          ? Number(monthNameArray[0])
+          : Number(this.userIncomeTaxFilter.yearName),
+        isMonthly ? Number(monthNameArray[1]) : undefined,
+        this.userIncomeTaxFilter.siteId,
+        this.userIncomeTaxFilter.sort_by,
+        this.userIncomeTaxFilter.sort_column,
+        1,
+        10000
+      )
+      .subscribe(
+        (result) => {
+          const csvData = result.data.map((d) => ({
+            fix01: "00",
+            companyTax: environment.companyTax,
+            blank01: "",
+            employeeIdCardNumber: d.employeeIdCardNumber,
+            blank02: "",
+            title: d.employeeTitle,
+            firstName: d.employeeFirstName,
+            lastName: d.employeeLastName,
+            blank03: "",
+            blank04: "",
+            blank05: "",
+            dateOfMonth: this.moment.currentDate.format("MM"),
+            year: this.moment.currentDate.format("YYYY"),
+            fix02: "1",
+            payrollDate: this.moment.currentDate.format("DDMMYYYY"),
+            fix03: "100",
+            income: d.income.toFixed(2),
+            tax: d.tax.toFixed(2),
+            fix04: "1",
+          }));
+          const csv = this.papa.unparse(csvData, {
+            delimiter: "|",
+            header: false,
+          });
+          const BOM = "\uFEFF";
+          const blob = new Blob([BOM + csv], {
+            type: "text/csv;charset=utf-8",
+          });
+          FileSaver.saveAs(
+            blob,
+            `income_tax_${
+              this.userIncomeTaxFilter.incomeTaxType
+            }_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
+          );
+          this.spinner.hideLoadingSpinner();
+          // result.data;
+        },
+        (error) => {
+          this.spinner.hideLoadingSpinner();
+        }
+      );
+  }
 
   refreshTable() {
     this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -147,11 +214,13 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
           let sortColumn = "name";
           if (orders[0] === 1) {
             sortColumn = "name";
-          } else if (orders[0] === 2) {
-            sortColumn = "payrollDate";
-          } else if (orders[0] === 3) {
+          }
+          //  else if (orders[0] === 2) {
+          //   sortColumn = "payrollDate";
+          // } 
+          else if (orders[0] === 2) {
             sortColumn = "income";
-          } else if (orders[0] === 4) {
+          } else if (orders[0] === 3) {
             sortColumn = "tax";
           } else {
             sortColumn = "idCardNo";
@@ -228,7 +297,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
       columns: [
         { width: "170px", orderable: false },
         null,
-        { width: "130px", orderable: false },
+        { width: "300px", orderable: false },
         { width: "200px", orderable: false },
         { width: "200px", orderable: false },
       ],
