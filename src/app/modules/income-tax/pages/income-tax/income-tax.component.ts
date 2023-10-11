@@ -72,6 +72,12 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
           dtInstance.draw();
         });
       });
+
+    this.incomeTaxForm.get("income_tax_type").valueChanges.subscribe((val) => {
+      if (String(val) === "ภงด1ก") {
+        this.incomeTaxForm.get("site_id").setValue(undefined);
+      }
+    });
   }
 
   ngOnDestroy(): void {
@@ -114,6 +120,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
       : undefined;
     const isMonthly = this.userIncomeTaxFilter.incomeTaxType == "ภงด1";
     let data = [];
+    const payrollDate = isMonthly ? this.getLastDateOfMonth(Number(monthNameArray[0]), Number(monthNameArray[1])) : this.moment.currentDate.toDate();
     this.payrollService
       .getUserIncomeTaxFilter(
         this.userIncomeTaxFilter.incomeTaxType,
@@ -130,27 +137,41 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
       )
       .subscribe(
         (result) => {
-          const csvData = result.data.map((d) => ({
-            fix01: "00",
-            companyTax: environment.companyTax,
-            blank01: "",
-            employeeIdCardNumber: d.employeeIdCardNumber,
-            blank02: "",
-            title: d.employeeTitle,
-            firstName: d.employeeFirstName,
-            lastName: d.employeeLastName,
-            blank03: "",
-            blank04: "",
-            blank05: "",
-            dateOfMonth: this.moment.currentDate.format("MM"),
-            year: this.moment.currentDate.format("YYYY"),
-            fix02: "1",
-            payrollDate: this.moment.currentDate.format("DDMMYYYY"),
-            fix03: "100",
-            income: d.income.toFixed(2),
-            tax: d.tax.toFixed(2),
-            fix04: "1",
-          }));
+          const csvData = result.data
+            .sort((a, b) => {
+              if (a.siteId !== b.siteId) {
+                return a.siteId - b.siteId;
+              }
+              const firstNameComparison = a.employeeFirstName.localeCompare(
+                b.employeeFirstName
+              );
+              if (firstNameComparison !== 0) {
+                return firstNameComparison;
+              }
+              return a.employeeLastName.localeCompare(b.employeeLastName);
+            })
+            .map((d) => ({
+              fix01: "00",
+              companyTax: environment.companyTax,
+              blank01: "401N",
+              blank02: "00000",
+              employeeIdCardNumber: d.employeeIdCardNumber,
+              blank03: "",
+              title: d.employeeTitle,
+              firstName: d.employeeFirstName,
+              lastName: d.employeeLastName,
+              blank04: "",
+              blank05: "",
+              blank06: "",
+              dateOfMonth: this.moment.format(payrollDate, "MM"),
+              year: this.moment.format(payrollDate, "YYYY"),
+              fix02: "1",
+              payrollDate: this.moment.format(payrollDate, "DDMMYYYY"),
+              fix03: "100",
+              income: d.income.toFixed(2),
+              tax: d.tax.toFixed(2),
+              fix04: "1",
+            }));
           const csv = this.papa.unparse(csvData, {
             delimiter: "|",
             header: false,
@@ -217,7 +238,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
           }
           //  else if (orders[0] === 2) {
           //   sortColumn = "payrollDate";
-          // } 
+          // }
           else if (orders[0] === 2) {
             sortColumn = "income";
           } else if (orders[0] === 3) {
@@ -344,6 +365,10 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
     return months;
   }
 
+  getLastDateOfMonth(year, month) {
+    const nextMonthFirstDay = new Date(year, month + 1, 0);
+    return nextMonthFirstDay;
+  }
   getThaiDate(date) {
     return new Date(date).toLocaleDateString("th-TH");
   }

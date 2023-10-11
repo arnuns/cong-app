@@ -55,7 +55,7 @@
                       placeholder="ค้นหา: ชื่อ, เลขประจำตัวประชาชน">
                   </div>
                 </div>
-                <div class="ml-2">
+                <div class="ml-2" *ngIf="incomeTaxForm.get('income_tax_type')?.value === 'ภงด1'">
                     <div class="form-group mb-1">
                       <ng-select class="site-select" [clearable]="true" [items]="sites" bindLabel="name" bindValue="id"
                         formControlName="site_id" placeholder="เลือกหน่วยงาน"

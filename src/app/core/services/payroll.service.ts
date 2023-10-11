@@ -270,7 +270,7 @@ export class PayrollService extends BaseService {
     page_size: number
   ) {
     let params = new HttpParams()
-      .set("tax_type", tax_type)  
+      .set("tax_type", tax_type)
       .set("search", !search ? "" : search)
       .set("sort_column", sort_column)
       .set("sort_by", sort_by)
@@ -289,6 +289,17 @@ export class PayrollService extends BaseService {
 
     return this.http.get<Paginate<UserIncomeTax[]>>(
       `${this.serviceUrl}/Payroll/UserIncomeTax/Filter`,
+      { params: params }
+    );
+  }
+
+  getUserIncomeTaxSumByMonth(year: number, month: number, siteId: number) {
+    let params = new HttpParams()
+      .set("year", String(year))
+      .set("month", String(month))
+      .set("site_id", String(siteId));
+    return this.http.get<UserIncomeTax[]>(
+      `${this.serviceUrl}/Payroll/UserIncomeTax/SummaryByMonth`,
       { params: params }
     );
   }
