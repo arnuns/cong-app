@@ -307,7 +307,7 @@
                 <strong>เงินได้สะสม</strong>
               </div>
               <div class="p-1">
-                <strong>-</strong>
+                <strong>{{ getAccumulatedIncome(userSalary.empNo) === 0 ? '-' : getAccumulatedIncome(userSalary.empNo) | number:'1.2-2' }}</strong>
               </div>
             </div>
           </td>
@@ -317,7 +317,7 @@
                 <strong>ภาษีสะสม</strong>
               </div>
               <div class="p-1">
-                <strong>-</strong>
+                <strong>{{ getAccumulatedTaxes(userSalary.empNo) === 0 ? '-' : getAccumulatedTaxes(userSalary.empNo) | number:'1.2-2' }}</strong>
               </div>
             </div>
           </td>
