@@ -120,7 +120,12 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
       : undefined;
     const isMonthly = this.userIncomeTaxFilter.incomeTaxType == "ภงด1";
     let data = [];
-    const payrollDate = isMonthly ? this.getLastDateOfMonth(Number(monthNameArray[0]), Number(monthNameArray[1])) : this.moment.currentDate.toDate();
+    const payrollDate = isMonthly
+      ? this.getLastDateOfMonth(
+          Number(monthNameArray[0]),
+          Number(monthNameArray[1])
+        )
+      : this.moment.currentDate.toDate();
     this.payrollService
       .getUserIncomeTaxFilter(
         this.userIncomeTaxFilter.incomeTaxType,
@@ -150,8 +155,8 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
               }
               return a.employeeLastName.localeCompare(b.employeeLastName);
             })
-            .map((d) => ({
-              fix01: "00",
+            .map((d, index) => ({
+              fix01: this.padLeft((index + 1),4),
               companyTax: environment.companyTax,
               blank01: "401N",
               blank02: "00000",
@@ -371,6 +376,18 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   }
   getThaiDate(date) {
     return new Date(date).toLocaleDateString("th-TH");
+  }
+
+  padLeft(
+    value: string | number,
+    desiredLength: number,
+    padCharacter: string = "0"
+  ): string {
+    let stringValue = String(value);
+    while (stringValue.length < desiredLength) {
+      stringValue = padCharacter + stringValue;
+    }
+    return stringValue;
   }
 
   get IsMonthly() {

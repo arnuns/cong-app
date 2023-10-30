@@ -665,10 +665,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
                 พิธีการทางศาสนา: summary.cremationFee,
                 รายการหักอื่นๆ: summary.otherFee,
                 หมายเหตุ: `*** บรรทัดสรุปรวมของหน่วยงาน ${summary.siteName}`,
-                "ภาษีหัก ณ ที่จ่าย": summary.withholdingTax,
-                รวมรายได้: summary.totalIncome,
-                รวมรายการหัก: summary.totalDeductible,
-                เงินได้สุทธิ: summary.totalAmount,
+                "ภาษีหัก ณ ที่จ่าย": summary.withholdingTax.toFixed(2),
+                รวมรายได้: summary.totalIncome.toFixed(2),
+                รวมรายการหัก: summary.totalDeductible.toFixed(2),
+                เงินได้สุทธิ: summary.totalAmount.toFixed(2),
               });
               for (var key in summary) {
                 summary[key] = 0;
@@ -718,10 +718,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
             พิธีการทางศาสนา: sumSalary.cremationFee,
             รายการหักอื่นๆ: sumSalary.otherFee,
             หมายเหตุ: "*** บรรทัดสรุปรวมทั้งหมด",
-            "ภาษีหัก ณ ที่จ่าย": sumSalary.withholdingTax,
-            รวมรายได้: sumSalary.totalIncome,
-            รวมรายการหัก: sumSalary.totalDeductible,
-            เงินได้สุทธิ: sumSalary.totalAmount,
+            "ภาษีหัก ณ ที่จ่าย": sumSalary.withholdingTax.toFixed(2),
+            รวมรายได้: sumSalary.totalIncome.toFixed(2),
+            รวมรายการหัก: sumSalary.totalDeductible.toFixed(2),
+            เงินได้สุทธิ: sumSalary.totalAmount.toFixed(2),
           });
           const BOM = "\uFEFF";
           const blob = new Blob([BOM + this.papa.unparse(data)], {
