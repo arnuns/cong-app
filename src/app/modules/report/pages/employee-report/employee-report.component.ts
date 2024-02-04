@@ -236,7 +236,9 @@ export class EmployeeReportComponent implements OnInit {
         'ธนาคาร': u.bankName,
         'เลขที่บัญชี': `'${u.bankAccount}`,
         'เบอร์โทรศัพท์': u.phoneNo,
+        'ระดับการศึกษา': u.education,
         'วันเกิด': !u.birthdate ? '' : this.convertToDateString(u.birthdate),
+        'อายุ': this.convertToAge(u.birthdate),
         'น้ำหนัก': u.weight && u.weight > 0 ? u.weight : '',
         'ส่วนสูง': u.height && u.height > 0 ? u.height : '',
         'เชื้อชาติ': u.ethnicity,
@@ -261,6 +263,20 @@ export class EmployeeReportComponent implements OnInit {
       console.log(error);
       this.spinner.hideLoadingSpinner();
     });
+  }
+
+  convertToAge(birthdate: string): number {
+    if (birthdate === undefined || birthdate === null || birthdate === '') {
+      return 0;
+    }
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   }
 
   convertToDateString(dateString: string): string {
