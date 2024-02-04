@@ -14,6 +14,6 @@ export const environment = {
   companyWebsite: 'www.gmsecurity.co.th',
   companyTax: '0195556001137',
   appVersion: require('../../package.json').version,
-  releaseDate: '22/12/2023',
+  releaseDate: '04/02/2024',
   storageBucketUrl: 'https://storage.googleapis.com/cong-app.appspot.com'
 };
