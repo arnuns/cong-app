@@ -433,7 +433,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
             totalAmount: 0,
           };
           const data = [];
-          salaries = salaries.sort((a, b) => a.siteId - b.siteId);
+          salaries = salaries.sort((a, b) => a.siteName < b.siteName ? -1 : a.siteName > b.siteName ? 1 : 0);
           let sumSalary = {
             siteName: '',
             totalManday: 0,
