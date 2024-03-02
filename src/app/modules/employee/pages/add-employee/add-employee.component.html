@@ -1116,8 +1116,8 @@
           </div>
         </div>
         <div class="row px-2">
-          <div class="col-md-3">
-            <label for="sso_start_date">วันยื่นเข้าประกันสังคม</label>
+          <div class="col-md-4">
+            <label for="sso_start_date">วันเริ่มสิทธิประกันสังคม</label>
             <div class="input-group">
               <input class="form-control form-control--date" onkeydown="return false" #ssostartdp="bsDatepicker"
                 bsDatepicker
@@ -1129,7 +1129,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label for="sso_end_date">วันยื่นออกประกันสังคม</label>
             <div class="input-group">
               <input class="form-control form-control--date" onkeydown="return false" #ssoenddp="bsDatepicker"
@@ -1142,7 +1142,11 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-2">
+          </div>
+        </div>
+        <div class="row px-2">
+          <div class="col-md-8">
             <div class="form-group">
               <label for="hospital_id">สถานพยาบาลประกันสังคม</label>
               <ng-select placeholder="กรุณาเลือก" class="title-select" [clearable]="false" [items]="hospitals"
