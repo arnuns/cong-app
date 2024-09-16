@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { SiteService } from 'src/app/core/services/site.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { UserService } from 'src/app/core/services/user.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-site',
@@ -49,7 +50,10 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     site_user_positions: this.fb.array([]),
   });
 
+
+
   constructor(
+    private datePipe: DatePipe,
     private applicationStateService: ApplicationStateService,
     private fb: FormBuilder,
     private moment: MomentHelper,
@@ -134,6 +138,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         siteId: undefined,
         startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
         endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
+        timeRange: '08:00 - 17:00',
         checkpointName: c.get('checkpoint_name').value,
         pointValue: c.get('point_value').value,
         workerCount: c.get('worker_count').value,
@@ -193,6 +198,101 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     });
   }
 
+  // onSubmit() {
+  //   this.spinner.showLoadingSpinner();
+  //   let siteWorkRates: SiteWorkRate[] = [];
+  //   let siteCheckpoints: SiteCheckpoint[] = [];
+  //   let siteUserPositions: SiteUserPosition[] = [];
+  
+  //   if (this.siteWorkRateForms.controls.length > 0) {
+  //     siteWorkRates = this.siteWorkRateForms.controls.map(c => {
+  //       const startTime = this.moment.format(c.get('start_time').value, 'HH:mm:ss');
+  //       const endTime = this.moment.format(c.get('end_time').value, 'HH:mm:ss');
+  //       console.log(`Start Time: ${startTime}, End Time: ${endTime}`);
+  //       return {
+  //         siteId: undefined,
+  //         startTime: startTime,
+  //         endTime: endTime,
+  //         workerCount: c.get('worker_count').value,
+  //         createOn: new Date(),
+  //         createBy: undefined
+  //       };
+  //     });
+  //   }
+  
+  //   if (this.siteCheckpointForms.controls.length > 0) {
+  //     siteCheckpoints = this.siteCheckpointForms.controls.map(c => {
+  //       const startTime = this.moment.format(c.get('start_time').value, 'HH:mm:ss');
+  //       const endTime = this.moment.format(c.get('end_time').value, 'HH:mm:ss');
+  //       const timeRange = `${startTime} - ${endTime}`;  // Example of creating timeRange
+  //       console.log(`Checkpoint Start Time: ${startTime}, Checkpoint End Time: ${endTime}`);
+  //       return {
+  //         id: undefined,
+  //         siteId: undefined,
+  //         startTime: startTime,
+  //         endTime: endTime,
+  //         checkpointName: c.get('checkpoint_name').value,
+  //         pointValue: c.get('point_value').value,
+  //         workerCount: c.get('worker_count').value,
+  //         latitude: c.get('latitude').value,
+  //         longitude: c.get('longitude').value,
+  //         sequence: c.get('sequence').value,
+  //         createOn: new Date(),
+  //         createBy: undefined,
+  //         updateOn: new Date(),
+  //         updateBy: undefined,
+  //       };
+  //     });
+  //   }
+  
+  //   if (this.siteUserPositionForms.controls.length > 0) {
+  //     siteUserPositions = this.siteUserPositionForms.controls.map(c => ({
+  //       siteId: undefined,
+  //       userPositionId: c.get('user_position_id').value,
+  //       site: null,
+  //       userPosition: null,
+  //       hiringRatePerDay: c.get('hiring_rate_per_day').value,
+  //       minimumManday: c.get('minimum_manday').value,
+  //       createOn: new Date(),
+  //       createBy: undefined,
+  //       updateOn: new Date(),
+  //       updateBy: undefined,
+  //     }));
+  //   }
+  
+  //   this.siteService.addSite({
+  //     id: null,
+  //     code: this.siteForm.get('code').value,
+  //     name: this.siteForm.get('name').value,
+  //     fullName: this.siteForm.get('full_name').value,
+  //     address: this.siteForm.get('address').value,
+  //     districtId: this.siteForm.get('district_id').value,
+  //     amphurId: this.siteForm.get('amphur_id').value,
+  //     provinceId: this.siteForm.get('province_id').value,
+  //     province: null,
+  //     latitude: this.siteForm.get('latitude').value,
+  //     longitude: this.siteForm.get('longitude').value,
+  //     minimumWage: this.siteForm.get('minimum_wage').value,
+  //     isPayroll: true,
+  //     isMonthly: this.siteForm.get('is_monthly').value,
+  //     isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
+  //     isMinimumManday: this.siteForm.get('is_minimum_manday').value,
+  //     selfCheckIn: this.siteForm.get('self_checkin').value,
+  //     status: true,
+  //     createOn: undefined,
+  //     createBy: undefined,
+  //     siteWorkRates: siteWorkRates,
+  //     siteCheckpoints: siteCheckpoints,
+  //     siteUserPositions: siteUserPositions
+  //   }).subscribe(site => {
+  //     this.spinner.hideLoadingSpinner(0);
+  //     this.router.navigate(['/site']);
+  //   }, error => {
+  //     this.spinner.hideLoadingSpinner(0);
+  //   });
+  // }
+    
+
   onSelectionProvince(province: Province) {
     this.user_amphurs = this.amphurs.filter(a => a.provinceId === province.id);
     this.user_districts = [];
@@ -235,62 +335,112 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       this.siteWorkRateForms.controls.push(this.fb.group({
         start_time: [undefined, [Validators.required]],
         end_time: [undefined, [Validators.required]],
-        worker_count: [1, [Validators.min(0)]]
+        worker_count: [1, [Validators.min(0)]],
       }));
     }
   }
 
   removeSiteWorkRate(index: number) {
     this.siteWorkRateForms.removeAt(index);
+
+    // อัพเดตฟอร์มค่าจุดตามฟอร์มเวลาใหม่
+  this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
+    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+      this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
+    );
+
+    const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
+
+    checkpointForm.patchValue({
+      time_range: defaultTimeRange
+    });
+
+    // อัพเดต start_time และ end_time ตามค่าใหม่ใน dropdown
+    this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
+   });
   }
 
   get siteCheckpointForms() {
     return this.siteForm.get('site_checkpoints') as FormArray;
   }
 
+  
+  formatTime(date: Date): string {
+    return this.datePipe.transform(date, 'HH:mm') || '';
+  }
+
+
   addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
+    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+      this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
+    );
+
+    // คำนวณลำดับของ SiteCheckpointForm ที่จะถูกเพิ่มใหม่
+    const i = this.siteCheckpointForms.controls.length;
+
+    // ตั้งค่า defaultTimeRange เป็นค่าว่างเพื่อแสดง "เลือกรายการ"
+    const defaultTimeRange = '';
+
     if (siteCheckpoints && siteCheckpoints.length > 0) {
-      siteCheckpoints.forEach((siteCheckpoint, i) => {
+      siteCheckpoints.forEach((siteCheckpoint, index) => {
         this.siteCheckpointForms.controls.push(this.fb.group({
           start_time: [siteCheckpoint.startTime, [Validators.required]],
           end_time: [siteCheckpoint.endTime, [Validators.required]],
+          time_range: [defaultTimeRange, [Validators.required]], 
           checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
           point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
           worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
           latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-          sequence: [i + 1]
+          sequence: [index + 1]
         }));
       });
     } else {
-      const i = this.siteCheckpointForms.controls.length;
       const siteCheckpointForm = this.fb.group({
-        start_time: [undefined, [Validators.required]],
-        end_time: [undefined, [Validators.required]],
+        start_time: [null, [Validators.required]],
+        end_time: [null, [Validators.required]],
+        time_range: [defaultTimeRange, [Validators.required]],
         checkpoint_name: ['', [Validators.required]],
         point_value: [0, [Validators.min(0)]],
         worker_count: [1, [Validators.min(0)]],
         latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-        sequence: [i]
+        sequence: [i + 1]
       });
-      
-      if (this.siteWorkRateForms.controls.length === 1 || i === 0) {
-        siteCheckpointForm.patchValue({
-          start_time: this.siteWorkRateForms.at(0).get('start_time').value,
-          end_time: this.siteWorkRateForms.at(0).get('end_time').value
-        });
-      } else {
+
+      // หากไม่มีข้อมูลในฟอร์ม SiteWorkRate เลยให้กำหนดค่าเริ่มต้นเป็นปัจจุบัน
+      if (this.siteWorkRateForms.controls.length === 0) {
         let d = new Date();
         siteCheckpointForm.patchValue({
           start_time: this.moment.format(d, 'HH:mm:ss'),
-          end_time: this.moment.format(d, 'HH:mm:ss')
+          end_time: this.moment.format(d, 'HH:mm:ss'),
+          time_range: defaultTimeRange
         });
       }
+
       this.siteCheckpointForms.controls.push(siteCheckpointForm);
     }
   }
 
+  onTimeRangeChange(event: any, index: number) {
+    const selectedTimeRange = event.target.value;
+    const siteCheckpointForm = this.siteCheckpointForms.at(index);
+
+    if (selectedTimeRange === '') {  // ตรวจสอบว่าเลือก "เลือกรายการ"
+        siteCheckpointForm.patchValue({
+            start_time: null,
+            end_time: null
+        });
+    } else {
+        const [startTime, endTime] = selectedTimeRange.split(' - ');
+        siteCheckpointForm.patchValue({
+            start_time: this.moment.toDate(startTime, 'HH:mm'),
+            end_time: this.moment.toDate(endTime, 'HH:mm')
+        });
+    }
+}
+
+  
   removeSiteCheckpoint(index: number) {
     this.siteCheckpointForms.removeAt(index);
   }
