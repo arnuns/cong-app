@@ -222,14 +222,14 @@
             </div>
             <div class="p-2">
               <div class="form-group">
-                <label for="start_time">เข้างาน <span class="text-danger"><small>*</small></span></label>
-                <timepicker formControlName="start_time" [showMeridian]="false" [showSpinners]="false"></timepicker>
-              </div>
-            </div>
-            <div class="p-2">
-              <div class="form-group">
-                <label for="start_time">ออกงาน <span class="text-danger"><small>*</small></span></label>
-                <timepicker formControlName="end_time" [showMeridian]="false" [showSpinners]="false"></timepicker>
+                <label for="time_range">ช่วงเวลา <span class="text-danger"><small>*</small></span></label>
+                <select class="form-control time-range-select" formControlName="time_range" (change)="onTimeRangeChange($event, i)">
+                  <option value="">เลือกรายการ</option>
+                  <option *ngFor="let workRate of siteWorkRateForms.controls" 
+                          [value]="formatTime(workRate.get('start_time').value) + ' - ' + formatTime(workRate.get('end_time').value)">
+                    {{ formatTime(workRate.get('start_time').value) + ' - ' + formatTime(workRate.get('end_time').value) }}
+                  </option>
+                </select>
               </div>
             </div>
             <div class="p-2">

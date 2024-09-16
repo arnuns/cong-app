@@ -11,6 +11,8 @@ import { combineLatest } from 'rxjs';
 import { UserService } from 'src/app/core/services/user.service';
 import { Province, Amphur, District, Postcode } from 'src/app/core/models/address';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { DatePipe } from '@angular/common';
+
 
 @Component({
   selector: 'app-edit-site',
@@ -52,7 +54,10 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     site_user_positions: this.fb.array([]),
   });
 
+
+
   constructor(
+    private datePipe: DatePipe,
     private activatedRoute: ActivatedRoute,
     private applicationStateService: ApplicationStateService,
     private fb: FormBuilder,
@@ -161,6 +166,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         siteId: undefined,
         startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
         endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
+        timeRange: '08:00 - 17:00',
         checkpointName: c.get('checkpoint_name').value,
         pointValue: c.get('point_value').value,
         workerCount: c.get('worker_count').value,
@@ -220,6 +226,8 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     });
   }
 
+
+
   onSelectionProvince(province: Province) {
     this.user_amphurs = this.amphurs.filter(a => a.provinceId === province.id);
     this.user_districts = [];
@@ -270,55 +278,103 @@ export class EditSiteComponent implements OnDestroy, OnInit {
 
   removeSiteWorkRate(index: number) {
     this.siteWorkRateForms.removeAt(index);
+
+    // อัพเดตฟอร์มค่าจุดตามฟอร์มเวลาใหม่
+  this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
+    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+      this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
+    );
+
+    const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
+
+    checkpointForm.patchValue({
+      time_range: defaultTimeRange
+    });
+
+    // อัพเดต start_time และ end_time ตามค่าใหม่ใน dropdown
+    this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
+   });
   }
 
   get siteCheckpointForms() {
     return this.siteForm.get('site_checkpoints') as FormArray;
   }
 
+  formatTime(date: Date): string {
+    return this.datePipe.transform(date, 'HH:mm') || '';
+  }
+
+
   addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
+    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+      this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
+    );
+
+    // คำนวณลำดับของ SiteCheckpointForm ที่จะถูกเพิ่มใหม่
+    const i = this.siteCheckpointForms.controls.length;
+
+    // ตั้งค่า defaultTimeRange เป็นค่าว่างเพื่อแสดง "เลือกรายการ"
+    const defaultTimeRange = '';
+
     if (siteCheckpoints && siteCheckpoints.length > 0) {
-      siteCheckpoints.forEach((siteCheckpoint, i) => {
+      siteCheckpoints.forEach((siteCheckpoint, index) => {
         this.siteCheckpointForms.controls.push(this.fb.group({
-          id: [siteCheckpoint.id],
-          start_time: [this.moment.toDate(siteCheckpoint.startTime, 'HH:mm:ss'), [Validators.required]],
-          end_time: [this.moment.toDate(siteCheckpoint.endTime, 'HH:mm:ss'), [Validators.required]],
+          start_time: [siteCheckpoint.startTime, [Validators.required]],
+          end_time: [siteCheckpoint.endTime, [Validators.required]],
+          time_range: [defaultTimeRange, [Validators.required]], 
           checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
           point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
           worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
           latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-          sequence: [i + 1]
+          sequence: [index + 1]
         }));
       });
     } else {
-      const i = this.siteCheckpointForms.controls.length;
       const siteCheckpointForm = this.fb.group({
-        id : [undefined],
-        start_time: [undefined, [Validators.required]],
-        end_time: [undefined, [Validators.required]],
+        start_time: [null, [Validators.required]],
+        end_time: [null, [Validators.required]],
+        time_range: [defaultTimeRange, [Validators.required]],
         checkpoint_name: ['', [Validators.required]],
         point_value: [0, [Validators.min(0)]],
         worker_count: [1, [Validators.min(0)]],
         latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-        sequence: [i]
+        sequence: [i + 1]
       });
-      if (this.siteWorkRateForms.controls.length === 1 || i === 0) {
-        siteCheckpointForm.patchValue({
-          start_time: this.siteWorkRateForms.at(0).get('start_time').value,
-          end_time: this.siteWorkRateForms.at(0).get('end_time').value
-        });
-      } else {
+
+      // หากไม่มีข้อมูลในฟอร์ม SiteWorkRate เลยให้กำหนดค่าเริ่มต้นเป็นปัจจุบัน
+      if (this.siteWorkRateForms.controls.length === 0) {
         let d = new Date();
         siteCheckpointForm.patchValue({
           start_time: this.moment.format(d, 'HH:mm:ss'),
-          end_time: this.moment.format(d, 'HH:mm:ss')
+          end_time: this.moment.format(d, 'HH:mm:ss'),
+          time_range: defaultTimeRange
         });
       }
+
       this.siteCheckpointForms.controls.push(siteCheckpointForm);
     }
   }
+
+  onTimeRangeChange(event: any, index: number) {
+    const selectedTimeRange = event.target.value;
+    const siteCheckpointForm = this.siteCheckpointForms.at(index);
+
+    if (selectedTimeRange === '') {  // ตรวจสอบว่าเลือก "เลือกรายการ"
+        siteCheckpointForm.patchValue({
+            start_time: null,
+            end_time: null
+        });
+    } else {
+        const [startTime, endTime] = selectedTimeRange.split(' - ');
+        siteCheckpointForm.patchValue({
+            start_time: this.moment.toDate(startTime, 'HH:mm'),
+            end_time: this.moment.toDate(endTime, 'HH:mm')
+        });
+    }
+}
+
 
   removeSiteCheckpoint(index: number) {
     this.siteCheckpointForms.removeAt(index);
