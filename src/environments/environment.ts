@@ -1,7 +1,8 @@
 export const environment = {
   production: false,
   apiUrl: 'https://api-dev.congapps.com',
-  // apiUrl: 'http://localhost:5000',
+  //apiUrl: 'https://localhost:44384',
+
   apiVersion: '2.0',
   basePath: '../assets',
   companyFullName: 'บริษัท รักษาความปลอดภัย จีเซฟ จำกัด',

@@ -20,6 +20,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./edit-site.component.scss']
 })
 export class EditSiteComponent implements OnDestroy, OnInit {
+  isFirstLoad = true; 
   public defaultImagePath = environment.basePath;
   siteId: number;
   site: Site;
@@ -140,6 +141,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
           this.addSiteUserPosition();
         }
       }
+      this.isFirstLoad = false;
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.spinner.hideLoadingSpinner(0);
@@ -300,9 +302,22 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     return this.siteForm.get('site_checkpoints') as FormArray;
   }
 
-  formatTime(date: Date): string {
-    return this.datePipe.transform(date, 'HH:mm') || '';
-  }
+  formatTime(time: any): string {
+    if (!time) {
+        return '';
+    }
+    
+    // ถ้า time เป็น string ในรูปแบบ HH:mm:ss ให้แปลงเป็น Date ที่ถูกต้องก่อน
+    if (typeof time === 'string' && time.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        const [hours, minutes, seconds] = time.split(':').map(Number);
+        const tempDate = new Date();
+        tempDate.setHours(hours, minutes, seconds, 0); // ตั้งเวลาของวันที่นี้ให้เป็นเวลาที่ต้องการ
+        return this.datePipe.transform(tempDate, 'HH:mm') || '';
+    }
+
+    // กรณีอื่น ๆ ให้ใช้ DatePipe ปกติ
+    return this.datePipe.transform(time, 'HH:mm') || '';
+}
 
 
   addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
@@ -312,15 +327,26 @@ export class EditSiteComponent implements OnDestroy, OnInit {
 
     // คำนวณลำดับของ SiteCheckpointForm ที่จะถูกเพิ่มใหม่
     const i = this.siteCheckpointForms.controls.length;
-
-    // ตั้งค่า defaultTimeRange เป็นค่าว่างเพื่อแสดง "เลือกรายการ"
-    const defaultTimeRange = '';
+    let defaultTimeRange = '';
+    
+    if (this.isFirstLoad) {
+      // กรณีโหลดครั้งแรก แสดงค่า time_range จาก siteCheckpoint
+      siteCheckpoints.forEach((siteCheckpoint, index) => {
+       defaultTimeRange = `${this.formatTime(siteCheckpoint.startTime)} - ${this.formatTime(siteCheckpoint.endTime)}`;
+      });
+      
+    }
+    else{
+      // ตั้งค่า defaultTimeRange เป็นค่าว่างเพื่อแสดง "เลือกรายการ"
+      defaultTimeRange = '';
+    }
 
     if (siteCheckpoints && siteCheckpoints.length > 0) {
       siteCheckpoints.forEach((siteCheckpoint, index) => {
         this.siteCheckpointForms.controls.push(this.fb.group({
-          start_time: [siteCheckpoint.startTime, [Validators.required]],
-          end_time: [siteCheckpoint.endTime, [Validators.required]],
+          id: [this.isFirstLoad ? siteCheckpoint.id : undefined],
+          start_time: [this.moment.toDate(siteCheckpoint.startTime, 'HH:mm'), [Validators.required]],
+          end_time: [this.moment.toDate(siteCheckpoint.endTime, 'HH:mm'), [Validators.required]],
           time_range: [defaultTimeRange, [Validators.required]], 
           checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
           point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
