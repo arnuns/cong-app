@@ -150,7 +150,6 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         updateOn: new Date(),
         updateBy: undefined,
       }));
-      console.log('SiteCheckpoints:', siteCheckpoints);
     }
     let siteUserPositions: SiteUserPosition[];
     if (this.siteUserPositionForms.controls.length > 0) {
