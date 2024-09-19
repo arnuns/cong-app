@@ -161,25 +161,35 @@ export class EditSiteComponent implements OnDestroy, OnInit {
         createBy: undefined
       }));
     }
-    let siteCheckpoints: SiteCheckpoint[];
+    let siteCheckpoints: SiteCheckpoint[] = [];
     if (this.siteCheckpointForms.controls.length > 0) {
-      siteCheckpoints = this.siteCheckpointForms.controls.map(c => ({
-        id: c.get('id').value,
-        siteId: undefined,
-        startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
-        endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
-        timeRange: '08:00 - 17:00',
-        checkpointName: c.get('checkpoint_name').value,
-        pointValue: c.get('point_value').value,
-        workerCount: c.get('worker_count').value,
-        latitude: c.get('latitude').value,
-        longitude: c.get('longitude').value,
-        sequence: c.get('sequence').value,
-        createOn: new Date(),
-        createBy: undefined,
-        updateOn: new Date(),
-        updateBy: undefined,
-      }));
+      siteCheckpoints = this.siteCheckpointForms.controls.map(c => {
+        let id;
+        if (c.get('id') && c.get('id').value) {
+          id = c.get('id').value;
+        } else {
+          id = undefined;
+        }
+  
+        return {
+          id: id,  // ใช้ค่าที่ตรวจสอบแล้ว
+          siteId: undefined,
+          startTime: this.moment.format(c.get('start_time').value, 'HH:mm:ss'),
+          endTime: this.moment.format(c.get('end_time').value, 'HH:mm:ss'),
+          timeRange: '08:00 - 17:00',
+          checkpointName: c.get('checkpoint_name').value,
+          pointValue: c.get('point_value').value,
+          workerCount: c.get('worker_count').value,
+          latitude: c.get('latitude').value,
+          longitude: c.get('longitude').value,
+          sequence: c.get('sequence').value,
+          createOn: new Date(),
+          createBy: undefined,
+          updateOn: new Date(),
+          updateBy: undefined,
+        };
+      });
+      console.log(siteCheckpoints);
     }
     let siteUserPositions: SiteUserPosition[];
     if (this.siteUserPositionForms.controls.length > 0) {
@@ -320,68 +330,60 @@ export class EditSiteComponent implements OnDestroy, OnInit {
 }
 
 
-  addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
-    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
+  const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
       this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
-    );
+  );
 
-    // คำนวณลำดับของ SiteCheckpointForm ที่จะถูกเพิ่มใหม่
-    const i = this.siteCheckpointForms.controls.length;
-    let defaultTimeRange = '';
-    
-    if (this.isFirstLoad) {
-      // กรณีโหลดครั้งแรก แสดงค่า time_range จาก siteCheckpoint
-      siteCheckpoints.forEach((siteCheckpoint, index) => {
-       defaultTimeRange = `${this.formatTime(siteCheckpoint.startTime)} - ${this.formatTime(siteCheckpoint.endTime)}`;
-      });
-      
-    }
-    else{
-      // ตั้งค่า defaultTimeRange เป็นค่าว่างเพื่อแสดง "เลือกรายการ"
-      defaultTimeRange = '';
-    }
+  // ตรวจสอบและสร้างฟอร์มใหม่สำหรับ SiteCheckpoint แต่ละรายการ
+  const i = this.siteCheckpointForms.controls.length;
 
-    if (siteCheckpoints && siteCheckpoints.length > 0) {
+  // ตรวจสอบเงื่อนไขว่าควรแสดงฟอร์มใหม่สำหรับ siteCheckpoints หรือไม่
+  if (siteCheckpoints && siteCheckpoints.length > 0 && this.isFirstLoad) {
       siteCheckpoints.forEach((siteCheckpoint, index) => {
-        this.siteCheckpointForms.controls.push(this.fb.group({
-          id: [this.isFirstLoad ? siteCheckpoint.id : undefined],
-          start_time: [this.moment.toDate(siteCheckpoint.startTime, 'HH:mm'), [Validators.required]],
-          end_time: [this.moment.toDate(siteCheckpoint.endTime, 'HH:mm'), [Validators.required]],
-          time_range: [defaultTimeRange, [Validators.required]], 
-          checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
-          point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
-          worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
-          latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-          longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-          sequence: [index + 1]
-        }));
+          const defaultTimeRange = `${this.formatTime(siteCheckpoint.startTime)} - ${this.formatTime(siteCheckpoint.endTime)}`;
+
+          // Push ฟอร์มพร้อมค่า defaultTimeRange
+          this.siteCheckpointForms.controls.push(this.fb.group({
+              id: [siteCheckpoint.id],
+              start_time: [this.moment.toDate(siteCheckpoint.startTime, 'HH:mm'), [Validators.required]],
+              end_time: [this.moment.toDate(siteCheckpoint.endTime, 'HH:mm'), [Validators.required]],
+              time_range: [defaultTimeRange, [Validators.required]],
+              checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
+              point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
+              worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
+              latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+              longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+              sequence: [index + 1]
+          }));
       });
-    } else {
+      this.isFirstLoad = false; // ป้องกันไม่ให้โหลดค่าเดิมซ้ำ
+  } else {
       const siteCheckpointForm = this.fb.group({
-        start_time: [null, [Validators.required]],
-        end_time: [null, [Validators.required]],
-        time_range: [defaultTimeRange, [Validators.required]],
-        checkpoint_name: ['', [Validators.required]],
-        point_value: [0, [Validators.min(0)]],
-        worker_count: [1, [Validators.min(0)]],
-        latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-        longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-        sequence: [i + 1]
+          start_time: [null, [Validators.required]],
+          end_time: [null, [Validators.required]],
+          time_range: ['', [Validators.required]],
+          checkpoint_name: ['', [Validators.required]],
+          point_value: [0, [Validators.min(0), Validators.required]],
+          worker_count: [1, [Validators.min(0), Validators.required]],
+          latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
+          sequence: [i + 1]
       });
 
-      // หากไม่มีข้อมูลในฟอร์ม SiteWorkRate เลยให้กำหนดค่าเริ่มต้นเป็นปัจจุบัน
+      // กำหนดค่า time range เริ่มต้นหากยังไม่มีข้อมูล siteWorkRate
       if (this.siteWorkRateForms.controls.length === 0) {
-        let d = new Date();
-        siteCheckpointForm.patchValue({
-          start_time: this.moment.format(d, 'HH:mm:ss'),
-          end_time: this.moment.format(d, 'HH:mm:ss'),
-          time_range: defaultTimeRange
-        });
+          let d = new Date();
+          siteCheckpointForm.patchValue({
+              start_time: this.moment.format(d, 'HH:mm:ss'),
+              end_time: this.moment.format(d, 'HH:mm:ss'),
+              time_range: ''
+          });
       }
 
       this.siteCheckpointForms.controls.push(siteCheckpointForm);
-    }
   }
+}
 
   onTimeRangeChange(event: any, index: number) {
     const selectedTimeRange = event.target.value;
