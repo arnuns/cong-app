@@ -183,7 +183,7 @@
             <div class="p-2">
               <div class="form-group">
                 <label for="worker_count">จำนวนแรง <span class="text-danger"><small>*</small></span></label>
-                <input type="number" class="form-control" formControlName="worker_count">
+                <input type="number" class="form-control" formControlName="worker_count" (input)="onKeyWorkerCountAtSiteWorkRate($event, i)">
               </div>
             </div>
             <div class="p-2 remove-site" *ngIf="i > 0">
@@ -249,7 +249,7 @@
             <div class="p-2">
               <div class="form-group">
                 <label for="worker_count">จำนวนแรง <span class="text-danger"><small>*</small></span></label>
-                <input type="number" class="form-control" formControlName="worker_count">
+                <input type="number" class="form-control" formControlName="worker_count" (input)="onKeyWorkerCountAtSiteCheckpoint($event, i)">
               </div>
             </div>
             <div class="p-2 remove-site">
@@ -266,13 +266,20 @@
         </div>
       </div>
       <div class="row mt-2" *ngIf="alertSiteCheckpoint">
-        <div class="col">
+        <div class="col alert">
           <alert type="danger">
             <strong>ขออภัย!</strong> กรุณากรอกเวลาเข้างาน-ออกงาน ให้ตรงกับข้อมูลเวลาและจำนวนแรงที่ระบุข้างต้น
           </alert>
         </div>
       </div>
-      <div class="row">
+      <div class="row mt-2" *ngIf="alertOverWorkerCountAtSiteCheckpoint">
+        <div class="col alert">
+          <alert type="danger">
+            <strong>ขออภัย!</strong> จำนวนแรงรวมของค่าจุดในช่วงเวลาเดียวกัน จะต้องไม่เกินกว่าจำนวนแรงของข้อมูลเวลาและจำนวนแรงที่ระบุข้างต้น
+          </alert>
+        </div>
+      </div>
+      <div class="row mt-4">
         <div class="col">
           <div class="line"></div>
         </div>
@@ -382,7 +389,7 @@
               </div>
             </div>
             <div class="ml-auto">
-              <button type="submit" [disabled]="!f.form.valid || alertSiteCheckpoint" class="btn button__save">บันทึกข้อมูล</button>
+              <button type="submit" [disabled]="!f.form.valid || alertSiteCheckpoint || alertOverWorkerCountAtSiteCheckpoint" class="btn button__save">บันทึกข้อมูล</button>
             </div>
           </div>
         </div>
