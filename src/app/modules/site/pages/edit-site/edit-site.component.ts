@@ -283,7 +283,7 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       this.siteWorkRateForms.controls.push(this.fb.group({
         start_time: [undefined, [Validators.required]],
         end_time: [undefined, [Validators.required]],
-        worker_count: [0, [Validators.min(0)]]
+        worker_count: [1, [Validators.min(0)]]
       }));
     }
   }
@@ -292,24 +292,33 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     this.siteWorkRateForms.removeAt(index);
 
     // อัพเดตฟอร์มค่าจุดตามฟอร์มเวลาใหม่
-  this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
-    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
-      this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
-    );
+  // this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
+  //   const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+  //     this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
+  //   );
 
-    const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
+  //   const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
 
-    checkpointForm.patchValue({
-      time_range: defaultTimeRange
-    });
+  //   checkpointForm.patchValue({
+  //     time_range: defaultTimeRange
+  //   });
 
     // อัพเดต start_time และ end_time ตามค่าใหม่ใน dropdown
-    this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
-   });
+  //   this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
+  //  });
   }
 
   get siteCheckpointForms() {
     return this.siteForm.get('site_checkpoints') as FormArray;
+  }
+
+  onKeyWorkerCountAtSiteWorkRate(event: any, index: number) {
+    const workerCountValue = event.target.value;
+    const siteWorkRateForms = this.siteWorkRateForms.at(index);
+
+    if (workerCountValue && workerCountValue <= 0) {
+      siteWorkRateForms.patchValue({ worker_count: 1 })
+    }
   }
 
   formatTime(time: any): string {
@@ -408,6 +417,15 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     this.siteCheckpointForms.removeAt(index);
   }
 
+  onKeyWorkerCountAtSiteCheckpoint(event: any, index: number) {
+    const workerCountValue = event.target.value;
+    const siteCheckpointForms = this.siteCheckpointForms.at(index);
+
+    if (workerCountValue && workerCountValue <= 0) {
+      siteCheckpointForms.patchValue({ worker_count: 1 })
+    }
+  }
+
   get siteUserPositionForms() {
     return this.siteForm.get('site_user_positions') as FormArray;
   }
@@ -469,4 +487,62 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     return isAlert;
   }
 
+  get alertOverWorkerCountAtSiteCheckpoint(): boolean {
+    let isAlert = false;
+
+    let siteWorkRateMapAndSumWorkerCount = {};
+    if (this.siteWorkRateForms.controls.length > 0) {
+      this.siteWorkRateForms.controls.forEach(element => {
+        const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
+        
+        if (!siteWorkRateMapAndSumWorkerCount[key]) {
+          siteWorkRateMapAndSumWorkerCount[key] = {
+            startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
+            endTime: this.moment.format(element.get('end_time').value, 'HH:mm:ss'),
+            workerCount: 0
+          };
+        }
+        siteWorkRateMapAndSumWorkerCount[key].workerCount += element.get('worker_count').value;
+      });
+    }
+
+    if (this.siteCheckpointForms.controls.length > 0) {
+      let siteCheckpointMapAndSumWorkerCount = {};
+      this.siteCheckpointForms.controls.forEach(element => {
+        const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
+        
+        if (!siteCheckpointMapAndSumWorkerCount[key]) {
+          siteCheckpointMapAndSumWorkerCount[key] = {
+            startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
+            endTime: this.moment.format(element.get('end_time').value, 'HH:mm:ss'),
+            workerCount: 0
+          };
+        }
+        siteCheckpointMapAndSumWorkerCount[key].workerCount += element.get('worker_count').value;
+      });
+
+      // Validate worker counts
+      for (const key in siteCheckpointMapAndSumWorkerCount) {
+        if (siteCheckpointMapAndSumWorkerCount.hasOwnProperty(key)) {
+          if (this.isNullOrUndefined(key) || key === "Invalid date-Invalid date") {
+            continue;
+          }
+      
+          const checkpointData = siteCheckpointMapAndSumWorkerCount[key];
+          const workRateData = siteWorkRateMapAndSumWorkerCount[key];
+      
+          // If there's a matching work rate record, compare the worker counts
+          if (workRateData && checkpointData.workerCount > workRateData.workerCount) {
+            isAlert = true;
+            break;
+          }
+        }
+      }
+    }
+    return isAlert;
+  }
+
+  isNullOrUndefined(value: any): boolean {
+    return value === '' || value === null || value === undefined;
+  }
 }
