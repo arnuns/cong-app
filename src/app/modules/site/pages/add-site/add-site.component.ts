@@ -325,17 +325,17 @@ export class AddSiteComponent implements OnDestroy, OnInit {
   addSiteWorkRate(siteWorkRates: SiteWorkRate[] = null) {
     if (siteWorkRates && siteWorkRates.length > 0) {
       siteWorkRates.forEach(siteWorkRate => {
-        this.siteWorkRateForms.controls.push(this.fb.group({
+        this.siteWorkRateForms.push(this.fb.group({
           start_time: [this.moment.toDate(siteWorkRate.startTime, 'HH:mm:ss'), [Validators.required]],
           end_time: [this.moment.toDate(siteWorkRate.endTime, 'HH:mm:ss'), [Validators.required]],
-          worker_count: [siteWorkRate.workerCount, [Validators.min(0)]]
+          worker_count: [siteWorkRate.workerCount, [Validators.required, Validators.min(0)]]
         }));
       });
     } else {
-      this.siteWorkRateForms.controls.push(this.fb.group({
+      this.siteWorkRateForms.push(this.fb.group({
         start_time: [undefined, [Validators.required]],
         end_time: [undefined, [Validators.required]],
-        worker_count: [1, [Validators.min(0)]],
+        worker_count: [1, [Validators.required, Validators.min(0)]]
       }));
     }
   }
@@ -392,13 +392,13 @@ export class AddSiteComponent implements OnDestroy, OnInit {
 
     if (siteCheckpoints && siteCheckpoints.length > 0) {
       siteCheckpoints.forEach((siteCheckpoint, index) => {
-        this.siteCheckpointForms.controls.push(this.fb.group({
+        this.siteCheckpointForms.push(this.fb.group({
           start_time: [siteCheckpoint.startTime, [Validators.required]],
           end_time: [siteCheckpoint.endTime, [Validators.required]],
           time_range: [defaultTimeRange, [Validators.required]], 
           checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
-          point_value: [siteCheckpoint.pointValue, [Validators.min(0)]],
-          worker_count: [siteCheckpoint.workerCount, [Validators.min(0)]],
+          point_value: [siteCheckpoint.pointValue, [Validators.min(0), Validators.required]],
+          worker_count: [siteCheckpoint.workerCount, [Validators.min(0), Validators.required]],
           latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           sequence: [index + 1]
@@ -410,8 +410,8 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         end_time: [null, [Validators.required]],
         time_range: [defaultTimeRange, [Validators.required]],
         checkpoint_name: ['', [Validators.required]],
-        point_value: [0, [Validators.min(0)]],
-        worker_count: [1, [Validators.min(0)]],
+        point_value: [0, [Validators.min(0), Validators.required]],
+        worker_count: [1, [Validators.min(0), Validators.required]],
         latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         sequence: [i + 1]
@@ -427,7 +427,7 @@ export class AddSiteComponent implements OnDestroy, OnInit {
         });
       }
 
-      this.siteCheckpointForms.controls.push(siteCheckpointForm);
+      this.siteCheckpointForms.push(siteCheckpointForm);
     }
   }
 
@@ -468,14 +468,14 @@ export class AddSiteComponent implements OnDestroy, OnInit {
   addSiteUserPosition(siteUserPositions: SiteUserPosition[] = null) {
     if (siteUserPositions && siteUserPositions.length > 0) {
       siteUserPositions.forEach(siteUserPosition => {
-        this.siteUserPositionForms.controls.push(this.fb.group({
+        this.siteUserPositionForms.push(this.fb.group({
           user_position_id: [siteUserPosition.userPositionId, [Validators.required]],
           minimum_manday: [siteUserPosition.minimumManday, [Validators.required, Validators.min(0)]],
           hiring_rate_per_day: [siteUserPosition.hiringRatePerDay, [Validators.required, Validators.min(0)]]
         }));
       });
     } else {
-      this.siteUserPositionForms.controls.push(this.fb.group({
+      this.siteUserPositionForms.push(this.fb.group({
         user_position_id: [undefined, [Validators.required]],
         minimum_manday: [26, [Validators.required, Validators.min(0)]],
         hiring_rate_per_day: [undefined, [Validators.required, Validators.min(0)]]
