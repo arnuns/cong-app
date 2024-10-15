@@ -347,6 +347,15 @@
           <div class="line"></div>
         </div>
       </div>
+      <div class="row" *ngIf="!f.form.valid">
+        <div class="col">
+          <p class="text-left">
+            <alert type="warning">
+              <strong>คำเตือน!</strong> กรุณากรอกข้อมูลที่มีเครื่องหมายดอกจันทร์ (*) ให้ครบถ้วน
+            </alert>
+          </p>
+        </div>
+      </div>
       <div class="row mb-5">
         <div class="col">
           <div class="d-flex w-100">
