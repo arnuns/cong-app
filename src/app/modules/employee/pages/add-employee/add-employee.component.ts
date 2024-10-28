@@ -634,7 +634,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     formData.append('isSocialSecurity', getValue('is_social_security'));
     formData.append('ssoStartDate', getValue('sso_start_date') ? this.moment.format(getValue('sso_start_date'), 'YYYY-MM-DD') : '');
     formData.append('ssoEndDate', getValue('sso_end_date') ? this.moment.format(getValue('sso_end_date'), 'YYYY-MM-DD') : '');
-    if (getValue('hospital_id')) {
+    if (getValue('hospital_id') !== null && getValue('hospital_id') !== undefined) {
       formData.append('hospitalId', getValue('hospital_id'));
     }
     this.userService.createUser(formData).subscribe(user => {
