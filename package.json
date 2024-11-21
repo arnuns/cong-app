@@ -85,7 +85,7 @@
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.28",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "ng2-pdf-viewer": "^6.0.1",
     "ngx-bootstrap": "^5.2.0",
     "ngx-cookie-service": "^2.2.0",
