@@ -15,10 +15,12 @@ export interface Site {
     latitude: number;
     longitude: number;
     minimumWage: number;
+    replacementWage: number;
     isPayroll: boolean;
     isMonthly: boolean;
     isSsoAnnualHoliday: boolean;
     isMinimumManday: boolean;
+    isReplacementWage: boolean;
     selfCheckIn: boolean;
     status: boolean;
     createOn: Date;
