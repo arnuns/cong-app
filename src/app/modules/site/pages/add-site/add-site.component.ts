@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormArray, Validators, FormBuilder } from '@angular/forms';
 import { SiteWorkRate, SiteUserPosition, SiteCheckpoint } from 'src/app/core/models/site';
 import { District, Province, Amphur, Postcode } from 'src/app/core/models/address';
@@ -18,7 +18,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './add-site.component.html',
   styleUrls: ['./add-site.component.scss']
 })
-export class AddSiteComponent implements OnDestroy, OnInit {
+export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
   public defaultImagePath = environment.basePath;
   processing = false;
   provinces: Province[] = [];
@@ -41,9 +41,11 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
     postcode: [{ value: '', disabled: true }],
     minimum_wage: [undefined, [Validators.required]],
+    replacement_wage: [undefined],
     is_monthly: [false],
     is_sso_annual_holiday: [false],
     is_minimum_manday: [true],
+    is_replacement_wage: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
@@ -63,6 +65,19 @@ export class AddSiteComponent implements OnDestroy, OnInit {
     private userService: UserService
   ) {
     this.updateView();
+  }
+
+  ngAfterViewInit() {
+    this.siteForm.get('is_replacement_wage').valueChanges.subscribe(val => {
+      if (val) {
+        this.siteForm.get('replacement_wage').setValidators([Validators.required]);
+        this.siteForm.get('replacement_wage').updateValueAndValidity();
+      } else {
+        this.siteForm.get('replacement_wage').setValue(0);
+        this.siteForm.get('replacement_wage').clearValidators();
+        this.siteForm.get('replacement_wage').updateValueAndValidity();
+      }
+    });
   }
 
   ngOnInit() {
@@ -179,10 +194,12 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       latitude: this.siteForm.get('latitude').value,
       longitude: this.siteForm.get('longitude').value,
       minimumWage: this.siteForm.get('minimum_wage').value,
+      replacementWage: this.siteForm.get('replacement_wage').value ?? 0,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
       isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
       isMinimumManday: this.siteForm.get('is_minimum_manday').value,
+      isReplacementWage: this.siteForm.get('is_replacement_wage').value,
       selfCheckIn: this.siteForm.get('self_checkin').value,
       status: true,
       createOn: undefined,
@@ -197,101 +214,6 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       this.spinner.hideLoadingSpinner(0);
     });
   }
-
-  // onSubmit() {
-  //   this.spinner.showLoadingSpinner();
-  //   let siteWorkRates: SiteWorkRate[] = [];
-  //   let siteCheckpoints: SiteCheckpoint[] = [];
-  //   let siteUserPositions: SiteUserPosition[] = [];
-  
-  //   if (this.siteWorkRateForms.controls.length > 0) {
-  //     siteWorkRates = this.siteWorkRateForms.controls.map(c => {
-  //       const startTime = this.moment.format(c.get('start_time').value, 'HH:mm:ss');
-  //       const endTime = this.moment.format(c.get('end_time').value, 'HH:mm:ss');
-  //       console.log(`Start Time: ${startTime}, End Time: ${endTime}`);
-  //       return {
-  //         siteId: undefined,
-  //         startTime: startTime,
-  //         endTime: endTime,
-  //         workerCount: c.get('worker_count').value,
-  //         createOn: new Date(),
-  //         createBy: undefined
-  //       };
-  //     });
-  //   }
-  
-  //   if (this.siteCheckpointForms.controls.length > 0) {
-  //     siteCheckpoints = this.siteCheckpointForms.controls.map(c => {
-  //       const startTime = this.moment.format(c.get('start_time').value, 'HH:mm:ss');
-  //       const endTime = this.moment.format(c.get('end_time').value, 'HH:mm:ss');
-  //       const timeRange = `${startTime} - ${endTime}`;  // Example of creating timeRange
-  //       console.log(`Checkpoint Start Time: ${startTime}, Checkpoint End Time: ${endTime}`);
-  //       return {
-  //         id: undefined,
-  //         siteId: undefined,
-  //         startTime: startTime,
-  //         endTime: endTime,
-  //         checkpointName: c.get('checkpoint_name').value,
-  //         pointValue: c.get('point_value').value,
-  //         workerCount: c.get('worker_count').value,
-  //         latitude: c.get('latitude').value,
-  //         longitude: c.get('longitude').value,
-  //         sequence: c.get('sequence').value,
-  //         createOn: new Date(),
-  //         createBy: undefined,
-  //         updateOn: new Date(),
-  //         updateBy: undefined,
-  //       };
-  //     });
-  //   }
-  
-  //   if (this.siteUserPositionForms.controls.length > 0) {
-  //     siteUserPositions = this.siteUserPositionForms.controls.map(c => ({
-  //       siteId: undefined,
-  //       userPositionId: c.get('user_position_id').value,
-  //       site: null,
-  //       userPosition: null,
-  //       hiringRatePerDay: c.get('hiring_rate_per_day').value,
-  //       minimumManday: c.get('minimum_manday').value,
-  //       createOn: new Date(),
-  //       createBy: undefined,
-  //       updateOn: new Date(),
-  //       updateBy: undefined,
-  //     }));
-  //   }
-  
-  //   this.siteService.addSite({
-  //     id: null,
-  //     code: this.siteForm.get('code').value,
-  //     name: this.siteForm.get('name').value,
-  //     fullName: this.siteForm.get('full_name').value,
-  //     address: this.siteForm.get('address').value,
-  //     districtId: this.siteForm.get('district_id').value,
-  //     amphurId: this.siteForm.get('amphur_id').value,
-  //     provinceId: this.siteForm.get('province_id').value,
-  //     province: null,
-  //     latitude: this.siteForm.get('latitude').value,
-  //     longitude: this.siteForm.get('longitude').value,
-  //     minimumWage: this.siteForm.get('minimum_wage').value,
-  //     isPayroll: true,
-  //     isMonthly: this.siteForm.get('is_monthly').value,
-  //     isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
-  //     isMinimumManday: this.siteForm.get('is_minimum_manday').value,
-  //     selfCheckIn: this.siteForm.get('self_checkin').value,
-  //     status: true,
-  //     createOn: undefined,
-  //     createBy: undefined,
-  //     siteWorkRates: siteWorkRates,
-  //     siteCheckpoints: siteCheckpoints,
-  //     siteUserPositions: siteUserPositions
-  //   }).subscribe(site => {
-  //     this.spinner.hideLoadingSpinner(0);
-  //     this.router.navigate(['/site']);
-  //   }, error => {
-  //     this.spinner.hideLoadingSpinner(0);
-  //   });
-  // }
-    
 
   onSelectionProvince(province: Province) {
     this.user_amphurs = this.amphurs.filter(a => a.provinceId === province.id);
@@ -342,22 +264,6 @@ export class AddSiteComponent implements OnDestroy, OnInit {
 
   removeSiteWorkRate(index: number) {
     this.siteWorkRateForms.removeAt(index);
-
-    // อัพเดตฟอร์มค่าจุดตามฟอร์มเวลาใหม่
-  // this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
-  //   const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
-  //     this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
-  //   );
-
-  //   const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
-
-  //   checkpointForm.patchValue({
-  //     time_range: defaultTimeRange
-  //   });
-
-    // อัพเดต start_time และ end_time ตามค่าใหม่ใน dropdown
-  //   this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
-  //  });
   }
 
   get siteCheckpointForms() {
@@ -372,12 +278,10 @@ export class AddSiteComponent implements OnDestroy, OnInit {
       siteWorkRateForms.patchValue({ worker_count: 1 })
     }
   }
-
   
   formatTime(date: Date): string {
     return this.datePipe.transform(date, 'HH:mm') || '';
   }
-
 
   addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
 import { FormBuilder, Validators, FormArray, FormGroup, FormControl } from '@angular/forms';
@@ -19,7 +19,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './edit-site.component.html',
   styleUrls: ['./edit-site.component.scss']
 })
-export class EditSiteComponent implements OnDestroy, OnInit {
+export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
   isFirstLoad = true; 
   public defaultImagePath = environment.basePath;
   siteId: number;
@@ -46,9 +46,11 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
     postcode: [{ value: '', disabled: true }],
     minimum_wage: [undefined, [Validators.required]],
+    replacement_wage: [undefined],
     is_monthly: [false],
     is_sso_annual_holiday: [false],
     is_minimum_manday: [true],
+    is_replacement_wage: [false],
     self_checkin: [false],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
@@ -71,6 +73,19 @@ export class EditSiteComponent implements OnDestroy, OnInit {
     this.updateView();
     this.sub = this.activatedRoute.params.subscribe(params => {
       this.siteId = Number(params['siteId']);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.siteForm.get('is_replacement_wage').valueChanges.subscribe(val => {
+      if (val) {
+        this.siteForm.get('replacement_wage').setValidators([Validators.required]);
+        this.siteForm.get('replacement_wage').updateValueAndValidity();
+      } else {
+        this.siteForm.get('replacement_wage').setValue(0);
+        this.siteForm.get('replacement_wage').clearValidators();
+        this.siteForm.get('replacement_wage').updateValueAndValidity();
+      }
     });
   }
 
@@ -113,9 +128,11 @@ export class EditSiteComponent implements OnDestroy, OnInit {
           latitude: this.site.latitude,
           longitude: this.site.longitude,
           minimum_wage: this.site.minimumWage,
+          replacement_wage: this.site.replacementWage,
           is_monthly: this.site.isMonthly,
           is_sso_annual_holiday: this.site.isSsoAnnualHoliday,
           is_minimum_manday: this.site.isMinimumManday,
+          is_replacement_wage: this.site.isReplacementWage,
           self_checkin: this.site.selfCheckIn
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
@@ -219,10 +236,12 @@ export class EditSiteComponent implements OnDestroy, OnInit {
       latitude: this.siteForm.get('latitude').value,
       longitude: this.siteForm.get('longitude').value,
       minimumWage: this.siteForm.get('minimum_wage').value,
+      replacementWage: this.siteForm.get('replacement_wage').value ?? 0,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
       isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
       isMinimumManday: this.siteForm.get('is_minimum_manday').value,
+      isReplacementWage: this.siteForm.get('is_replacement_wage').value,
       selfCheckIn: this.siteForm.get('self_checkin').value,
       status: true,
       createOn: undefined,

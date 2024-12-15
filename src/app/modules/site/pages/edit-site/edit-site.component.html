@@ -305,6 +305,30 @@
           </div>
         </div>
       </div>
+      <div class="row align-items-center">
+        <div class="col-md-4">มีค่าแรงสแปร์หรือไม่</div>
+        <div class="col-md-2">
+          <div class="input-group">
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" formControlName="is_replacement_wage" name="is_replacement_wage"
+                  [value]="false"> ไม่มี
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" formControlName="is_replacement_wage" name="is_replacement_wage"
+                  [value]="true"> มี
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group mb-0" *ngIf="siteForm.get('is_replacement_wage').value">
+            <input type="text" class="form-control" formControlName="replacement_wage">
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col" formArrayName="site_user_positions">
           <div class="d-flex align-items-center w-100"
