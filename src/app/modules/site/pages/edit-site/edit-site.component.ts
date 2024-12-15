@@ -82,7 +82,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         this.siteForm.get('replacement_wage').setValidators([Validators.required]);
         this.siteForm.get('replacement_wage').updateValueAndValidity();
       } else {
-        this.siteForm.get('replacement_wage').setValue(0);
+        this.siteForm.get('replacement_wage').setValue(undefined);
         this.siteForm.get('replacement_wage').clearValidators();
         this.siteForm.get('replacement_wage').updateValueAndValidity();
       }
@@ -128,11 +128,11 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           latitude: this.site.latitude,
           longitude: this.site.longitude,
           minimum_wage: this.site.minimumWage,
-          replacement_wage: this.site.replacementWage,
+          replacement_wage: this.site.replacementWage || undefined,
           is_monthly: this.site.isMonthly,
           is_sso_annual_holiday: this.site.isSsoAnnualHoliday,
           is_minimum_manday: this.site.isMinimumManday,
-          is_replacement_wage: this.site.isReplacementWage,
+          is_replacement_wage: this.site.isReplacementWage || false,
           self_checkin: this.site.selfCheckIn
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
@@ -206,7 +206,6 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           updateBy: undefined,
         };
       });
-      console.log(siteCheckpoints);
     }
     let siteUserPositions: SiteUserPosition[];
     if (this.siteUserPositionForms.controls.length > 0) {
@@ -236,7 +235,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       latitude: this.siteForm.get('latitude').value,
       longitude: this.siteForm.get('longitude').value,
       minimumWage: this.siteForm.get('minimum_wage').value,
-      replacementWage: this.siteForm.get('replacement_wage').value ?? 0,
+      replacementWage: this.siteForm.get('replacement_wage').value || 0,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
       isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
@@ -309,22 +308,6 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
   removeSiteWorkRate(index: number) {
     this.siteWorkRateForms.removeAt(index);
-
-    // อัพเดตฟอร์มค่าจุดตามฟอร์มเวลาใหม่
-  // this.siteCheckpointForms.controls.forEach((checkpointForm, i) => {
-  //   const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
-  //     this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
-  //   );
-
-  //   const defaultTimeRange = timeRangeOptions.length > i ? timeRangeOptions[i] : timeRangeOptions[0];
-
-  //   checkpointForm.patchValue({
-  //     time_range: defaultTimeRange
-  //   });
-
-    // อัพเดต start_time และ end_time ตามค่าใหม่ใน dropdown
-  //   this.onTimeRangeChange({ target: { value: defaultTimeRange } }, i);
-  //  });
   }
 
   get siteCheckpointForms() {
@@ -481,18 +464,6 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     this.applicationStateService.setIsHiddenLeftMenu = true;
     this.applicationStateService.setIsHiddenSearch = true;
   }
-
-  // public findInvalidControls() {
-  //   const invalid = [];
-  //   const controls = this.siteForm.controls;
-  //   for (const name in controls) {
-  //     console.log(`${name} ${controls[name].invalid}`);
-  //     if (controls[name].invalid) {
-  //       invalid.push(name);
-  //     }
-  //   }
-  //   return invalid;
-  // }
 
   get alertSiteCheckpoint(): boolean {
     let isAlert = false;

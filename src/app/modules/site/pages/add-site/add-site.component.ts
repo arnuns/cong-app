@@ -73,7 +73,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         this.siteForm.get('replacement_wage').setValidators([Validators.required]);
         this.siteForm.get('replacement_wage').updateValueAndValidity();
       } else {
-        this.siteForm.get('replacement_wage').setValue(0);
+        this.siteForm.get('replacement_wage').setValue(undefined);
         this.siteForm.get('replacement_wage').clearValidators();
         this.siteForm.get('replacement_wage').updateValueAndValidity();
       }
@@ -194,7 +194,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       latitude: this.siteForm.get('latitude').value,
       longitude: this.siteForm.get('longitude').value,
       minimumWage: this.siteForm.get('minimum_wage').value,
-      replacementWage: this.siteForm.get('replacement_wage').value ?? 0,
+      replacementWage: this.siteForm.get('replacement_wage').value || 0,
       isPayroll: true,
       isMonthly: this.siteForm.get('is_monthly').value,
       isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
