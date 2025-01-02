@@ -85,6 +85,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     bank_account: ['', [Validators.required]],
     site_search: [''],
     site_array: this.fb.array([]),
+    site_replacement_array: this.fb.array([]),
     position_value: ['0.00', [Validators.required, Validators.min(0)]],
     point_value: ['0.00', [Validators.required, Validators.min(0)]],
     is_overtime: [false],
@@ -209,9 +210,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.showLoadingSpinner();
       if (!this.updateSalaryForm.get('salary_id').value) {
         this.addSite();
-        // const siteRole = this.site.siteUserPositions.filter(r => r.userPositionId === 20)[0];
-        // const hiringRatePerDay = siteRole ? siteRole.hiringRatePerDay : this.site.minimumWage;
-        // this.hiringRatePerDay = hiringRatePerDay.toFixed(2);
       }
       combineLatest(
         [
@@ -226,7 +224,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     });
 
     this.ngxSmartModalService.getModal('salaryModal').onClose.subscribe((event: Event) => {
-      //  this.hiringRatePerDay = '0.00';
       this.updateSalaryForm.reset({
         search: '',
         salary_id: undefined,
@@ -287,6 +284,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       });
       this.updateSalaryForm.enable();
       this.clearFormArray(this.siteForms);
+      this.clearFormArray(this.replacementWageForms);
     });
 
     this.updateSalaryForm.get('search').valueChanges
@@ -399,8 +397,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       if (!val || isNaN(number)) {
         this.updateSalaryForm.get('annual_holiday').setValue(0);
       } else {
-        // this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay;
-        const hiringRatePerday = this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value).length > 0 
+        const hiringRatePerday = this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value).length > 0
           ? Number(this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay)
           : 0;
         this.updateSalaryForm.get('annual_holiday').setValue(number * hiringRatePerday);
@@ -467,7 +464,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   editSalaryModal(salary: Salary) {
     this.spinner.showLoadingSpinner();
-    // this.hiringRatePerDay = salary.hiringRatePerDay.toFixed(2);
     this.updateSalaryForm.patchValue({
       search: '',
       salary_id: salary.id,
@@ -531,14 +527,30 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.hideLoadingSpinner(0);
       if (siteSalaries.length > 0) {
         siteSalaries.forEach(siteSalary => {
-          this.siteForms.controls.push(this.fb.group({
-            id: siteSalary.siteId,
-            site_code: siteSalary.siteCode,
-            site_name: siteSalary.siteName,
-            manday: siteSalary.manday,
-            hiringRatePerDay:  siteSalary.hiringRatePerDay,
-            is_default: siteSalary.isDefault
-          }));
+          const isReplacementWage = Boolean(siteSalary.isReplacementWage);
+          if (isReplacementWage) {
+            this.replacementWageForms.controls.push(this.fb.group({
+              id: siteSalary.siteId,
+              site_code: siteSalary.siteCode,
+              site_name: siteSalary.siteName,
+              manday: siteSalary.manday,
+              hiringRatePerDay:  siteSalary.hiringRatePerDay,
+              is_default: siteSalary.isDefault,
+              is_replacement_wage: isReplacementWage
+            }));
+          }
+          else {
+            this.siteForms.controls.push(this.fb.group({
+              id: siteSalary.siteId,
+              site_code: siteSalary.siteCode,
+              site_name: siteSalary.siteName,
+              manday: siteSalary.manday,
+              hiringRatePerDay:  siteSalary.hiringRatePerDay,
+              is_default: siteSalary.isDefault,
+              is_replacement_wage: isReplacementWage
+            }));
+          }
+          
         });
         this.ngxSmartModalService.getModal('salaryModal').open();
       } else {
@@ -616,15 +628,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     return `${startDate.getDate()} - ${endDate.getDate()} ${thaiMonth[endDate.getMonth()]} ${endDate.getFullYear()}`;
   }
 
-  // summaryTotalIncome(salary: Salary) {
-  //   return (!salary.totalWage ? 0 : salary.totalWage)
-  //     + (!salary.extraReplaceValue ? 0 : salary.extraReplaceValue)
-  //     + (!salary.overtime ? 0 : salary.overtime)
-  //     + (!salary.extraOvertime ? 0 : salary.extraOvertime)
-  //     + (!salary.extraPointValue ? 0 : salary.extraPointValue)
-  //     + (!salary.totalIncome ? 0 : salary.totalIncome);
-  // }
-
   openSuspendDialog(salary: Salary) {
     this.suspendForm.patchValue({
       salary_id: salary.id,
@@ -688,6 +691,45 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       === this.updateSalaryForm.get('user_position_id').value)[0];
     const minimumManday = userPosition ? userPosition.minimumManday : 26;
     // const hiringRatePerDay = this.hiringRatePerDay ? Number(this.hiringRatePerDay) : this.site.minimumWage;
+
+    let siteSalaries = this.siteForms.controls.map(c => ({
+      payrollCycleId: this.payrollCycleId,
+      empNo: getValue('empno'),
+      siteId: c.get('id').value,
+      site: null,
+      salaryId: 0,
+      siteCode: c.get('site_code').value,
+      siteName: c.get('site_name').value,
+      manday: c.get('manday').value,
+      hiringRatePerDay: c.get('hiringRatePerDay').value,
+      isDefault: c.get('is_default').value,
+      isReplacementWage: c.get('is_replacement_wage').value,
+      createOn: null,
+      createBy: null,
+      updateOn: null,
+      updateBy: null
+    }));
+
+    if (this.replacementWageForms.controls.length > 0) {
+      siteSalaries = siteSalaries.concat(this.replacementWageForms.controls.map(c => ({
+        payrollCycleId: this.payrollCycleId,
+        empNo: getValue('empno'),
+        siteId: c.get('id').value,
+        site: null,
+        salaryId: 0,
+        siteCode: c.get('site_code').value,
+        siteName: c.get('site_name').value,
+        manday: c.get('manday').value,
+        hiringRatePerDay: c.get('hiringRatePerDay').value,
+        isDefault: c.get('is_default').value,
+        isReplacementWage: c.get('is_replacement_wage').value,
+        createOn: null,
+        createBy: null,
+        updateOn: null,
+        updateBy: null
+      })))
+    }
+
     const salary: Salary = {
       id: getValue('salary_id') ? getValue('salary_id') : 0,
       payrollCycleId: this.payrollCycleId,
@@ -756,22 +798,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       createOn: null,
       updateBy: null,
       updateOn: null,
-      siteSalaries: this.siteForms.controls.map(c => ({
-        payrollCycleId: this.payrollCycleId,
-        empNo: getValue('empno'),
-        siteId: c.get('id').value,
-        site: null,
-        salaryId: 0,
-        siteCode: c.get('site_code').value,
-        siteName: c.get('site_name').value,
-        manday: c.get('manday').value,
-        hiringRatePerDay: c.get('hiringRatePerDay').value,
-        isDefault: c.get('is_default').value,
-        createOn: null,
-        createBy: null,
-        updateOn: null,
-        updateBy: null
-      })),
+      siteSalaries: siteSalaries,
       totalIncome: 0,
       totalDeductible: 0,
       totalAmount: 0
@@ -819,6 +846,10 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     return this.updateSalaryForm.get('site_array') as FormArray;
   }
 
+  get replacementWageForms() {
+    return this.updateSalaryForm.get('site_replacement_array') as FormArray;
+  }
+
   addSite(sites: Site[] = null) {
     if (sites && sites.length > 0) {
       sites.forEach(site => {
@@ -831,7 +862,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
           site_name: [site.name],
           manday: [0, [Validators.required, Validators.min(1)]],
           hiringRatePerDay: [hiringRatePerDay, [Validators.required]],
-          is_default: [false]
+          is_default: [false],
+          is_replacement_wage: [false]
         }));
       });
     } else {
@@ -844,7 +876,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         site_name: [this.site.name],
         manday: [0, [Validators.required, Validators.min(1)]],
         hiringRatePerDay: [hiringRatePerDay, [Validators.required]],
-        is_default: [false]
+        is_default: [false],
+        is_replacement_wage: [false]
       }));
     }
   }
@@ -932,15 +965,26 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     }
   }
 
+  replacementWageModelChanged(rate, i: number) {
+    if (rate) {
+      const hiringRatePerday = parseFloat(rate);
+      if (hiringRatePerday > 999) {
+        this.replacementWageForms.at(i).get('hiringRatePerday').setValue('0.00');
+      }
+    }
+  }
+
   get totalIncome() {
     let totalWage = 0;
-    // const hiringRatePerDay = this.hiringRatePerDay
-    //   ? Number(this.hiringRatePerDay)
-    //   : 0;
     this.siteForms.controls.forEach(siteForm => {
       totalWage = totalWage
         + ((siteForm.get('manday').value ? Number(siteForm.get('manday').value) : 0)
           * siteForm.get('hiringRatePerDay').value );
+    });
+    this.replacementWageForms.controls.forEach(replacementWageForm => {
+      totalWage = totalWage
+        + ((replacementWageForm.get('manday').value ? Number(replacementWageForm.get('manday').value) : 0)
+          * replacementWageForm.get('hiringRatePerDay').value);
     });
     return totalWage
       + (this.updateSalaryForm.get('position_value').value ? Number(this.updateSalaryForm.get('position_value').value) : 0)

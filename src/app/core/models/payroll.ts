@@ -95,6 +95,7 @@ export interface SiteSalary {
     manday: number;
     hiringRatePerDay: number;
     isDefault: boolean;
+    isReplacementWage: boolean;
     createOn: Date;
     createBy: string;
     updateOn: Date;

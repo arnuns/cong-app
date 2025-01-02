@@ -634,6 +634,38 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col">
+                <div class="line"></div>
+              </div>
+            </div>
+            <div formArrayName="site_replacement_array">
+              <div class="row mb-2" *ngFor="let siteForm of replacementWageForms.controls; let i = index" [formGroupName]="i">
+                <div class="col-md-12">
+                  <div class="d-flex align-items-center w-100">
+                    <div>
+                      {{ siteForm.get('site_name').value }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <label for="manday" class="label">
+                      จำนวนวันที่สแปร์
+                    </label>
+                    <input type="number" class="form-control" formControlName="manday">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group mb-0">
+                    <label for="hiring_rate_per_day" class="label">
+                      อัตราวันละ
+                    </label>
+                    <input type="number" class="form-control" formControlName="hiringRatePerDay" (ngModelChange)="replacementWageModelChanged($event, i)">
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="d-flex w-100 mt-4">
               <div class="ml-auto text-secondary">รวมรายได้: {{ totalIncome | currency:'฿' }}</div>
             </div>
