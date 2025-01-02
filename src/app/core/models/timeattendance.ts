@@ -3,7 +3,6 @@ import { Site } from './site';
 import { PageFilter } from './page-filter.model';
 
 export interface TimeAttendance {
-
     id: number;
     empNo: number;
     user: User;
@@ -13,6 +12,10 @@ export interface TimeAttendance {
     workDate: string;
     startTime: string;
     endTime: string;
+    workerCount: number;
+    hiringRatePerDay: number;
+    replacementWage: number;
+    isReplacementWage: boolean;
     checkInTime: string;
     checkInByName: string;
     leaveTime: string;
