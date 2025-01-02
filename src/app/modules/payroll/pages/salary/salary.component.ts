@@ -284,6 +284,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       });
       this.updateSalaryForm.enable();
       this.clearFormArray(this.siteForms);
+      this.clearFormArray(this.replacementWageForms);
     });
 
     this.updateSalaryForm.get('search').valueChanges
@@ -690,6 +691,45 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       === this.updateSalaryForm.get('user_position_id').value)[0];
     const minimumManday = userPosition ? userPosition.minimumManday : 26;
     // const hiringRatePerDay = this.hiringRatePerDay ? Number(this.hiringRatePerDay) : this.site.minimumWage;
+
+    let siteSalaries = this.siteForms.controls.map(c => ({
+      payrollCycleId: this.payrollCycleId,
+      empNo: getValue('empno'),
+      siteId: c.get('id').value,
+      site: null,
+      salaryId: 0,
+      siteCode: c.get('site_code').value,
+      siteName: c.get('site_name').value,
+      manday: c.get('manday').value,
+      hiringRatePerDay: c.get('hiringRatePerDay').value,
+      isDefault: c.get('is_default').value,
+      isReplacementWage: c.get('is_replacement_wage').value,
+      createOn: null,
+      createBy: null,
+      updateOn: null,
+      updateBy: null
+    }));
+
+    if (this.replacementWageForms.controls.length > 0) {
+      siteSalaries = siteSalaries.concat(this.replacementWageForms.controls.map(c => ({
+        payrollCycleId: this.payrollCycleId,
+        empNo: getValue('empno'),
+        siteId: c.get('id').value,
+        site: null,
+        salaryId: 0,
+        siteCode: c.get('site_code').value,
+        siteName: c.get('site_name').value,
+        manday: c.get('manday').value,
+        hiringRatePerDay: c.get('hiringRatePerDay').value,
+        isDefault: c.get('is_default').value,
+        isReplacementWage: c.get('is_replacement_wage').value,
+        createOn: null,
+        createBy: null,
+        updateOn: null,
+        updateBy: null
+      })))
+    }
+
     const salary: Salary = {
       id: getValue('salary_id') ? getValue('salary_id') : 0,
       payrollCycleId: this.payrollCycleId,
@@ -758,23 +798,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       createOn: null,
       updateBy: null,
       updateOn: null,
-      siteSalaries: this.siteForms.controls.map(c => ({
-        payrollCycleId: this.payrollCycleId,
-        empNo: getValue('empno'),
-        siteId: c.get('id').value,
-        site: null,
-        salaryId: 0,
-        siteCode: c.get('site_code').value,
-        siteName: c.get('site_name').value,
-        manday: c.get('manday').value,
-        hiringRatePerDay: c.get('hiringRatePerDay').value,
-        isDefault: c.get('is_default').value,
-        isReplacementWage: c.get('is_replacement_wage').value,
-        createOn: null,
-        createBy: null,
-        updateOn: null,
-        updateBy: null
-      })),
+      siteSalaries: siteSalaries,
       totalIncome: 0,
       totalDeductible: 0,
       totalAmount: 0
