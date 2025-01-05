@@ -557,6 +557,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onSubmit() {
+    this.serverError = undefined;
     this.spinner.showLoadingSpinner();
     const formData = new FormData();
     const that = this;
@@ -796,10 +797,11 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     if (getValue('hospital_id') !== null && getValue('hospital_id') !== undefined) {
       formData.append('hospitalId', getValue('hospital_id'));
     }
-    this.userService.updateUser(this.empNo, formData).toPromise().then(user => {
-      this.spinner.hideLoadingSpinner();
+    this.userService.updateUser(this.empNo, formData).subscribe(user => {
+      this.spinner.hideLoadingSpinner(0);
       this.router.navigate(['/employee']);
-    }).catch(() => {
+    }, err => {
+      this.serverError = err.error;
       this.spinner.hideLoadingSpinner(0);
     });
   }
