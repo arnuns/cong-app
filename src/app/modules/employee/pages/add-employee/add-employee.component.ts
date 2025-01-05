@@ -403,6 +403,7 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onSubmit() {
+    this.serverError = undefined;
     this.spinner.showLoadingSpinner();
     const formData = new FormData();
     const that = this;
@@ -640,7 +641,8 @@ export class AddEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     this.userService.createUser(formData).subscribe(user => {
       this.spinner.hideLoadingSpinner(0);
       this.router.navigate(['/employee']);
-    }, error => {
+    }, err => {
+      this.serverError = err.error;
       this.spinner.hideLoadingSpinner(0);
     });
   }
