@@ -220,7 +220,6 @@ export class EmployeeReportComponent implements OnInit {
     this.userService.getUserByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0])).subscribe(users => {
       const data = users.map(u => ({
         'รหัสพนักงาน': `'${u.empNo}`,
-        'บริษัท': u.companyId,
         'หน่วยงาน': u.site.name,
         'ตำแหน่ง': u.role.nameTH,
         'เลขที่บัตรประชาชน': `'${u.idCardNumber}`,
@@ -237,8 +236,9 @@ export class EmployeeReportComponent implements OnInit {
         'เลขที่บัญชี': `'${u.bankAccount}`,
         'เบอร์โทรศัพท์': u.phoneNo,
         'ระดับการศึกษา': u.education,
-        'วันเกิด': !u.birthdate ? '' : this.convertToDateString(u.birthdate),
-        'อายุ': this.convertToAge(u.birthdate),
+        'วันเกิด': !u.birthdate ? '' : this.convertToThaiDateString(u.birthdate),
+        'อายุ': !u.birthdate ? '' : this.convertToAge(u.birthdate),
+        'อายุเกษียณ': 60,
         'น้ำหนัก': u.weight && u.weight > 0 ? u.weight : '',
         'ส่วนสูง': u.height && u.height > 0 ? u.height : '',
         'เชื้อชาติ': u.ethnicity,
@@ -246,14 +246,23 @@ export class EmployeeReportComponent implements OnInit {
         'ศาสนา': u.religion,
         'ที่อยู่ตามทะเบียนบ้าน': u.permanentAddress,
         'ที่อยู่ปัจจุบัน': u.currentAddress,
-        'วันที่สมัคร': !u.registerOn ? '' : this.convertToDateString(u.registerOn),
         'วันเริ่มงาน': !u.startDate ? '' : this.convertToDateString(u.startDate),
         'วันที่ลาออก': !u.endDate ? '' : this.convertToDateString(u.endDate),
+        'อายุงาน (วัน)': !u.startDate ? '' : this.dateDiff(u.startDate),
         'สาเหตุที่ออก': u.resignationCause,
         'กรณีฉุกเฉินบุคคลที่ติดต่อได้': u.refName_1 ? u.refName_1 : '',
         'ความสัมพันธ์ผู้ติดต่อ': u.refRelation_1 ? u.refRelation_1 : '',
         'เบอร์โทรศัพท์ผู้ติดต่อ': u.refPhoneNo_1 ? u.refPhoneNo_1 : '',
-        'ที่อยู่ผู้ติดต่อ': u.refAddress_1 ? u.refAddress_1 : ''
+        'ที่อยู่ผู้ติดต่อ': u.refAddress_1 ? u.refAddress_1 : '',
+        'วันที่ยื่นเข้าประกันสังคม': !u.socialSecurityStartDate ? '' : this.convertToDateString(u.socialSecurityStartDate),
+        'วันที่ยื่นออกประกันสังคม': !u.socialSecurityEndDate ? '' : this.convertToDateString(u.socialSecurityEndDate),
+        'สถานพยาบาลประกันสังคม': u.hospital ? u.hospital.name : '',
+        'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}`: '',
+        'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
+        'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
+        'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}`: '',
+        'ฝึกอบรมเมื่อวันที่': !u.certificateStartDate ? '' : this.convertToDateString(u.certificateStartDate),
+        'ฝึกอบรมถึงวันที่': !u.certificateEndDate ? '' : this.convertToDateString(u.certificateEndDate),
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
@@ -286,5 +295,23 @@ export class EmployeeReportComponent implements OnInit {
     function pad(s) { return (s < 10) ? '0' + s : s; }
     const d = new Date(dateString);
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
+  }
+
+  convertToThaiDateString(dateString: string): string {
+    if (dateString === null || dateString === undefined || dateString === '') {
+      return '';
+    }
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    const d = new Date(dateString);
+    return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear() + 543].join('/');
+  }
+
+  dateDiff(dateString: string): number {
+    if (dateString === null || dateString === undefined || dateString === '') {
+      return 0;
+    }
+    const date = new Date(dateString);
+    const today = new Date();
+    return Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
   }
 }
