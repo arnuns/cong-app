@@ -151,4 +151,22 @@ export class UserService extends BaseService {
   getImageAsBlob(url: string): Observable<Blob> {
     return this.http.get(url, { responseType: 'blob' })
   }
+
+  downloadEmployeeDocument(empNo: number, documentId: number, fileName: string) {
+    this.spinner.showLoadingSpinner();
+    return this.http
+      .get(`${this.serviceUrl}/user/${empNo}/document/${documentId}/download`, {
+        responseType: 'blob'
+      }).pipe(map(response => {
+        return {
+          filename: fileName,
+          data: response
+        };
+      })).subscribe(response => {
+        this.spinner.hideLoadingSpinner(0);
+        setTimeout(() => {
+          this.downloadFile(response);
+        }, 1000);
+      });
+  }
 }
