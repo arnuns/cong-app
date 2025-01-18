@@ -346,11 +346,21 @@
               </div>
             </div>
             <div class="row p-2">
-              <div class="col-md-2 px-1 py-2 mx-2 my-1 text-center border img-view-link"
-                *ngFor="let document of user?.documents" (click)="viewUserDococuments(document.id)">
-                <img class="img-view" [src]="defaultImagePath + '/img/img-view@2x.png'" alt="">
-                <br />
-                <small>{{ convertDocumentTypeName(document.type) }}</small>
+              <div class="col-md-2 px-1 py-2 mx-2 my-1 text-center"
+                *ngFor="let document of user?.documents">
+                <div class="card">
+                  <div class="d-flex justify-content-center pt-2">
+                    <div>
+                      <img class="card-img-top img-view img-view-link" [src]="defaultImagePath + '/img/img-view@2x.png'" alt="" (click)="viewUserDococuments(document.id)">
+                    </div>
+                  </div>
+                  <div class="card-body p-1">
+                    <p class="card-text">{{ convertDocumentTypeName(document.type) }}</p>
+                  </div>
+                  <div class="card-footer img-view-link p-1">
+                    <small class="text-muted" (click)="downloadUserDocument(document)">ดาวน์โหลด</small>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
