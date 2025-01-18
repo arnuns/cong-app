@@ -93,8 +93,10 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
             sortColumn = 'createOn';
           } else if (orders[0] === 3) {
             sortColumn = 'provinceId';
+          } else if (orders[0] === 4) {
+            sortColumn = 'status';
           } else {
-            sortColumn = 'code';
+            sortColumn = 'id';
           }
           const siteFilterString = localStorage.getItem(that.filterSessionName);
           if (siteFilterString) {
