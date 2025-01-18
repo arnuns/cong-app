@@ -3,7 +3,7 @@ import {ApplicationStateService} from 'src/app/core/services/application-state.s
 import {ActivatedRoute} from '@angular/router';
 import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
 import {UserService} from 'src/app/core/services/user.service';
-import {User} from 'src/app/core/models/user';
+import {Document, User} from 'src/app/core/models/user';
 import {environment} from 'src/environments/environment';
 import {ElectronService} from 'ngx-electron';
 import {TimeAttendanceService} from 'src/app/core/services/time-attendance.service';
@@ -108,6 +108,14 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.send('view-document', this.empNo, documentId);
     }
+  }
+
+  downloadUserDocument(document: Document) {
+    let fileName = `${this.empNo}_${document.name}`;
+    if (fileName.endsWith(document.fileType) === false) {
+      fileName = fileName + document.fileType;
+    }
+    this.userService.downloadEmployeeDocument(this.empNo, document.id, fileName);
   }
 
   onLoadTimeAttendance() {

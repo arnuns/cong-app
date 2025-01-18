@@ -3,11 +3,19 @@
   <div class="col px-0">
     <div class="d-flex w-100">
       <div>
-        <h3 class="title noselect">ประวัติพนักงาน <small>(เพิ่มใหม่)</small></h3>
+        <h3 class="title noselect">
+          ประวัติพนักงาน <small>(เพิ่มใหม่)</small>
+        </h3>
       </div>
       <div class="ml-auto">
-        <button (click)="onReaderIdCard()" type="button" class="btn btn-primary btn-readcard" [disabled]="reading">
-          <span>อ่านบัตรประชาชน
+        <button
+          (click)="onReaderIdCard()"
+          type="button"
+          class="btn btn-primary btn-readcard"
+          [disabled]="reading"
+        >
+          <span
+            >อ่านบัตรประชาชน
             <i class="fa fa-id-card" aria-hidden="true"></i>
           </span>
         </button>
@@ -23,12 +31,17 @@
           <div class="d-flex">
             <div class="p-2">
               <div class="form-group">
-                <label for="register-type">ประเภทการสมัคร
+                <label for="register-type"
+                  >ประเภทการสมัคร
                   <span class="text-danger">
                     <small>*</small>
                   </span>
                 </label>
-                <ng-select class="temporary-select" [clearable]="false" formControlName="is_temporary">
+                <ng-select
+                  class="temporary-select"
+                  [clearable]="false"
+                  formControlName="is_temporary"
+                >
                   <ng-option [value]="false">พนักงานปกติ</ng-option>
                   <ng-option [value]="true">พนักงานชั่วคราว</ng-option>
                 </ng-select>
@@ -38,25 +51,40 @@
           <div class="d-flex">
             <div class="p-2">
               <div class="form-group">
-                <label for="company-select">บริษัท
+                <label for="company-select"
+                  >บริษัท
                   <span class="text-danger">
                     <small>*</small>
                   </span>
                 </label>
-                <ng-select class="company-select" [clearable]="false" [items]="companies" bindLabel="name"
-                  bindValue="code" formControlName="company_id">
+                <ng-select
+                  class="company-select"
+                  [clearable]="false"
+                  [items]="companies"
+                  bindLabel="name"
+                  bindValue="code"
+                  formControlName="company_id"
+                >
                 </ng-select>
               </div>
             </div>
             <div class="p-2 w-50">
               <div class="form-group">
-                <label for="site-select">หน่วยงาน
+                <label for="site-select"
+                  >หน่วยงาน
                   <span class="text-danger">
                     <small>*</small>
                   </span>
                 </label>
-                <ng-select class="site-select" placeholder="เลือกหน่วยงาน" [clearable]="false" [items]="sites"
-                  bindLabel="name" bindValue="id" formControlName="site_id">
+                <ng-select
+                  class="site-select"
+                  placeholder="เลือกหน่วยงาน"
+                  [clearable]="false"
+                  [items]="sites"
+                  bindLabel="name"
+                  bindValue="id"
+                  formControlName="site_id"
+                >
                 </ng-select>
               </div>
             </div>
@@ -64,13 +92,20 @@
           <div class="d-flex">
             <div class="p-2">
               <div class="form-group">
-                <label for="user_position_id">ตำแหน่ง
+                <label for="user_position_id"
+                  >ตำแหน่ง
                   <span class="text-danger">
                     <small>*</small>
                   </span>
                 </label>
-                <ng-select class="role-select" [clearable]="false" [items]="userPositions" bindLabel="nameTH"
-                  bindValue="id" formControlName="user_position_id">
+                <ng-select
+                  class="role-select"
+                  [clearable]="false"
+                  [items]="userPositions"
+                  bindLabel="nameTH"
+                  bindValue="id"
+                  formControlName="user_position_id"
+                >
                 </ng-select>
               </div>
             </div>
@@ -79,14 +114,27 @@
         <div class="col-md-3">
           <div class="d-flex flex-column text-right mr-4">
             <div>
-              <img [src]="defaultImagePath + '/img/img-profile.svg'" alt="" class="img-profile" #previewImageProfileUrl>
+              <img
+                [src]="defaultImagePath + '/img/img-profile.svg'"
+                alt=""
+                class="img-profile"
+                #previewImageProfileUrl
+              />
             </div>
             <div>
               <div class="upload-btn-wrapper">
-                <input type="file" (change)="imageProfileChange($event)" accept="image/x-png,image/jpeg"
-                  #imageProfileUpload />
-                <button type="button" class="btn btn-outline-secondary capture-profile">
-                  <i class="fa fa-camera" aria-hidden="true"></i> ถ่ายรูป</button>
+                <input
+                  type="file"
+                  (change)="imageProfileChange($event)"
+                  accept="image/x-png,image/jpeg"
+                  #imageProfileUpload
+                />
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary capture-profile"
+                >
+                  <i class="fa fa-camera" aria-hidden="true"></i> ถ่ายรูป
+                </button>
               </div>
             </div>
           </div>
@@ -101,7 +149,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">1</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">1</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">ข้อมูลบัตรประชาชน</h3>
               </div>
@@ -111,51 +161,86 @@
         <div class="row px-2">
           <div class="col-md-4">
             <small
-              [hidden]="employeeForm.get('idcard_no').valid || (employeeForm.get('idcard_no').pristine && !addForm.submitted)"
-              class="text-danger">
-              {{ employeeForm.get('idcard_no').hasError('idCardNumberExists') ? 'เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว' :
-              'กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง'}}
+              [hidden]="
+                employeeForm.get('idcard_no').valid ||
+                (employeeForm.get('idcard_no').pristine && !addForm.submitted)
+              "
+              class="text-danger"
+            >
+              {{
+                employeeForm.get("idcard_no").hasError("idCardNumberExists")
+                  ? "เลขที่บัตรประชาชนมีการลงทะเบียนแล้ว"
+                  : "กรุณากรอกเลขที่บัตรประชาชนให้ถูกต้อง"
+              }}
             </small>
             <div class="form-group">
-              <label for="idcard_no">เลขที่บัตรประจำตัวประชาชน
+              <label for="idcard_no"
+                >เลขที่บัตรประจำตัวประชาชน
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="13" formControlName="idcard_no" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="13"
+                formControlName="idcard_no"
+              />
             </div>
           </div>
         </div>
         <div class="row px-2">
           <div class="col-md-3">
-            <label for="dateissued">วันที่ออกบัตร
+            <label for="dateissued"
+              >วันที่ออกบัตร
               <span class="text-danger">
                 <small>*</small>
               </span>
             </label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #idp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="dateissued">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #idp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="dateissued"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="idp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="idp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
           <div class="col-md-3">
-            <label for="expirydate">วันหมดอายุ
+            <label for="expirydate"
+              >วันหมดอายุ
               <span class="text-danger">
                 <small>*</small>
               </span>
             </label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #edp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="expirydate">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #edp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="expirydate"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="edp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="edp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
@@ -168,7 +253,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">2</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">2</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">ข้อมูลส่วนตัว</h3>
               </div>
@@ -178,12 +265,17 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="title">คำนำหน้าชื่อ
+              <label for="title"
+                >คำนำหน้าชื่อ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <ng-select class="title-select" [clearable]="false" formControlName="title">
+              <ng-select
+                class="title-select"
+                [clearable]="false"
+                formControlName="title"
+              >
                 <ng-option [value]="'นาย'">นาย</ng-option>
                 <ng-option [value]="'นาง'">นาง</ng-option>
                 <ng-option [value]="'นางสาว'">นางสาว</ng-option>
@@ -191,34 +283,55 @@
               </ng-select>
             </div>
           </div>
-          <div class="col-md-3" *ngIf="employeeForm.get('title').value === 'อื่นๆ'">
+          <div
+            class="col-md-3"
+            *ngIf="employeeForm.get('title').value === 'อื่นๆ'"
+          >
             <div class="form-group">
-              <label for="title_other">อื่นๆ
+              <label for="title_other"
+                >อื่นๆ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="title_other">
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="title_other"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="firstname">ชื่อ
+              <label for="firstname"
+                >ชื่อ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="firstname" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="firstname"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="lastname">สกุล
+              <label for="lastname"
+                >สกุล
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="lastname" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="lastname"
+              />
             </div>
           </div>
         </div>
@@ -226,7 +339,11 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="title_en">คำนำหน้าชื่อ</label>
-              <ng-select class="title-select" [clearable]="false" formControlName="title_en">
+              <ng-select
+                class="title-select"
+                [clearable]="false"
+                formControlName="title_en"
+              >
                 <ng-option [value]="'mr'">Mr.</ng-option>
                 <ng-option [value]="'ms'">Ms.</ng-option>
                 <ng-option [value]="'mrs'">Mrs.</ng-option>
@@ -234,56 +351,91 @@
               </ng-select>
             </div>
           </div>
-          <div class="col-md-3" *ngIf="employeeForm.get('title_en').value === 'others'">
+          <div
+            class="col-md-3"
+            *ngIf="employeeForm.get('title_en').value === 'others'"
+          >
             <div class="form-group">
-              <label for="title_other_en">อื่นๆ ภาษาอังกฤษ
+              <label for="title_other_en"
+                >อื่นๆ ภาษาอังกฤษ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="title_other_en">
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="title_other_en"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label for="firstname_en">ชื่อภาษาอังกฤษ</label>
-              <input type="text" class="form-control" maxlength="50" formControlName="firstname_en" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="firstname_en"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
               <label for="lastname_en">สกุลภาษาอังกฤษ</label>
-              <input type="text" class="form-control" maxlength="50" formControlName="lastname_en" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="lastname_en"
+              />
             </div>
           </div>
         </div>
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="gender">เพศ
+              <label for="gender"
+                >เพศ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <ng-select class="title-select" [clearable]="false" formControlName="gender">
+              <ng-select
+                class="title-select"
+                [clearable]="false"
+                formControlName="gender"
+              >
                 <ng-option [value]="'male'">ชาย</ng-option>
                 <ng-option [value]="'female'">หญิง</ng-option>
               </ng-select>
             </div>
           </div>
           <div class="col-md-4">
-            <label for="birthdate">วันเกิด
+            <label for="birthdate"
+              >วันเกิด
               <span class="text-danger">
                 <small>*</small>
               </span>
             </label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #bddp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="birthdate">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #bddp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="birthdate"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="bddp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="bddp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
@@ -291,58 +443,88 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="weight">น้ำหนัก
+              <label for="weight"
+                >น้ำหนัก
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="weight" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="weight"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="height">ส่วนสูง
+              <label for="height"
+                >ส่วนสูง
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="height" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="height"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="ethnicity">เชื้อชาติ
+              <label for="ethnicity"
+                >เชื้อชาติ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="ethnicity" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ethnicity"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="nationality">สัญชาติ
+              <label for="nationality"
+                >สัญชาติ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="nationality" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nationality"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
-              <label for="religion">ศาสนา
+              <label for="religion"
+                >ศาสนา
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="religion" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="religion"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="defect">ตำหนิ</label>
-              <input type="text" class="form-control" formControlName="defect" maxlength="50" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="defect"
+                maxlength="50"
+              />
             </div>
           </div>
         </div>
@@ -354,32 +536,50 @@
         <div class="row px-2">
           <div class="col-md-10">
             <div class="form-group">
-              <label for="permanent_address">ที่อยู่ตามทะเบียนบ้าน
+              <label for="permanent_address"
+                >ที่อยู่ตามทะเบียนบ้าน
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="255" formControlName="permanent_address" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="255"
+                formControlName="permanent_address"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
-              <label for="current_address">ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)
+              <label for="current_address"
+                >ที่อยู่ปัจจุบัน (สามารถติดต่อได้สะดวก)
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="255" formControlName="current_address" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="255"
+                formControlName="current_address"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="phone_no">เบอร์โทรศัพท์
+              <label for="phone_no"
+                >เบอร์โทรศัพท์
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="phone_no" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="phone_no"
+              />
             </div>
           </div>
         </div>
@@ -389,26 +589,50 @@
             <div class="input-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="residence_status" value="owner"
-                    formControlName="residence_status" /> อาศัยผู้อื่น
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="residence_status"
+                    value="owner"
+                    formControlName="residence_status"
+                  />
+                  อาศัยผู้อื่น
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="residence_status" value="rental"
-                    formControlName="residence_status" /> บ้านเช่า
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="residence_status"
+                    value="rental"
+                    formControlName="residence_status"
+                  />
+                  บ้านเช่า
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="residence_status" value="parents"
-                    formControlName="residence_status" /> ของบิดา-มารดา
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="residence_status"
+                    value="parents"
+                    formControlName="residence_status"
+                  />
+                  ของบิดา-มารดา
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="residence_status" value="others"
-                    formControlName="residence_status" /> อื่นๆ
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="residence_status"
+                    value="others"
+                    formControlName="residence_status"
+                  />
+                  อื่นๆ
                 </label>
               </div>
             </div>
@@ -418,37 +642,63 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="parent_name_1">บิดา</label>
-              <input placeholder="ชื่อ - สกุล" type="text" class="form-control" formControlName="parent_name_1" />
+              <input
+                placeholder="ชื่อ - สกุล"
+                type="text"
+                class="form-control"
+                formControlName="parent_name_1"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="parent_age_1">อายุ</label>
-              <input type="text" class="form-control" formControlName="parent_age_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="parent_age_1"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="parent_job_1">อาชีพ</label>
-              <input type="text" class="form-control" formControlName="parent_job_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="parent_job_1"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="parent_name_2">มารดา</label>
-              <input placeholder="ชื่อ - สกุล" type="text" class="form-control" formControlName="parent_name_2" />
+              <input
+                placeholder="ชื่อ - สกุล"
+                type="text"
+                class="form-control"
+                formControlName="parent_name_2"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="parent_age_2">อายุ</label>
-              <input type="text" class="form-control" formControlName="parent_age_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="parent_age_2"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="parent_job_2">อาชีพ</label>
-              <input type="text" class="form-control" formControlName="parent_job_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="parent_job_2"
+              />
             </div>
           </div>
         </div>
@@ -457,28 +707,51 @@
             <label for="military_status">สถานะภาพทางการทหาร</label>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="military_status" value="serving"
-                  formControlName="military_status" /> กำลังอยู่ในภาวะเป็นทหารเกณฑ์
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="military_status"
+                  value="serving"
+                  formControlName="military_status"
+                />
+                กำลังอยู่ในภาวะเป็นทหารเกณฑ์
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="radio" name="military_status" value="completed"
-                  formControlName="military_status" />
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="military_status"
+                  value="completed"
+                  formControlName="military_status"
+                />
                 ผ่านทหารเกณฑ์มาแล้วโดยการเป็นทหารเกณฑ์
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input " type="radio" name="military_status" value="exempted"
-                  formControlName="military_status" /> ได้รับการยกเว้นโดยการเป็น
-                ร.ด. จบหลักสูตร หรือจับฉลากได้ใบดำ หรือร่างกายไม่ได้ขนาด
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="military_status"
+                  value="exempted"
+                  formControlName="military_status"
+                />
+                ได้รับการยกเว้นโดยการเป็น ร.ด. จบหลักสูตร หรือจับฉลากได้ใบดำ
+                หรือร่างกายไม่ได้ขนาด
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input " type="radio" name="military_status" value="women"
-                  formControlName="military_status" /> ไม่ต้องเกณฑ์ทหาร / ผู้หญิง
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="military_status"
+                  value="women"
+                  formControlName="military_status"
+                />
+                ไม่ต้องเกณฑ์ทหาร / ผู้หญิง
               </label>
             </div>
           </div>
@@ -491,7 +764,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">3</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">3</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">การศึกษา และประวัติงาน</h3>
               </div>
@@ -501,28 +776,42 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="education">ระดับการศึกษา
+              <label for="education"
+                >ระดับการศึกษา
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="education" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="education"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="graduate_school">สถาบันการศึกษา
+              <label for="graduate_school"
+                >สถาบันการศึกษา
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="graduate_school" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="graduate_school"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="faculty">สาขา</label>
-              <input type="text" class="form-control" formControlName="faculty" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="faculty"
+              />
             </div>
           </div>
         </div>
@@ -540,25 +829,41 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="company_1">ชื่อสถานประกอบการ</label>
-              <input type="text" class="form-control" formControlName="company_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="company_1"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="position_1">ตำแหน่ง</label>
-              <input type="text" class="form-control" formControlName="position_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="position_1"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="duration_1">ระยะเวลา</label>
-              <input type="text" class="form-control" formControlName="duration_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="duration_1"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="resignation_cause_1">สาเหตุที่ออก</label>
-              <input type="text" class="form-control" formControlName="resignation_cause_1" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="resignation_cause_1"
+              />
             </div>
           </div>
         </div>
@@ -566,25 +871,41 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="company_2">ชื่อสถานประกอบการ</label>
-              <input type="text" class="form-control" formControlName="company_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="company_2"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="position_2">ตำแหน่ง</label>
-              <input type="text" class="form-control" formControlName="position_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="position_2"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="duration_2">ระยะเวลา</label>
-              <input type="text" class="form-control" formControlName="duration_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="duration_2"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="resignation_cause_2">สาเหตุที่ออก</label>
-              <input type="text" class="form-control" formControlName="resignation_cause_2" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="resignation_cause_2"
+              />
             </div>
           </div>
         </div>
@@ -592,25 +913,41 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="company_3">ชื่อสถานประกอบการ</label>
-              <input type="text" class="form-control" formControlName="company_3" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="company_3"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
               <label for="position_3">ตำแหน่ง</label>
-              <input type="text" class="form-control" formControlName="position_3" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="position_3"
+              />
             </div>
           </div>
           <div class="col-md-2">
             <div class="form-group">
               <label for="duration_3">ระยะเวลา</label>
-              <input type="text" class="form-control" formControlName="duration_3" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="duration_3"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="resignation_cause_3">สาเหตุที่ออก</label>
-              <input type="text" class="form-control" formControlName="resignation_cause_3" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="resignation_cause_3"
+              />
             </div>
           </div>
         </div>
@@ -628,19 +965,34 @@
           <div class="col-md-10">
             <div class="form-group">
               <label for="training_1">การฝึกอบรม 1</label>
-              <input type="text" class="form-control" maxlength="100" formControlName="training_1" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="100"
+                formControlName="training_1"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="training_2">การฝึกอบรม 2</label>
-              <input type="text" class="form-control" maxlength="100" formControlName="training_2" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="100"
+                formControlName="training_2"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
               <label for="training_3">การฝึกอบรม 3</label>
-              <input type="text" class="form-control" maxlength="100" formControlName="training_3" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="100"
+                formControlName="training_3"
+              />
             </div>
           </div>
         </div>
@@ -652,7 +1004,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">4</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">4</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">ความสามารถ และข้อมูลทั่วไป</h3>
               </div>
@@ -668,7 +1022,11 @@
           <div class="col-md-2">ภาษาไทย</div>
           <div class="col-md-2">
             <label for="read_th" class="label--mini">อ่าน</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="read_th">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="read_th"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -676,7 +1034,11 @@
           </div>
           <div class="col-md-2">
             <label for="write_th" class="label--mini">เขียน</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="write_th">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="write_th"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -684,7 +1046,11 @@
           </div>
           <div class="col-md-2">
             <label for="conversation_th" class="label--mini">พูด</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="conversation_th">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="conversation_th"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -695,7 +1061,11 @@
           <div class="col-md-2">ภาษาอังกฤษ</div>
           <div class="col-md-2">
             <label for="read_en" class="label--mini">อ่าน</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="read_en">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="read_en"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -703,7 +1073,11 @@
           </div>
           <div class="col-md-2">
             <label for="write_en" class="label--mini">เขียน</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="write_en">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="write_en"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -711,7 +1085,11 @@
           </div>
           <div class="col-md-2">
             <label for="conversation_en" class="label--mini">พูด</label>
-            <ng-select class="title-select" [clearable]="false" formControlName="conversation_en">
+            <ng-select
+              class="title-select"
+              [clearable]="false"
+              formControlName="conversation_en"
+            >
               <ng-option [value]="1">พอใช้</ng-option>
               <ng-option [value]="2">ดี</ng-option>
               <ng-option [value]="3">ดีมาก</ng-option>
@@ -726,44 +1104,62 @@
         <div class="row px-2">
           <div class="col-md-4">
             <div class="form-group">
-              <label for="ref_name_2">บุคคลอ้างอิง 1
-              </label>
-              <input type="text" class="form-control" formControlName="ref_name_2" />
+              <label for="ref_name_2">บุคคลอ้างอิง 1 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_name_2"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_relation_2">ความสัมพันธ์ 1
-              </label>
-              <input type="text" class="form-control" formControlName="ref_relation_2" />
+              <label for="ref_relation_2">ความสัมพันธ์ 1 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_relation_2"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_phoneno_2">เบอร์โทร 1
-              </label>
-              <input type="text" class="form-control" formControlName="ref_phoneno_2" />
+              <label for="ref_phoneno_2">เบอร์โทร 1 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_phoneno_2"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="ref_name_3">บุคคลอ้างอิง 2
-              </label>
-              <input type="text" class="form-control" formControlName="ref_name_3" />
+              <label for="ref_name_3">บุคคลอ้างอิง 2 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_name_3"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_relation_3">ความสัมพันธ์ 2
-              </label>
-              <input type="text" class="form-control" formControlName="ref_relation_3" />
+              <label for="ref_relation_3">ความสัมพันธ์ 2 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_relation_3"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_phoneno_3">เบอร์โทร 2
-              </label>
-              <input type="text" class="form-control" formControlName="ref_phoneno_3" />
+              <label for="ref_phoneno_3">เบอร์โทร 2 </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_phoneno_3"
+              />
             </div>
           </div>
         </div>
@@ -775,30 +1171,43 @@
         <div class="row px-2">
           <div class="col-md-4">
             <div class="form-group">
-              <label for="ref_name_1">กรณีฉุกเฉินบุคคลที่ติดต่อได้
-              </label>
-              <input type="text" class="form-control" formControlName="ref_name_1" />
+              <label for="ref_name_1">กรณีฉุกเฉินบุคคลที่ติดต่อได้ </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_name_1"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_relation_1">ความสัมพันธ์
-              </label>
-              <input type="text" class="form-control" formControlName="ref_relation_1" />
+              <label for="ref_relation_1">ความสัมพันธ์ </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_relation_1"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <div class="form-group">
-              <label for="ref_phoneno_1">เบอร์โทร
-              </label>
-              <input type="text" class="form-control" formControlName="ref_phoneno_1" />
+              <label for="ref_phoneno_1">เบอร์โทร </label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="ref_phoneno_1"
+              />
             </div>
           </div>
           <div class="col-md-10">
             <div class="form-group">
-              <label for="ref_address_1">ที่อยู่
-              </label>
-              <input type="text" class="form-control" maxlength="255" formControlName="ref_address_1" />
+              <label for="ref_address_1">ที่อยู่ </label>
+              <input
+                type="text"
+                class="form-control"
+                maxlength="255"
+                formControlName="ref_address_1"
+              />
             </div>
           </div>
         </div>
@@ -818,21 +1227,40 @@
             <div class="input-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_disability" name="is_disability"
-                    [value]="false"> ไม่มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_disability"
+                    name="is_disability"
+                    [value]="false"
+                  />
+                  ไม่มี
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_disability" name="is_disability"
-                    [value]="true"> มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_disability"
+                    name="is_disability"
+                    [value]="true"
+                  />
+                  มี
                 </label>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group mb-0" *ngIf="employeeForm.get('is_disability').value">
-              <input type="text" class="form-control" formControlName="disability">
+            <div
+              class="form-group mb-0"
+              *ngIf="employeeForm.get('is_disability').value"
+            >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="disability"
+              />
             </div>
           </div>
         </div>
@@ -842,21 +1270,40 @@
             <div class="input-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_congenital_disease"
-                    name="is_congenital_disease" [value]="false"> ไม่มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_congenital_disease"
+                    name="is_congenital_disease"
+                    [value]="false"
+                  />
+                  ไม่มี
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_congenital_disease"
-                    name="is_congenital_disease" [value]="true"> มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_congenital_disease"
+                    name="is_congenital_disease"
+                    [value]="true"
+                  />
+                  มี
                 </label>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="form-group mb-0" *ngIf="employeeForm.get('is_congenital_disease').value">
-              <input type="text" class="form-control" formControlName="congenital_disease">
+            <div
+              class="form-group mb-0"
+              *ngIf="employeeForm.get('is_congenital_disease').value"
+            >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="congenital_disease"
+              />
             </div>
           </div>
         </div>
@@ -866,30 +1313,57 @@
             <div class="input-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_previous_conviction"
-                    name="is_previous_conviction" [value]="false"> ไม่มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_previous_conviction"
+                    name="is_previous_conviction"
+                    [value]="false"
+                  />
+                  ไม่มี
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" formControlName="is_previous_conviction"
-                    name="is_previous_conviction" [value]="true"> มี
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="is_previous_conviction"
+                    name="is_previous_conviction"
+                    [value]="true"
+                  />
+                  มี
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div class="row px-2" *ngIf="employeeForm.get('is_previous_conviction').value">
+        <div
+          class="row px-2"
+          *ngIf="employeeForm.get('is_previous_conviction').value"
+        >
           <div class="col-md-2">
             <div class="form-group">
-              <label for="num_of_conviction" class="label--mini">จำนวนครั้ง</label>
-              <input type="text" class="form-control" formControlName="num_of_conviction">
+              <label for="num_of_conviction" class="label--mini"
+                >จำนวนครั้ง</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="num_of_conviction"
+              />
             </div>
           </div>
           <div class="col-md-8">
             <div class="form-group">
-              <label for="conviction_cause" class="label--mini">เนื้อหาของคดี</label>
-              <input type="text" class="form-control" formControlName="conviction_cause">
+              <label for="conviction_cause" class="label--mini"
+                >เนื้อหาของคดี</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                formControlName="conviction_cause"
+              />
             </div>
           </div>
         </div>
@@ -901,7 +1375,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">5</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">5</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">เอกสารสำคัญแนบท้าย</h3>
               </div>
@@ -916,37 +1392,57 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="bankId">ธนาคาร
+              <label for="bankId"
+                >ธนาคาร
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <ng-select placeholder="กรุณาเลือก" class="title-select" [clearable]="false" [items]="banks"
-                bindLabel="name" bindValue="id" formControlName="bank_id">
+              <ng-select
+                placeholder="กรุณาเลือก"
+                class="title-select"
+                [clearable]="false"
+                [items]="banks"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="bank_id"
+              >
               </ng-select>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="bank_account">เลขที่บัญชี
+              <label for="bank_account"
+                >เลขที่บัญชี
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="bank_account">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="bank_account"
+              />
             </div>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            สำเนาหน้าบัญชีธนาคาร
-          </div>
+          <div class="col-md-3">สำเนาหน้าบัญชีธนาคาร</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfBookBank" name="copyOfBookBank" accept=".pdf"
-                  (change)="fileChangeEvent($event)" #copyOfBookBank>
-                <label class="custom-file-label" for="copyOfBookBank">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfBookBank"
+                  name="copyOfBookBank"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfBookBank
+                />
+                <label class="custom-file-label" for="copyOfBookBank"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
@@ -957,43 +1453,64 @@
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            สำเนาบัตรประชาชน
-          </div>
+          <div class="col-md-3">สำเนาบัตรประชาชน</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfIdCardNumber" name="copyOfIdCardNumber"
-                  accept=".pdf" (change)="fileChangeEvent($event)" #copyOfIdCardNumber>
-                <label class="custom-file-label" for="copyOfIdCardNumber">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfIdCardNumber"
+                  name="copyOfIdCardNumber"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfIdCardNumber
+                />
+                <label class="custom-file-label" for="copyOfIdCardNumber"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            สำเนาทะเบียนบ้าน
-          </div>
+          <div class="col-md-3">สำเนาทะเบียนบ้าน</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfHouseRegistration" name="copyOfHouseRegistration"
-                  accept=".pdf" (change)="fileChangeEvent($event)" #copyOfHouseRegistration>
-                <label class="custom-file-label" for="copyOfHouseRegistration">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfHouseRegistration"
+                  name="copyOfHouseRegistration"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfHouseRegistration
+                />
+                <label class="custom-file-label" for="copyOfHouseRegistration"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            หลักฐานการศึกษา
-          </div>
+          <div class="col-md-3">หลักฐานการศึกษา</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfTranscript" name="copyOfTranscript" accept=".pdf"
-                  (change)="fileChangeEvent($event)" #copyOfTranscript>
-                <label class="custom-file-label" for="copyOfTranscript">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfTranscript"
+                  name="copyOfTranscript"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfTranscript
+                />
+                <label class="custom-file-label" for="copyOfTranscript"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
@@ -1005,37 +1522,60 @@
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfTp7" name="copyOfTp7" accept=".pdf"
-                  (change)="fileChangeEvent($event)" #copyOfTp7>
-                <label class="custom-file-label" for="copyOfTp7">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfTp7"
+                  name="copyOfTp7"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfTp7
+                />
+                <label class="custom-file-label" for="copyOfTp7"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            ธภ.12 คำร้องขอให้เปรียบเทียบ
-          </div>
+          <div class="col-md-3">ธภ.12 คำร้องขอให้เปรียบเทียบ</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfTp12" name="copyOfTp12" accept=".pdf"
-                  (change)="fileChangeEvent($event)" #copyOfTp12>
-                <label class="custom-file-label" for="copyOfTp12">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfTp12"
+                  name="copyOfTp12"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfTp12
+                />
+                <label class="custom-file-label" for="copyOfTp12"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
-          <div class="col-md-3">
-            ประวัติอาชญากรรม
-          </div>
+          <div class="col-md-3">ประวัติอาชญากรรม</div>
           <div class="col-md-5">
             <div class="input-group">
               <div class="custom-file">
-                <input type="file" class="custom-file-input" id="copyOfCriminal" name="copyOfCriminal" accept=".pdf"
-                  (change)="fileChangeEvent($event)" #copyOfCriminal>
-                <label class="custom-file-label" for="copyOfCriminal">เลือกไฟล์</label>
+                <input
+                  type="file"
+                  class="custom-file-input"
+                  id="copyOfCriminal"
+                  name="copyOfCriminal"
+                  accept=".pdf,image/png,image/jpeg"
+                  (change)="fileChangeEvent($event)"
+                  #copyOfCriminal
+                />
+                <label class="custom-file-label" for="copyOfCriminal"
+                  >เลือกไฟล์</label
+                >
               </div>
             </div>
           </div>
@@ -1049,30 +1589,55 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="license_no">เลขที่ใบอนุญาต</label>
-              <input type="text" class="form-control" maxlength="50" formControlName="license_no" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="license_no"
+              />
             </div>
           </div>
           <div class="col-md-3">
             <label for="license_start_date">วันที่เริ่ม</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #lsdp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="license_start_date">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #lsdp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="license_start_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="lsdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="lsdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
           <div class="col-md-3">
             <label for="license_end_date">วันที่สิ้นสุด</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #ledp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="license_end_date">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #ledp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="license_end_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="ledp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="ledp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
@@ -1085,7 +1650,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">6</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">6</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">อื่นๆ</h3>
               </div>
@@ -1102,14 +1669,26 @@
             <div class="input-group">
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="is_social_security" [value]="true"
-                    formControlName="is_social_security" /> นำส่งประกันสังคม
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="is_social_security"
+                    [value]="true"
+                    formControlName="is_social_security"
+                  />
+                  นำส่งประกันสังคม
                 </label>
               </div>
               <div class="form-check form-check-inline">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="radio" name="is_social_security" [value]="false"
-                    formControlName="is_social_security" /> ไม่นำส่งประกันสังคม
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="is_social_security"
+                    [value]="false"
+                    formControlName="is_social_security"
+                  />
+                  ไม่นำส่งประกันสังคม
                 </label>
               </div>
             </div>
@@ -1119,38 +1698,66 @@
           <div class="col-md-4">
             <label for="sso_start_date">วันเริ่มสิทธิประกันสังคม</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #ssostartdp="bsDatepicker"
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #ssostartdp="bsDatepicker"
                 bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="sso_start_date">
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="sso_start_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="ssostartdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span
+                  class="input-group-text pointer"
+                  (click)="ssostartdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
           <div class="col-md-4">
             <label for="sso_end_date">วันยื่นออกประกันสังคม</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #ssoenddp="bsDatepicker"
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #ssoenddp="bsDatepicker"
                 bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="sso_end_date">
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="sso_end_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="ssoenddp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span
+                  class="input-group-text pointer"
+                  (click)="ssoenddp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
-          <div class="col-md-2">
-          </div>
+          <div class="col-md-2"></div>
         </div>
         <div class="row px-2">
           <div class="col-md-8">
             <div class="form-group">
               <label for="hospital_id">สถานพยาบาลประกันสังคม</label>
-              <ng-select placeholder="กรุณาเลือก" class="title-select" [clearable]="false" [items]="hospitals"
-                bindLabel="name" bindValue="id" formControlName="hospital_id">
+              <ng-select
+                placeholder="กรุณาเลือก"
+                class="title-select"
+                [clearable]="false"
+                [items]="hospitals"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="hospital_id"
+              >
               </ng-select>
             </div>
           </div>
@@ -1164,31 +1771,53 @@
           <div class="col-md-4">
             <label for="register_date">วันที่สมัคร</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #regdp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="register_date">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #regdp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="register_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="regdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="regdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 mb-2">
           <div class="col-md-4">
-            <label for="start_date">วันที่เริ่มงาน
+            <label for="start_date"
+              >วันที่เริ่มงาน
               <span class="text-danger">
                 <small>*</small>
               </span>
             </label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #startdp="bsDatepicker"
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #startdp="bsDatepicker"
                 bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="start_date">
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="start_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="startdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span
+                  class="input-group-text pointer"
+                  (click)="startdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
@@ -1197,19 +1826,33 @@
           <div class="col-md-4">
             <label for="end_date">วันที่ลาออก</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #enddp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="end_date">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #enddp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="end_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="enddp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="enddp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
           <div class="col-md-6">
             <div class="form-group">
               <label for="resignation_cause">สาเหตุที่ออก</label>
-              <input type="text" class="form-control" formControlName="resignation_cause">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="resignation_cause"
+              />
             </div>
           </div>
         </div>
@@ -1218,7 +1861,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">1</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">1</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">ข้อมูลบัตรประชาชน</h3>
               </div>
@@ -1228,17 +1873,27 @@
         <div class="row px-2">
           <div class="col-md-4">
             <small
-              [hidden]="employeeForm.get('idcard_no').valid || (employeeForm.get('idcard_no').pristine && !addForm.submitted)"
-              class="text-danger">
+              [hidden]="
+                employeeForm.get('idcard_no').valid ||
+                (employeeForm.get('idcard_no').pristine && !addForm.submitted)
+              "
+              class="text-danger"
+            >
               กรุณากรอกเลขที่บัตรประจำตัวประชาชนให้ถูกต้อง
             </small>
             <div class="form-group">
-              <label for="idcard_no">เลขที่บัตรประจำตัวประชาชน
+              <label for="idcard_no"
+                >เลขที่บัตรประจำตัวประชาชน
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="13" formControlName="idcard_no" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="13"
+                formControlName="idcard_no"
+              />
             </div>
           </div>
         </div>
@@ -1250,7 +1905,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">2</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">2</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">ข้อมูลส่วนตัว</h3>
               </div>
@@ -1260,12 +1917,17 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="title">คำนำหน้าชื่อ
+              <label for="title"
+                >คำนำหน้าชื่อ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <ng-select class="title-select" [clearable]="false" formControlName="title">
+              <ng-select
+                class="title-select"
+                [clearable]="false"
+                formControlName="title"
+              >
                 <ng-option [value]="'นาย'">นาย</ng-option>
                 <ng-option [value]="'นาง'">นาง</ng-option>
                 <ng-option [value]="'นางสาว'">นางสาว</ng-option>
@@ -1274,22 +1936,34 @@
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="firstname">ชื่อ
+              <label for="firstname"
+                >ชื่อ
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="firstname" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="firstname"
+              />
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="lastname">สกุล
+              <label for="lastname"
+                >สกุล
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" maxlength="50" formControlName="lastname" />
+              <input
+                type="text"
+                class="form-control"
+                maxlength="50"
+                formControlName="lastname"
+              />
             </div>
           </div>
         </div>
@@ -1301,7 +1975,9 @@
         <div class="row">
           <div class="col">
             <div class="d-flex align-items-center my-2">
-              <div><span class="badge badge-primary rounded-badge">3</span></div>
+              <div>
+                <span class="badge badge-primary rounded-badge">3</span>
+              </div>
               <div class="ml-2">
                 <h3 class="title">บัญชีธนาคาร และวันเริ่มงาน</h3>
               </div>
@@ -1311,24 +1987,37 @@
         <div class="row px-2">
           <div class="col-md-2">
             <div class="form-group">
-              <label for="bankId">ธนาคาร
+              <label for="bankId"
+                >ธนาคาร
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <ng-select placeholder="กรุณาเลือก" class="title-select" [clearable]="false" [items]="banks"
-                bindLabel="name" bindValue="id" formControlName="bank_id">
+              <ng-select
+                placeholder="กรุณาเลือก"
+                class="title-select"
+                [clearable]="false"
+                [items]="banks"
+                bindLabel="name"
+                bindValue="id"
+                formControlName="bank_id"
+              >
               </ng-select>
             </div>
           </div>
           <div class="col-md-4">
             <div class="form-group">
-              <label for="bank_account">เลขที่บัญชี
+              <label for="bank_account"
+                >เลขที่บัญชี
                 <span class="text-danger">
                   <small>*</small>
                 </span>
               </label>
-              <input type="text" class="form-control" formControlName="bank_account">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="bank_account"
+              />
             </div>
           </div>
         </div>
@@ -1336,31 +2025,53 @@
           <div class="col-md-4">
             <label for="register_date">วันที่สมัคร</label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #regdp="bsDatepicker" bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="register_date">
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #regdp="bsDatepicker"
+                bsDatepicker
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="register_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="regdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span class="input-group-text pointer" (click)="regdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
         </div>
         <div class="row px-2 mb-2">
           <div class="col-md-4">
-            <label for="start_date">วันที่เริ่มงาน
+            <label for="start_date"
+              >วันที่เริ่มงาน
               <span class="text-danger">
                 <small>*</small>
               </span>
             </label>
             <div class="input-group">
-              <input class="form-control form-control--date" onkeydown="return false" #startdp="bsDatepicker"
+              <input
+                class="form-control form-control--date"
+                onkeydown="return false"
+                #startdp="bsDatepicker"
                 bsDatepicker
-                [bsConfig]="{ adaptivePosition: true, dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green' }"
-                formControlName="start_date">
+                [bsConfig]="{
+                  adaptivePosition: true,
+                  dateInputFormat: 'DD-MM-YYYY',
+                  containerClass: 'theme-green'
+                }"
+                formControlName="start_date"
+              />
               <div class="input-group-append">
-                <span class="input-group-text pointer" (click)="startdp.toggle()"><i class="fa fa-calendar text-dark"
-                    aria-hidden="true"></i></span>
+                <span
+                  class="input-group-text pointer"
+                  (click)="startdp.toggle()"
+                  ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                ></span>
               </div>
             </div>
           </div>
@@ -1374,7 +2085,8 @@
       <div class="mb-5 text-right">
         <p class="text-left" *ngIf="!addForm.form.valid">
           <alert type="warning">
-            <strong>คำเตือน!</strong> กรุณากรอกข้อมูลที่มีเครื่องหมายดอกจันทร์ (*) ให้ครบถ้วน
+            <strong>คำเตือน!</strong> กรุณากรอกข้อมูลที่มีเครื่องหมายดอกจันทร์
+            (*) ให้ครบถ้วน
           </alert>
         </p>
         <p class="text-left" *ngIf="serverError">
@@ -1382,7 +2094,13 @@
             <strong>ERROR!</strong> {{ serverError }}
           </alert>
         </p>
-        <button class="btn btn-primary btn-save" type="submit" [disabled]="!addForm.form.valid">บันทึกข้อมูล</button>
+        <button
+          class="btn btn-primary btn-save"
+          type="submit"
+          [disabled]="!addForm.form.valid"
+        >
+          บันทึกข้อมูล
+        </button>
       </div>
     </form>
   </div>
