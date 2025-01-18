@@ -26,7 +26,8 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
   totalSites = 0;
 
   siteForm = this.fb.group({
-    search: ['']
+    search: [''],
+    site_status: [true]
   });
 
   constructor(
@@ -100,6 +101,7 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
             const storageSiteFillter = JSON.parse(siteFilterString) as SiteFilter;
             that.siteForm.patchValue({
               search: storageSiteFillter.search,
+              site_status: storageSiteFillter.site_status
             });
             dtInstance.page(storageSiteFillter.page);
             dtInstance.page.len(storageSiteFillter.page_size);
@@ -107,6 +109,7 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
           }
           that.siteFilter = {
             search: that.siteForm.get('search').value,
+            site_status: that.siteForm.get('site_status').value,
             sort_column: sortColumn,
             sort_by: sortBy,
             page: dtInstance.page.info().page + 1,
@@ -115,6 +118,7 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
           that.siteService.getSiteFilter(
             that.siteFilter.search,
+            that.siteFilter.site_status,
             that.siteFilter.sort_column,
             that.siteFilter.sort_by,
             that.siteFilter.page,
@@ -134,6 +138,7 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
         { width: '250px' },
         { width: '100px' },
         { width: '120px' },
+        { width: '100px' },
         { orderable: false, width: '20px' }
       ]
     };
@@ -141,5 +146,12 @@ export class SiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
   editSiteInfo(siteId: number) {
     this.router.navigate(['/site/edit', siteId]);
+  }
+
+  onSiteStatusSelectionChange() {
+    this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance.page(0);
+      dtInstance.ajax.reload(null, false);
+    });
   }
 }
