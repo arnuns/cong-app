@@ -308,7 +308,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         if (val.length < 2) {
           this.salarySites = [];
         } else {
-          this.siteService.getSiteFilter(val, 'name', 'asc', 1, 12).subscribe(sites => {
+          this.siteService.getSiteFilter(val, null, 'name', 'asc', 1, 12).subscribe(sites => {
             this.salarySites = sites.data;
           });
         }
