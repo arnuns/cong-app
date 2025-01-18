@@ -20,6 +20,15 @@
             <input type="text" class="form-control search-control" formControlName="search" placeholder="ค้นหาหน่วยงาน">
           </div>
         </div>
+        <div class="ml-2">
+          <div class="form-group mb-1">
+            <ng-select placeholder="ทั้งหมด" class="filter-select" formControlName="site_status"
+              (change)="onSiteStatusSelectionChange()" [searchable]="false">
+              <ng-option [value]="true">เปิดอยู่</ng-option>
+              <ng-option [value]="false">ยกเลิก</ng-option>
+            </ng-select>
+          </div>
+        </div>
       </div>
     </form>
     <table datatable [dtOptions]="dtOptions" class="table table-hover site-table">
@@ -29,18 +38,29 @@
           <th>ชื่อหน่วยงาน</th>
           <th>วันที่สร้าง</th>
           <th>จังหวัด</th>
+          <th>สถานะ</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let site of sites; let i = index">
-          <td>{{ site.code }}</td>
+          <td>{{ site.id }}</td>
           <td>{{ site.name }}</td>
           <td class="col--create-on">
             <span>{{ site.createOn | date: 'yyyy/MM/dd' }}</span>
             {{ site.createOn | date:'dd-MM-yyyy' }}
           </td>
           <td>{{ site.province.name }}</td>
+          <td>
+            <span *ngIf="site.status">
+              <small>
+                <i class="fa fa-circle active" aria-hidden="true"></i>
+              </small> เปิดอยู่</span>
+            <span *ngIf="!site.status">
+              <small>
+                <i class="fa fa-circle disable" aria-hidden="true"></i>
+              </small> ยกเลิก</span>
+          </td>
           <td>
             <span dropdown class="action--dropdown">
               <a href id="basic-link" dropdownToggle (click)="false" aria-controls="basic-link-dropdown">

@@ -72,4 +72,5 @@ export interface SiteCheckpoint {
 
 export interface SiteFilter extends PageFilter {
     search: string;
+    site_status: string;
 }
