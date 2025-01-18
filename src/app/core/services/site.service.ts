@@ -45,7 +45,7 @@ export class SiteService extends BaseService {
     page_size: number) {
     const params = new HttpParams()
       .set('search', (!search) ? '' : search)
-      .set('site_status', (site_status === undefined || site_status === null) ? '' : site_status)
+      .set('status', (site_status === undefined || site_status === null) ? '' : site_status)
       .set('sort_column', sort_column)
       .set('sort_by', sort_by)
       .set('page', String(page))
