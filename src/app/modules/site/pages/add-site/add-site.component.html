@@ -380,6 +380,50 @@
           <div class="line"></div>
         </div>
       </div>
+      <div class="row">
+        <div class="col">
+          <div class="d-flex align-items-center my-2">
+            <div>
+              <h3 class="title">เปิดหน่วยงาน</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="d-flex w-100">
+            <div class="p-2">
+              <div class="form-group">
+                <label for="contract_start_date">วันที่เปิดหน่วยงานตามสัญญา</label>
+                <div class="input-group">
+                  <input
+                    class="form-control form-control--date"
+                    onkeydown="return false"
+                    #csdp="bsDatepicker"
+                    bsDatepicker
+                    [bsConfig]="{
+                      adaptivePosition: true,
+                      dateInputFormat: 'DD-MM-YYYY',
+                      containerClass: 'theme-green'
+                    }"
+                    formControlName="contract_start_date"
+                  />
+                  <div class="input-group-append">
+                    <span class="input-group-text pointer" (click)="csdp.toggle()"
+                      ><i class="fa fa-calendar text-dark" aria-hidden="true"></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="line"></div>
+        </div>
+      </div>
       <div class="row" *ngIf="!f.form.valid">
         <div class="col">
           <p class="text-left">

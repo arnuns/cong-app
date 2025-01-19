@@ -52,11 +52,13 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     is_minimum_manday: [true],
     is_replacement_wage: [false],
     self_checkin: [false],
+    contract_start_date: [null],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
     site_user_positions: this.fb.array([]),
   });
 
+  dateFormat = 'YYYY-MM-DDT00:00:00Z';
 
 
   constructor(
@@ -133,7 +135,8 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           is_sso_annual_holiday: this.site.isSsoAnnualHoliday,
           is_minimum_manday: this.site.isMinimumManday,
           is_replacement_wage: this.site.isReplacementWage || false,
-          self_checkin: this.site.selfCheckIn
+          self_checkin: this.site.selfCheckIn,
+          contract_start_date: this.site.contractStartDate ? this.convertToDate(this.site.contractStartDate) : null
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
         this.user_districts = this.districts.filter(a => a.amphurId === this.site.amphurId);
@@ -222,26 +225,33 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         updateBy: undefined,
       }));
     }
+
+    const that = this;
+    function getValue(controlName) {
+      return that.siteForm.get(controlName).value;
+    }
+
     this.siteService.updateSite(this.siteId, {
       id: null,
-      code: this.siteForm.get('code').value,
-      name: this.siteForm.get('name').value,
-      fullName: this.siteForm.get('full_name').value,
-      address: this.siteForm.get('address').value,
-      districtId: this.siteForm.get('district_id').value,
-      amphurId: this.siteForm.get('amphur_id').value,
-      provinceId: this.siteForm.get('province_id').value,
+      code: getValue('code').value,
+      name: getValue('name').value,
+      fullName: getValue('full_name').value,
+      address: getValue('address').value,
+      districtId: getValue('district_id').value,
+      amphurId: getValue('amphur_id').value,
+      provinceId: getValue('province_id').value,
       province: null,
-      latitude: this.siteForm.get('latitude').value,
-      longitude: this.siteForm.get('longitude').value,
-      minimumWage: this.siteForm.get('minimum_wage').value,
-      replacementWage: this.siteForm.get('replacement_wage').value || 0,
+      latitude: getValue('latitude').value,
+      longitude: getValue('longitude').value,
+      minimumWage: getValue('minimum_wage').value,
+      replacementWage: getValue('replacement_wage').value || 0,
       isPayroll: true,
-      isMonthly: this.siteForm.get('is_monthly').value,
-      isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
-      isMinimumManday: this.siteForm.get('is_minimum_manday').value,
-      isReplacementWage: this.siteForm.get('is_replacement_wage').value,
-      selfCheckIn: this.siteForm.get('self_checkin').value,
+      isMonthly: getValue('is_monthly').value,
+      isSsoAnnualHoliday: getValue('is_sso_annual_holiday').value,
+      isMinimumManday: getValue('is_minimum_manday').value,
+      isReplacementWage: getValue('is_replacement_wage').value,
+      selfCheckIn: getValue('self_checkin').value,
+      contractStartDate:  getValue('contract_start_date') ? this.moment.format(getValue('contract_start_date'), 'YYYY-MM-DD') : undefined,
       status: true,
       createOn: undefined,
       createBy: undefined,
@@ -534,5 +544,11 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
 
   isNullOrUndefined(value: any): boolean {
     return value === '' || value === null || value === undefined;
+  }
+
+  convertToDate(dateString: string) {
+    const date: Date = this.moment.toDate(dateString, this.dateFormat);
+    date.setHours(7);
+    return date;
   }
 }
