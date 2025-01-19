@@ -1,0 +1,55 @@
+.dialog-icon {
+  font-size: 48px;
+  letter-spacing: normal;
+  color: #3dba97;
+}
+
+.dialog-icon.terminate {
+  color: #f25c62;
+}
+
+.dialog-title {
+  font-size: 48px;
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+.dialog-title.terminate {
+  color: #f25c62;
+}
+
+.dialog-message {
+  font-size: 14px;
+  letter-spacing: normal;
+  color: #333333;
+  margin-bottom: 30px;
+}
+
+.button__save {
+  width: 180px;
+  height: 36px;
+  border-radius: 17px;
+  background-color: #4b74ff;
+  font-size: 14px;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+}
+
+.button__cancel {
+  width: 180px;
+  height: 36px;
+  border: 1px solid #333333;
+  border-radius: 17px;
+  background-color: #ffffff;
+  font-size: 14px;
+  letter-spacing: normal;
+  text-align: center;
+  color: #333333;
+}
+
+::ng-deep {
+  .confirm-new-modal {
+    max-width: 550px;
+  }
+}

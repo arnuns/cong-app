@@ -5,6 +5,7 @@
         <h3 class="title noselect">รายละเอียดหน่วยงาน</h3>
       </div>
       <div class="ml-auto">
+        <button type="button" class="btn button__activate" (click)="onActivateClick()" *ngIf="siteForm.get('status').value === false">เปิดใช้หน่วยงาน</button>
       </div>
     </div>
   </div>
@@ -467,5 +468,19 @@
         </div>
       </div>
     </form>
+  </div>
+</div>
+<div class="row p-4 bgno"  *ngIf="siteForm.get('status').value === true">
+  <div class="col px-0">
+    <div class="d-flex align-items-center w-100">
+      <div>
+        <span class="text-danger">*การยกเลิกหน่วยงาน จะต้องไม่มีคนอยู่ในหน่วยงาน จึงสามารถทำการยกเลิกหน่วยงานได้</span>
+      </div>
+      <div class="ml-2">
+        <button type="button" class="btn btn-danger button__add" (click)="onDeactivateClick()">ยกเลิกหน่วยงาน</button>
+      </div>
+      <div class="ml-auto">
+      </div>
+    </div>
   </div>
 </div>

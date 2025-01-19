@@ -77,4 +77,12 @@ export class SiteService extends BaseService {
   updateSite(siteId: number, site: Site) {
     return this.http.put<Site>(`${this.serviceUrl}/site/${siteId}`, site);
   }
+
+  activateSite(siteId: number) {
+    return this.http.delete(`${this.serviceUrl}/site/${siteId}/activate`);
+  }
+
+  deactivateSite(siteId: number) {
+    return this.http.delete(`${this.serviceUrl}/site/${siteId}/deactivate`);
+  }
 }
