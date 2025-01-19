@@ -47,6 +47,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     is_minimum_manday: [true],
     is_replacement_wage: [false],
     self_checkin: [false],
+    contract_start_date: [null],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
     site_user_positions: this.fb.array([]),
@@ -181,26 +182,33 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         updateBy: undefined,
       }));
     }
+
+    const that = this;
+    function getValue(controlName) {
+      return that.siteForm.get(controlName).value;
+    }
+
     this.siteService.addSite({
       id: null,
-      code: this.siteForm.get('code').value,
-      name: this.siteForm.get('name').value,
-      fullName: this.siteForm.get('full_name').value,
-      address: this.siteForm.get('address').value,
-      districtId: this.siteForm.get('district_id').value,
-      amphurId: this.siteForm.get('amphur_id').value,
-      provinceId: this.siteForm.get('province_id').value,
+      code: getValue('code'),
+      name: getValue('name'),
+      fullName: getValue('full_name'),
+      address: getValue('address'),
+      districtId: getValue('district_id'),
+      amphurId: getValue('amphur_id'),
+      provinceId: getValue('province_id'),
       province: null,
-      latitude: this.siteForm.get('latitude').value,
-      longitude: this.siteForm.get('longitude').value,
-      minimumWage: this.siteForm.get('minimum_wage').value,
-      replacementWage: this.siteForm.get('replacement_wage').value || 0,
+      latitude: getValue('latitude'),
+      longitude: getValue('longitude'),
+      minimumWage: getValue('minimum_wage'),
+      replacementWage: getValue('replacement_wage') || 0,
       isPayroll: true,
-      isMonthly: this.siteForm.get('is_monthly').value,
-      isSsoAnnualHoliday: this.siteForm.get('is_sso_annual_holiday').value,
-      isMinimumManday: this.siteForm.get('is_minimum_manday').value,
-      isReplacementWage: this.siteForm.get('is_replacement_wage').value,
-      selfCheckIn: this.siteForm.get('self_checkin').value,
+      isMonthly: getValue('is_monthly'),
+      isSsoAnnualHoliday: getValue('is_sso_annual_holiday'),
+      isMinimumManday: getValue('is_minimum_manday'),
+      isReplacementWage: getValue('is_replacement_wage'),
+      selfCheckIn: getValue('self_checkin'),
+      contractStartDate:  getValue('contract_start_date') ? this.moment.format(getValue('contract_start_date'), 'YYYY-MM-DD') : undefined,
       status: true,
       createOn: undefined,
       createBy: undefined,
@@ -278,13 +286,13 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       siteWorkRateForms.patchValue({ worker_count: 1 })
     }
   }
-  
+
   formatTime(date: Date): string {
     return this.datePipe.transform(date, 'HH:mm') || '';
   }
 
   addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
-    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+    const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate =>
       this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
     );
 
@@ -299,7 +307,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         this.siteCheckpointForms.push(this.fb.group({
           start_time: [siteCheckpoint.startTime, [Validators.required]],
           end_time: [siteCheckpoint.endTime, [Validators.required]],
-          time_range: [defaultTimeRange, [Validators.required]], 
+          time_range: [defaultTimeRange, [Validators.required]],
           checkpoint_name: [siteCheckpoint.checkpointName, [Validators.required]],
           point_value: [siteCheckpoint.pointValue, [Validators.min(0), Validators.required]],
           worker_count: [siteCheckpoint.workerCount, [Validators.min(0), Validators.required]],
@@ -361,7 +369,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       siteCheckpointForms.patchValue({ worker_count: 1 })
     }
   }
-  
+
   removeSiteCheckpoint(index: number) {
     this.siteCheckpointForms.removeAt(index);
   }
@@ -421,7 +429,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     if (this.siteWorkRateForms.controls.length > 0) {
       this.siteWorkRateForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
-        
+
         if (!siteWorkRateMapAndSumWorkerCount[key]) {
           siteWorkRateMapAndSumWorkerCount[key] = {
             startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
@@ -437,7 +445,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       let siteCheckpointMapAndSumWorkerCount = {};
       this.siteCheckpointForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
-        
+
         if (!siteCheckpointMapAndSumWorkerCount[key]) {
           siteCheckpointMapAndSumWorkerCount[key] = {
             startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
@@ -457,7 +465,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
           const checkpointData = siteCheckpointMapAndSumWorkerCount[key];
           const workRateData = siteWorkRateMapAndSumWorkerCount[key];
-      
+
           // If there's a matching work rate record, compare the worker counts
           if (workRateData && checkpointData.workerCount > workRateData.workerCount) {
             isAlert = true;

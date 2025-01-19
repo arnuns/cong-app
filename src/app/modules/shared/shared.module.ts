@@ -28,6 +28,7 @@ import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
 import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
 import { StorageUrlPipe } from 'src/app/core/pipes/storage-url.pipe';
+import { ConfirmNewDialogComponent } from './dialogs/confirm-new-dialog/confirm-new-dialog.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { StorageUrlPipe } from 'src/app/core/pipes/storage-url.pipe';
     SafePipe,
     StorageUrlPipe,
     ConfirmDialogComponent,
+    ConfirmNewDialogComponent,
     SuccessDialogComponent,
   ],
   imports: [
@@ -85,6 +87,7 @@ import { StorageUrlPipe } from 'src/app/core/pipes/storage-url.pipe';
     NgxQRCodeModule,
     RoundProgressModule,
     ConfirmDialogComponent,
+    ConfirmNewDialogComponent,
     SuccessDialogComponent
   ]
 })

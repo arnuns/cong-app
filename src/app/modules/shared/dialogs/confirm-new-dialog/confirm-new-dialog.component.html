@@ -1,0 +1,44 @@
+<ngx-smart-modal
+  #confirmNewModal
+  [identifier]="'confirmNewModal'"
+  [closable]="true"
+  [escapable]="false"
+  [dismissable]="false"
+  [customClass]="'confirm-new-modal'"
+>
+  <div class="d-flex flex-column align-items-center w-100 p-3">
+    <div class="dialog-icon" [class.terminate]="data?.type === 'terminate'">
+      <i
+        class="fa"
+        [class.fa-check-circle]="data?.type === 'success'"
+        [class.fa-trash]="data?.type === 'terminate'"
+        aria-hidden="true"
+      ></i>
+    </div>
+    <div class="dialog-title my-2" [class.terminate]="data?.type === 'terminate'">
+      <h3>
+        {{ data?.title }}
+      </h3>
+    </div>
+    <div class="dialog-message">
+      <p>{{ data?.message1 }}</p>
+      <p class="text-secondary mb-0">{{ data?.message2 }}</p>
+    </div>
+    <div class="d-flex justify-content-center">
+      <div>
+        <button type="button" class="btn button__save" (click)="onConfirm()">
+          ยืนยัน
+        </button>
+      </div>
+      <div class="ml-2">
+        <button
+          type="button"
+          class="btn button__cancel"
+          (click)="confirmNewModal.close()"
+        >
+          ยกเลิก
+        </button>
+      </div>
+    </div>
+  </div>
+</ngx-smart-modal>

@@ -22,6 +22,7 @@ export interface Site {
     isMinimumManday: boolean;
     isReplacementWage: boolean;
     selfCheckIn: boolean;
+    contractStartDate: string;
     status: boolean;
     createOn: Date;
     createBy: string;
