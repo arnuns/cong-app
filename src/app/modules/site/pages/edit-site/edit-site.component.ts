@@ -12,6 +12,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Province, Amphur, District, Postcode } from 'src/app/core/models/address';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { DatePipe } from '@angular/common';
+import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 
 @Component({
@@ -53,13 +54,14 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     is_replacement_wage: [false],
     self_checkin: [false],
     contract_start_date: [null],
+    status: [true],
     site_work_rates: this.fb.array([]),
     site_checkpoints: this.fb.array([]),
     site_user_positions: this.fb.array([]),
   });
 
   dateFormat = 'YYYY-MM-DDT00:00:00Z';
-
+  deactivateError = false;
 
   constructor(
     private datePipe: DatePipe,
@@ -67,6 +69,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     private applicationStateService: ApplicationStateService,
     private fb: FormBuilder,
     private moment: MomentHelper,
+    private ngxSmartModalService: NgxSmartModalService,
     private router: Router,
     private siteService: SiteService,
     private spinner: SpinnerHelper,
@@ -87,6 +90,18 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         this.siteForm.get('replacement_wage').setValue(undefined);
         this.siteForm.get('replacement_wage').clearValidators();
         this.siteForm.get('replacement_wage').updateValueAndValidity();
+      }
+    });
+
+    this.ngxSmartModalService.getModal('confirmNewModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
+      this.deactivateError = false;
+      const data = modal.getData();
+      if (data && data.isSuccess) {
+        if (data.type === 'success') {
+          this.onActivate();
+        } else {
+          this.onDeactivate();
+        }
       }
     });
   }
@@ -136,7 +151,8 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           is_minimum_manday: this.site.isMinimumManday,
           is_replacement_wage: this.site.isReplacementWage || false,
           self_checkin: this.site.selfCheckIn,
-          contract_start_date: this.site.contractStartDate ? this.convertToDate(this.site.contractStartDate) : null
+          contract_start_date: this.site.contractStartDate ? this.convertToDate(this.site.contractStartDate) : null,
+          status: this.site.status
         });
         this.user_amphurs = this.amphurs.filter(a => a.provinceId === this.site.provinceId);
         this.user_districts = this.districts.filter(a => a.amphurId === this.site.amphurId);
@@ -233,26 +249,26 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
     this.siteService.updateSite(this.siteId, {
       id: null,
-      code: getValue('code').value,
-      name: getValue('name').value,
-      fullName: getValue('full_name').value,
-      address: getValue('address').value,
-      districtId: getValue('district_id').value,
-      amphurId: getValue('amphur_id').value,
-      provinceId: getValue('province_id').value,
+      code: getValue('code'),
+      name: getValue('name'),
+      fullName: getValue('full_name'),
+      address: getValue('address'),
+      districtId: getValue('district_id'),
+      amphurId: getValue('amphur_id'),
+      provinceId: getValue('province_id'),
       province: null,
-      latitude: getValue('latitude').value,
-      longitude: getValue('longitude').value,
-      minimumWage: getValue('minimum_wage').value,
-      replacementWage: getValue('replacement_wage').value || 0,
+      latitude: getValue('latitude'),
+      longitude: getValue('longitude'),
+      minimumWage: getValue('minimum_wage'),
+      replacementWage: getValue('replacement_wage') || 0,
       isPayroll: true,
-      isMonthly: getValue('is_monthly').value,
-      isSsoAnnualHoliday: getValue('is_sso_annual_holiday').value,
-      isMinimumManday: getValue('is_minimum_manday').value,
-      isReplacementWage: getValue('is_replacement_wage').value,
-      selfCheckIn: getValue('self_checkin').value,
+      isMonthly: getValue('is_monthly'),
+      isSsoAnnualHoliday: getValue('is_sso_annual_holiday'),
+      isMinimumManday: getValue('is_minimum_manday'),
+      isReplacementWage: getValue('is_replacement_wage'),
+      selfCheckIn: getValue('self_checkin'),
       contractStartDate:  getValue('contract_start_date') ? this.moment.format(getValue('contract_start_date'), 'YYYY-MM-DD') : undefined,
-      status: true,
+      status: getValue('status'),
       createOn: undefined,
       createBy: undefined,
       siteWorkRates: siteWorkRates,
@@ -265,8 +281,6 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       this.spinner.hideLoadingSpinner(0);
     });
   }
-
-
 
   onSelectionProvince(province: Province) {
     this.user_amphurs = this.amphurs.filter(a => a.provinceId === province.id);
@@ -550,5 +564,55 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     const date: Date = this.moment.toDate(dateString, this.dateFormat);
     date.setHours(7);
     return date;
+  }
+
+  onActivateClick() {
+    this.ngxSmartModalService.getModal('confirmNewModal').setData({
+      type: 'success',
+      title: 'ยืนยันการทำรายการ',
+      message1: 'กรุณากดปุ่ม "ยืนยัน" เพื่อเปิดใช้งานหน่วยงาน',
+      message2: '',
+      isSuccess: false,
+    }, true);
+    this.ngxSmartModalService.getModal('confirmNewModal').open();
+  }  
+
+  onDeactivateClick() {
+    this.deactivateError = false;
+    this.ngxSmartModalService.getModal('confirmNewModal').setData({
+      type: 'terminate',
+      title: 'ยืนยันการยกเลิกหน่วยงาน',
+      message1: 'คุณแน่ใจที่จะยกเลิกรายการนี้หรือไม่ ?',
+      message2: 'เมื่อยกเลิกแล้ว สามารถกู้คืนรายการนี้ได้โดยการเปิดใช้งาน',
+      isSuccess: false,
+    }, true);
+    this.ngxSmartModalService.getModal('confirmNewModal').open();
+  }
+
+  onActivate(): void {
+    this.spinner.showLoadingSpinner();
+    this.siteService.activateSite(this.siteId).subscribe(() => {
+      this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
+      this.router.navigate(['/site']);
+      this.spinner.hideLoadingSpinner(0);
+    }, error => {
+      this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
+      this.spinner.hideLoadingSpinner(0);
+    });
+  }
+
+  onDeactivate(): void {
+    this.spinner.showLoadingSpinner();
+    this.siteService.deactivateSite(this.siteId).subscribe(() => {
+      this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
+      this.router.navigate(['/site']);
+      this.spinner.hideLoadingSpinner(0);
+    }, error => {
+      this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
+      if (error.error === "Site has active user!") {
+        this.deactivateError = true;
+      }
+      this.spinner.hideLoadingSpinner(0);
+    });
   }
 }
