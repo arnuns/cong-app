@@ -10,12 +10,12 @@
     <div class="dialog-icon" [class.terminate]="data?.type === 'terminate'">
       <i
         class="fa"
-        [class.fa-circle-check]="data?.type === 'success'"
+        [class.fa-check-circle]="data?.type === 'success'"
         [class.fa-trash]="data?.type === 'terminate'"
         aria-hidden="true"
       ></i>
     </div>
-    <div class="dialog-title mt-3 mb-2" [class.terminate]="data?.type === 'terminate'">
+    <div class="dialog-title my-2" [class.terminate]="data?.type === 'terminate'">
       <h3>
         {{ data?.title }}
       </h3>

@@ -26,9 +26,9 @@ import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { ConfirmDialogComponent } from './dialogs/confirm-dialog/confirm-dialog.component';
-import { ConfirmNewDialogComponent } from './dialogs/confirm-new-dialog/confirm-new-dialog.component';
 import { SuccessDialogComponent } from './dialogs/success-dialog/success-dialog.component';
 import { StorageUrlPipe } from 'src/app/core/pipes/storage-url.pipe';
+import { ConfirmNewDialogComponent } from './dialogs/confirm-new-dialog/confirm-new-dialog.component';
 
 @NgModule({
   declarations: [

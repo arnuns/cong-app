@@ -1,3 +1,4 @@
+<app-confirm-new-dialog></app-confirm-new-dialog>
 <div class="row p-4 bgno">
   <div class="col px-0">
     <div class="d-flex w-100">
@@ -379,6 +380,11 @@
       </div>
       <div class="row">
         <div class="col">
+          <div class="line"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
           <div class="d-flex align-items-center my-2">
             <div>
               <h3 class="title">เปิดหน่วยงาน</h3>
@@ -473,10 +479,10 @@
 <div class="row p-4 bgno"  *ngIf="siteForm.get('status').value === true">
   <div class="col px-0">
     <div class="d-flex align-items-center w-100">
-      <div>
+      <div class="mr-2" *ngIf="deactivateError">
         <span class="text-danger">*การยกเลิกหน่วยงาน จะต้องไม่มีคนอยู่ในหน่วยงาน จึงสามารถทำการยกเลิกหน่วยงานได้</span>
       </div>
-      <div class="ml-2">
+      <div>
         <button type="button" class="btn btn-danger button__add" (click)="onDeactivateClick()">ยกเลิกหน่วยงาน</button>
       </div>
       <div class="ml-auto">

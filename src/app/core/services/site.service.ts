@@ -79,7 +79,7 @@ export class SiteService extends BaseService {
   }
 
   activateSite(siteId: number) {
-    return this.http.delete(`${this.serviceUrl}/site/${siteId}/activate`);
+    return this.http.put(`${this.serviceUrl}/site/${siteId}/activate`, {});
   }
 
   deactivateSite(siteId: number) {

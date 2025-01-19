@@ -61,6 +61,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
   });
 
   dateFormat = 'YYYY-MM-DDT00:00:00Z';
+  deactivateError = false;
 
   constructor(
     private datePipe: DatePipe,
@@ -93,6 +94,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     });
 
     this.ngxSmartModalService.getModal('confirmNewModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
+      this.deactivateError = false;
       const data = modal.getData();
       if (data && data.isSuccess) {
         if (data.type === 'success') {
@@ -576,6 +578,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
   }  
 
   onDeactivateClick() {
+    this.deactivateError = false;
     this.ngxSmartModalService.getModal('confirmNewModal').setData({
       type: 'terminate',
       title: 'ยืนยันการยกเลิกหน่วยงาน',
@@ -606,6 +609,9 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
+      if (error.error === "Site has active user!") {
+        this.deactivateError = true;
+      }
       this.spinner.hideLoadingSpinner(0);
     });
   }
