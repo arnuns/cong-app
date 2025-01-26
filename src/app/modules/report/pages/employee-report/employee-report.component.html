@@ -195,13 +195,13 @@
     </form>
   </div>
   <div class="col-md-6">
-    <form [formGroup]="empNotCheckedIn3DaysReportForm" (ngSubmit)="">
+    <form [formGroup]="empNotCheckedIn3DaysReportForm" (ngSubmit)="onSubmitEmpNotCheckedIn3Days()">
       <div class="card report-card">
         <div class="card-header">
           <div class="d-flex align-items-center">
             <div><strong>พนักงานไม่ทำงานติดต่อกัน 3 วัน:</strong></div>
             <div class="ml-auto">
-              <button type="button" class="btn button__export" (click)="onExportEmpNotCheckedIn3Days()" [disabled]="empNotCheckedIn3DaysReportProcessing || empNotCheckedIn3DaysReport.data.length <= 0">
+              <button type="button" class="btn button__export" (click)="onExportEmpNotCheckedIn3Days()" [disabled]="empNotCheckedIn3DaysReportProcessing || empNotCheckedIn3DaysReport.employeeCount <= 0">
                 Export พนักงานที่ไม่ทำงาน <i class="fa fa-cloud-download" aria-hidden="true"></i>
               </button>
             </div>
@@ -209,7 +209,7 @@
         </div>
         <div class="card-body">
           <div class="d-flex flex-column">
-            <div ngIf="empNotCheckedIn3DaysReportFormAlert">
+            <div *ngIf="empNotCheckedIn3DaysReportFormAlert">
               <p class="text-left mb-0">
                 <alert type="warning">
                   {{ empNotCheckedIn3DaysReportFormAlert }}
@@ -237,9 +237,6 @@
                   </span>
                 </div>
                 <div class="d-flex">
-                  <div>
-                    <i class="fa fa-caret-up" aria-hidden="true"></i>
-                  </div>
                   <div class="d-flex flex-column ml-2">
                     <div>
                       <div class="loading" *ngIf="empNotCheckedIn3DaysReportProcessing; else elseShowEmpWhoNotCheckedIn">
