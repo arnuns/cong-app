@@ -194,4 +194,75 @@
       </div>
     </form>
   </div>
+  <div class="col-md-6">
+    <form [formGroup]="empNotCheckedIn3DaysReportForm" (ngSubmit)="onSubmitEmpNotCheckedIn3Days()">
+      <div class="card report-card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <div><strong>พนักงานไม่ทำงานติดต่อกัน 3 วัน:</strong></div>
+            <div class="ml-auto">
+              <button type="button" class="btn button__export" (click)="onExportEmpNotCheckedIn3Days()" [disabled]="empNotCheckedIn3DaysReportProcessing || empNotCheckedIn3DaysReport.employeeCount <= 0">
+                Export พนักงานที่ไม่ทำงาน <i class="fa fa-cloud-download" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column">
+            <div *ngIf="empNotCheckedIn3DaysReportFormAlert">
+              <p class="text-left mb-0">
+                <alert type="warning">
+                  {{ empNotCheckedIn3DaysReportFormAlert }}
+                </alert>
+              </p>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+              <div>
+                <input type="text" class="form-control date-range--control mb-0" onkeydown="return false"
+                  bsDaterangepicker formControlName="date_range"
+                  (bsValueChange)="onDateRangeMax31DaysChange($event)"
+                  [maxDate]="date" />
+              </div>
+              <div class="ml-2">
+                <button type="submit" class="btn button__submit" [disabled]="empNotCheckedIn3DaysReportProcessing">
+                  ตกลง
+                </button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-start mt-3 employee-not-checked-in-detail">
+              <div class="w-100">
+                <div>
+                  <span class="employee-in-rate--title">
+                    พนักงานที่ไม่ทำงานติดต่อกัน 3 วัน
+                  </span>
+                </div>
+                <div class="d-flex">
+                  <div class="d-flex flex-column ml-2">
+                    <div>
+                      <div class="loading" *ngIf="empNotCheckedIn3DaysReportProcessing; else elseShowEmpWhoNotCheckedIn">
+                        <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <ng-template #elseShowEmpWhoNotCheckedIn>
+                        <div class="d-flex">
+                          <div>
+                            <span class="employee-in-rate--count">
+                            {{ empNotCheckedIn3DaysReport.employeeCount | number }}
+                            </span>
+                          </div>
+                          <div class="ml-2">
+                            <span clas="employee-in-rate--title">คน</span>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
