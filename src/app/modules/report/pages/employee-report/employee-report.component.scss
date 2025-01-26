@@ -12,6 +12,7 @@
 
 .report-card {
   min-height: 251px;
+  margin: 5px;
 }
 
 .date-range--control {
@@ -113,4 +114,12 @@
 .employee-in-rate--percentage {
   font-size: 12px;
   font-weight: bold;
+}
+
+.employee-not-checked-in-detail {
+  background-color: #f6a622;
+  border-radius: 3px;
+  color: #ffffff;
+  padding: 7px 16px;
+  height: 100px;
 }
