@@ -46,20 +46,38 @@ export class EmployeeReportComponent implements OnInit {
       begin: [],
       resign: []
     };
+
+  empNotCheckedIn3DaysReportForm = this.fb.group({
+    date_range: [null, [Validators.required]]
+  });
+  empNotCheckedIn3DaysReportProcessing = false;
+  empNotCheckedIn3DaysReportFormAlert = undefined
+  empNotCheckedIn3DaysReport: {
+    employeeCount: number
+  } = {
+    employeeCount: 0
+  };
+  date =  new Date();
+
   constructor(
     private fb: FormBuilder,
     private moment: MomentHelper,
     private papa: Papa,
     private spinner: SpinnerHelper,
     private userService: UserService) {
-    const date = new Date();
-    this.initialControlEmpInReport(new Date(date.getFullYear(), date.getMonth() - 1, 1, 7, 0, 0));
+    const startDate = new Date(this.date.getFullYear(), this.date.getMonth() - 1, 1, 7, 0, 0);
+    const endDate = new Date(this.date.getFullYear(), this.date.getMonth(), 0, 7, 0, 0);
+    this.initialControlEmpInReport(startDate);
     this.empInRateReportForm.patchValue({
       month_year: this.monthYears[0].viewValue
     });
     this.empInOutReportForm.patchValue({
       date_range:
-        [new Date(date.getFullYear(), date.getMonth() - 1, 1, 7, 0, 0), new Date(date.getFullYear(), date.getMonth(), 0, 7, 0, 0)]
+        [startDate, endDate]
+    });
+    this.empNotCheckedIn3DaysReportForm.patchValue({
+      date_range:
+        [startDate, endDate]
     });
   }
 
@@ -67,10 +85,12 @@ export class EmployeeReportComponent implements OnInit {
     const monthYear: string = this.monthYears[0].viewValue;
     const monthYearArray = monthYear.split('-');
     const dateRange: Date[] = this.empInOutReportForm.get('date_range').value;
+    const dateRange2: Date[] = this.empNotCheckedIn3DaysReportForm.get('date_range').value;
     Promise.all(
       [
         this.getCountEmployeeByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0])),
-        this.getEmployeeByDateRange(dateRange[0], dateRange[1])]
+        this.getEmployeeByDateRange(dateRange[0], dateRange[1]),
+        this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange2[0], dateRange2[1])],
     ).then(_ => {
       console.log('report loaded successfully.');
     });
@@ -144,6 +164,23 @@ export class EmployeeReportComponent implements OnInit {
       }, error => {
         console.log(error);
         this.empInOutReportProcessing = false;
+      });
+  }
+
+  getEmployeeWhoNotCheckedIn3DaysByDateRage(startDate: Date, endDate: Date) {
+    const that = this;
+    const dateFormat = 'YYYY-MM-DD';
+    this.empNotCheckedIn3DaysReportProcessing = true;
+    function toDateQuery(date: Date) { return that.moment.format(date, dateFormat); }
+    this.userService.getUserNotCheckedInByDateRange(toDateQuery(startDate), toDateQuery(endDate))
+      .subscribe(users => {
+        this.empNotCheckedIn3DaysReport = {
+          employeeCount: users.length
+        };
+        this.empNotCheckedIn3DaysReportProcessing = false;
+      }, error => {
+        console.log(error);
+        this.empNotCheckedIn3DaysReportProcessing = false;
       });
   }
 
@@ -283,6 +320,26 @@ export class EmployeeReportComponent implements OnInit {
       console.log(error);
       this.spinner.hideLoadingSpinner();
     });
+  }
+
+  onExportEmpNotCheckedIn3Days(){
+    
+  }
+  
+  onDateRangeMax31DaysChange(dates: Date[]) {
+    this.empNotCheckedIn3DaysReportFormAlert = undefined;
+    if (dates && dates.length === 2) {
+      const [startDate, endDate] = dates;
+      const diffInDays = Math.floor(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
+
+      if (diffInDays > 31) {
+        const restrictEndDate = new Date(startDate.getTime() + 31 * 24 * 60 * 60 * 1000);
+        this.empNotCheckedIn3DaysReportForm.get('date_range').setValue([startDate, restrictEndDate]);
+        this.empNotCheckedIn3DaysReportFormAlert = 'กรุณาเลือกช่วงวันที่ไม่เกิน 31 วัน';
+      }
+    }
   }
 
   convertToAge(birthdate: string): number {
