@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild } from '@angular
 import { FormBuilder, Validators } from '@angular/forms';
 import { combineLatest, Subject } from 'rxjs';
 import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
-import { Site, SiteWorkRate } from 'src/app/core/models/site';
+import { Site, SiteCheckpoint, SiteWorkRate } from 'src/app/core/models/site';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
-import { TimeAttendance, TimeAttendanceFilter } from 'src/app/core/models/timeattendance';
+import { TimeAttendance, TimeAttendanceFilter, TimeAttendanceSiteCheckpoint } from 'src/app/core/models/timeattendance';
 import { DataTableDirective } from 'angular-datatables';
 import { Papa } from 'ngx-papaparse';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
@@ -25,6 +25,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   @ViewChild(DataTableDirective, { static: false }) private datatableElement: DataTableDirective;
   searching = false;
   sites: Site[] = [];
+  siteCheckpoints: SiteCheckpoint[] = [];
   timeAttendanceFilter: TimeAttendanceFilter;
   filterSessionName = 'timeAttendanceFilter';
   timeAttendances: TimeAttendance[] = [];
@@ -46,7 +47,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     checkin_date: [new Date(), [Validators.required]],
     leave_date: [undefined],
     checkin_time: [undefined, [Validators.required]],
-    leave_time: [undefined]
+    leave_time: [undefined],
+    site_checkpoint_id: [undefined]
   });
 
   deleteForm = this.fb.group({
@@ -75,10 +77,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       this.timeAttendanceService.getTimeAttendanceSites()
     ]).subscribe(results => {
       this.sites = results[0];
-      // this.timeAttendanceForm.patchValue({
-      //   site_id: this.sites[0].id
-      // });
-      // this.timeAttendanceForm.get('site_id').setValue(this.sites[0].id);
+      this.siteCheckpoints = this.sites[0].siteCheckpoints;
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.spinner.hideLoadingSpinner(0);
@@ -423,7 +422,10 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         createBy: '',
         createOn: new Date(),
         updateBy: '',
-        updateOn: new Date()
+        updateOn: new Date(),
+        timeAttendanceSiteCheckpoint: {
+          siteCheckpointId: getValue('site_checkpoint_id')
+        }
       };
       this.timeAttendanceService.createTimeAttendance(timeAttendance).subscribe(_ => {
         this.refreshTable();
@@ -452,7 +454,10 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         createBy: '',
         createOn: new Date(),
         updateBy: '',
-        updateOn: new Date()
+        updateOn: new Date(),
+        timeAttendanceSiteCheckpoint: {
+          siteCheckpointId: getValue('site_checkpoint_id')
+        }
       };
       this.timeAttendanceService.updateTimeAttendance(timeAttendance.id, timeAttendance).subscribe(_ => {
         this.refreshTable();

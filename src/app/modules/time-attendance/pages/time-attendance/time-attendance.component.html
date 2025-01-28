@@ -179,6 +179,19 @@
               เวลาที่บันทึก
             </div>
           </div>
+          <div class="col-md-12">
+            <div class="form-group mb-2">
+              <label for="site_checkpoint_id" class="label">ชื่อจุด</label>
+                <ng-select
+                  [searchable]="true"
+                  [clearable]="true"
+                  [items]="siteCheckpoints"
+                  bindLabel="checkpointName"
+                  bindValue="id"
+                  formControlName="site_checkpoint_id">
+                </ng-select>
+            </div>
+          </div>
           <div class="col-md-6">
             <div class="form-group mb-2">
               <label for="checkin_date" class="label">วันเข้า</label>
