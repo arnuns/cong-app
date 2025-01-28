@@ -24,6 +24,7 @@ export interface TimeAttendance {
     createOn: Date;
     updateBy: string;
     updateOn: Date;
+    timeAttendanceSiteCheckpoint: TimeAttendanceSiteCheckpoint;
 }
 
 export interface TimeAttendanceFilter extends PageFilter {
@@ -61,4 +62,8 @@ export interface WorkingSitePeriod {
 export interface WorkingDaySummary {
     workDate: Date;
     workerCount: number;
+}
+
+export interface TimeAttendanceSiteCheckpoint {
+  siteCheckpointId: number;
 }
