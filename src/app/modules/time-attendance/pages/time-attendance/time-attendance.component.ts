@@ -138,6 +138,13 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       workDate.setHours(7);
       this.editForm.get('checkin_date').setValue(workDate);
     });
+
+    this.editForm.get('site_id').valueChanges.subscribe(val => {
+      this.siteCheckpoints = this.sites.filter(s => s.id === val).length > 0
+        ? this.sites.filter(s => s.id === val).map(s => s.siteCheckpoints)[0]
+        : [];
+      this.editForm.get('site_checkpoint_id').setValue(undefined);
+    });
   }
 
   initialData() {
