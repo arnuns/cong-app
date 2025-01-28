@@ -179,7 +179,7 @@
               เวลาที่บันทึก
             </div>
           </div>
-          <div class="col-md-12">
+          <div class="col-md-12" *ngIf="siteCheckpoints.length > 0">
             <div class="form-group mb-2">
               <label for="site_checkpoint_id" class="label">ชื่อจุด</label>
                 <ng-select
@@ -188,7 +188,8 @@
                   [items]="siteCheckpoints"
                   bindLabel="checkpointName"
                   bindValue="id"
-                  formControlName="site_checkpoint_id">
+                  formControlName="site_checkpoint_id"
+                  placeholder="เลือกจุด">
                 </ng-select>
             </div>
           </div>

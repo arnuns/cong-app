@@ -243,7 +243,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     };
   }
 
-  onSiteSelectionChange(value) {
+  onSiteSelectionChange(site: Site) {
+    this.siteCheckpoints = site.siteCheckpoints;
     this.refreshTable();
   }
 
@@ -310,7 +311,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       name: timeAttendance.employeeName,
       leave_date: leaveDate ? leaveDate : undefined,
       checkin_time: new Date(timeAttendance.checkInTime),
-      leave_time: timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined
+      leave_time: timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined,
+      site_checkpoint_id: timeAttendance.timeAttendanceSiteCheckpoint ? timeAttendance.timeAttendanceSiteCheckpoint.siteCheckpointId : undefined
     });
     this.editForm.get('site_id').disable();
     this.editForm.get('work_date').disable();
