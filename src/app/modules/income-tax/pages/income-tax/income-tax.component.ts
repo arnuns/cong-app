@@ -48,6 +48,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   });
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
+  lastNYear = 2;
 
   constructor(
     private applicationStateService: ApplicationStateService,
@@ -156,7 +157,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
               return a.employeeLastName.localeCompare(b.employeeLastName);
             })
             .map((d, index) => ({
-              fix01: this.padLeft((index + 1),4),
+              fix01: this.padLeft(index + 1, 4),
               companyTax: environment.companyTax,
               blank01: "401N",
               blank02: "00000",
@@ -336,7 +337,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
 
   initDateControl() {
     const today = this.moment.currentDate.toDate();
-    const lastNMonths = this.getLastNMonths(12);
+    const lastNMonths = this.getMonthYearInLastNYears(today, this.lastNYear);
     lastNMonths.forEach((monthYear) => {
       this.nameMonths.push({
         view: new Date(
@@ -347,7 +348,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
         viewValue: `${monthYear.year},${monthYear.month}`,
       });
     });
-    const lastNYear = [today.getFullYear(), today.getFullYear() - 1];
+    const lastNYear = [today.getFullYear(), today.getFullYear() - this.lastNYear];
     lastNYear.forEach((year) => {
       this.nameYears.push({
         view: `${year + 543}`,
@@ -360,13 +361,23 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
     });
   }
 
-  getLastNMonths(noOfMonth: number) {
-    const date = this.moment.currentDate.toDate();
+  getMonthYearInLastNYears(date: Date, lastNYear: number) {
     let months = [];
-    for (let i = 0; i < noOfMonth; i++) {
-      months.push({ month: date.getMonth() + 1, year: date.getFullYear() });
-      date.setMonth(date.getMonth() - 1);
+    const currentYear = date.getFullYear();
+    const currentMonth = date.getMonth() + 1; // getMonth() returns 0-based month
+  
+    // Add months of the current year up to the last month
+    for (let i = currentMonth; i > 0; i--) {
+      months.push({ month: i, year: currentYear });
     }
+  
+    // Add months of the last 2 years
+    for (let year = currentYear - 1; year >= currentYear - lastNYear; year--) {
+      for (let month = 12; month > 0; month--) {
+        months.push({ month, year });
+      }
+    }
+  
     return months;
   }
 
