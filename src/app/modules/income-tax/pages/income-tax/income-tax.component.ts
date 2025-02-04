@@ -348,13 +348,12 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
         viewValue: `${monthYear.year},${monthYear.month}`,
       });
     });
-    const lastNYear = [today.getFullYear(), today.getFullYear() - this.lastNYear];
-    lastNYear.forEach((year) => {
+    for (let i = today.getFullYear(); i >= today.getFullYear() - this.lastNYear; i--) {
       this.nameYears.push({
-        view: `${year + 543}`,
-        viewValue: `${year}`,
+        view: `${i + 543}`,
+        viewValue: `${i}`,
       });
-    });
+    }
     this.incomeTaxForm.patchValue({
       month_name: this.nameMonths[0].viewValue,
       year_name: this.nameYears[0].viewValue,

@@ -117,8 +117,9 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         this.payrollCycles = results[0];
         this.sites = results[1];
         this.banks = results[2];
+        const startYear = new Date(date.getFullYear() - this.lastNYear, 0, 1);
         this.payrollCycleSelectList = this.payrollCycles
-          .filter(pc => new Date(new Date(pc.start).getFullYear(), 0, 1).getMilliseconds() >= new Date(date.getFullYear() - this.lastNYear, 0, 1).getMilliseconds())
+          .filter(pc => new Date(pc.start) >= startYear)
           .map((p) => ({
             value: p.id,
             viewValue: this.convertToStartEndDateString(p.start, p.end),
