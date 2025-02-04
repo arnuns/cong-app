@@ -87,6 +87,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
   banks: AvailableBank[] = [];
+  lastNYear = 2;
 
   constructor(
     private electronService: ElectronService,
@@ -106,6 +107,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   ngOnInit() {
     this.searchFilter();
     this.initialTable();
+    const date = new Date();
     combineLatest([
       this.payrollService.getPayrollCycles(),
       this.siteService.getSites(),
@@ -116,7 +118,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
         this.sites = results[1];
         this.banks = results[2];
         this.payrollCycleSelectList = this.payrollCycles
-          .slice(0, 24)
+          .filter(pc => new Date(new Date(pc.start).getFullYear(), 0, 1).getMilliseconds() >= new Date(date.getFullYear() - this.lastNYear, 0, 1).getMilliseconds())
           .map((p) => ({
             value: p.id,
             viewValue: this.convertToStartEndDateString(p.start, p.end),
