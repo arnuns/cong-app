@@ -111,7 +111,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         checkin_date: new Date(),
         leave_date: undefined,
         checkin_time: undefined,
-        leave_time: undefined
+        leave_time: undefined,
+        site_checkpoint_id: undefined
       });
     });
 
@@ -134,16 +135,20 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       });
 
     this.editForm.get('work_date').valueChanges.subscribe(val => {
-      const workDate: Date = val;
-      workDate.setHours(7);
-      this.editForm.get('checkin_date').setValue(workDate);
+      if (val) {
+        const workDate = new Date(val);
+        workDate.setHours(7);
+        this.editForm.get('checkin_date').setValue(workDate);
+      }
     });
 
     this.editForm.get('site_id').valueChanges.subscribe(val => {
       this.siteCheckpoints = this.sites.filter(s => s.id === val).length > 0
         ? this.sites.filter(s => s.id === val).map(s => s.siteCheckpoints)[0]
         : [];
-      this.editForm.get('site_checkpoint_id').setValue(undefined);
+        if (this.editForm.get('id').value === 0 || this.editForm.get('id').value === undefined) {
+          this.editForm.get('site_checkpoint_id').setValue(undefined);
+        }
     });
   }
 
@@ -167,7 +172,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           previous: '<img class=\'paging-arrow\' src=\'assets/img/ico-arrow-left.png\'>'
         }
       },
-      order: [[5, 'asc']],
+      order: [[4, 'asc']],
       pageLength: 20,
       pagingType: 'simple',
       serverSide: true,
@@ -181,7 +186,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
             sortColumn = 'name';
           } else if (orders[0] === 2) {
             sortColumn = 'role_name';
-          } else if (orders[0] === 6) {
+          } else if (orders[0] === 7) {
             sortColumn = 'leave_time';
           } else {
             sortColumn = 'checkin_time';
@@ -241,8 +246,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         { orderable: false, width: '40px' },
         { width: '200px' },
         { width: '160px' },
-        { orderable: false, width: '220px' },
+        { orderable: false },
         { orderable: false, width: '100px' },
+        { orderable: false, width: '250px' },
         { width: '100px' },
         { width: '100px' },
         { orderable: false, width: '20px' }
