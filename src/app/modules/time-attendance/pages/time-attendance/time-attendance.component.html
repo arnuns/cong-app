@@ -51,6 +51,7 @@
             <th>ตำแหน่ง</th>
             <th>หน่วยงาน</th>
             <th>วันที่</th>
+            <th>ชื่อจุด</th>
             <th>เวลาเข้า</th>
             <th>เวลาออก</th>
             <th></th>
@@ -63,6 +64,7 @@
             <td>{{ t.user.userPosition.nameTH }}</td>
             <td>{{ t.site.name }}</td>
             <td>{{ t.workDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ t.timeAttendanceSiteCheckpoint ? t.timeAttendanceSiteCheckpoint.checkpointName : '-' }}</td>
             <td class="text-success">{{ t.checkInTime | date:'HH:mm' }}</td>
             <td class="text-danger">{{ t.leaveTime | date:'HH:mm' }}</td>
             <td>

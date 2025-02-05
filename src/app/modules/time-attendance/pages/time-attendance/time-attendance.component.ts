@@ -172,7 +172,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           previous: '<img class=\'paging-arrow\' src=\'assets/img/ico-arrow-left.png\'>'
         }
       },
-      order: [[5, 'asc']],
+      order: [[4, 'asc']],
       pageLength: 20,
       pagingType: 'simple',
       serverSide: true,
@@ -186,7 +186,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
             sortColumn = 'name';
           } else if (orders[0] === 2) {
             sortColumn = 'role_name';
-          } else if (orders[0] === 6) {
+          } else if (orders[0] === 7) {
             sortColumn = 'leave_time';
           } else {
             sortColumn = 'checkin_time';
@@ -246,8 +246,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         { orderable: false, width: '40px' },
         { width: '200px' },
         { width: '160px' },
-        { orderable: false, width: '220px' },
+        { orderable: false },
         { orderable: false, width: '100px' },
+        { orderable: false, width: '250px' },
         { width: '100px' },
         { width: '100px' },
         { orderable: false, width: '20px' }
