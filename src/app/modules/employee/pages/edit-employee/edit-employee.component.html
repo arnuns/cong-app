@@ -1,3 +1,4 @@
+<app-confirm-new-dialog></app-confirm-new-dialog>
 <div class="row p-4 bgno">
   <div class="col px-0">
     <div class="d-flex w-100">
@@ -1414,22 +1415,30 @@
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">สำเนาหน้าบัญชีธนาคาร</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfBookBank"
-                  name="copyOfBookBank"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfBookBank
-                />
-                <label class="custom-file-label" for="copyOfBookBank"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_book_bank').value; else elseFileCopyOfBookBank">
+              <input type="text" class="form-control" aria-describedby="copy-of-book-bank-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="copy-of-book-bank-remove" (click)="onDeleteDocumentClick('copyOfBookBank')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfBookBank>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfBookBank"
+                    name="copyOfBookBank"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfBookBank
+                  />
+                  <label class="custom-file-label" for="copyOfBookBank"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row mb-2">

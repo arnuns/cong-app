@@ -12,9 +12,9 @@ import {existingIDCardNumberValidator} from 'src/app/core/validators/idcard-no.v
 import {MomentHelper} from 'src/app/core/helpers/moment.helper';
 import {SiteService} from 'src/app/core/services/site.service';
 import {UserService} from 'src/app/core/services/user.service';
-import {combineLatest, Subscribable, Subscription} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
-import {NgxSmartModalService} from 'ngx-smart-modal';
+import {NgxSmartModalService,NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-edit-employee',
@@ -265,6 +265,17 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
         this.employeeForm.get('conviction_cause').updateValueAndValidity();
       }
     });
+    this.ngxSmartModalService.getModal('confirmNewModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
+      const data = modal.getData();
+      console.log(data);
+      if (data && data.isSuccess) {
+        if (data.type === 'success') {
+          // this.onActivate();
+        } else {
+          // this.onDeactivate();
+        }
+      }
+    });
   }
 
   initialData() {
@@ -427,7 +438,30 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           sso_end_date: this.user.socialSecurityEndDate ? this.convertToDate(this.user.socialSecurityEndDate) : null,
           hospital_id: this.user.socialHospitalId
         });
-      }
+
+        if (this.user.documents.length > 0) {
+          this.user.documents.forEach(doc => {
+            const fileName = doc.name + doc.fileType;
+            switch (doc.type) {
+              case 'copyOfBookBank':
+                break;
+              case 'copyOfIdCardNumber':
+                break;
+              case 'copyOfHouseRegistration':
+                break;
+              case 'copyOfTranscript':
+                break;
+              case 'copyOfTp7':
+                break;
+              case 'copyOfTp12':
+                break;
+              case 'copyOfCriminal':
+                break;
+              default:
+                break;
+            }
+          });
+        }
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.spinner.hideLoadingSpinner(0);
@@ -814,4 +848,16 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   get IsPermanentEmployee() {
     return !this.employeeForm.get('is_temporary').value;
   }
+
+  onDeleteDocumentClick(docType: string) {
+    this.ngxSmartModalService.getModal('confirmNewModal').setData({
+      type: 'terminate',
+      title: 'ยืนยันการลบไฟล์',
+      message1: 'คุณแน่ใจที่จะลบไฟล์รายการนี้หรือไม่ ?',
+      message2: undefined,
+      isSuccess: false,
+      docType: docType
+    }, true);
+    this.ngxSmartModalService.getModal('confirmNewModal').open();
+  } 
 }
