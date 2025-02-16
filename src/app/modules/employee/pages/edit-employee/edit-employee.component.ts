@@ -12,9 +12,9 @@ import {existingIDCardNumberValidator} from 'src/app/core/validators/idcard-no.v
 import {MomentHelper} from 'src/app/core/helpers/moment.helper';
 import {SiteService} from 'src/app/core/services/site.service';
 import {UserService} from 'src/app/core/services/user.service';
-import {combineLatest, Subscribable, Subscription} from 'rxjs';
+import {combineLatest, Subscription} from 'rxjs';
 import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
-import {NgxSmartModalService} from 'ngx-smart-modal';
+import {NgxSmartModalService,NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-edit-employee',
@@ -265,6 +265,48 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
         this.employeeForm.get('conviction_cause').updateValueAndValidity();
       }
     });
+    this.ngxSmartModalService.getModal('confirmNewModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
+      const data = modal.getData();
+      if (data && data.isSuccess) {
+        if (data.type === 'terminate') {
+          if (this.checkExistingDocument(data.docType)) {
+            this.spinner.showLoadingSpinner();
+            const documentId = Number(this.user.documents.filter(doc => doc.type.toLowerCase() === data.docType.toLowerCase())[0].id);
+            this.userService.deleteDocument(this.empNo, documentId).subscribe(_ => {
+              this.spinner.hideLoadingSpinner(0);
+              this.user.documents = this.user.documents.filter(doc => doc.id !== documentId);
+            }, error => {
+              this.spinner.hideLoadingSpinner(0);
+            });
+          }
+          switch (data.docType) {
+            case 'copyOfBookBank':
+              this.employeeForm.get('copy_of_book_bank').setValue(null);
+              break;
+            case 'copyOfIdCardNumber':
+              this.employeeForm.get('copy_of_idcard_no').setValue(null);
+              break;
+            case 'copyOfHouseRegistration':
+              this.employeeForm.get('copy_of_house_registration').setValue(null);
+              break;
+            case 'copyOfTranscript':
+              this.employeeForm.get('copy_of_transcript').setValue(null);
+              break;
+            case 'copyOfTp7':
+              this.employeeForm.get('copy_of_tp7').setValue(null);
+              break;
+            case 'copyOfTp12':
+              this.employeeForm.get('copy_of_tp12').setValue(null);
+              break;
+            case 'copyOfCriminal':
+              this.employeeForm.get('copy_of_criminal').setValue(null);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    });
   }
 
   initialData() {
@@ -427,6 +469,37 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           sso_end_date: this.user.socialSecurityEndDate ? this.convertToDate(this.user.socialSecurityEndDate) : null,
           hospital_id: this.user.socialHospitalId
         });
+
+        if (this.user.documents.length > 0) {
+          this.user.documents.forEach(doc => {
+            const fileName = `${doc.name}${doc.fileType}`;
+            switch (doc.type) {
+              case 'CopyOfBookBank':
+                this.employeeForm.get('copy_of_book_bank').setValue(fileName);
+                break;
+              case 'CopyOfIdCardNumber':
+                this.employeeForm.get('copy_of_idcard_no').setValue(fileName);
+                break;
+              case 'CopyOfHouseRegistration':
+                this.employeeForm.get('copy_of_house_registration').setValue(fileName);
+                break;
+              case 'CopyOfTranscript':
+                this.employeeForm.get('copy_of_transcript').setValue(fileName);
+                break;
+              case 'CopyOfTp7':
+                this.employeeForm.get('copy_of_tp7').setValue(fileName);
+                break;
+              case 'CopyOfTp12':
+                this.employeeForm.get('copy_of_tp12').setValue(fileName);
+                break;
+              case 'CopyOfCriminal':
+                this.employeeForm.get('copy_of_criminal').setValue(fileName);
+                break;
+              default:
+                break;
+            }
+          });
+        }
       }
       this.spinner.hideLoadingSpinner(0);
     }, error => {
@@ -814,4 +887,24 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   get IsPermanentEmployee() {
     return !this.employeeForm.get('is_temporary').value;
   }
+
+  checkExistingDocument(docType: string) {
+    let isExist = false;
+    if (this.user.documents.length > 0) {
+      return this.user.documents.some(doc => doc.type.toLowerCase() === docType.toLowerCase());
+    }
+    return isExist;
+  }
+
+  onDeleteDocumentClick(docType: string) {
+    this.ngxSmartModalService.getModal('confirmNewModal').setData({
+      type: 'terminate',
+      title: 'ยืนยันการลบไฟล์',
+      message1: 'คุณแน่ใจที่จะลบไฟล์รายการนี้หรือไม่ ?',
+      message2: undefined,
+      isSuccess: false,
+      docType: docType
+    }, true);
+    this.ngxSmartModalService.getModal('confirmNewModal').open();
+  } 
 }
