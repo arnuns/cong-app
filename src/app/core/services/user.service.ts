@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
-import { User, Role, Document, BeginResign, UserPosition } from '../models/user';
+import { User, Document, BeginResign, UserPosition } from '../models/user';
 import { Company } from '../models/company';
 import { Hospital } from '../models/hospital';
 import { CookieService } from 'ngx-cookie-service';
@@ -91,6 +91,10 @@ export class UserService extends BaseService {
 
   getDocument(empNo: number, documentId: number) {
     return this.http.get<Document>(`${this.serviceUrl}/user/${empNo}/document/${documentId}`);
+  }
+
+  deleteDocument(empNo: number, documentId: number) {
+    return this.http.delete(`${this.serviceUrl}/user/${empNo}/document/${documentId}`);
   }
 
   updateUserBeginResign(empNo: number, data: BeginResign) {
