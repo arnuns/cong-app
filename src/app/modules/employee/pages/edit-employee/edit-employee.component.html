@@ -1415,10 +1415,10 @@
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">สำเนาหน้าบัญชีธนาคาร</div>
           <div class="col-md-5">
-            <div class="input-group" *ngIf="employeeForm.get('copy_of_book_bank').value; else elseFileCopyOfBookBank">
-              <input type="text" class="form-control" aria-describedby="copy-of-book-bank-remove" disabled>
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_book_bank')?.value && checkExistingDocument('copyOfBookBank'); else elseFileCopyOfBookBank">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_book_bank')?.value" aria-describedby="copy-of-book-bank-remove" disabled>
               <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" id="copy-of-book-bank-remove" (click)="onDeleteDocumentClick('copyOfBookBank')">X</button>
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-book-bank-remove" (click)="onDeleteDocumentClick('copyOfBookBank')">X</button>
               </div>
             </div>
             <ng-template #elseFileCopyOfBookBank>
@@ -1449,64 +1449,88 @@
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">สำเนาบัตรประชาชน</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfIdCardNumber"
-                  name="copyOfIdCardNumber"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfIdCardNumber
-                />
-                <label class="custom-file-label" for="copyOfIdCardNumber"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_idcard_no')?.value && checkExistingDocument('copyOfIdCardNumber'); else elseFileCopyOfIdCardNumber">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_idcard_no')?.value" aria-describedby="copy-of-id-card-no-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-id-card-no-remove" (click)="onDeleteDocumentClick('copyOfIdCardNumber')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfIdCardNumber>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfIdCardNumber"
+                    name="copyOfIdCardNumber"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfIdCardNumber
+                  />
+                  <label class="custom-file-label" for="copyOfIdCardNumber"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">สำเนาทะเบียนบ้าน</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfHouseRegistration"
-                  name="copyOfHouseRegistration"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfHouseRegistration
-                />
-                <label class="custom-file-label" for="copyOfHouseRegistration"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_house_registration')?.value && checkExistingDocument('copyOfHouseRegistration'); else elseFileCopyOfHouseRegistration">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_house_registration')?.value" aria-describedby="copy-of-house-registration-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-house-registration-remove" (click)="onDeleteDocumentClick('copyOfHouseRegistration')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfHouseRegistration>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfHouseRegistration"
+                    name="copyOfHouseRegistration"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfHouseRegistration
+                  />
+                  <label class="custom-file-label" for="copyOfHouseRegistration"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">หลักฐานการศึกษา</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfTranscript"
-                  name="copyOfTranscript"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfTranscript
-                />
-                <label class="custom-file-label" for="copyOfTranscript"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_transcript')?.value && checkExistingDocument('copyOfTranscript'); else elseFileCopyOfTranscript">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_transcript')?.value" aria-describedby="copy-of-transcript-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-transcript-remove" (click)="onDeleteDocumentClick('copyOfTranscript')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfTranscript>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfTranscript"
+                    name="copyOfTranscript"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfTranscript
+                  />
+                  <label class="custom-file-label" for="copyOfTranscript"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
@@ -1514,64 +1538,88 @@
             ธภ.7 ใบอนุญาตพนักงานรักษาความปลอดภัยรับอนุญาต
           </div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfTp7"
-                  name="copyOfTp7"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfTp7
-                />
-                <label class="custom-file-label" for="copyOfTp7"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_tp7')?.value && checkExistingDocument('copyOfTp7'); else elseFileCopyOfTp7">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_tp7')?.value" aria-describedby="copy-of-tp7-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-tp7-remove" (click)="onDeleteDocumentClick('copyOfTp7')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfTp7>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfTp7"
+                    name="copyOfTp7"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfTp7
+                  />
+                  <label class="custom-file-label" for="copyOfTp7"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">ธภ.12 คำร้องขอให้เปรียบเทียบ</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfTp12"
-                  name="copyOfTp12"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfTp12
-                />
-                <label class="custom-file-label" for="copyOfTp12"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_tp12')?.value && checkExistingDocument('copyOfTp12'); else elseFileCopyOfTp12">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_tp12')?.value" aria-describedby="copy-of-tp12-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-tp12-remove" (click)="onDeleteDocumentClick('copyOfTp12')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfTp12>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfTp12"
+                    name="copyOfTp12"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfTp12
+                  />
+                  <label class="custom-file-label" for="copyOfTp12"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row px-2 my-2 align-items-center">
           <div class="col-md-3">ประวัติอาชญากรรม</div>
           <div class="col-md-5">
-            <div class="input-group">
-              <div class="custom-file">
-                <input
-                  type="file"
-                  class="custom-file-input"
-                  id="copyOfCriminal"
-                  name="copyOfCriminal"
-                  accept=".pdf,image/png,image/jpeg"
-                  (change)="fileChangeEvent($event)"
-                  #copyOfCriminal
-                />
-                <label class="custom-file-label" for="copyOfCriminal"
-                  >เลือกไฟล์</label
-                >
+            <div class="input-group" *ngIf="employeeForm.get('copy_of_criminal')?.value && checkExistingDocument('copyOfCriminal'); else elseFileCopyOfCriminal">
+              <input type="text" class="form-control" [placeholder]="employeeForm.get('copy_of_criminal')?.value" aria-describedby="copy-of-criminal-remove" disabled>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary btn-remove-doc" type="button" id="copy-of-criminal-remove" (click)="onDeleteDocumentClick('copyOfCriminal')">X</button>
               </div>
             </div>
+            <ng-template #elseFileCopyOfCriminal>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input
+                    type="file"
+                    class="custom-file-input"
+                    id="copyOfCriminal"
+                    name="copyOfCriminal"
+                    accept=".pdf,image/png,image/jpeg"
+                    (change)="fileChangeEvent($event)"
+                    #copyOfCriminal
+                  />
+                  <label class="custom-file-label" for="copyOfCriminal"
+                    >เลือกไฟล์</label
+                  >
+                </div>
+              </div>
+            </ng-template>
           </div>
         </div>
         <div class="row mt-4 mb-2">

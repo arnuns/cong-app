@@ -267,12 +267,43 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     });
     this.ngxSmartModalService.getModal('confirmNewModal').onClose.subscribe((modal: NgxSmartModalComponent) => {
       const data = modal.getData();
-      console.log(data);
       if (data && data.isSuccess) {
-        if (data.type === 'success') {
-          // this.onActivate();
-        } else {
-          // this.onDeactivate();
+        if (data.type === 'terminate') {
+          if (this.checkExistingDocument(data.docType)) {
+            this.spinner.showLoadingSpinner();
+            const documentId = Number(this.user.documents.filter(doc => doc.type.toLowerCase() === data.docType.toLowerCase())[0].id);
+            this.userService.deleteDocument(this.empNo, documentId).subscribe(_ => {
+              this.spinner.hideLoadingSpinner(0);
+              this.user.documents = this.user.documents.filter(doc => doc.id !== documentId);
+            }, error => {
+              this.spinner.hideLoadingSpinner(0);
+            });
+          }
+          switch (data.docType) {
+            case 'copyOfBookBank':
+              this.employeeForm.get('copy_of_book_bank').setValue(null);
+              break;
+            case 'copyOfIdCardNumber':
+              this.employeeForm.get('copy_of_idcard_no').setValue(null);
+              break;
+            case 'copyOfHouseRegistration':
+              this.employeeForm.get('copy_of_house_registration').setValue(null);
+              break;
+            case 'copyOfTranscript':
+              this.employeeForm.get('copy_of_transcript').setValue(null);
+              break;
+            case 'copyOfTp7':
+              this.employeeForm.get('copy_of_tp7').setValue(null);
+              break;
+            case 'copyOfTp12':
+              this.employeeForm.get('copy_of_tp12').setValue(null);
+              break;
+            case 'copyOfCriminal':
+              this.employeeForm.get('copy_of_criminal').setValue(null);
+              break;
+            default:
+              break;
+          }
         }
       }
     });
@@ -441,27 +472,35 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
 
         if (this.user.documents.length > 0) {
           this.user.documents.forEach(doc => {
-            const fileName = doc.name + doc.fileType;
+            const fileName = `${doc.name}${doc.fileType}`;
             switch (doc.type) {
-              case 'copyOfBookBank':
+              case 'CopyOfBookBank':
+                this.employeeForm.get('copy_of_book_bank').setValue(fileName);
                 break;
-              case 'copyOfIdCardNumber':
+              case 'CopyOfIdCardNumber':
+                this.employeeForm.get('copy_of_idcard_no').setValue(fileName);
                 break;
-              case 'copyOfHouseRegistration':
+              case 'CopyOfHouseRegistration':
+                this.employeeForm.get('copy_of_house_registration').setValue(fileName);
                 break;
-              case 'copyOfTranscript':
+              case 'CopyOfTranscript':
+                this.employeeForm.get('copy_of_transcript').setValue(fileName);
                 break;
-              case 'copyOfTp7':
+              case 'CopyOfTp7':
+                this.employeeForm.get('copy_of_tp7').setValue(fileName);
                 break;
-              case 'copyOfTp12':
+              case 'CopyOfTp12':
+                this.employeeForm.get('copy_of_tp12').setValue(fileName);
                 break;
-              case 'copyOfCriminal':
+              case 'CopyOfCriminal':
+                this.employeeForm.get('copy_of_criminal').setValue(fileName);
                 break;
               default:
                 break;
             }
           });
         }
+      }
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.spinner.hideLoadingSpinner(0);
@@ -847,6 +886,14 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
 
   get IsPermanentEmployee() {
     return !this.employeeForm.get('is_temporary').value;
+  }
+
+  checkExistingDocument(docType: string) {
+    let isExist = false;
+    if (this.user.documents.length > 0) {
+      return this.user.documents.some(doc => doc.type.toLowerCase() === docType.toLowerCase());
+    }
+    return isExist;
   }
 
   onDeleteDocumentClick(docType: string) {
