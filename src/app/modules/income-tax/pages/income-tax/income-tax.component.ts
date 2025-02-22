@@ -177,12 +177,12 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
               income: d.income.toFixed(2),
               tax: d.tax.toFixed(2),
               fix04: "1",
-              fix05: "211/41",
-              fix06: "สุดบรรทัด",
-              fix07: "ปากเพรียว",
-              fix08: "เมืองสระบุรี",
-              fix09: "สระบุรี",
-              fix10: "18000",
+              address: d.employeeAddress ? d.employeeAddress : "",
+              road: d.employeeRoad ? d.employeeRoad : "",
+              subDistrict: d.employeeSubDistrict ? d.employeeSubDistrict : "",
+              district: d.employeeDistrict ? d.employeeDistrict : "",
+              province: d.employeeProvince ? d.employeeProvince : "",
+              zipCode: d.employeeZipCode ? d.employeeZipCode : "",
             }));
           const csv = this.papa.unparse(csvData, {
             delimiter: "|",
