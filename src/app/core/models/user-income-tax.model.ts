@@ -9,6 +9,12 @@ export interface UserIncomeTax {
     employeeFirstName: string;
     employeeLastName: string;
     employeeName: string;
+    employeeAddress: string;
+    employeeRoad: string;
+    employeeSubDistrict: string;
+    employeeDistrict: string;
+    employeeProvince: string;
+    employeeZipCode: string;
     siteId: number;
     sitetName: string;
     income: number;
