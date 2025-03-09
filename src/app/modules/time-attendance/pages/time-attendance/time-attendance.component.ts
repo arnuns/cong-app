@@ -57,6 +57,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
+
+  createTimeAttendanceError = undefined;
+
   constructor(
     private applicationStateService: ApplicationStateService,
     private electronService: ElectronService,
@@ -122,7 +125,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           this.employees = [];
           this.searching = false;
         } else {
-          this.userService.getUserFilter(val, null, null, 'name', 'asc', 1, 12).subscribe(results => {
+          this.userService.getUserFilter(val, null, "true", 'name', 'asc', 1, 12).subscribe(results => {
             if (results.data.length > 0) {
               this.employees = results.data.splice(0, 10);
             }
@@ -374,6 +377,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onClickSearchUser(user: User) {
+    this.createTimeAttendanceError = undefined;
     this.editForm.patchValue({
       emp_no: user.empNo,
       name: `${user.firstName} ${user.lastName}`
@@ -399,7 +403,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onSubmit() {
-    // this.spinner.showLoadingSpinner();
+    this.createTimeAttendanceError = undefined;
     const that = this;
     function getValue(controlName) {
       return that.editForm.get(controlName).value;
@@ -445,6 +449,11 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       this.timeAttendanceService.createTimeAttendance(timeAttendance).subscribe(_ => {
         this.refreshTable();
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
+        this.spinner.hideLoadingSpinner(0);
+      }, error => {
+        if (error.error === "Employee is inactive!") {
+          this.createTimeAttendanceError = "พบข้อผิดพลาด: สถานะพนักงานลาออก";  
+        }
         this.spinner.hideLoadingSpinner(0);
       });
     } else {
