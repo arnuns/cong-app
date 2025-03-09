@@ -57,6 +57,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
 
   dtTrigger = new Subject();
   dtOptions: DataTables.Settings = {};
+
+  createTimeAttendanceError = undefined;
+
   constructor(
     private applicationStateService: ApplicationStateService,
     private electronService: ElectronService,
@@ -374,6 +377,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onClickSearchUser(user: User) {
+    this.createTimeAttendanceError = undefined;
     this.editForm.patchValue({
       emp_no: user.empNo,
       name: `${user.firstName} ${user.lastName}`
@@ -399,7 +403,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
   }
 
   onSubmit() {
-    // this.spinner.showLoadingSpinner();
+    this.createTimeAttendanceError = undefined;
     const that = this;
     function getValue(controlName) {
       return that.editForm.get(controlName).value;
@@ -447,6 +451,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
         this.spinner.hideLoadingSpinner(0);
       }, error => {
+        if (error.error === "Employee is inactive!") {
+          this.createTimeAttendanceError = "พบข้อผิดพลาด: สถานะพนักงานลาออก";  
+        }
         this.spinner.hideLoadingSpinner(0);
       });
     } else {
