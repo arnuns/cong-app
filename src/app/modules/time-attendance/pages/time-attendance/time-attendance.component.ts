@@ -122,7 +122,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           this.employees = [];
           this.searching = false;
         } else {
-          this.userService.getUserFilter(val, null, null, 'name', 'asc', 1, 12).subscribe(results => {
+          this.userService.getUserFilter(val, null, "true", 'name', 'asc', 1, 12).subscribe(results => {
             if (results.data.length > 0) {
               this.employees = results.data.splice(0, 10);
             }
@@ -445,6 +445,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       this.timeAttendanceService.createTimeAttendance(timeAttendance).subscribe(_ => {
         this.refreshTable();
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
+        this.spinner.hideLoadingSpinner(0);
+      }, error => {
         this.spinner.hideLoadingSpinner(0);
       });
     } else {
