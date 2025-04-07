@@ -70,7 +70,7 @@
         <tr *ngFor="let user of users; let i = index">
           <td><span class="employee-view-user-link" (click)="viewUserInfo(user.empNo)">{{ user.empNo }}</span></td>
           <td>
-            <img *ngIf="user.imageProfile != null; else elseNoProfileImage" [src]="user.imageProfile" alt=""
+            <img *ngIf="user.imageProfile != null; else elseNoProfileImage" [src]="getProfileImageUrl(user.imageProfile) | async" alt=""
               class="rounded-circle img-profile">
             <ng-template #elseNoProfileImage>
               <img *ngIf="user.imageProfile == null" [src]="defaultImagePath + '/img/img-default.svg'" alt=""

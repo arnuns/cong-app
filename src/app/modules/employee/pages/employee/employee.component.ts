@@ -343,6 +343,10 @@ export class EmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
     return [pad(d.getDate()), pad(d.getMonth() + 1), d.getFullYear()].join('/');
   }
 
+  getProfileImageUrl(imageProfile: string) {
+    return this.userService.getSignedImageUrl(btoa(imageProfile)).map(response => response.url);
+  }
+
   get HasEmployeePermission() {
     const allowed = ['registrar', 'hr', 'hrm', 'admin'];
     return this.matchingRole(this.user.role.id, allowed);

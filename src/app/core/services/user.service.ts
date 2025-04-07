@@ -180,4 +180,8 @@ export class UserService extends BaseService {
       .set('end_date', endDateString);
     return this.http.get<User[]>(`${this.serviceUrl}/User/NotCheckIn3Days`, { params: params });
   }
+
+  getSignedImageUrl(fileName: string) {
+    return this.http.get(`${this.serviceUrl}/User/Storage/Images/${fileName}`);
+  }
 }

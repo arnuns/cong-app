@@ -7,6 +7,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { Spinner } from 'ngx-spinner/lib/ngx-spinner.enum';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { ApplicationStateService } from 'src/app/core/services/application-state.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-employee-card',
@@ -73,6 +74,10 @@ export class EmployeeCardComponent implements OnDestroy, OnInit {
     this.applicationStateService.setIsHiddenLeftMenu = true;
     this.applicationStateService.setIsHiddenSearch = true;
     this.applicationStateService.setIsHiddenTopMenu = true;
+  }
+
+  getProfileImageUrl(imageProfile: string) {
+    return this.userService.getSignedImageUrl(btoa(imageProfile)).map(response => response.url);
   }
 
 }

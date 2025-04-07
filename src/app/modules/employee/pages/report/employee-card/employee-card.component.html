@@ -8,7 +8,7 @@
               <strong>{{ companyReportHeader.FullName }}</strong>
             </div>
             <div class="text-center logo-box mb-1">
-              <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="user?.imageProfile" alt="Profile" class="img-profile">
+              <img *ngIf="user?.imageProfile != null; else elseNoProfileImage" [src]="getProfileImageUrl(user?.imageProfile) | async" alt="Profile" class="img-profile">
               <ng-template #elseNoProfileImage>
                 <img *ngIf="user?.imageProfile == null" [src]="baseImagePath + '/img/img-profile.svg'" alt="" class="img-profile">
               </ng-template>
