@@ -376,6 +376,14 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     }
   }
 
+  onExportWorkingSiteNolateMonthlyReport() {
+    if (this.electronService.isElectronApp) {
+      const workDate: Date[] = this.timeAttendanceForm.get('work_date').value;
+      this.electronService.ipcRenderer.send('view-working-site-nolate-report'
+        , this.timeAttendanceForm.get('site_id').value, workDate[0].getFullYear(), workDate[0].getMonth() + 1);
+    }
+  }
+
   onClickSearchUser(user: User) {
     this.createTimeAttendanceError = undefined;
     this.editForm.patchValue({
