@@ -215,9 +215,17 @@ export class EmployeeReportComponent implements OnInit {
 
   getEmployeeConsecutiveWorkingDaysByDateRange(startDate: Date, endDate: Date) {
     this.empConsecutiveWorkingDaysReportProcessing = true;
+    var groupBy = function(xs, key) {
+      return xs.reduce(function(rv, x) {
+        rv[x[key]] = rv[x[key]] || [];
+        rv[x[key]].push(x);
+        return rv;
+      }, {});
+    };
+
     this.timeAttendanceService.getConsecutiveTimeAttendances(startDate, endDate)
       .subscribe(data => {
-        const groupedEmployeeData = this.groupByKey(data, 'empNo');
+        const groupedEmployeeData = groupBy(data, 'empNo');
         this.empConsecutiveWorkingDaysReport = {
           employeeCount: Object.keys(groupedEmployeeData).length,
           data: data
@@ -438,22 +446,21 @@ export class EmployeeReportComponent implements OnInit {
   onExportEmpConsecutiveWorkingDays() {
     if (this.empConsecutiveWorkingDaysReport.data.length === 0) {
       return;
-      
+    }
       this.spinner.showLoadingSpinner();
       const data = this.empConsecutiveWorkingDaysReport.data.map(u => ({
         'รหัสพนักงาน': `'${u.empNo}`,
         'ชื่อ-นามสกุล': u.employeeName,
         'หน่วยงาน': u.siteName,
         'วันทำงาน': !u.workDate ? '' : this.convertToDateString(u.workDate),
-        'รอบเวลา': !u.startTime || !u.endTime ? '' : `${this.moment.format(u.startTime, 'HH:mm:ss')} - ${this.moment.format(u.endTime, 'HH:mm:ss')}`,
+        'รอบเวลา': !u.startTime || !u.endTime ? '' : `${u.startTime} - ${u.endTime}`,
         'เวลาเข้างาน': !u.checkInTime ? '' : this.moment.format(u.checkInTime, 'DD/MM/YYYY HH:mm:ss'),
         'เวลาออกงาน': !u.leaveTime ? '' : this.moment.format(u.leaveTime, 'DD/MM/YYYY HH:mm:ss')
       }));
       const BOM = '\uFEFF';
       const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
-      FileSaver.saveAs(blob, `employee_not_checked_in_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      FileSaver.saveAs(blob, `employee_consecutive_working_days_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
-    }
   }
   
   onDateRangeMax31DaysChange(dates: Date[]) {
@@ -518,12 +525,5 @@ export class EmployeeReportComponent implements OnInit {
     const date = new Date(dateString);
     const today = new Date();
     return Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
-  }
-
-  groupByKey(xs, key) {
-    return xs.reduce(function(rv, x) {
-      (rv[x[key]] ??= []).push(x);
-      return rv;
-    }, {});
   }
 }
