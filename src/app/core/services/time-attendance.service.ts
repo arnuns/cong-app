@@ -3,7 +3,7 @@ import { BaseService, Paginate } from './base.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { CacheService } from './cache/cache.service';
 import { CookieService } from 'ngx-cookie-service';
-import { TimeAttendance, WorkingSiteMonthly, WorkingDay, WorkingDaySummary } from '../models/timeattendance';
+import { TimeAttendance, WorkingSiteMonthly, WorkingDay, WorkingDaySummary, ConsecutiveTimeAttendance } from '../models/timeattendance';
 import { MomentHelper } from '../helpers/moment.helper';
 import { Site } from '../models/site';
 import { start } from 'repl';
@@ -92,6 +92,12 @@ export class TimeAttendanceService extends BaseService {
 
     getWorkingDaySummary(siteId: number, year: number, month: number) {
         return this.http.get<WorkingDaySummary[]>(`${this.serviceUrl}/timeattendance/working-site/${siteId}/year/${year}/month/${month}/daily`);
+    }
+
+    getConsecutiveTimeAttendances(startDate: Date, endDate: Date) {
+      const startDateString = this.moment.format(startDate, 'DDMMYYYY');
+      const endDateString = this.moment.format(endDate, 'DDMMYYYY');
+      return this.http.get<ConsecutiveTimeAttendance[]>(`${this.serviceUrl}/timeattendance/consecutive/startDate/${startDateString}/endDate/${endDateString}`);
     }
 
 }

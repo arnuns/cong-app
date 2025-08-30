@@ -265,4 +265,75 @@
       </div>
     </form>
   </div>
+  <div class="col-md-6">
+    <form [formGroup]="empConsecutiveWorkingDaysReportForm" (ngSubmit)="onSubmitEmpConsecutiveWorkingDays()">
+      <div class="card report-card">
+        <div class="card-header">
+          <div class="d-flex align-items-center">
+            <div><strong>พนักงานควงกะ:</strong></div>
+            <div class="ml-auto">
+              <button type="button" class="btn button__export" (click)="onExportEmpConsecutiveWorkingDays()" [disabled]="empConsecutiveWorkingDaysReportProcessing || empConsecutiveWorkingDaysReport.employeeCount <= 0">
+                Export พนักงานควงกะ <i class="fa fa-cloud-download" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column">
+            <div *ngIf="empConsecutiveWorkingDaysReportFormAlert">
+              <p class="text-left mb-0">
+                <alert type="warning">
+                  {{ empConsecutiveWorkingDaysReportFormAlert }}
+                </alert>
+              </p>
+            </div>
+            <div class="d-flex justify-content-center align-items-center">
+              <div>
+                <input type="text" class="form-control date-range--control mb-0" onkeydown="return false"
+                  bsDaterangepicker formControlName="date_range"
+                  (bsValueChange)="onDateRangeMax31DaysChange($event)"
+                  [maxDate]="date" />
+              </div>
+              <div class="ml-2">
+                <button type="submit" class="btn button__submit" [disabled]="empConsecutiveWorkingDaysReportProcessing">
+                  ตกลง
+                </button>
+              </div>
+            </div>
+            <div class="d-flex justify-content-center align-items-start mt-3 employee-not-checked-in-detail">
+              <div class="w-100">
+                <div>
+                  <span class="employee-in-rate--title">
+                    พนักงานควงกะ
+                  </span>
+                </div>
+                <div class="d-flex">
+                  <div class="d-flex flex-column ml-2">
+                    <div>
+                      <div class="loading" *ngIf="empConsecutiveWorkingDaysReportProcessing; else elseShowEmpWhoConsecutiveWorking">
+                        <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                      <ng-template #elseShowEmpWhoConsecutiveWorking>
+                        <div class="d-flex">
+                          <div>
+                            <span class="employee-in-rate--count">
+                            {{ empConsecutiveWorkingDaysReport.employeeCount | number }}
+                            </span>
+                          </div>
+                          <div class="ml-2">
+                            <span clas="employee-in-rate--title">คน</span>
+                          </div>
+                        </div>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

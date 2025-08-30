@@ -67,3 +67,14 @@ export interface WorkingDaySummary {
 export interface TimeAttendanceSiteCheckpoint {
   siteCheckpointId: number;
 }
+
+export interface ConsecutiveTimeAttendance {
+  empNo: number;
+  employeeName: string;
+  siteName: string;
+  workDate: string;
+  startTime: string;
+  endTime: string;
+  checkInTime: string;
+  leaveTime: string;
+}
