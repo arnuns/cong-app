@@ -7,6 +7,8 @@ import { combineLatest } from 'rxjs';
 import { Papa } from 'ngx-papaparse';
 import * as FileSaver from 'file-saver';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
+import { ConsecutiveTimeAttendance } from 'src/app/core/models/timeattendance';
 
 @Component({
   selector: 'app-employee-report',
@@ -59,6 +61,20 @@ export class EmployeeReportComponent implements OnInit {
     employeeCount: 0,
     data: []
   };
+
+  empConsecutiveWorkingDaysReportForm = this.fb.group({
+    date_range: [null, [Validators.required]]
+  });
+  empConsecutiveWorkingDaysReportProcessing = false;
+  empConsecutiveWorkingDaysReportFormAlert = undefined
+  empConsecutiveWorkingDaysReport: {
+    employeeCount: number,
+    data: ConsecutiveTimeAttendance[]
+  } = {
+    employeeCount: 0,
+    data: []
+  };
+
   date =  new Date();
 
   constructor(
@@ -66,6 +82,7 @@ export class EmployeeReportComponent implements OnInit {
     private moment: MomentHelper,
     private papa: Papa,
     private spinner: SpinnerHelper,
+    private timeAttendanceService: TimeAttendanceService,
     private userService: UserService) {
     const startDate = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 7, 0, 0);
     const endDate = new Date(this.date.getFullYear(), this.date.getMonth(), 0, 7, 0, 0);
@@ -83,6 +100,10 @@ export class EmployeeReportComponent implements OnInit {
       date_range:
         [startDate2, endDate2]
     });
+    this.empConsecutiveWorkingDaysReportForm.patchValue({
+      date_range:
+        [startDate2, endDate2]
+    });
   }
 
   ngOnInit() {
@@ -90,11 +111,14 @@ export class EmployeeReportComponent implements OnInit {
     const monthYearArray = monthYear.split('-');
     const dateRange: Date[] = this.empInOutReportForm.get('date_range').value;
     const dateRange2: Date[] = this.empNotCheckedIn3DaysReportForm.get('date_range').value;
+    const dateRange3: Date[] = this.empConsecutiveWorkingDaysReportForm.get('date_range').value;
     Promise.all(
       [
         this.getCountEmployeeByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0])),
         this.getEmployeeByDateRange(dateRange[0], dateRange[1]),
-        this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange2[0], dateRange2[1])],
+        this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange2[0], dateRange2[1]),
+        this.getEmployeeConsecutiveWorkingDaysByDateRange(dateRange3[0], dateRange3[1])
+      ],
     ).then(_ => {
       console.log('report loaded successfully.');
     });
@@ -189,6 +213,22 @@ export class EmployeeReportComponent implements OnInit {
       });
   }
 
+  getEmployeeConsecutiveWorkingDaysByDateRange(startDate: Date, endDate: Date) {
+    this.empConsecutiveWorkingDaysReportProcessing = true;
+    this.timeAttendanceService.getConsecutiveTimeAttendances(startDate, endDate)
+      .subscribe(data => {
+        const groupedEmployeeData = this.groupByKey(data, 'empNo');
+        this.empConsecutiveWorkingDaysReport = {
+          employeeCount: Object.keys(groupedEmployeeData).length,
+          data: data
+        };
+        this.empConsecutiveWorkingDaysReportProcessing = false;
+      }, error => {
+        console.log(error);
+        this.empConsecutiveWorkingDaysReportProcessing = false;
+      });
+  }
+
   findPercentage(val, total) {
     return Math.round((100 / total) * val) || 0;
   }
@@ -216,6 +256,11 @@ export class EmployeeReportComponent implements OnInit {
   onSubmitEmpNotCheckedIn3Days() {
     const dateRange: Date[] = this.empNotCheckedIn3DaysReportForm.get('date_range').value;
     this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange[0], dateRange[1]);
+  }
+
+  onSubmitEmpConsecutiveWorkingDays() {
+    const dateRange: Date[] = this.empConsecutiveWorkingDaysReportForm.get('date_range').value;
+    this.getEmployeeConsecutiveWorkingDaysByDateRange(dateRange[0], dateRange[1]);
   }
 
   onExportEmpInOut() {
@@ -389,6 +434,27 @@ export class EmployeeReportComponent implements OnInit {
     FileSaver.saveAs(blob, `employee_not_checked_in_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
     this.spinner.hideLoadingSpinner();
   }
+
+  onExportEmpConsecutiveWorkingDays() {
+    if (this.empConsecutiveWorkingDaysReport.data.length === 0) {
+      return;
+      
+      this.spinner.showLoadingSpinner();
+      const data = this.empConsecutiveWorkingDaysReport.data.map(u => ({
+        'รหัสพนักงาน': `'${u.empNo}`,
+        'ชื่อ-นามสกุล': u.employeeName,
+        'หน่วยงาน': u.siteName,
+        'วันทำงาน': !u.workDate ? '' : this.convertToDateString(u.workDate),
+        'รอบเวลา': !u.startTime || !u.endTime ? '' : `${this.moment.format(u.startTime, 'HH:mm:ss')} - ${this.moment.format(u.endTime, 'HH:mm:ss')}`,
+        'เวลาเข้างาน': !u.checkInTime ? '' : this.moment.format(u.checkInTime, 'DD/MM/YYYY HH:mm:ss'),
+        'เวลาออกงาน': !u.leaveTime ? '' : this.moment.format(u.leaveTime, 'DD/MM/YYYY HH:mm:ss')
+      }));
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + this.papa.unparse(data)], { type: 'text/csv;charset=utf-8' });
+      FileSaver.saveAs(blob, `employee_not_checked_in_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
+      this.spinner.hideLoadingSpinner();
+    }
+  }
   
   onDateRangeMax31DaysChange(dates: Date[]) {
     if (dates && dates.length === 2) {
@@ -452,5 +518,12 @@ export class EmployeeReportComponent implements OnInit {
     const date = new Date(dateString);
     const today = new Date();
     return Math.floor((today.getTime() - date.getTime()) / (1000 * 60 * 60 * 24));
+  }
+
+  groupByKey(xs, key) {
+    return xs.reduce(function(rv, x) {
+      (rv[x[key]] ??= []).push(x);
+      return rv;
+    }, {});
   }
 }
