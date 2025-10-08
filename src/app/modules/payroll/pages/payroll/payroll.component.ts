@@ -501,30 +501,30 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
               แรงละ: s.hiringRatePerDay,
               จำนวนแรง: s.manday,
               ค่าแรงปกติ: s.totalWage,
-              ค่าตำแหน่ง: s.otherAdvance > 0 ? 0 : s.positionValue,
-              ค่าจุด: s.otherAdvance > 0 ? 0 : s.pointValue,
-              นักขัตฤกษ์: s.otherAdvance > 0 ? 0 : s.annualHoliday,
-              ค่าโทรศัพท์: s.otherAdvance > 0 ? 0 : s.telephoneCharge,
-              คืนเงินหัก: s.otherAdvance > 0 ? 0 : s.refund,
-              เบี้ยขยัน: s.otherAdvance > 0 ? 0 : s.dutyAllowance,
-              เบี้ยขยันรายวัน: s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily,
-              โบนัส: s.otherAdvance > 0 ? 0 : s.bonus,
+              ค่าตำแหน่ง: s.extraReplaceValue > 0 ? 0 : s.positionValue,
+              ค่าจุด: s.extraReplaceValue > 0 ? 0 : s.pointValue,
+              นักขัตฤกษ์: s.extraReplaceValue > 0 ? 0 : s.annualHoliday,
+              ค่าโทรศัพท์: s.extraReplaceValue > 0 ? 0 : s.telephoneCharge,
+              คืนเงินหัก: s.extraReplaceValue > 0 ? 0 : s.refund,
+              เบี้ยขยัน: s.extraReplaceValue > 0 ? 0 : s.dutyAllowance,
+              เบี้ยขยันรายวัน: s.extraReplaceValue > 0 ? 0 : s.dutyAllowanceDaily,
+              โบนัส: s.extraReplaceValue > 0 ? 0 : s.bonus,
               "ค่าล่วงเวลา (OT)":
                 s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime),
-              ชดเชยรายได้: s.otherAdvance > 0 ? 0 : s.incomeCompensation,
-              รายได้อื่นๆ: s.otherAdvance > 0 ? 0 : s.otherIncome,
+              ชดเชยรายได้: s.extraReplaceValue > 0 ? 0 : s.incomeCompensation,
+              รายได้อื่นๆ: s.extraReplaceValue > 0 ? 0 : s.otherIncome,
               ค่าแทนจุด: s.extraReplaceValue,
               รายได้จุดพิเศษ: s.extraPointValue,
-              ประกันสังคม: s.otherAdvance > 0 ? 0 : s.socialSecurity,
-              ค่าอุปกรณ์: s.otherAdvance > 0 ? 0 : s.inventory,
-              ผิดวินัย: s.otherAdvance > 0 ? 0 : s.discipline,
-              ค่าธรรมเนียม: s.otherAdvance > 0 ? 0 : s.transferFee,
-              ขาดงาน: s.otherAdvance > 0 ? 0 : s.absence,
-              ใบอนุญาต: s.otherAdvance > 0 ? 0 : s.licenseFee,
-              เบิกล่วงหน้า: s.otherAdvance > 0 ? 0 : s.advance,
-              ค่าเช่าบ้าน: s.otherAdvance > 0 ? 0 : s.rentHouse,
-              พิธีการทางศาสนา: s.otherAdvance > 0 ? 0 : s.cremationFee,
-              รายการหักอื่นๆ: s.otherAdvance > 0 ? 0 : s.otherFee,
+              ประกันสังคม: s.extraReplaceValue > 0 ? 0 : s.socialSecurity,
+              ค่าอุปกรณ์: s.extraReplaceValue > 0 ? 0 : s.inventory,
+              ผิดวินัย: s.extraReplaceValue > 0 ? 0 : s.discipline,
+              ค่าธรรมเนียม: s.extraReplaceValue > 0 ? 0 : s.transferFee,
+              ขาดงาน: s.extraReplaceValue > 0 ? 0 : s.absence,
+              ใบอนุญาต: s.extraReplaceValue > 0 ? 0 : s.licenseFee,
+              เบิกล่วงหน้า: s.extraReplaceValue > 0 ? 0 : s.advance,
+              ค่าเช่าบ้าน: s.extraReplaceValue > 0 ? 0 : s.rentHouse,
+              พิธีการทางศาสนา: s.extraReplaceValue > 0 ? 0 : s.cremationFee,
+              รายการหักอื่นๆ: s.extraReplaceValue > 0 ? 0 : s.otherFee,
               หมายเหตุ: !s.remark ? "" : s.remark,
               "ภาษีหัก ณ ที่จ่าย": s.withholdingTax,
               รวมรายได้: s.totalIncome,
@@ -537,54 +537,54 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
               totalWage: summary.totalWage + s.totalWage,
               positionValue:
                 summary.positionValue +
-                (s.otherAdvance > 0 ? 0 : s.positionValue),
+                (s.extraReplaceValue > 0 ? 0 : s.positionValue),
               pointValue:
-                summary.pointValue + (s.otherAdvance > 0 ? 0 : s.pointValue),
+                summary.pointValue + (s.extraReplaceValue > 0 ? 0 : s.pointValue),
               annualHoliday:
                 summary.annualHoliday +
-                (s.otherAdvance > 0 ? 0 : s.annualHoliday),
+                (s.extraReplaceValue > 0 ? 0 : s.annualHoliday),
               telephoneCharge:
                 summary.telephoneCharge +
-                (s.otherAdvance > 0 ? 0 : s.telephoneCharge),
-              refund: summary.refund + (s.otherAdvance > 0 ? 0 : s.refund),
+                (s.extraReplaceValue > 0 ? 0 : s.telephoneCharge),
+              refund: summary.refund + (s.extraReplaceValue > 0 ? 0 : s.refund),
               dutyAllowance:
                 summary.dutyAllowance +
-                (s.otherAdvance > 0 ? 0 : s.dutyAllowance),
+                (s.extraReplaceValue > 0 ? 0 : s.dutyAllowance),
               dutyAllowanceDaily:
                 summary.dutyAllowanceDaily +
-                (s.otherAdvance > 0 ? 0 : s.dutyAllowanceDaily),
-              bonus: summary.bonus + (s.otherAdvance > 0 ? 0 : s.bonus),
+                (s.extraReplaceValue > 0 ? 0 : s.dutyAllowanceDaily),
+              bonus: summary.bonus + (s.extraReplaceValue > 0 ? 0 : s.bonus),
               ot:
                 summary.ot +
                 (s.overtime + (!s.extraOvertime ? 0 : s.extraOvertime)),
               incomeCompensation:
                 summary.incomeCompensation +
-                (s.otherAdvance > 0 ? 0 : s.incomeCompensation),
+                (s.extraReplaceValue > 0 ? 0 : s.incomeCompensation),
               otherIncome:
-                summary.otherIncome + (s.otherAdvance > 0 ? 0 : s.otherIncome),
+                summary.otherIncome + (s.extraReplaceValue > 0 ? 0 : s.otherIncome),
               extraReplaceValue:
                 summary.extraReplaceValue + s.extraReplaceValue,
               extraPointValue: summary.extraPointValue + s.extraPointValue,
               socialSecurity:
                 summary.socialSecurity +
-                (s.otherAdvance > 0 ? 0 : s.socialSecurity),
+                (s.extraReplaceValue > 0 ? 0 : s.socialSecurity),
               inventory:
-                summary.inventory + (s.otherAdvance > 0 ? 0 : s.inventory),
+                summary.inventory + (s.extraReplaceValue > 0 ? 0 : s.inventory),
               discipline:
-                summary.discipline + (s.otherAdvance > 0 ? 0 : s.discipline),
+                summary.discipline + (s.extraReplaceValue > 0 ? 0 : s.discipline),
               transferFee:
-                summary.transferFee + (s.otherAdvance > 0 ? 0 : s.transferFee),
-              absence: summary.absence + (s.otherAdvance > 0 ? 0 : s.absence),
+                summary.transferFee + (s.extraReplaceValue > 0 ? 0 : s.transferFee),
+              absence: summary.absence + (s.extraReplaceValue > 0 ? 0 : s.absence),
               licenseFee:
-                summary.licenseFee + (s.otherAdvance > 0 ? 0 : s.licenseFee),
-              advance: summary.advance + (s.otherAdvance > 0 ? 0 : s.advance),
+                summary.licenseFee + (s.extraReplaceValue > 0 ? 0 : s.licenseFee),
+              advance: summary.advance + (s.extraReplaceValue > 0 ? 0 : s.advance),
               rentHouse:
-                summary.rentHouse + (s.otherAdvance > 0 ? 0 : s.rentHouse),
+                summary.rentHouse + (s.extraReplaceValue > 0 ? 0 : s.rentHouse),
               cremationFee:
                 summary.cremationFee +
-                (s.otherAdvance > 0 ? 0 : s.cremationFee),
+                (s.extraReplaceValue > 0 ? 0 : s.cremationFee),
               otherFee:
-                summary.otherFee + (s.otherAdvance > 0 ? 0 : s.otherFee),
+                summary.otherFee + (s.extraReplaceValue > 0 ? 0 : s.otherFee),
               withholdingTax: summary.withholdingTax + s.withholdingTax,
               totalIncome: summary.totalIncome + s.totalIncome,
               totalDeductible: summary.totalDeductible + s.totalDeductible,
