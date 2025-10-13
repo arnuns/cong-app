@@ -36,7 +36,6 @@ export interface Salary {
     siteManday: number;
     manday: number;
     otherSiteManday: number;
-    otherAdvance: number;
     totalWage: number;
     positionValue: number;
     pointValue: number;

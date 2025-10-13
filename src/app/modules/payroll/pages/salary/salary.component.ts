@@ -756,7 +756,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       siteManday: 0,
       manday: 0,
       otherSiteManday: 0,
-      otherAdvance: 0,
       totalWage: 0,
       positionValue: getValue('position_value'),
       pointValue: getValue('point_value'),
