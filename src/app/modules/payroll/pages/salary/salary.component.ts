@@ -1031,9 +1031,17 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     }
     resultWage = (minimumWage * resultManday);
-    const rateSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.rate : 0.05;
-    let minimumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.minimumAmount : 83;
-    let maximumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.maximumAmount : 750;
+    let defaultRate = 0.05;
+    let defaultMinimumAmount = 83;
+    let defaultMaximumAmount = 750;
+    const currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+    if (currentDate >= new Date(2026, 0, 1)) {
+      defaultMinimumAmount = 83;
+      defaultMaximumAmount = 875;
+    }
+    const rateSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.rate : defaultRate;
+    let minimumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.minimumAmount : defaultMinimumAmount;
+    let maximumSocialSecurity = this.socialSecurityRate ? this.socialSecurityRate.maximumAmount : defaultMaximumAmount;
     if (!this.site.isMonthly) {
       minimumSocialSecurity = minimumSocialSecurity / 2;
       maximumSocialSecurity = maximumSocialSecurity / 2;
