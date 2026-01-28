@@ -245,13 +245,22 @@
               <div class="form-group">
                 <label for="point_value">ค่าจุด <span
                     class="text-danger"><small>*</small></span></label>
-                <input type="number" class="form-control" formControlName="point_value">
+                <input type="number" class="form-control form-control--amount" formControlName="point_value">
               </div>
             </div>
             <div class="p-2">
               <div class="form-group">
                 <label for="worker_count">จำนวนแรง <span class="text-danger"><small>*</small></span></label>
-                <input type="number" class="form-control" formControlName="worker_count" (input)="onKeyWorkerCountAtSiteCheckpoint($event, i)">
+                <input type="number" class="form-control form-control--amount" formControlName="worker_count" (input)="onKeyWorkerCountAtSiteCheckpoint($event, i)">
+              </div>
+            </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="is_position_value">รวมในค่าตำแหน่ง? <span class="text-danger"><small>*</small></span></label>
+                <select class="form-control is-position-value-select" formControlName="is_position_value">
+                  <option [value]="false">ไม่ใช่</option>
+                  <option [value]="true">ใช่</option>
+                </select>
               </div>
             </div>
             <div class="p-2 remove-site">

@@ -65,6 +65,7 @@ export interface SiteCheckpoint {
     latitude: number;
     longitude: number;
     sequence: number;
+    isPositionValue: boolean;
     createOn: Date;
     createBy: string;
     updateOn: Date;
