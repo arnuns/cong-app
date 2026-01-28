@@ -79,8 +79,12 @@
   margin-bottom: -35px !important;
 }
 
-.form-control--date {
-  width: 200px;
+.time-range-select {
+  width: 250px; 
+}
+
+.is-position-value-select {
+  width: 150px;
 }
 
 .button__activate {
@@ -92,4 +96,12 @@
   letter-spacing: normal;
   text-align: center;
   color: #ffffff;
+}
+
+.form-control--date {
+  width: 200px;
+}
+
+.form-control--amount {
+  width: 150px;
 }

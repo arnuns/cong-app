@@ -219,6 +219,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           latitude: c.get('latitude').value,
           longitude: c.get('longitude').value,
           sequence: c.get('sequence').value,
+          isPositionValue: c.get('is_position_value').value,
           createOn: new Date(),
           createBy: undefined,
           updateOn: new Date(),
@@ -389,7 +390,8 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
               worker_count: [siteCheckpoint.workerCount, [Validators.min(0), Validators.required]],
               latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
               longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-              sequence: [index + 1]
+              sequence: [index + 1],
+              is_position_value: [siteCheckpoint.isPositionValue, Validators.required]
           }));
       });
       this.isFirstLoad = false; // ป้องกันไม่ให้โหลดค่าเดิมซ้ำ
@@ -403,7 +405,8 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
           worker_count: [1, [Validators.min(0), Validators.required]],
           latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
-          sequence: [i + 1]
+          sequence: [i + 1],
+          is_position_value: [false, Validators.required]
       });
 
       // กำหนดค่า time range เริ่มต้นหากยังไม่มีข้อมูล siteWorkRate

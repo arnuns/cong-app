@@ -315,7 +315,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
           latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
           sequence: [index + 1],
-          is_position_value: [siteCheckpoint.isPositionValue]
+          is_position_value: [siteCheckpoint.isPositionValue, [Validators.required]]
         }));
       });
     } else {
@@ -329,7 +329,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         latitude: ['', [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         longitude: ['', [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
         sequence: [i + 1],
-        is_position_value: [false]
+        is_position_value: [false, [Validators.required]]
       });
 
       // หากไม่มีข้อมูลในฟอร์ม SiteWorkRate เลยให้กำหนดค่าเริ่มต้นเป็นปัจจุบัน

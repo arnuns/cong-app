@@ -71,7 +71,11 @@
 }
 
 .time-range-select {
-  width: 300px; 
+  width: 250px; 
+}
+
+.is-position-value-select {
+  width: 150px;
 }
 
 .alert {
@@ -80,4 +84,8 @@
 
 .form-control--date {
   width: 200px;
+}
+
+.form-control--amount {
+  width: 150px;
 }
