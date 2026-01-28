@@ -391,7 +391,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
               latitude: [siteCheckpoint.latitude, [Validators.pattern(/^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
               longitude: [siteCheckpoint.longitude, [Validators.pattern(/^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/)]],
               sequence: [index + 1],
-              is_position_value: [siteCheckpoint.isPositionValue, Validators.required]
+              is_position_value: [Boolean(siteCheckpoint.isPositionValue), Validators.required]
           }));
       });
       this.isFirstLoad = false; // ป้องกันไม่ให้โหลดค่าเดิมซ้ำ
