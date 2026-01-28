@@ -251,6 +251,15 @@
                 <input type="number" class="form-control" formControlName="worker_count" (input)="onKeyWorkerCountAtSiteCheckpoint($event, i)">
               </div>
             </div>
+            <div class="p-2">
+              <div class="form-group">
+                <label for="is_position_value">ค่าตำแหน่งหรือไม่ <span class="text-danger"><small>*</small></span></label>
+                <select class="form-control" formControlName="is_position_value">
+                  <option [value]="false">ไม่ใช่ค่าตำแหน่ง</option>
+                  <option [value]="true">ใช่ ค่าตำแหน่ง</option>
+                </select>
+              </div>
+            </div>
             <div class="p-2 remove-site">
               <i class="fa fa-times-circle" aria-hidden="true" (click)="removeSiteCheckpoint(i)"></i>
             </div>
