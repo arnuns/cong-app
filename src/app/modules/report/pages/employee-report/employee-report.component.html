@@ -195,13 +195,13 @@
     </form>
   </div>
   <div class="col-md-6">
-    <form [formGroup]="empNotCheckedIn3DaysReportForm" (ngSubmit)="onSubmitEmpNotCheckedIn3Days()">
+    <form [formGroup]="empNotCheckedIn7DaysReportForm" (ngSubmit)="onSubmitEmpNotCheckedIn7Days()">
       <div class="card report-card">
         <div class="card-header">
           <div class="d-flex align-items-center">
-            <div><strong>พนักงานไม่ทำงานติดต่อกัน 3 วัน:</strong></div>
+            <div><strong>พนักงานไม่ทำงานติดต่อกัน 7 วัน:</strong></div>
             <div class="ml-auto">
-              <button type="button" class="btn button__export" (click)="onExportEmpNotCheckedIn3Days()" [disabled]="empNotCheckedIn3DaysReportProcessing || empNotCheckedIn3DaysReport.employeeCount <= 0">
+              <button type="button" class="btn button__export" (click)="onExportEmpNotCheckedIn7Days()" [disabled]="empNotCheckedIn7DaysReportProcessing || empNotCheckedIn7DaysReport.employeeCount <= 0">
                 Export พนักงานที่ไม่ทำงาน <i class="fa fa-cloud-download" aria-hidden="true"></i>
               </button>
             </div>
@@ -209,10 +209,10 @@
         </div>
         <div class="card-body">
           <div class="d-flex flex-column">
-            <div *ngIf="empNotCheckedIn3DaysReportFormAlert">
+            <div *ngIf="empNotCheckedIn7DaysReportFormAlert">
               <p class="text-left mb-0">
                 <alert type="warning">
-                  {{ empNotCheckedIn3DaysReportFormAlert }}
+                  {{ empNotCheckedIn7DaysReportFormAlert }}
                 </alert>
               </p>
             </div>
@@ -224,7 +224,7 @@
                   [maxDate]="date" />
               </div>
               <div class="ml-2">
-                <button type="submit" class="btn button__submit" [disabled]="empNotCheckedIn3DaysReportProcessing">
+                <button type="submit" class="btn button__submit" [disabled]="empNotCheckedIn7DaysReportProcessing">
                   ตกลง
                 </button>
               </div>
@@ -233,13 +233,13 @@
               <div class="w-100">
                 <div>
                   <span class="employee-in-rate--title">
-                    พนักงานที่ไม่ทำงานติดต่อกัน 3 วัน
+                    พนักงานที่ไม่ทำงานติดต่อกัน 7 วัน
                   </span>
                 </div>
                 <div class="d-flex">
                   <div class="d-flex flex-column ml-2">
                     <div>
-                      <div class="loading" *ngIf="empNotCheckedIn3DaysReportProcessing; else elseShowEmpWhoNotCheckedIn">
+                      <div class="loading" *ngIf="empNotCheckedIn7DaysReportProcessing; else elseShowEmpWhoNotCheckedIn">
                         <i class="fa fa-circle-o-notch fa-spin fa-fw"></i>
                         <span class="sr-only">Loading...</span>
                       </div>
@@ -247,7 +247,7 @@
                         <div class="d-flex">
                           <div>
                             <span class="employee-in-rate--count">
-                            {{ empNotCheckedIn3DaysReport.employeeCount | number }}
+                            {{ empNotCheckedIn7DaysReport.employeeCount | number }}
                             </span>
                           </div>
                           <div class="ml-2">

@@ -49,12 +49,12 @@ export class EmployeeReportComponent implements OnInit {
       resign: []
     };
 
-  empNotCheckedIn3DaysReportForm = this.fb.group({
+  empNotCheckedIn7DaysReportForm = this.fb.group({
     date_range: [null, [Validators.required]]
   });
-  empNotCheckedIn3DaysReportProcessing = false;
-  empNotCheckedIn3DaysReportFormAlert = undefined
-  empNotCheckedIn3DaysReport: {
+  empNotCheckedIn7DaysReportProcessing = false;
+  empNotCheckedIn7DaysReportFormAlert = undefined
+  empNotCheckedIn7DaysReport: {
     employeeCount: number,
     data: User[]
   } = {
@@ -96,7 +96,7 @@ export class EmployeeReportComponent implements OnInit {
       date_range:
         [startDate, endDate]
     });
-    this.empNotCheckedIn3DaysReportForm.patchValue({
+    this.empNotCheckedIn7DaysReportForm.patchValue({
       date_range:
         [startDate2, endDate2]
     });
@@ -110,13 +110,13 @@ export class EmployeeReportComponent implements OnInit {
     const monthYear: string = this.monthYears[0].viewValue;
     const monthYearArray = monthYear.split('-');
     const dateRange: Date[] = this.empInOutReportForm.get('date_range').value;
-    const dateRange2: Date[] = this.empNotCheckedIn3DaysReportForm.get('date_range').value;
+    const dateRange2: Date[] = this.empNotCheckedIn7DaysReportForm.get('date_range').value;
     const dateRange3: Date[] = this.empConsecutiveWorkingDaysReportForm.get('date_range').value;
     Promise.all(
       [
         this.getCountEmployeeByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0])),
         this.getEmployeeByDateRange(dateRange[0], dateRange[1]),
-        this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange2[0], dateRange2[1]),
+        this.getEmployeeWhoNotCheckedIn7DaysByDateRage(dateRange2[0], dateRange2[1]),
         this.getEmployeeConsecutiveWorkingDaysByDateRange(dateRange3[0], dateRange3[1])
       ],
     ).then(_ => {
@@ -195,21 +195,21 @@ export class EmployeeReportComponent implements OnInit {
       });
   }
 
-  getEmployeeWhoNotCheckedIn3DaysByDateRage(startDate: Date, endDate: Date) {
+  getEmployeeWhoNotCheckedIn7DaysByDateRage(startDate: Date, endDate: Date) {
     const that = this;
     const dateFormat = 'DDMMYYYY';
-    this.empNotCheckedIn3DaysReportProcessing = true;
+    this.empNotCheckedIn7DaysReportProcessing = true;
     function toDateQuery(date: Date) { return that.moment.format(date, dateFormat); }
     this.userService.getUserNotCheckedInByDateRange(toDateQuery(startDate), toDateQuery(endDate))
       .subscribe(users => {
-        this.empNotCheckedIn3DaysReport = {
+        this.empNotCheckedIn7DaysReport = {
           employeeCount: users.length,
           data: users
         };
-        this.empNotCheckedIn3DaysReportProcessing = false;
+        this.empNotCheckedIn7DaysReportProcessing = false;
       }, error => {
         console.log(error);
-        this.empNotCheckedIn3DaysReportProcessing = false;
+        this.empNotCheckedIn7DaysReportProcessing = false;
       });
   }
 
@@ -261,9 +261,9 @@ export class EmployeeReportComponent implements OnInit {
     this.getCountEmployeeByMonthYear(Number(monthYearArray[1]), Number(monthYearArray[0]));
   }
 
-  onSubmitEmpNotCheckedIn3Days() {
-    const dateRange: Date[] = this.empNotCheckedIn3DaysReportForm.get('date_range').value;
-    this.getEmployeeWhoNotCheckedIn3DaysByDateRage(dateRange[0], dateRange[1]);
+  onSubmitEmpNotCheckedIn7Days() {
+    const dateRange: Date[] = this.empNotCheckedIn7DaysReportForm.get('date_range').value;
+    this.getEmployeeWhoNotCheckedIn7DaysByDateRage(dateRange[0], dateRange[1]);
   }
 
   onSubmitEmpConsecutiveWorkingDays() {
@@ -385,13 +385,13 @@ export class EmployeeReportComponent implements OnInit {
     });
   }
 
-  onExportEmpNotCheckedIn3Days() {
-    if (this.empNotCheckedIn3DaysReport.data.length === 0) {
+  onExportEmpNotCheckedIn7Days() {
+    if (this.empNotCheckedIn7DaysReport.data.length === 0) {
       return;
     }
 
     this.spinner.showLoadingSpinner();
-    const data = this.empNotCheckedIn3DaysReport.data.map(u => ({
+    const data = this.empNotCheckedIn7DaysReport.data.map(u => ({
       'รหัสพนักงาน': `'${u.empNo}`,
       'หน่วยงาน': u.site.name,
       'ตำแหน่ง': u.role.nameTH,
@@ -474,14 +474,14 @@ export class EmployeeReportComponent implements OnInit {
         const startDate2 = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 7, 0, 0);
         const endDate2 = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), 7, 0, 0);
         setTimeout(() => {
-          this.empNotCheckedIn3DaysReportForm.patchValue({
+          this.empNotCheckedIn7DaysReportForm.patchValue({
             date_range:
               [startDate2, endDate2]
           });
-          this.empNotCheckedIn3DaysReportFormAlert = 'กรุณาเลือกช่วงวันที่ไม่เกิน 31 วัน';
+          this.empNotCheckedIn7DaysReportFormAlert = 'กรุณาเลือกช่วงวันที่ไม่เกิน 31 วัน';
         }, 0);
       } else {
-        this.empNotCheckedIn3DaysReportFormAlert = undefined;
+        this.empNotCheckedIn7DaysReportFormAlert = undefined;
       }
     }
   }
