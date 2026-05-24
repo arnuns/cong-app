@@ -61,6 +61,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   private datatableElement: DataTableDirective;
   payrollCycleSelectList: any[] = [];
 
+  payrollCycleId: number;
   payrollCycle: PayrollCycle;
   payrollCycles: PayrollCycle[] = [];
   allSitePayrollCycleSalary: SitePayrollCycleSalary[] = [];
@@ -124,6 +125,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
             value: p.id,
             viewValue: this.convertToStartEndDateString(p.start, p.end),
           }));
+        this.payrollCycleId = this.payrollCycles[0].id;
         this.payrollCycle = this.payrollCycles[0];
         this.getPayrollCycleSalary(this.payrollCycle.id);
         this.payrollForm.get("payroll_cycle_id").setValue(this.payrollCycle.id);
@@ -299,7 +301,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onPayrollCycleSelectionChange(event) {
-    this.getPayrollCycleSalary(Number(event.value), true);
+    this.payrollCycleId = Number(event.value);
+    this.getPayrollCycleSalary(this.payrollCycleId, true);
   }
 
   onFilterStatusChange($event) {
@@ -730,7 +733,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
-          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
+          const selectedPayrollCycle = this.payrollCycles.filter(p => p.id === this.payrollCycleId)[0] || this.payrollCycle;
+          const payrollCycleName = this.convertToStartEndDateString(selectedPayrollCycle.start, selectedPayrollCycle.end);
           FileSaver.saveAs(
             blob,
             `salary_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
@@ -792,7 +796,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
-          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
+          const selectedPayrollCycle = this.payrollCycles.filter(p => p.id === this.payrollCycleId)[0] || this.payrollCycle;
+          const payrollCycleName = this.convertToStartEndDateString(selectedPayrollCycle.start, selectedPayrollCycle.end);
           FileSaver.saveAs(
             blob,
             `summary_salary_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
@@ -879,7 +884,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
-          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
+          const selectedPayrollCycle = this.payrollCycles.filter(p => p.id === this.payrollCycleId)[0] || this.payrollCycle;
+          const payrollCycleName = this.convertToStartEndDateString(selectedPayrollCycle.start, selectedPayrollCycle.end);
           FileSaver.saveAs(
             blob,
             `salary_site_${siteId}_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
