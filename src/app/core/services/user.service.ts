@@ -178,6 +178,6 @@ export class UserService extends BaseService {
     const params = new HttpParams()
       .set('start_date', startDateString)
       .set('end_date', endDateString);
-    return this.http.get<User[]>(`${this.serviceUrl}/User/NotCheckIn3Days`, { params: params });
+    return this.http.get<User[]>(`${this.serviceUrl}/User/NotCheckIn7Days`, { params: params });
   }
 }
