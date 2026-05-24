@@ -730,11 +730,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
+          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
           FileSaver.saveAs(
             blob,
-            `salary_${
-              this.payrollForm.get("payroll_cycle_id").value
-            }_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
+            `salary_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
           );
           this.spinner.hideLoadingSpinner();
         },
@@ -793,11 +792,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
+          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
           FileSaver.saveAs(
             blob,
-            `summary_salary_${
-              this.payrollForm.get("payroll_cycle_id").value
-            }_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
+            `summary_salary_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
           );
           this.spinner.hideLoadingSpinner();
         },
@@ -881,11 +879,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           const blob = new Blob([BOM + this.papa.unparse(data)], {
             type: "text/csv;charset=utf-8",
           });
+          const payrollCycleName = this.convertToStartEndDateString(this.payrollCycle.start, this.payrollCycle.end);
           FileSaver.saveAs(
             blob,
-            `salary_site_${siteId}_${
-              this.payrollForm.get("payroll_cycle_id").value
-            }_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
+            `salary_site_${siteId}_${payrollCycleName}_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
           );
           this.spinner.hideLoadingSpinner();
         },

@@ -90,7 +90,7 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
     this.userService.getUser(this.empNo).subscribe(user => {
       this.user = user;
       if (this.user.timelineUsers) {
-        this.user.timelineUsers = this.user.timelineUsers.sort((a, b) => (a.createOn > b.createOn ? -1 : 1));
+        this.user.timelineUsers = this.user.timelineUsers.sort((a, b) => (a.effectiveDate > b.effectiveDate ? -1 : 1));
       }
       this.spinner.hideLoadingSpinner(0);
     }, error => {
