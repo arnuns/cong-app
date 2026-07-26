@@ -827,3 +827,170 @@ ul.dashed>li:before {
     width: 100%;
     height: 100%;
 }
+
+.power-of-attorney-page {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 297mm;
+  padding: 16mm 15mm 12mm;
+  width: 210mm;
+}
+
+.power-of-attorney-header {
+  min-height: 210px;
+  padding-top: 12px;
+}
+
+.power-of-attorney-title {
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+  text-align: center;
+}
+
+.power-of-attorney-meta {
+  margin-left: auto;
+  margin-top: 48px;
+  width: 56%;
+}
+
+.power-of-attorney-field-row {
+  align-items: flex-end;
+  display: flex;
+  min-height: 32px;
+  white-space: nowrap;
+}
+
+.power-of-attorney-field-row + .power-of-attorney-field-row {
+  margin-top: 5px;
+}
+
+.power-of-attorney-field-row > * + * {
+  margin-left: 6px;
+}
+
+.power-of-attorney-field-line {
+  align-items: flex-end;
+  border-bottom: 2px dotted #000000;
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1.2;
+  min-height: 28px;
+  overflow-wrap: break-word;
+  padding: 0 5px 2px;
+  text-align: center;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.power-of-attorney-grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.power-of-attorney-date-row {
+  margin-top: 8px;
+}
+
+.power-of-attorney-day {
+  width: 52px;
+}
+
+.power-of-attorney-month {
+  width: 112px;
+}
+
+.power-of-attorney-year {
+  width: 72px;
+}
+
+.power-of-attorney-grantor {
+  margin-top: 34px;
+}
+
+.power-of-attorney-id {
+  flex: 0 0 190px;
+}
+
+.power-of-attorney-house {
+  flex: 0 0 82px;
+}
+
+.power-of-attorney-moo {
+  flex: 0 0 50px;
+}
+
+.power-of-attorney-road {
+  flex: 0 0 125px;
+}
+
+.power-of-attorney-postal-code {
+  flex: 0 0 110px;
+}
+
+.power-of-attorney-phone {
+  flex: 0 0 210px;
+}
+
+.power-of-attorney-body {
+  margin-top: 38px;
+}
+
+.power-of-attorney-body p {
+  line-height: 1.75;
+  margin: 0 0 16px;
+  text-align: justify;
+  text-indent: 72px;
+}
+
+.power-of-attorney-footer {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 150px;
+}
+
+.power-of-attorney-attachments {
+  font-size: 14px;
+  line-height: 1.8;
+  padding-bottom: 12px;
+  width: 48%;
+}
+
+.power-of-attorney-attachment-item {
+  font-size: 14px;
+  margin-left: 18px;
+}
+
+.power-of-attorney-signatures {
+  padding-bottom: 10px;
+  width: 50%;
+}
+
+.power-of-attorney-signature-block + .power-of-attorney-signature-block {
+  margin-top: 36px;
+}
+
+.power-of-attorney-signature-row {
+  align-items: flex-end;
+  display: flex;
+  white-space: nowrap;
+}
+
+.power-of-attorney-signature-row > * + * {
+  margin-left: 7px;
+}
+
+.power-of-attorney-signature-line {
+  flex: 1 1 auto;
+  min-width: 175px;
+}
+
+.power-of-attorney-printed-name {
+  margin-left: 50px;
+  margin-top: 6px;
+  text-align: center;
+  width: 235px;
+}

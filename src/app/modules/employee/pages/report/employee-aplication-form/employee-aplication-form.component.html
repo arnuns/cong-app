@@ -4243,3 +4243,148 @@
         </div>
     </div>
 </div>
+<div class="container-fluid page-break power-of-attorney-page" data-testid="power-of-attorney-page">
+  <header class="power-of-attorney-header">
+    <h1 class="power-of-attorney-title">หนังสือมอบอำนาจ</h1>
+    <div class="power-of-attorney-meta">
+      <div class="power-of-attorney-field-row">
+        <span>เขียนที่</span>
+        <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+          บริษัท รักษาความปลอดภัย จีเซฟ จำกัด
+        </span>
+      </div>
+      <div class="power-of-attorney-field-row power-of-attorney-date-row">
+        <span>วันที่</span>
+        <span class="power-of-attorney-field-line power-of-attorney-day employee-data">
+          {{currentDate.getDate()}}
+        </span>
+        <span>เดือน</span>
+        <span class="power-of-attorney-field-line power-of-attorney-month employee-data">
+          {{thaiMonth[currentDate.getMonth()]}}
+        </span>
+        <span>พ.ศ.</span>
+        <span class="power-of-attorney-field-line power-of-attorney-year employee-data">
+          {{currentDate.getFullYear() + 543}}
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <section class="power-of-attorney-grantor">
+    <div class="power-of-attorney-field-row">
+      <span>ข้าพเจ้า</span>
+      <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+        {{signatureName(user)}}
+      </span>
+      <span>บัตรประชาชน</span>
+      <span class="power-of-attorney-field-line power-of-attorney-id employee-data">
+        {{user?.idCardNumber}}
+      </span>
+    </div>
+    <div class="power-of-attorney-field-row">
+      <span>อยู่บ้านเลขที่</span>
+      <span class="power-of-attorney-field-line power-of-attorney-house employee-data">
+        {{currentAddressParts.houseNumber}}
+      </span>
+      <span>หมู่</span>
+      <span class="power-of-attorney-field-line power-of-attorney-moo employee-data">
+        {{currentAddressParts.moo}}
+      </span>
+      <span>ตรอก/ซอย</span>
+      <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+        {{currentAddressParts.soi}}
+      </span>
+      <span>ถนน</span>
+      <span class="power-of-attorney-field-line power-of-attorney-road employee-data">
+        {{currentAddressParts.road}}
+      </span>
+    </div>
+    <div class="power-of-attorney-field-row">
+      <span>ตำบล/แขวง</span>
+      <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+        {{currentAddressParts.subDistrict}}
+      </span>
+      <span>อำเภอ/เขต</span>
+      <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+        {{currentAddressParts.district}}
+      </span>
+      <span>จังหวัด</span>
+      <span class="power-of-attorney-field-line power-of-attorney-grow employee-data">
+        {{currentAddressParts.province}}
+      </span>
+    </div>
+    <div class="power-of-attorney-field-row">
+      <span>ไปรษณีย์</span>
+      <span class="power-of-attorney-field-line power-of-attorney-postal-code employee-data">
+        {{currentAddressParts.postalCode}}
+      </span>
+      <span>เบอร์โทร</span>
+      <span class="power-of-attorney-field-line power-of-attorney-phone employee-data">
+        {{user?.phoneNo}}
+      </span>
+    </div>
+  </section>
+
+  <section class="power-of-attorney-body">
+    <p>
+      ขอมอบอำนาจให้
+      <span class="employee-data">นายสิรภพ บุญศรี</span>
+      บัตรประชาชน
+      <span class="employee-data">1103702684066</span>
+      อยู่บ้านเลขที่
+      <span class="employee-data">52</span>
+      ซอยเสนานิคม 1 ซอย 40 แยก 8 ถนนเสนานิคม 1 แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพมหานคร 10230
+      เบอร์โทร
+      <span class="employee-data">099-7569360</span>
+      เป็นผู้ดำเนินการ ยื่นใบอนุญาตเป็นพนักงานรักษาความปลอดภัยรับอนุญาต แทนข้าพเจ้า
+    </p>
+    <p>
+      การใดที่ผู้รับมอบอำนาจได้กระทำภายใต้ขอบเขตแห่งการมอบอำนาจนี้
+      ข้าพเจ้าขอรับผิดชอบและมีผลผูกพันข้าพเจ้าทุกประการ
+    </p>
+    <p>
+      หนังสือมอบอำนาจฉบับนี้เป็นการมอบอำนาจให้ดำเนินการตามที่ระบุไว้ข้างต้น
+    </p>
+  </section>
+
+  <footer class="power-of-attorney-footer">
+    <div class="power-of-attorney-attachments">
+      <div>เอกสารประกอบหนังสือมอบอำนาจ</div>
+      <div class="power-of-attorney-attachment-item">
+        - สำเนาบัตรประชาชนผู้มอบอำนาจและผู้รับมอบอำนาจ
+      </div>
+    </div>
+    <div class="power-of-attorney-signatures">
+      <div class="power-of-attorney-signature-block">
+        <div class="power-of-attorney-signature-row">
+          <span>ลงชื่อ</span>
+          <span class="power-of-attorney-field-line power-of-attorney-signature-line">&nbsp;</span>
+          <span>ผู้มอบอำนาจ</span>
+        </div>
+        <div class="power-of-attorney-printed-name">
+          (<span class="employee-data">{{signatureName(user)}}</span>)
+        </div>
+      </div>
+      <div class="power-of-attorney-signature-block">
+        <div class="power-of-attorney-signature-row">
+          <span>ลงชื่อ</span>
+          <span class="power-of-attorney-field-line power-of-attorney-signature-line">&nbsp;</span>
+          <span>ผู้รับมอบอำนาจ</span>
+        </div>
+        <div class="power-of-attorney-printed-name">
+          (<span class="employee-data">นายสิรภพ บุญศรี</span>)
+        </div>
+      </div>
+      <div class="power-of-attorney-signature-block">
+        <div class="power-of-attorney-signature-row">
+          <span>ลงชื่อ</span>
+          <span class="power-of-attorney-field-line power-of-attorney-signature-line">&nbsp;</span>
+          <span>พยาน</span>
+        </div>
+        <div class="power-of-attorney-printed-name">
+          (<span class="employee-data">นายกฤษฎา วาฬกิจจานนท์</span>)
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
