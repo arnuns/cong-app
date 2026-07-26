@@ -3498,26 +3498,40 @@
             </span>
             <span>อยู่บ้านเลขที่</span>
             <span class="pdpa-saraburi-field-line pdpa-saraburi-address-part employee-data">
-                {{user?.currentAddress}}
+                {{currentAddressParts.houseNumber}}
             </span>
         </div>
         <div class="pdpa-saraburi-field-row">
             <span>หมู่ที่</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-small-part">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-small-part employee-data">
+                {{currentAddressParts.moo}}
+            </span>
             <span>ซอย</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.soi}}
+            </span>
             <span>ถนน</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.road}}
+            </span>
             <span>ตำบล/แขวง</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.subDistrict}}
+            </span>
         </div>
         <div class="pdpa-saraburi-field-row">
             <span>อำเภอ/เขต</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.district}}
+            </span>
             <span>จังหวัด</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.province}}
+            </span>
             <span>ไปรษณีย์</span>
-            <span class="pdpa-saraburi-field-line pdpa-saraburi-postcode-part">&nbsp;</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-postcode-part employee-data">
+                {{currentAddressParts.postalCode}}
+            </span>
         </div>
         <div class="pdpa-saraburi-field-row">
             <span>โทรศัพท์</span>
