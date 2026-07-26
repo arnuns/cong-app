@@ -86,19 +86,19 @@ describe('EmployeeAplicationFormComponent', () => {
     expect(getComputedStyle(values[1]).whiteSpace).toBe('nowrap');
   });
 
-  it('anchors the power-of-attorney attachment note at the bottom-right page margin', () => {
+  it('anchors the power-of-attorney attachment note at the bottom-left page margin', () => {
     const page: HTMLElement = fixture.nativeElement.querySelector('[data-testid="power-of-attorney-page"]');
     const attachments: HTMLElement = page.querySelector('.power-of-attorney-attachments');
     const signatures: HTMLElement = page.querySelector('.power-of-attorney-signatures');
     const pageBounds = page.getBoundingClientRect();
     const attachmentBounds = attachments.getBoundingClientRect();
     const signatureBounds = signatures.getBoundingClientRect();
-    const rightOffset = pageBounds.right - attachmentBounds.right;
+    const leftOffset = attachmentBounds.left - pageBounds.left;
     const bottomOffset = pageBounds.bottom - attachmentBounds.bottom;
 
     expect(getComputedStyle(attachments).position).toBe('absolute');
-    expect(rightOffset).toBeGreaterThanOrEqual(55);
-    expect(rightOffset).toBeLessThanOrEqual(58);
+    expect(leftOffset).toBeGreaterThanOrEqual(55);
+    expect(leftOffset).toBeLessThanOrEqual(58);
     expect(bottomOffset).toBeGreaterThanOrEqual(44);
     expect(bottomOffset).toBeLessThanOrEqual(47);
     expect(attachmentBounds.top - signatureBounds.bottom).toBeGreaterThanOrEqual(10);
