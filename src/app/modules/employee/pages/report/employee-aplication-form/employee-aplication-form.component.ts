@@ -6,6 +6,7 @@ import { ApplicationStateService } from 'src/app/core/services/application-state
 import { UserService } from 'src/app/core/services/user.service';
 import { JobHistory, LanguageAbility, User } from 'src/app/core/models/user';
 import { environment } from 'src/environments/environment';
+import { parseThaiAddress, ThaiAddressParts } from './thai-address.parser';
 
 @Component({
   selector: 'app-employee-aplication-form',
@@ -19,6 +20,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
   empNoString = '';
   birthDateString: string;
   age: number;
+  currentAddressParts: ThaiAddressParts = parseThaiAddress('');
   currentDate = new Date();
   companyReportHeader = {
     FullName: environment.companyFullName,
@@ -81,6 +83,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
       this.spinner.showLoadingSpinner();
       this.userService.getUser(this.empNo).subscribe(user => {
         this.user = user;
+        this.currentAddressParts = parseThaiAddress(this.user.currentAddress);
         this.age = this.convertToAge(new Date(this.user.birthdate));
         this.spinner.hideLoadingSpinner(0);
       }, error => {

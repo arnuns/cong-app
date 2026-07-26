@@ -3451,110 +3451,147 @@
         </div>
     </div>
 </div>
-<div class="container-fluid page-break">
-    <div class="mt-3 pt-4 report-top">
-        <div class="d-flex justify-content-center">
-            <div class="mt-5">
-                <span class="attachment-title-sm">หนังสือยินยอมในการเข้าตรวจดูข้อมูลข่าวสารส่วนบุคคล</span>
-            </div>
+<div class="container-fluid page-break pdpa-saraburi-page">
+    <div class="pdpa-saraburi-title">
+        หนังสือยินยอมในการเข้าตรวจดูข้อมูลข่าวสารส่วนบุคคล
+    </div>
+
+    <div class="pdpa-saraburi-header">
+        <div class="pdpa-saraburi-field-row">
+            <span>ทำที่</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{companyReportHeader.FullName}}
+            </span>
+        </div>
+        <div class="pdpa-saraburi-field-row pdpa-saraburi-date-row">
+            <span>วันที่</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-date-part employee-data">
+                {{toDayOfMonth(currentDate)}}
+            </span>
+            <span>เดือน</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-month-part employee-data">
+                {{toThaiMonth(currentDate)}}
+            </span>
+            <span>พ.ศ.</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-year-part employee-data">
+                {{toThaiYear(currentDate)}}
+            </span>
         </div>
     </div>
-    <div class="mt-3">
-        <div class="report-header-pdpa-container">
-            <div class="d-flex flex-column report-header-pdpa">
-                <div>
-                    <div class="d-flex">
-                        <div><span class="pdpa-head-label">ทำที่</span></div>
-                        <div class="ml-2 mt-0 blank-dotted-bottom mw-400"><span
-                                class="employee-data">บจก.รักษาความปลอดภัย จีเซฟ</span></div>
-                    </div>
-                </div>
-                <div class="mt-2">
-                    <div class="d-flex">
-                        <div><span class="pdpa-head-label">วันที่</span></div>
-                        <div class="ml-2 mt-0 blank-dotted-bottom mw-400"><span
-                                class="employee-data">{{convertToDateString(currentDate)}}</span></div>
-                    </div>
-                </div>
-            </div>
+
+    <div class="pdpa-saraburi-personal-details">
+        <div class="pdpa-saraburi-field-row">
+            <span>ข้าพเจ้า(นาย/นาง/น.ส.)</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{signatureName(user)}}
+            </span>
+            <span>อายุ</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-age-part employee-data">
+                {{user?.birthdate ? age : ''}}
+            </span>
+            <span>ปี</span>
+        </div>
+        <div class="pdpa-saraburi-field-row">
+            <span>เลขบัตรประชาชน</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-id-part employee-data">
+                {{user?.idCardNumber}}
+            </span>
+            <span>อยู่บ้านเลขที่</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-address-part employee-data">
+                {{currentAddressParts.houseNumber}}
+            </span>
+        </div>
+        <div class="pdpa-saraburi-field-row">
+            <span>หมู่ที่</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-small-part employee-data">
+                {{currentAddressParts.moo}}
+            </span>
+            <span>ซอย</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.soi}}
+            </span>
+            <span>ถนน</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.road}}
+            </span>
+            <span>ตำบล/แขวง</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.subDistrict}}
+            </span>
+        </div>
+        <div class="pdpa-saraburi-field-row">
+            <span>อำเภอ/เขต</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.district}}
+            </span>
+            <span>จังหวัด</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{currentAddressParts.province}}
+            </span>
+            <span>ไปรษณีย์</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-postcode-part employee-data">
+                {{currentAddressParts.postalCode}}
+            </span>
+        </div>
+        <div class="pdpa-saraburi-field-row">
+            <span>โทรศัพท์</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-phone-part employee-data">
+                {{user?.phoneNo}}
+            </span>
+            <span>สังกัดบริษัท(ถ้ามี)</span>
+            <span class="pdpa-saraburi-field-line pdpa-saraburi-grow employee-data">
+                {{companyReportHeader.FullName}}
+            </span>
         </div>
     </div>
-    <div class="mt-5">
-        <div class="d-flex flex-column">
-            <div>เรียน นายทะเบียนกลาง/นายทะเบียนประจำกรุงเทพมหานคร</div>
-            <div class="mt-4">
-                <p class="attachment-paragraph lh mt-3">&#9634; ข้าพเจ้า ( <ng-container
-                        *ngIf="user?.title === 'นาย'; else elseFemale">
-                        <u>นาย</u>/นาง/น.ส
-                    </ng-container>
-                    <ng-template #elseFemale>
-                        <ng-container *ngIf="user?.title === 'นาง'; else  elseFemale2">
-                            นาย/<u>นาง</u>/น.ส
-                        </ng-container>
-                    </ng-template>
-                    <ng-template #elseFemale2>
-                        นาย/นาง/<u>น.ส.</u>
-                    </ng-template>) <span class="employee-data blank-dotted-bottom px25px">{{user?.firstName}}
-                        {{user?.lastName}}</span> เลขบัตรประจำตัวประชาชน <span
-                        class="employee-data blank-dotted-bottom px25px">{{user?.idCardNumber}}</span><br />
-                    <span>อยู่บ้านเลขที่</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.currentAddress}}</span><br />
-                    <span>โทรศัพท์</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">{{user?.phoneNo}}</span>
-                    <span>สังกัดบริษัทรักษาความปลอดภัย (ถ้ามี)</span><span
-                        class="blank-dotted-bottom text-center px-2 mw-200 employee-data">บจก.รักษาความปลอดภัย จีเซฟ</span>
-                </p>
-                <p class="attachment-paragraph lh mt-3">&#9634; ข้าพเจ้า บริษัทรักษาความปลอดภัย <span
-                        class="employee-data blank-dotted-bottom mw-200 inline">&nbsp;</span>
-                    โดยมี (นาย/นาง/น.ส.) <span class="employee-data blank-dotted-bottom mw-260 inline">&nbsp;</span><br /><span>เป็นกรรมการผู้มีอำนาจ อยู่บ้านเลขที่</span><span class="employee-data blank-dotted-bottom mw-400 inline"></span>
-                    <span>โทรศัพท์</span><span class="employee-data blank-dotted-bottom mw-200 inline">&nbsp;</span><br />
-                    <span>โดยหนังสือฉบับนี้</span>
-                </p>
-                <p class="attachment-paragraph lh mt-3">
-                    ๑. ข้าพเจ้ายินยอมให้ งานธุรกิจรักษาความปลอดภัย กองบังคับการอำนวยการ กองบัญชาการตำรวจนครบาล ซึ่งเป็นหน่วยงานของรัฐ
-                    ตั้งอยู่ที่ ๓๒๓ กองบัญชาการตำรวจนครบาล ถนนศรีอยุธยา แขวงดุสิต เขตดุสิต กรุงเทพมหานคร
-                    ซึ่งเป็นหน่วยงานที่ข้าพเจ้าอนุญาตให้ดำเนินการใดๆ ในการตรวจประวัติ
-                    ข้อมูลของข้าพเจ้าที่เกี่ยวข้องในการพิจารณาออกใบอนุญาตในงานธุรกิจรักษาความปลอดภัย
-                    หรือข้อมูลอื่นซึ่งจำเป็นเพื่อปฏิบัติตามอำนาจหน้าที่และกฎหมายที่เกี่ยวข้อง โดยไม่มีเงื่อนไขใดๆ
-                    ทั้งสิ้น
-                </p>
-                <p class="attachment-paragraph lh mt-3">
-                    ๒. ข้าพเจ้ายินยอมให้ งานธุรกิจรักษาความปลอดภัย กองบังคับการอำนวยการ กองบัญชาการตำรวจนครบาล ดำเนินการจัดเก็บข้อมูล
-                    ประวัติส่วนบุคคลรวมทั้งเปิดเผยข้อมูลของข้าพเจ้าแก่หน่วยงานของรัฐ
-                    เพื่อปฏิบัติตามอำนาจหน้าที่และกฎหมายที่เกี่ยวข้อง
-                </p>
-                <p class="attachment-paragraph lh mt-3">
-                    ข้าพเจ้าได้อ่านและเข้าใจข้อความในหนังสือยินยอมฉบับนี้โดยตลอดแล้ว จึงได้ลงลายมือชื่อไว้เป็นหลักฐาน ณ
-                    วัน เดือน ปี ที่ ระบุข้างต้น
-                </p>
-                <p class="attachment-paragraph lh mt-3">
-                    ข้าพเจ้าขอรับรองว่า ข้อความในเอกสารคำขอและเอกสารหลักฐานประกอบคำขอเป็นความจริงทุกประการ
-                </p>
+
+    <div class="pdpa-saraburi-intro">โดยหนังสือฉบับนี้</div>
+
+    <div class="pdpa-saraburi-body">
+        <p>
+            1. ข้าพเจ้ายินยอมให้ คณะทำงานขับเคลื่อนการบังคับใช้กฎหมายว่าด้วยธุรกิจรักษาความปลอดภัย
+            ตำรวจภูธรจังหวัดสระบุรี ซึ่งเป็นหน่วยงานของรัฐ ตั้งอยู่ที่ 54 หมู่ 5 ตำบลทับกวาง
+            อำเภอแก่งคอย จังหวัดสระบุรี ซึ่งเป็นหน่วยงานที่ข้าพเจ้าอนุญาตให้ดำเนินการใดๆ
+            ในการตรวจประวัติข้อมูลของข้าพเจ้าที่เกี่ยวข้องในการพิจารณาออกใบอนุญาตในงานธุรกิจรักษาความปลอดภัย
+            หรือข้อมูลอื่นซึ่งจำเป็นเพื่อปฏิบัติตามอำนาจหน้าที่และกฎหมายที่เกี่ยวข้อง โดยไม่มีเงื่อนไขใดๆ ทั้งสิ้น
+        </p>
+        <p>
+            2. ข้าพเจ้ายินยอมให้ คณะทำงานขับเคลื่อนการบังคับใช้กฎหมายว่าด้วยธุรกิจรักษาความปลอดภัย
+            ตำรวจภูธรจังหวัดสระบุรี ดำเนินการจัดเก็บข้อมูล ประวัติส่วนบุคคล รวมทั้งเปิดเผยข้อมูลของข้าพเจ้า
+            แก่หน่วยงานของรัฐ เพื่อปฏิบัติตามอำนาจหน้าที่และกฎหมายที่เกี่ยวข้อง
+        </p>
+    </div>
+
+    <div class="pdpa-saraburi-declarations">
+        <p>
+            ข้าพเจ้าได้อ่านและเข้าใจข้อความในหนังสือยินยอมฉบับนี้โดยตลอดแล้ว
+            จึงได้ลงลายมือชื่อไว้เป็นหลักฐาน ณ วัน เดือน ปี ที่ระบุไว้ข้างต้น
+        </p>
+        <p>
+            ข้าพเจ้าขอรับรองว่า ข้อความในเอกสารคำขอและเอกสารหลักฐานประกอบคำขอเป็นความจริงทุกประการ
+        </p>
+    </div>
+
+    <div class="pdpa-saraburi-footer">
+        <div class="pdpa-saraburi-signature">
+            <div class="pdpa-saraburi-signature-row">
+                <span>(ลงชื่อ)</span>
+                <span class="pdpa-saraburi-field-line pdpa-saraburi-signature-line">&nbsp;</span>
+                <span>ผู้ให้ความยินยอม</span>
+            </div>
+            <div class="pdpa-saraburi-signature-row pdpa-saraburi-printed-name-row">
+                <span>(</span>
+                <span class="pdpa-saraburi-field-line pdpa-saraburi-signature-line employee-data">
+                    {{signatureName(user)}}
+                </span>
+                <span>)</span>
+                <span class="pdpa-saraburi-printed-name-label">ตัวบรรจง</span>
             </div>
         </div>
-        <div class="mt-5 pt-5 pdpa-signature-container">
-            <div class="d-flex pdpa-signature">
-                <div class="ml-auto">
-                    <div class="d-flex align-items-end">
-                        <div>ลงชื่อ</div>
-                        <div class="blank-dotted-bottom text-input ml-2 mw-200"></div>
-                        <div class="ml-2">
-                            <span class="pdpa-signature-position">ผู้ให้ความยินยอม/ผู้รับรอง</span>
-                        </div>
-                    </div>
-                    <div class="d-flex align-items-end">
-                        <div [class.ml-3]="checkIsLongName(user)" [class.ml-5]="!checkIsLongName(user)">(</div>
-                        <div>
-                            <span
-                                class="employee-data blank-dotted-bottom signature-bracket">{{signatureName(user)}}</span>
-                        </div>
-                        <div>)</div>
-                    </div>
-                </div>
-            </div>
-            <div class="pdpa-warning">
-                <u>คำเตือน</u> ผู้ใดแจ้งความอันเป็นเท็จแก่เจ้าพนักงาน มีความผิดตามกฎหมายอาญา มาตรา ๑๓๗ มาตรา ๒๖๗ และมาตรา ๒๖๘
-            </div>
+
+        <div class="pdpa-saraburi-warning">
+            <u>คำเตือน</u> ผู้ใดแจ้งความอันเป็นเท็จแก่เจ้าพนักงาน มีความผิดตามกฎหมายอาญา
+            มาตรา 137 มาตรา 267 และมาตรา 268
         </div>
     </div>
 </div>

@@ -532,6 +532,163 @@ ul.dashed>li:before {
     left: 0;
 }
 
+.pdpa-saraburi-page {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 297mm;
+    padding: 16mm 15mm 12mm;
+    width: 210mm;
+}
+
+.pdpa-saraburi-title {
+    font-size: 22px;
+    font-weight: 900;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.pdpa-saraburi-header {
+    margin-left: auto;
+    margin-top: 34px;
+    width: 56%;
+}
+
+.pdpa-saraburi-field-row {
+    align-items: flex-end;
+    display: flex;
+    min-height: 32px;
+    white-space: nowrap;
+}
+
+.pdpa-saraburi-field-row > * + * {
+    margin-left: 6px;
+}
+
+.pdpa-saraburi-field-line {
+    align-items: flex-end;
+    border-bottom: 2px dotted #000000;
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    line-height: 1.2;
+    min-height: 28px;
+    overflow-wrap: break-word;
+    padding: 0 5px 2px;
+    text-align: center;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.pdpa-saraburi-grow,
+.pdpa-saraburi-address-part {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.pdpa-saraburi-date-row {
+    margin-top: 4px;
+}
+
+.pdpa-saraburi-date-part {
+    width: 54px;
+}
+
+.pdpa-saraburi-month-part {
+    width: 112px;
+}
+
+.pdpa-saraburi-year-part {
+    width: 72px;
+}
+
+.pdpa-saraburi-personal-details {
+    margin-top: 34px;
+}
+
+.pdpa-saraburi-personal-details .pdpa-saraburi-field-row + .pdpa-saraburi-field-row {
+    margin-top: 2px;
+}
+
+.pdpa-saraburi-age-part,
+.pdpa-saraburi-small-part {
+    width: 58px;
+}
+
+.pdpa-saraburi-id-part {
+    flex: 0 0 180px;
+}
+
+.pdpa-saraburi-address-part {
+    min-width: 180px;
+}
+
+.pdpa-saraburi-postcode-part {
+    width: 100px;
+}
+
+.pdpa-saraburi-phone-part {
+    flex: 0 0 210px;
+}
+
+.pdpa-saraburi-intro {
+    margin-top: 26px;
+}
+
+.pdpa-saraburi-body {
+    margin-top: 24px;
+}
+
+.pdpa-saraburi-body p,
+.pdpa-saraburi-declarations p {
+    line-height: 1.65;
+    margin-bottom: 14px;
+    text-align: justify;
+    text-indent: 72px;
+}
+
+.pdpa-saraburi-declarations {
+    margin-top: 4px;
+}
+
+.pdpa-saraburi-footer {
+    margin-top: auto;
+}
+
+.pdpa-saraburi-signature {
+    margin-left: auto;
+    width: 55%;
+}
+
+.pdpa-saraburi-signature-row {
+    align-items: flex-end;
+    display: flex;
+    justify-content: flex-start;
+    white-space: nowrap;
+}
+
+.pdpa-saraburi-signature-row > * + * {
+    margin-left: 7px;
+}
+
+.pdpa-saraburi-printed-name-row {
+    margin-left: 55px;
+    margin-top: 5px;
+}
+
+.pdpa-saraburi-signature-line {
+    flex: 0 0 225px;
+}
+
+.pdpa-saraburi-printed-name-label {
+    margin-left: 2px;
+}
+
+.pdpa-saraburi-warning {
+    line-height: 1.65;
+    margin-top: 38px;
+}
+
 .col-subject-lesson {
     width: 190px;
 }
