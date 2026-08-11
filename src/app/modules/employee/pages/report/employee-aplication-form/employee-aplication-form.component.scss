@@ -716,6 +716,32 @@ ul.dashed>li:before {
     font-size: 16px;
 }
 
+.equipment-request-heading {
+  align-items: flex-end;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.equipment-request-title {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.equipment-request-employee-no {
+  align-items: flex-end;
+  display: flex;
+  grid-column: 3;
+  justify-self: end;
+  white-space: nowrap;
+}
+
+.equipment-request-employee-no-value {
+  display: inline-flex;
+  justify-content: center;
+  min-width: 120px;
+  padding-bottom: 2px;
+}
+
 .equipment-request-meta {
   align-items: end;
   column-gap: 8px;
@@ -760,6 +786,13 @@ ul.dashed>li:before {
 
 .col-description {
     width: 280px;
+}
+
+.equipment-description {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
 }
 
 .col-number-right {

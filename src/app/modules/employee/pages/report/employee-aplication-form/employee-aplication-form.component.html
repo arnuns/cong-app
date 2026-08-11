@@ -3892,7 +3892,7 @@
 <!-- หน้าว่าง -->
 <div class="container-fluid page-break">
 </div>
-<div class="container-fluid page-break">
+<div class="container-fluid page-break" data-testid="equipment-request-page">
     <div class="d-flex report-top">
         <div>
             <img [src]="baseImagePath + '/img/logo-header.png'" alt="Logo" class="logo-header">
@@ -3911,11 +3911,13 @@
         </div>
     </div>
     <hr>
-    <div class="mt-3">
-        <div class="d-flex justify-content-center">
-            <div>
-                <span class="attachment-subtitle">ใบขอซื้ออุปกรณ์</span>
-            </div>
+    <div class="equipment-request-heading mt-3">
+        <span class="attachment-subtitle equipment-request-title">ใบขอซื้ออุปกรณ์</span>
+        <div class="equipment-request-employee-no" data-testid="equipment-request-emp-no">
+            <span>รหัสพนักงาน</span>
+            <span class="blank-dotted-bottom equipment-request-employee-no-value ml-2">
+                <span class="employee-data">{{ user?.empNo }}</span>
+            </span>
         </div>
     </div>
     <div class="equipment-request-meta application-form-row mt-2 text-input-18">
@@ -3948,11 +3950,15 @@
         <tbody>
             <tr *ngFor="let eq of equipments">
                 <td class="col-no-center">{{eq.sort_no_left}}</td>
-                <td class="col-description">{{eq.description_left}}</td>
+                <td class="col-description">
+                    <span class="equipment-description">{{eq.description_left}}</span>
+                </td>
                 <td class="col-number-right">{{eq.qty_left}}</td>
                 <td class="col-number-right">{{eq.price_left|number:'1.2-2'}}</td>
                 <td class="col-no-center">{{eq.sort_no_right}}</td>
-                <td class="col-description">{{eq.description_right}}</td>
+                <td class="col-description">
+                    <span class="equipment-description">{{eq.description_right}}</span>
+                </td>
                 <td class="col-number-right">{{eq.qty_right}}</td>
                 <td class="col-number-right" *ngIf="eq.price_right > 0; else emptyCol">{{eq.price_right|number:'1.2-2'}}</td>
                 <ng-template #emptyCol><td class="col-number-right">&nbsp;</td></ng-template>
