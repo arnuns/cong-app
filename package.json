@@ -2,7 +2,7 @@
   "name": "cong-app",
   "productName": "Cong Application",
   "description": "Cong Application",
-  "version": "2.33.0",
+  "version": "2.33.1",
   "license": "MIT",
   "author": {
     "name": "Ubakong",
@@ -39,6 +39,9 @@
     "directories": {
       "output": "release/"
     },
+    "files": [
+      "!src/.env"
+    ],
     "win": {
       "target": "nsis",
       "requestedExecutionLevel": "requireAdministrator"

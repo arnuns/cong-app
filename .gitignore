@@ -7,6 +7,9 @@
 /release-builds
 /release
 
+# local release credentials
+/src/.env
+
 # dependencies
 /node_modules
 
