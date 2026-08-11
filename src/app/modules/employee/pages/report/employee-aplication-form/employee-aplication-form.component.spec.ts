@@ -221,6 +221,21 @@ describe('EmployeeAplicationFormComponent', () => {
     });
   });
 
+  it('uses the page 25 full-width horizontal bounds on pages 23 and 31', () => {
+    const page23: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-23"]');
+    const page25: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-25"]');
+    const page31: HTMLElement = fixture.nativeElement.querySelector('[data-testid="power-of-attorney-page"]');
+    const page25Bounds = page25.getBoundingClientRect();
+
+    [page23, page31].forEach(page => {
+      const bounds = page.getBoundingClientRect();
+
+      expect(Math.abs(bounds.left - page25Bounds.left)).toBeLessThan(1);
+      expect(Math.abs(bounds.right - page25Bounds.right)).toBeLessThan(1);
+      expect(Math.abs(bounds.width - page25Bounds.width)).toBeLessThan(1);
+    });
+  });
+
   it('anchors the power-of-attorney attachment note at the bottom-left page margin', () => {
     const page: HTMLElement = fixture.nativeElement.querySelector('[data-testid="power-of-attorney-page"]');
     const referencePage: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-25"]');
