@@ -86,21 +86,46 @@ describe('EmployeeAplicationFormComponent', () => {
     expect(getComputedStyle(values[1]).whiteSpace).toBe('nowrap');
   });
 
+  it('uses the page 25 padding on pages 23 and 31', () => {
+    const page23: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-23"]');
+    const page25: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-25"]');
+    const page31: HTMLElement = fixture.nativeElement.querySelector('[data-testid="power-of-attorney-page"]');
+
+    const page25Style = getComputedStyle(page25);
+    const expectedPadding = [
+      page25Style.paddingTop,
+      page25Style.paddingRight,
+      page25Style.paddingBottom,
+      page25Style.paddingLeft
+    ];
+
+    [page23, page31].forEach(page => {
+      const style = getComputedStyle(page);
+
+      expect([
+        style.paddingTop,
+        style.paddingRight,
+        style.paddingBottom,
+        style.paddingLeft
+      ]).toEqual(expectedPadding);
+    });
+  });
+
   it('anchors the power-of-attorney attachment note at the bottom-left page margin', () => {
     const page: HTMLElement = fixture.nativeElement.querySelector('[data-testid="power-of-attorney-page"]');
+    const referencePage: HTMLElement = fixture.nativeElement.querySelector('[data-testid="employee-application-page-25"]');
     const attachments: HTMLElement = page.querySelector('.power-of-attorney-attachments');
     const signatures: HTMLElement = page.querySelector('.power-of-attorney-signatures');
     const pageBounds = page.getBoundingClientRect();
     const attachmentBounds = attachments.getBoundingClientRect();
     const signatureBounds = signatures.getBoundingClientRect();
+    const referenceStyle = getComputedStyle(referencePage);
     const leftOffset = attachmentBounds.left - pageBounds.left;
     const bottomOffset = pageBounds.bottom - attachmentBounds.bottom;
 
     expect(getComputedStyle(attachments).position).toBe('absolute');
-    expect(leftOffset).toBeGreaterThanOrEqual(55);
-    expect(leftOffset).toBeLessThanOrEqual(58);
-    expect(bottomOffset).toBeGreaterThanOrEqual(44);
-    expect(bottomOffset).toBeLessThanOrEqual(47);
+    expect(Math.abs(leftOffset - parseFloat(referenceStyle.paddingLeft))).toBeLessThan(1);
+    expect(Math.abs(bottomOffset - parseFloat(referenceStyle.paddingBottom))).toBeLessThan(1);
     expect(attachmentBounds.top - signatureBounds.bottom).toBeGreaterThanOrEqual(10);
   });
 
