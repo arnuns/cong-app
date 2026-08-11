@@ -537,7 +537,6 @@ ul.dashed>li:before {
     display: flex;
     flex-direction: column;
     min-height: 297mm;
-    padding: 16mm 15mm 12mm;
     width: 210mm;
 }
 
@@ -870,7 +869,6 @@ ul.dashed>li:before {
   display: flex;
   flex-direction: column;
   min-height: 297mm;
-  padding: 16mm 15mm 12mm;
   width: 210mm;
 }
 
@@ -991,12 +989,12 @@ ul.dashed>li:before {
 }
 
 .power-of-attorney-attachments {
-  bottom: 12mm;
+  bottom: 25px;
   font-size: 14px;
   line-height: 1.8;
   padding: 0;
   position: absolute;
-  left: 15mm;
+  left: 50px;
   text-align: left;
   width: 48%;
 }
