@@ -454,12 +454,8 @@
                   class="table table-hover timeattendance-table">
                   <thead>
                     <tr>
-                      <th>
-                        <div class="d-flex flex-column">
-                          <div>วัน เดือน ปี</div>
-                          <div>หน่วยงาน</div>
-                        </div>
-                      </th>
+                      <th>วัน เดือน ปี</th>
+                      <th class="timeattendance-site-column">หน่วยงาน</th>
                       <th>เวลาเข้า - ออก</th>
                       <th>บันทึกโดย</th>
                     </tr>
@@ -467,6 +463,9 @@
                   <tbody>
                     <tr *ngFor="let timeAttendance of timeAttendances">
                       <td>{{ timeAttendance.workDate | date: 'dd MMMM yyyy' }}</td>
+                      <td class="timeattendance-site-column">
+                        <span class="timeattendance-site-name">{{ timeAttendance.site?.name || '-' }}</span>
+                      </td>
                       <td>{{ convertToTimeRangeString(timeAttendance.checkInTime, timeAttendance.leaveTime) }}</td>
                       <td>{{ timeAttendance.checkInByName }}</td>
                     </tr>

@@ -205,6 +205,22 @@
   background-color: #ebedf8;
 }
 
+.timeattendance-site-column {
+  width: 360px;
+  min-width: 360px;
+  max-width: 360px;
+}
+
+.timeattendance-site-name {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .year-select {
   width: 120px;
 }
