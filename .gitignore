@@ -8,6 +8,7 @@
 /release
 
 # local release credentials
+/.env
 /src/.env
 
 # dependencies

@@ -183,9 +183,10 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
       pageLength: 10,
       pagingType: 'simple',
       columns: [
-        {width: '150px'},
-        {orderable: false, width: '200px'},
-        {orderable: false, width: '250px'}
+        {width: '21%'},
+        {orderable: false, width: '34%'},
+        {orderable: false, width: '22%'},
+        {orderable: false, width: '23%'}
       ]
     };
   }
@@ -292,7 +293,7 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
       this.electronService.ipcRenderer.send('view-employee-application-form', empNo);
     }
   }
-  
+
   previewEmployeeCertificateForm(empNo: string) {
     if (this.electronService.isElectronApp) {
       this.electronService.ipcRenderer.send('view-employee-certificate-report', empNo);

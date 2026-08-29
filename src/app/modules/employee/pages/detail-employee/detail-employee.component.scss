@@ -205,6 +205,34 @@
   background-color: #ebedf8;
 }
 
+.timeattendance-table {
+  table-layout: fixed;
+}
+
+.timeattendance-date-column {
+  width: 21%;
+  white-space: nowrap;
+}
+
+.timeattendance-site-column {
+  width: 34%;
+}
+
+.timeattendance-time-column {
+  width: 22%;
+  white-space: nowrap;
+}
+
+.timeattendance-site-name {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
 .year-select {
   width: 120px;
 }
