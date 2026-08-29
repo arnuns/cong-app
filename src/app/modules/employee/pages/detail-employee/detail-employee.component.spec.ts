@@ -96,7 +96,7 @@ describe('DetailEmployeeComponent', () => {
     expect(cells[1].textContent.trim()).toBe('บริษัท มิตรผล ไบโอฟูเอล จำกัด');
   });
 
-  it('constrains long attendance site names to two lines at 360px', () => {
+  it('constrains long attendance site names to two lines', () => {
     component.timeAttendances = [{
       workDate: '2026-07-13T00:00:00',
       checkInTime: '2026-07-13T17:31:00',
@@ -107,14 +107,9 @@ describe('DetailEmployeeComponent', () => {
 
     fixture.detectChanges();
 
-    const columns = component.dtOptions.columns as DataTables.ColumnSettings[];
     const siteCell = fixture.nativeElement.querySelector('.timeattendance-table tbody tr td:nth-child(2)');
     const siteName = siteCell.querySelector('.timeattendance-site-name');
-    const siteCellStyle = getComputedStyle(siteCell);
 
-    expect(columns.length).toBe(4);
-    expect(columns[1].width).toBe('360px');
-    expect(siteCellStyle.width).toBe('360px');
     expect(siteName).not.toBeNull();
     if (siteName) {
       const siteNameStyle = getComputedStyle(siteName);
@@ -122,6 +117,28 @@ describe('DetailEmployeeComponent', () => {
       expect(siteNameStyle.textOverflow).toBe('ellipsis');
       expect(siteNameStyle.getPropertyValue('-webkit-line-clamp')).toBe('2');
     }
+  });
+
+  it('uses responsive widths and keeps attendance times on one line', () => {
+    component.timeAttendances = [{
+      workDate: '2026-07-13T00:00:00',
+      checkInTime: '2026-07-13T17:31:00',
+      leaveTime: '2026-07-14T06:05:00',
+      checkInByName: 'จรศักดิ์ กลิ่นขจร',
+      site: { name: 'อูบากอง' }
+    } as TimeAttendance];
+
+    fixture.detectChanges();
+
+    const columns = component.dtOptions.columns as DataTables.ColumnSettings[];
+    const table = fixture.nativeElement.querySelector('.timeattendance-table');
+    const timeHeader = table.querySelector('thead th:nth-child(3)');
+    const timeCell = table.querySelector('tbody tr td:nth-child(3)');
+
+    expect(columns.map(column => column.width)).toEqual(['16%', '39%', '22%', '23%']);
+    expect(getComputedStyle(table).tableLayout).toBe('fixed');
+    expect(getComputedStyle(timeHeader).whiteSpace).toBe('nowrap');
+    expect(getComputedStyle(timeCell).whiteSpace).toBe('nowrap');
   });
 
   it('keeps date as the only sortable attendance column', () => {

@@ -456,7 +456,7 @@
                     <tr>
                       <th>วัน เดือน ปี</th>
                       <th class="timeattendance-site-column">หน่วยงาน</th>
-                      <th>เวลาเข้า - ออก</th>
+                      <th class="timeattendance-time-column">เวลาเข้า - ออก</th>
                       <th>บันทึกโดย</th>
                     </tr>
                   </thead>
@@ -466,7 +466,9 @@
                       <td class="timeattendance-site-column">
                         <span class="timeattendance-site-name">{{ timeAttendance.site?.name || '-' }}</span>
                       </td>
-                      <td>{{ convertToTimeRangeString(timeAttendance.checkInTime, timeAttendance.leaveTime) }}</td>
+                      <td class="timeattendance-time-column">
+                        {{ convertToTimeRangeString(timeAttendance.checkInTime, timeAttendance.leaveTime) }}
+                      </td>
                       <td>{{ timeAttendance.checkInByName }}</td>
                     </tr>
                   </tbody>
