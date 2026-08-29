@@ -209,8 +209,13 @@
   table-layout: fixed;
 }
 
+.timeattendance-date-column {
+  width: 21%;
+  white-space: nowrap;
+}
+
 .timeattendance-site-column {
-  width: 39%;
+  width: 34%;
 }
 
 .timeattendance-time-column {

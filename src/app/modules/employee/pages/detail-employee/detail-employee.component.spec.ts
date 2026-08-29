@@ -119,7 +119,7 @@ describe('DetailEmployeeComponent', () => {
     }
   });
 
-  it('uses responsive widths and keeps attendance times on one line', () => {
+  it('uses responsive widths and keeps attendance dates and times on one line', () => {
     component.timeAttendances = [{
       workDate: '2026-07-13T00:00:00',
       checkInTime: '2026-07-13T17:31:00',
@@ -132,11 +132,15 @@ describe('DetailEmployeeComponent', () => {
 
     const columns = component.dtOptions.columns as DataTables.ColumnSettings[];
     const table = fixture.nativeElement.querySelector('.timeattendance-table');
+    const dateHeader = table.querySelector('thead th:nth-child(1)');
+    const dateCell = table.querySelector('tbody tr td:nth-child(1)');
     const timeHeader = table.querySelector('thead th:nth-child(3)');
     const timeCell = table.querySelector('tbody tr td:nth-child(3)');
 
-    expect(columns.map(column => column.width)).toEqual(['16%', '39%', '22%', '23%']);
+    expect(columns.map(column => column.width)).toEqual(['21%', '34%', '22%', '23%']);
     expect(getComputedStyle(table).tableLayout).toBe('fixed');
+    expect(getComputedStyle(dateHeader).whiteSpace).toBe('nowrap');
+    expect(getComputedStyle(dateCell).whiteSpace).toBe('nowrap');
     expect(getComputedStyle(timeHeader).whiteSpace).toBe('nowrap');
     expect(getComputedStyle(timeCell).whiteSpace).toBe('nowrap');
   });

@@ -183,8 +183,8 @@ export class DetailEmployeeComponent implements AfterViewInit, OnDestroy, OnInit
       pageLength: 10,
       pagingType: 'simple',
       columns: [
-        {width: '16%'},
-        {orderable: false, width: '39%'},
+        {width: '21%'},
+        {orderable: false, width: '34%'},
         {orderable: false, width: '22%'},
         {orderable: false, width: '23%'}
       ]
