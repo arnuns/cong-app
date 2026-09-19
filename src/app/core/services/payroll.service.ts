@@ -12,6 +12,7 @@ import {
   SocialSecurityHistory,
   SocialSecurityHistoryMonthName,
   SocialSecurityRate,
+  EmployeeWelfareFundSummary,
 } from "../models/payroll";
 import { MomentHelper } from "../helpers/moment.helper";
 import { UserIncomeTax } from "../models/user-income-tax.model";
@@ -73,6 +74,25 @@ export class PayrollService extends BaseService {
   getSummaryPayrollSalaryBySite(payrollCycleId: number) {
     return this.http.get<SummarySalaryBySite[]>(
       `${this.serviceUrl}/payroll/${payrollCycleId}/summary/bysite`
+    );
+  }
+
+  getEmployeeWelfareFundSummary(year: number, month: number, companyId: string) {
+    return this.http.get<EmployeeWelfareFundSummary[]>(
+      `${this.serviceUrl}/payroll/employee-welfare-fund/${year}/${month}/${companyId}`
+    );
+  }
+
+  downloadEmployeeWelfareFundReport(
+    year: number,
+    month: number,
+    companyId: string,
+    submissionDate: string
+  ) {
+    const params = new HttpParams().set('submissionDate', submissionDate);
+    return this.http.get(
+      `${this.serviceUrl}/payroll/employee-welfare-fund/${year}/${month}/${companyId}/export`,
+      { params: params, responseType: 'blob' }
     );
   }
 

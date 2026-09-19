@@ -23,11 +23,17 @@ export interface Salary {
     role: Role;
     empNo: number;
     user: User;
+    companyId: string;
+    companyName: string;
     title: string;
     firstName: string;
     lastName: string;
     idCardNumber: string;
     startDate: string;
+    birthdate: string;
+    nationality: string;
+    endDate: string;
+    resignationCause: string;
     bankAccount: string;
     bankId: number;
     minimumWage: number;
@@ -48,6 +54,8 @@ export interface Salary {
     bonus: number;
     overtime: number;
     incomeCompensation: number;
+    // Part of incomeCompensation, not an additional income item. Null means unclassified.
+    ewfEligibleIncomeCompensation?: number | null;
     otherIncome: number;
     extraReplaceValue: number;
     extraOvertime: number;
@@ -71,6 +79,14 @@ export interface Salary {
     isSuspend: boolean;
     isTemporary: boolean;
     isSocialSecurity: boolean;
+    isEmployeeWelfareFund: boolean;
+    isEwfAnnualHoliday: boolean;
+    ewfMinimumWage: number;
+    ewfEligibleWage: number;
+    ewfRate: number;
+    ewfEmployeeSavings: number;
+    ewfEmployerContribution: number;
+    ewfRequiresReview: boolean;
     isSsoAnnualHoliday: boolean;
     isMinimumManday: boolean;
     createBy: string;
@@ -165,6 +181,10 @@ export interface SummarySalaryBySite {
     extraOvertime: number;
     extraPointValue: number;
     socialSecurity: number;
+    ewfEligibleWage: number;
+    ewfEmployeeSavings: number;
+    ewfEmployerContribution: number;
+    ewfRequiresReview: boolean;
     inventory: number;
     discipline: number;
     transferFee: number;
@@ -184,6 +204,20 @@ export interface SummarySalaryBySite {
 
 export interface PayrollDeductible {
     cremationFee: number;
+}
+
+export interface EmployeeWelfareFundSummary {
+    empNo: number;
+    companyId: string;
+    companyName: string;
+    title: string;
+    firstName: string;
+    lastName: string;
+    identityNumber: string;
+    eligibleWage: number;
+    employeeSavings: number;
+    employerContribution: number;
+    requiresReview: boolean;
 }
 
 export interface SocialSecurityRate {

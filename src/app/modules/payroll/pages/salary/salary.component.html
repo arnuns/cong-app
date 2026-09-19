@@ -60,6 +60,7 @@
           <th class="col--hiring-rate">แรงละ</th>
           <th class="col--total-income">รวมรับ</th>
           <th class="col--sso">ประกันสังคม</th>
+          <th>กองทุนสงเคราะห์</th>
           <th class="col--total-deductible">รวมหัก</th>
           <th>เลขที่บัญชี</th>
           <th class="col--total-amount">ยอดโอน</th>
@@ -105,6 +106,11 @@
           <td class="col--total-income pointer" (click)="editSalaryModal(salary)">
             {{ salary.totalIncome | number:'1.2-2' }}</td>
           <td class="col--sso pointer" (click)="editSalaryModal(salary)">{{ salary.socialSecurity | number:'1.2-2' }}
+          </td>
+          <td class="pointer" (click)="editSalaryModal(salary)">
+            {{ salary.ewfEmployeeSavings !== 0 ? (salary.ewfEmployeeSavings | number:'1.2-2') : '-' }}
+            <i *ngIf="salary.ewfRequiresReview" class="fa fa-exclamation-triangle text-warning"
+              title="ยอดกองทุนติดลบ ต้องให้ HR ตรวจสอบ"></i>
           </td>
           <td class="col--total-deductible pointer" (click)="editSalaryModal(salary)">
             {{ salary.totalDeductible | number:'1.2-2' }}</td>
@@ -545,6 +551,22 @@
                   </label>
                   <input type="number" class="form-control" min="0" step="1.00" (change)="setTwoNumberDecimal($event)"
                     formControlName="income_compensation" />
+                </div>
+              </div>
+              <div class="col-md-6 mt-2">
+                <div class="form-group mb-0">
+                  <label for="ewf_eligible_income_compensation">ส่วนของชดเชยรายได้ที่เข้าฐานกองทุน</label>
+                  <input id="ewf_eligible_income_compensation" type="number" class="form-control" min="0" step="0.01"
+                    formControlName="ewf_eligible_income_compensation"
+                    aria-describedby="ewf_compensation_help ewf_compensation_error"
+                    [attr.aria-invalid]="updateSalaryForm.hasError('ewfIncomeCompensation')" />
+                  <small id="ewf_compensation_help" class="form-text text-muted">
+                    เป็นส่วนหนึ่งของยอดชดเชยด้านบน ไม่เพิ่มรายได้ซ้ำ ระบุ 0 หากไม่มีส่วนที่เข้าเกณฑ์
+                  </small>
+                  <small id="ewf_compensation_error" class="text-danger" role="alert"
+                    *ngIf="updateSalaryForm.hasError('ewfIncomeCompensation')">
+                    {{ updateSalaryForm.getError('ewfIncomeCompensation') }}
+                  </small>
                 </div>
               </div>
               <div class="col-md-6 mt-2" *ngIf="updateSalaryForm.get('is_overtime').value">

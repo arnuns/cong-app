@@ -147,6 +147,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
     end_date: [null],
     resignation_cause: [''],
     is_social_security: [true],
+    is_employee_welfare_fund: [true],
     sso_start_date: [null],
     sso_end_date: [null],
     hospital_id: [undefined]
@@ -465,6 +466,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           end_date: this.user.endDate ? this.convertToDate(this.user.endDate) : null,
           resignation_cause: this.user.resignationCause ? this.user.resignationCause : '',
           is_social_security: this.user.isSocialSecurity,
+          is_employee_welfare_fund: this.user.isEmployeeWelfareFund !== false,
           sso_start_date: this.user.socialSecurityStartDate ? this.convertToDate(this.user.socialSecurityStartDate) : null,
           sso_end_date: this.user.socialSecurityEndDate ? this.convertToDate(this.user.socialSecurityEndDate) : null,
           hospital_id: this.user.socialHospitalId
@@ -865,6 +867,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       formData.append('resignationCause', getValue('resignation_cause'));
     }
     formData.append('isSocialSecurity', getValue('is_social_security'));
+    formData.append('isEmployeeWelfareFund', getValue('is_employee_welfare_fund'));
     formData.append('ssoStartDate', getValue('sso_start_date') ? this.moment.format(getValue('sso_start_date'), 'YYYY-MM-DD') : '');
     formData.append('ssoEndDate', getValue('sso_end_date') ? this.moment.format(getValue('sso_end_date'), 'YYYY-MM-DD') : '');
     if (getValue('hospital_id') !== null && getValue('hospital_id') !== undefined) {

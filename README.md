@@ -1,10 +1,27 @@
 # CongApp
 
+## Legacy development
+
+ใช้ `cong-app-legacy` เป็นหลักเพื่อรันโปรเจกต์ด้วย Node 12.22.12 x64:
+
+```sh
+cong-app-legacy setup
+cong-app-legacy test
+cong-app-legacy lint
+cong-app-legacy build-web
+```
+
+CLI เป็นเครื่องมือภายนอก ไม่ได้ติดตั้งมากับ repo.
+อ่าน [คู่มือการติดตั้ง CLI และวิธีพัฒนา](docs/development.md) ก่อนเริ่มบนเครื่องใหม่.
+`start` เปิด Electron; `deploy` เผยแพร่ GitHub release จริงและต้องได้รับอนุมัติแยก.
+
+คู่มือผู้ใช้ฟีเจอร์กองทุนสงเคราะห์ลูกจ้างอยู่ที่ [docs/employee-welfare-fund.md](docs/employee-welfare-fund.md).
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.14.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm start` inside `cong-app-legacy shell` for a dev server at `http://localhost:4211/`. The app will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 

@@ -18,6 +18,8 @@ export interface Site {
     replacementWage: number;
     isPayroll: boolean;
     isMonthly: boolean;
+    isEmployeeWelfareFund: boolean;
+    isEwfAnnualHoliday: boolean;
     isSsoAnnualHoliday: boolean;
     isMinimumManday: boolean;
     isReplacementWage: boolean;
