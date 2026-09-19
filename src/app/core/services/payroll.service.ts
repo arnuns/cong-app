@@ -13,6 +13,7 @@ import {
   SocialSecurityHistoryMonthName,
   SocialSecurityRate,
   EmployeeWelfareFundSummary,
+  EmployeeWelfareFundPreview,
 } from "../models/payroll";
 import { MomentHelper } from "../helpers/moment.helper";
 import { UserIncomeTax } from "../models/user-income-tax.model";
@@ -93,6 +94,18 @@ export class PayrollService extends BaseService {
     return this.http.get(
       `${this.serviceUrl}/payroll/employee-welfare-fund/${year}/${month}/${companyId}/export`,
       { params: params, responseType: 'blob' }
+    );
+  }
+
+  previewEmployeeWelfareFund(
+    payrollCycleId: number,
+    siteId: number,
+    salaryId: number,
+    salary: Partial<Salary>
+  ) {
+    return this.http.post<EmployeeWelfareFundPreview>(
+      `${this.serviceUrl}/payroll/${payrollCycleId}/site/${siteId}/salary/${salaryId}/employee-welfare-fund/preview`,
+      salary
     );
   }
 

@@ -220,6 +220,14 @@ export interface EmployeeWelfareFundSummary {
     requiresReview: boolean;
 }
 
+export interface EmployeeWelfareFundPreview {
+    eligibleWage: number;
+    rate: number;
+    employeeSavings: number;
+    employerContribution: number;
+    requiresReview: boolean;
+}
+
 export interface SocialSecurityRate {
     year: number;
     month: number;

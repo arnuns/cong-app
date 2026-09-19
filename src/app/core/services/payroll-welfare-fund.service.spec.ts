@@ -35,4 +35,16 @@ describe('PayrollService Employee Welfare Fund', () => {
     expect(request.request.responseType).toBe('blob');
     request.flush(new Blob());
   });
+
+  it('previews a salary using the authoritative welfare fund endpoint', () => {
+    const payload = {empNo: 7, siteSalaries: []};
+
+    service.previewEmployeeWelfareFund(12, 3, 45, payload).subscribe();
+
+    const request = httpMock.expectOne(requestUrl =>
+      requestUrl.url.endsWith('/payroll/12/site/3/salary/45/employee-welfare-fund/preview'));
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toBe(payload);
+    request.flush({eligibleWage: 0, rate: 0, employeeSavings: 0, employerContribution: 0, requiresReview: false});
+  });
 });

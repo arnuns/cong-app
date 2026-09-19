@@ -1,5 +1,6 @@
+import {fakeAsync, tick} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
-import {EMPTY, of} from 'rxjs';
+import {EMPTY, of, Subject} from 'rxjs';
 import {SalaryComponent} from './salary.component';
 import {Salary, PayrollCycle} from 'src/app/core/models/payroll';
 import {Site} from 'src/app/core/models/site';
@@ -10,15 +11,21 @@ describe('SalaryComponent EWF compensation classification', () => {
   let close: jasmine.Spy;
 
   beforeEach(() => {
-    payroll = jasmine.createSpyObj('PayrollService', ['addSalary', 'updateSalary', 'getSiteSalary']);
+    payroll = jasmine.createSpyObj('PayrollService', [
+      'addSalary', 'updateSalary', 'getSiteSalary', 'previewEmployeeWelfareFund'
+    ]);
     payroll.addSalary.and.returnValue(EMPTY);
     payroll.updateSalary.and.returnValue(EMPTY);
     payroll.getSiteSalary.and.returnValue(of([]));
+    payroll.previewEmployeeWelfareFund.and.returnValue(of({
+      eligibleWage: 0, rate: 0.0025, employeeSavings: 0, employerContribution: 0, requiresReview: false
+    }));
     close = jasmine.createSpy('close');
+    const modalEvents = {onOpen: new Subject<Event>(), onClose: new Subject<Event>()};
     const spinner = jasmine.createSpyObj('SpinnerHelper', ['showLoadingSpinner', 'hideLoadingSpinner']);
     component = new SalaryComponent(
       {params: of({id: 1, siteid: 1})} as any, {} as any, {} as any, new FormBuilder(),
-      {getModal: () => ({open: () => {}, close})} as any, payroll, spinner, {} as any, {} as any);
+      {getModal: () => ({open: () => {}, close, ...modalEvents})} as any, payroll, spinner, {} as any, {} as any);
     component.site = {id: 1, code: 'A', name: 'Primary', minimumWage: 400, siteUserPositions: []} as Site;
     component.payrollCycle = {
       id: 1, start: '2026-10-01T00:00:00', end: '2026-10-15T00:00:00',
@@ -70,4 +77,19 @@ describe('SalaryComponent EWF compensation classification', () => {
     component.updateSalaryForm.patchValue({income_compensation: '0.00', ewf_eligible_income_compensation: null});
     expect(component.updateSalaryForm.valid).toBe(true);
   });
+
+  it('refreshes the authoritative preview when HR edits a site working day', fakeAsync(() => {
+    component.updateSalaryForm.patchValue({ewf_eligible_income_compensation: 0});
+    component.ngAfterViewInit();
+    component.addSite();
+    tick(351);
+    payroll.previewEmployeeWelfareFund.calls.reset();
+
+    component.siteForms.at(0).get('manday').setValue(16);
+    tick(351);
+
+    expect(payroll.previewEmployeeWelfareFund).toHaveBeenCalledTimes(1);
+    const payload = payroll.previewEmployeeWelfareFund.calls.mostRecent().args[3];
+    expect(payload.siteSalaries[0].manday).toBe(16);
+  }));
 });
