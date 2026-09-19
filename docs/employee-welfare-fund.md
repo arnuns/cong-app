@@ -1,29 +1,29 @@
-# คู่มือกองทุนสงเคราะห์ลูกจ้าง (#1383)
+# Employee Welfare Fund Guide (#1383)
 
-ฟีเจอร์นี้เริ่มคำนวณตามวันที่ได้รับค่าจ้างตั้งแต่ 1 ตุลาคม 2569 และใช้ข้อมูลจาก `cong-api-old` โดยตรง
+This feature calculates Employee Welfare Fund amounts for wages earned from 2026-10-01 and uses `cong-api-old` as the authoritative data source.
 
-## เตรียมข้อมูลก่อนเปิดรอบ
+## Prepare data before opening a payroll cycle
 
-1. ไปที่ **หน่วยงาน/ไซต์งาน > แก้ไข** แล้วเปิด “กองทุนสงเคราะห์ลูกจ้างสำหรับไซต์หลักนี้”
-2. หากต้องรวมค่าจ้างวันหยุดนักขัตฤกษ์ 8 ชั่วโมงเฉพาะวันที่พนักงานมาทำงานในฐานกองทุน ให้เปิดตัวเลือกถัดไปด้วย ปฏิทินวันหยุดใช้ร่วมกันทุกไซต์ แต่กติกาและค่าแรงขั้นต่ำใช้ค่าที่ snapshot จากไซต์หลักของพนักงานในรอบนั้น
-3. ไปที่ **พนักงาน > แก้ไข** เพื่อตรวจว่าเข้าร่วมกองทุน พนักงานใหม่จะเข้าร่วมโดยค่าเริ่มต้น และ HR ยกเว้นเป็นรายคนได้
+1. Open **Site > Edit** and enable the Employee Welfare Fund for the primary site.
+2. Enable the adjacent public-holiday option if the eligible wage should include eight hours of public-holiday pay when the employee actually worked on that holiday. The holiday calendar is shared by every site, while the policy and minimum wage are snapshotted from the employee's primary site for the cycle.
+3. Open **Employee > Edit** and verify participation. New employees participate by default, and HR can exempt individual employees.
 
-ระบบบันทึกนโยบายจากไซต์หลักไว้กับรอบเงินเดือน การไปทำงานไซต์อื่นระหว่างงวดไม่เปลี่ยนนโยบายหรือค่าแรงขั้นต่ำที่ใช้กับกองทุน
+The payroll cycle snapshots the primary-site policy. Work at another site during the cycle does not change the EWF policy or minimum wage.
 
-## ตรวจและจ่ายเงินเดือน
+## Review and pay payroll
 
-- ในหน้ารอบเงินเดือน คอลัมน์ “กองทุนสงเคราะห์” แสดงยอดหักฝั่งลูกจ้าง
-- ชดเชยรายได้ที่เป็นบวกต้องระบุ “ส่วนที่เข้าฐานกองทุน” จะระบุ `0` เมื่อไม่เข้าเกณฑ์ก็ได้
-- งวดสุดท้ายของเดือนคำนวณเป้าหมายทั้งเดือนใหม่ แล้วหักยอดที่จ่ายไปแล้วในงวดก่อน
-- ไอคอนเตือนหมายถึงผลต่างติดลบ ระบบจะไม่คืนเงินอัตโนมัติและ HR ต้องตรวจสอบ
-- สลิปแสดงเฉพาะยอดสะสมของลูกจ้าง ยอดสมทบนายจ้างอยู่ในรายงานภายใน
+- The payroll-cycle EWF column shows the employee deduction.
+- When income compensation is positive, enter the portion eligible for EWF. Enter `0` when none of the compensation is eligible.
+- The final cycle of a month recomputes the full-month target and subtracts amounts already posted in earlier paid cycles.
+- A warning icon indicates a negative adjustment. The system does not refund it automatically; HR must review the case.
+- The payslip shows only employee savings. Employer contribution appears in the internal report.
 
-## รายงานและไฟล์ทางการ
+## Internal report and official workbook
 
-ไปที่ **รายงาน > กองทุนสงเคราะห์ลูกจ้าง** แล้วเลือกเดือนที่จ่าย บริษัท และวันที่นำส่ง
+Open **Reports > Employee Welfare Fund**, then select the pay month, company, and submission date.
 
-- “ดูสรุป” รวมพนักงานทุกไซต์ของบริษัท พร้อมยอดลูกจ้างและนายจ้าง
-- “ดาวน์โหลดแบบทางการ .xlsx” ดาวน์โหลดไฟล์หนึ่งบริษัทต่อหนึ่งไฟล์จากแม่แบบราชการ
-- รายงานใช้เฉพาะรอบที่จ่ายแล้ว และการดาวน์โหลดไม่แก้ไขข้อมูลเงินเดือน
+- **View summary** combines employees from every site of the selected company and shows both employee and employer amounts.
+- **Download official .xlsx** downloads one company per workbook using the official template.
+- The report includes paid cycles only, and downloading a workbook does not modify payroll data or mark a remittance as submitted.
 
-ก่อนนำขึ้นระบบ ผู้ดูแลฐานข้อมูลต้องรัน migration จาก repo `cong-api-old` ที่ `docs/database/1383-employee-welfare-fund.sql` และตรวจว่ามีแม่แบบ `wwwroot/templates/WfcsFormTemplate.xlsx`
+Before deployment, the database administrator must apply `docs/database/1383-employee-welfare-fund.sql` from `cong-api-old` and verify that `wwwroot/templates/WfcsFormTemplate.xlsx` is present.

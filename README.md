@@ -2,7 +2,7 @@
 
 ## Legacy development
 
-ใช้ `cong-app-legacy` เป็นหลักเพื่อรันโปรเจกต์ด้วย Node 12.22.12 x64:
+Use `cong-app-legacy` as the primary entry point for running this project with Node 12.22.12 x64:
 
 ```sh
 cong-app-legacy setup
@@ -11,11 +11,11 @@ cong-app-legacy lint
 cong-app-legacy build-web
 ```
 
-CLI เป็นเครื่องมือภายนอก ไม่ได้ติดตั้งมากับ repo.
-อ่าน [คู่มือการติดตั้ง CLI และวิธีพัฒนา](docs/development.md) ก่อนเริ่มบนเครื่องใหม่.
-`start` เปิด Electron; `deploy` เผยแพร่ GitHub release จริงและต้องได้รับอนุมัติแยก.
+The CLI is an external tool and is not installed by this repository.
+Read the [CLI installation and development guide](docs/development.md) before using a new machine.
+`start` launches Electron; `deploy` publishes a real GitHub release and requires separate authorization.
 
-คู่มือผู้ใช้ฟีเจอร์กองทุนสงเคราะห์ลูกจ้างอยู่ที่ [docs/employee-welfare-fund.md](docs/employee-welfare-fund.md).
+The Employee Welfare Fund user guide is at [docs/employee-welfare-fund.md](docs/employee-welfare-fund.md).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.14.
 
