@@ -1800,6 +1800,34 @@
             </div>
           </div>
         </div>
+        <div class="row mb-2">
+          <div class="col">
+            <h3 class="subtitle">กองทุนสงเคราะห์ลูกจ้าง</h3>
+          </div>
+        </div>
+        <div class="row px-2 mb-3">
+          <div class="col-md-6">
+            <div class="input-group">
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio"
+                    name="is_employee_welfare_fund" [value]="true"
+                    formControlName="is_employee_welfare_fund" />
+                  เข้าร่วมกองทุน
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="radio"
+                    name="is_employee_welfare_fund" [value]="false"
+                    formControlName="is_employee_welfare_fund" />
+                  ยกเว้นการหัก
+                </label>
+              </div>
+            </div>
+            <small class="form-text text-muted">การเปลี่ยนค่านี้มีผลกับรอบเงินเดือนใหม่ ไม่แก้ไขรอบที่จ่ายแล้ว</small>
+          </div>
+        </div>
         <div class="row px-2">
           <div class="col-md-4">
             <label for="sso_start_date">วันเริ่มสิทธิประกันสังคม</label>

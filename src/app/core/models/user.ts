@@ -84,6 +84,7 @@ export interface User {
     hospital: Hospital;
     isTemporary: boolean;
     isSocialSecurity: boolean;
+    isEmployeeWelfareFund: boolean;
     status: boolean;
     isComplete: boolean;
     registerOn: string;

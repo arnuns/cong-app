@@ -9,6 +9,9 @@ import * as FileSaver from 'file-saver';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
 import { ConsecutiveTimeAttendance } from 'src/app/core/models/timeattendance';
+import { Company } from 'src/app/core/models/company';
+import { EmployeeWelfareFundSummary } from 'src/app/core/models/payroll';
+import { PayrollService } from 'src/app/core/services/payroll.service';
 
 @Component({
   selector: 'app-employee-report',
@@ -16,6 +19,10 @@ import { ConsecutiveTimeAttendance } from 'src/app/core/models/timeattendance';
   styleUrls: ['./employee-report.component.scss']
 })
 export class EmployeeReportComponent implements OnInit {
+  companies: Company[] = [];
+  employeeWelfareFundRows: EmployeeWelfareFundSummary[] = [];
+  employeeWelfareFundProcessing = false;
+  employeeWelfareFundError: string;
   lastMonthUsers: User[] = [];
   compareMonthUsers: User[] = [];
   monthYears: {
@@ -25,6 +32,11 @@ export class EmployeeReportComponent implements OnInit {
 
   empInRateReportForm = this.fb.group({
     month_year: [undefined, [Validators.required]]
+  });
+  employeeWelfareFundForm = this.fb.group({
+    month_year: [undefined, [Validators.required]],
+    company_id: [undefined, [Validators.required]],
+    submission_date: [new Date(), [Validators.required]]
   });
   empInRateReportProcessing = false;
   empInRateReport: {
@@ -81,6 +93,7 @@ export class EmployeeReportComponent implements OnInit {
     private fb: FormBuilder,
     private moment: MomentHelper,
     private papa: Papa,
+    private payrollService: PayrollService,
     private spinner: SpinnerHelper,
     private timeAttendanceService: TimeAttendanceService,
     private userService: UserService) {
@@ -90,6 +103,9 @@ export class EmployeeReportComponent implements OnInit {
     const startDate2 = new Date(this.date.getFullYear(), this.date.getMonth(), 1, 7, 0, 0);
     const endDate2 = new Date(this.date.getFullYear(), this.date.getMonth(), this.date.getDate(), 7, 0, 0);
     this.empInRateReportForm.patchValue({
+      month_year: this.monthYears[0].viewValue
+    });
+    this.employeeWelfareFundForm.patchValue({
       month_year: this.monthYears[0].viewValue
     });
     this.empInOutReportForm.patchValue({
@@ -107,6 +123,12 @@ export class EmployeeReportComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.getUserCompanies().subscribe(companies => {
+      this.companies = companies.filter(company => company.status);
+      if (this.companies.length > 0) {
+        this.employeeWelfareFundForm.patchValue({company_id: this.companies[0].code});
+      }
+    });
     const monthYear: string = this.monthYears[0].viewValue;
     const monthYearArray = monthYear.split('-');
     const dateRange: Date[] = this.empInOutReportForm.get('date_range').value;
@@ -140,6 +162,42 @@ export class EmployeeReportComponent implements OnInit {
         selectDate.setMonth(decreaseMonth);
       }
     }
+  }
+
+  onLoadEmployeeWelfareFund() {
+    if (this.employeeWelfareFundForm.invalid) { return; }
+    const period = this.employeeWelfareFundForm.get('month_year').value.split('-');
+    const companyId = this.employeeWelfareFundForm.get('company_id').value;
+    this.employeeWelfareFundProcessing = true;
+    this.employeeWelfareFundError = undefined;
+    this.payrollService.getEmployeeWelfareFundSummary(Number(period[0]), Number(period[1]), companyId)
+      .subscribe(rows => {
+        this.employeeWelfareFundRows = rows;
+        this.employeeWelfareFundProcessing = false;
+      }, error => {
+        this.employeeWelfareFundRows = [];
+        this.employeeWelfareFundError = error.error || 'ไม่สามารถโหลดรายงานกองทุนได้';
+        this.employeeWelfareFundProcessing = false;
+      });
+  }
+
+  onExportEmployeeWelfareFund() {
+    if (this.employeeWelfareFundForm.invalid) { return; }
+    const period = this.employeeWelfareFundForm.get('month_year').value.split('-');
+    const companyId = this.employeeWelfareFundForm.get('company_id').value;
+    const submissionDate = this.moment.format(
+      this.employeeWelfareFundForm.get('submission_date').value, 'YYYY-MM-DD');
+    this.employeeWelfareFundProcessing = true;
+    this.employeeWelfareFundError = undefined;
+    this.payrollService.downloadEmployeeWelfareFundReport(
+      Number(period[0]), Number(period[1]), companyId, submissionDate)
+      .subscribe(file => {
+        FileSaver.saveAs(file, `employee-welfare-fund-${companyId}-${period[0]}-${period[1]}.xlsx`);
+        this.employeeWelfareFundProcessing = false;
+      }, _ => {
+        this.employeeWelfareFundError = 'ไม่สามารถดาวน์โหลดไฟล์กองทุนได้ กรุณาตรวจข้อมูลพนักงานในรายงาน';
+        this.employeeWelfareFundProcessing = false;
+      });
   }
 
   getCountEmployeeByMonthYear(month: number, year: number) {

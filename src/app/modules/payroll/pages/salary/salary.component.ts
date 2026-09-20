@@ -7,7 +7,7 @@ import {PayrollCycle, Salary, SitePayrollCycleSalary, SocialSecurityRate} from '
 import {ApplicationStateService} from 'src/app/core/services/application-state.service';
 import {SiteService} from 'src/app/core/services/site.service';
 import {Site} from 'src/app/core/models/site';
-import {FormBuilder, Validators, FormArray} from '@angular/forms';
+import {FormBuilder, Validators, FormArray, FormGroup} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {DataTableDirective} from 'angular-datatables';
 import {NgxSmartModalService} from 'ngx-smart-modal';
@@ -30,6 +30,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   @ViewChild(DataTableDirective, {static: false}) private datatableElement: DataTableDirective;
 
   searching = false;
+  ewfPreviewLoading = false;
+  private ewfPreviewRequestId = 0;
 
   payrollCycleId: number;
   siteId: number;
@@ -75,6 +77,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     search: [''],
     salary_id: [undefined],
     empno: [0, [Validators.required]],
+    company_id: [''],
+    company_name: [''],
+    birthdate: [null],
+    nationality: [''],
+    start_date: [null],
+    end_date: [null],
+    resignation_cause: [''],
     user_position_id: ['', Validators.required],
     is_temporary: [false],
     idcard_no: ['', [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
@@ -93,6 +102,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     annual_holiday_day: [0, [Validators.required, Validators.min(0)]],
     annual_holiday: [{value: '0.00', disabled: true}, [Validators.required, Validators.min(0)]],
     income_compensation: ['0.00', [Validators.required, Validators.min(0)]],
+    ewf_eligible_income_compensation: [null],
+    ewf_eligible_wage: [{value: 0, disabled: true}],
+    ewf_rate: [{value: 0, disabled: true}],
+    ewf_employee_savings: [{value: 0, disabled: true}],
+    ewf_employer_contribution: [{value: 0, disabled: true}],
+    ewf_requires_review: [{value: false, disabled: true}],
     is_telephone_charge: [false],
     telephone_charge: ['0.00', [Validators.required, Validators.min(0)]],
     is_refund: [false],
@@ -125,6 +140,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     other: ['0.00', [Validators.required, Validators.min(0)]],
     fee_other: [undefined],
     is_social_security: [true],
+    is_employee_welfare_fund: [false],
+    is_ewf_annual_holiday: [false],
     is_sso_annual_holiday: [false],
     is_minimum_manday: [true],
     remark: [''],
@@ -132,7 +149,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     is_suspend: [false],
     is_paid: [false]
   }, {
-    validator: IDCardNumber('idcard_no')
+    validator: [IDCardNumber('idcard_no'), (form: FormGroup) => this.validateEwfIncomeCompensation(form)]
   });
 
   constructor(
@@ -163,6 +180,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       ]
     ).subscribe(results => {
       this.payrollCycle = results[0];
+      this.updateSalaryForm.updateValueAndValidity();
       this.site = results[1];
       this.getSitePayrollCycleSalary(false);
     }, error => {
@@ -228,6 +246,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         search: '',
         salary_id: undefined,
         empno: 0,
+        company_id: '',
+        company_name: '',
+        birthdate: null,
+        nationality: '',
+        start_date: null,
+        end_date: null,
+        resignation_cause: '',
         is_temporary: false,
         idcard_no: '',
         title: 'นาย',
@@ -243,6 +268,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         annual_holiday_day: 0,
         annual_holiday: '0.00',
         income_compensation: '0.00',
+        ewf_eligible_income_compensation: null,
+        ewf_eligible_wage: 0,
+        ewf_rate: 0,
+        ewf_employee_savings: 0,
+        ewf_employer_contribution: 0,
+        ewf_requires_review: false,
         is_telephone_charge: false,
         telephone_charge: '0.00',
         is_refund: false,
@@ -275,6 +306,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         other: '0.00',
         fee_other: undefined,
         is_social_security: true,
+        is_employee_welfare_fund: false,
+        is_ewf_annual_holiday: false,
         is_sso_annual_holiday: false,
         is_minimum_manday: true,
         remark: '',
@@ -313,6 +346,10 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
           });
         }
       });
+
+    this.updateSalaryForm.valueChanges.pipe(debounceTime(350)).subscribe(() => {
+      this.refreshEmployeeWelfareFundPreview();
+    });
 
     this.updateSalaryForm.get('is_overtime').valueChanges.subscribe(val => {
       if (!val) {
@@ -468,6 +505,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       search: '',
       salary_id: salary.id,
       empno: salary.empNo,
+      company_id: salary.companyId,
+      company_name: salary.companyName,
+      birthdate: salary.birthdate,
+      nationality: salary.nationality,
+      start_date: salary.startDate,
+      end_date: salary.endDate,
+      resignation_cause: salary.resignationCause,
       user_position_id: salary.userPositionId,
       is_temporary: salary.isTemporary,
       idcard_no: salary.idCardNumber,
@@ -484,6 +528,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       annual_holiday_day: salary.annualHolidayDay,
       annual_holiday: salary.annualHoliday.toFixed(2),
       income_compensation: salary.incomeCompensation.toFixed(2),
+      ewf_eligible_income_compensation: salary.ewfEligibleIncomeCompensation == null
+        ? null : salary.ewfEligibleIncomeCompensation.toFixed(2),
+      ewf_eligible_wage: salary.ewfEligibleWage,
+      ewf_rate: salary.ewfRate,
+      ewf_employee_savings: salary.ewfEmployeeSavings,
+      ewf_employer_contribution: salary.ewfEmployerContribution,
+      ewf_requires_review: salary.ewfRequiresReview,
       is_telephone_charge: salary.telephoneCharge > 0,
       telephone_charge: salary.telephoneCharge.toFixed(2),
       is_refund: salary.refund > 0,
@@ -516,6 +567,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       other: salary.otherFee.toFixed(2),
       fee_other: undefined,
       is_social_security: salary.isSocialSecurity,
+      is_employee_welfare_fund: salary.isEmployeeWelfareFund,
+      is_ewf_annual_holiday: salary.isEwfAnnualHoliday,
       is_sso_annual_holiday: salary.isSsoAnnualHoliday,
       is_minimum_manday: salary.isMinimumManday,
       remark: salary.remark,
@@ -529,7 +582,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         siteSalaries.forEach(siteSalary => {
           const isReplacementWage = Boolean(siteSalary.isReplacementWage);
           if (isReplacementWage) {
-            this.replacementWageForms.controls.push(this.fb.group({
+            this.replacementWageForms.push(this.fb.group({
               id: siteSalary.siteId,
               site_code: siteSalary.siteCode,
               site_name: siteSalary.siteName,
@@ -540,7 +593,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
             }));
           }
           else {
-            this.siteForms.controls.push(this.fb.group({
+            this.siteForms.push(this.fb.group({
               id: siteSalary.siteId,
               site_code: siteSalary.siteCode,
               site_name: siteSalary.siteName,
@@ -584,6 +637,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         {width: '100px'},
         {width: '100px'},
         {width: '120px'},
+        {orderable: false, width: '120px'},
         {orderable: false, width: '120px'},
         {width: '120px'},
         {orderable: false, width: '120px'},
@@ -681,7 +735,105 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       });
   }
 
+  private validateEwfIncomeCompensation(form: FormGroup) {
+    const raw = form.get('ewf_eligible_income_compensation').value;
+    const total = Number(form.get('income_compensation').value);
+    if (raw === null || raw === undefined || raw === '') {
+      if (total > 0 && this.payrollCycle && this.payrollCycle.end.slice(0, 10) >= '2026-10-01') {
+        return {ewfIncomeCompensation: 'กรุณาระบุส่วนที่เข้าฐานกองทุน หรือระบุ 0 หากไม่มีส่วนที่เข้าเกณฑ์'};
+      }
+      return null;
+    }
+    const portion = Number(raw);
+    if (!Number.isFinite(portion) || portion < 0 || portion > total) {
+      return {ewfIncomeCompensation: 'ยอดที่เข้าฐานกองทุนต้องอยู่ระหว่าง 0 และยอดชดเชยรายได้ทั้งหมด'};
+    }
+    if (Number(portion.toFixed(2)) !== portion) {
+      return {ewfIncomeCompensation: 'ระบุทศนิยมได้ไม่เกิน 2 ตำแหน่ง'};
+    }
+    return null;
+  }
+
+  private refreshEmployeeWelfareFundPreview() {
+    if (this.updateSalaryForm.get('is_paid').value) {
+      this.ewfPreviewLoading = false;
+      return;
+    }
+    const empNo = Number(this.updateSalaryForm.get('empno').value);
+    if (!empNo || !this.payrollCycleId || !this.siteId || !this.site
+      || this.updateSalaryForm.hasError('ewfIncomeCompensation')) {
+      this.clearEmployeeWelfareFundPreview();
+      return;
+    }
+
+    const siteSalaries = this.siteForms.controls.concat(this.replacementWageForms.controls).map(control => ({
+      siteId: Number(control.get('id').value),
+      siteCode: control.get('site_code').value,
+      siteName: control.get('site_name').value,
+      manday: Number(control.get('manday').value || 0),
+      hiringRatePerDay: Number(control.get('hiringRatePerDay').value || 0),
+      isDefault: Boolean(control.get('is_default').value),
+      isReplacementWage: Boolean(control.get('is_replacement_wage').value)
+    })) as any;
+    const eligibleCompensation = this.updateSalaryForm.get('ewf_eligible_income_compensation').value;
+    const payload: Partial<Salary> = {
+      empNo: empNo,
+      companyId: this.updateSalaryForm.get('company_id').value,
+      minimumWage: this.site.minimumWage,
+      positionValue: Number(this.updateSalaryForm.get('position_value').value || 0),
+      annualHolidayDay: Number(this.updateSalaryForm.get('annual_holiday_day').value || 0),
+      incomeCompensation: Number(this.updateSalaryForm.get('income_compensation').value || 0),
+      ewfEligibleIncomeCompensation: eligibleCompensation === null || eligibleCompensation === ''
+        ? null : Number(eligibleCompensation),
+      isEmployeeWelfareFund: Boolean(this.updateSalaryForm.get('is_employee_welfare_fund').value),
+      isEwfAnnualHoliday: Boolean(this.updateSalaryForm.get('is_ewf_annual_holiday').value),
+      siteSalaries: siteSalaries
+    };
+    const requestId = ++this.ewfPreviewRequestId;
+    this.ewfPreviewLoading = true;
+    this.payrollService.previewEmployeeWelfareFund(
+      this.payrollCycleId,
+      this.siteId,
+      Number(this.updateSalaryForm.get('salary_id').value || 0),
+      payload
+    ).subscribe(preview => {
+      if (requestId !== this.ewfPreviewRequestId) {
+        return;
+      }
+      this.ewfPreviewLoading = false;
+      this.updateSalaryForm.patchValue({
+        ewf_eligible_wage: preview.eligibleWage,
+        ewf_rate: preview.rate,
+        ewf_employee_savings: preview.employeeSavings,
+        ewf_employer_contribution: preview.employerContribution,
+        ewf_requires_review: preview.requiresReview
+      }, {emitEvent: false});
+    }, () => {
+      if (requestId === this.ewfPreviewRequestId) {
+        this.ewfPreviewLoading = false;
+        this.clearEmployeeWelfareFundPreview();
+      }
+    });
+  }
+
+  private clearEmployeeWelfareFundPreview() {
+    this.ewfPreviewRequestId++;
+    this.ewfPreviewLoading = false;
+    this.updateSalaryForm.patchValue({
+      ewf_eligible_wage: 0,
+      ewf_rate: 0,
+      ewf_employee_savings: 0,
+      ewf_employer_contribution: 0,
+      ewf_requires_review: false
+    }, {emitEvent: false});
+  }
+
   onSubmit() {
+    this.updateSalaryForm.updateValueAndValidity();
+    if (this.updateSalaryForm.invalid) {
+      this.updateSalaryForm.markAllAsTouched();
+      return;
+    }
     const that = this;
     function getValue(controlName) {
       return that.updateSalaryForm.get(controlName).value;
@@ -742,11 +894,17 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       role: null,
       empNo: getValue('empno'),
       user: null,
+      companyId: getValue('company_id'),
+      companyName: getValue('company_name'),
       title: getValue('title'),
       firstName: getValue('firstname'),
       lastName: getValue('lastname'),
       idCardNumber: getValue('idcard_no'),
-      startDate: null,
+      startDate: getValue('start_date'),
+      birthdate: getValue('birthdate'),
+      nationality: getValue('nationality'),
+      endDate: getValue('end_date'),
+      resignationCause: getValue('resignation_cause'),
       bankAccount: getValue('bank_account'),
       bankId: getValue('bank_id'),
       minimumWage: this.site.minimumWage,
@@ -768,6 +926,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       bonus: getValue('bonus'),
       overtime: getValue('overtime'),
       incomeCompensation: getValue('income_compensation'),
+      ewfEligibleIncomeCompensation: getValue('ewf_eligible_income_compensation') == null
+        || getValue('ewf_eligible_income_compensation') === '' ? null : Number(getValue('ewf_eligible_income_compensation')),
       otherIncome: getValue('other_income'),
       extraReplaceValue: 0,
       extraOvertime: 0,
@@ -791,6 +951,14 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       isSuspend: getValue('is_suspend'),
       isTemporary: getValue('is_temporary'),
       isSocialSecurity: getValue('is_social_security'),
+      isEmployeeWelfareFund: getValue('is_employee_welfare_fund'),
+      isEwfAnnualHoliday: getValue('is_ewf_annual_holiday'),
+      ewfMinimumWage: this.site.minimumWage,
+      ewfEligibleWage: 0,
+      ewfRate: 0,
+      ewfEmployeeSavings: 0,
+      ewfEmployerContribution: 0,
+      ewfRequiresReview: false,
       isSsoAnnualHoliday: getValue('is_sso_annual_holiday'),
       isMinimumManday: getValue('is_minimum_manday'),
       createBy: null,
@@ -822,6 +990,13 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   onClickSearchUser(user: User) {
     this.updateSalaryForm.patchValue({
       empno: user.empNo,
+      company_id: user.companyId,
+      company_name: user.company ? user.company.name : user.companyId,
+      birthdate: user.birthdate,
+      nationality: user.nationality,
+      start_date: user.startDate,
+      end_date: user.endDate,
+      resignation_cause: user.resignationCause,
       user_position_id: user.userPositionId,
       idcard_no: user.idCardNumber,
       title: user.title,
@@ -829,7 +1004,9 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       lastname: user.lastName,
       bank_id: user.bankId,
       bank_account: user.bankAccount,
-      is_social_security: user.isSocialSecurity
+      is_social_security: user.isSocialSecurity,
+      is_employee_welfare_fund: user.isEmployeeWelfareFund !== false && this.site.isEmployeeWelfareFund,
+      is_ewf_annual_holiday: this.site.isEwfAnnualHoliday
     });
     this.salaryEmployees = [];
     this.updateSalaryForm.get('search').setValue('');
@@ -855,7 +1032,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         const hiringRatePerDay =
           site.siteUserPositions.length > 0 ? site.siteUserPositions.filter(r => r.userPositionId
             === 20)[0].hiringRatePerDay : 0;
-        this.siteForms.controls.push(this.fb.group({
+        this.siteForms.push(this.fb.group({
           id: [site.id, [Validators.required]],
           site_code: [site.code],
           site_name: [site.name],
@@ -869,7 +1046,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       const hiringRatePerDay =
         this.site.siteUserPositions.length > 0 ? this.site.siteUserPositions.filter(r => r.userPositionId
           === 20)[0].hiringRatePerDay : 0;
-      this.siteForms.controls.push(this.fb.group({
+      this.siteForms.push(this.fb.group({
         id: [this.site.id, [Validators.required]],
         site_code: [this.site.code],
         site_name: [this.site.name],
@@ -1064,6 +1241,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   get totalFee() {
     return this.socialSecurity
+      + Math.max(0, Number(this.updateSalaryForm.get('ewf_employee_savings').value || 0))
       + (this.updateSalaryForm.get('withholding_tax').value ? Number(this.updateSalaryForm.get('withholding_tax').value) : 0)
       + (this.updateSalaryForm.get('transfer_fee').value ? Number(this.updateSalaryForm.get('transfer_fee').value) : 0)
       + (this.updateSalaryForm.get('inventory').value ? Number(this.updateSalaryForm.get('inventory').value) : 0)
