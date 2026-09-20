@@ -1,20 +1,20 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { PayrollCycle, Salary } from "src/app/core/models/payroll";
-import { ActivatedRoute } from "@angular/router";
-import { ElectronService } from "ngx-electron";
-import { PayrollService } from "src/app/core/services/payroll.service";
-import { CacheService } from "src/app/core/services/cache/cache.service";
-import { ApplicationStateService } from "src/app/core/services/application-state.service";
-import { SpinnerHelper } from "src/app/core/helpers/spinner.helper";
-import { UserIncomeTax } from "src/app/core/models/user-income-tax.model";
-import { catchError, map, switchMap } from "rxjs/operators";
-import { of } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { PayrollCycle, Salary } from 'src/app/core/models/payroll';
+import { ActivatedRoute } from '@angular/router';
+import { ElectronService } from 'ngx-electron';
+import { PayrollService } from 'src/app/core/services/payroll.service';
+import { CacheService } from 'src/app/core/services/cache/cache.service';
+import { ApplicationStateService } from 'src/app/core/services/application-state.service';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { UserIncomeTax } from 'src/app/core/models/user-income-tax.model';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
-  selector: "app-payslip",
-  templateUrl: "./payslip.component.html",
-  styleUrls: ["./payslip.component.scss"],
+  selector: 'app-payslip',
+  templateUrl: './payslip.component.html',
+  styleUrls: ['./payslip.component.scss'],
 })
 export class PayslipComponent implements OnDestroy, OnInit {
   public baseImagePath = environment.basePath;
@@ -23,18 +23,18 @@ export class PayslipComponent implements OnDestroy, OnInit {
   salary: number;
   userIncomeTaxes: UserIncomeTax[] = [];
   thaiMonth = [
-    "มกราคม",
-    "กุมภาพันธ์",
-    "มีนาคม",
-    "เมษายน",
-    "พฤษภาคม",
-    "มิถุนายน",
-    "กรกฎาคม",
-    "สิงหาคม",
-    "กันยายน",
-    "ตุลาคม",
-    "พฤศจิกายน",
-    "ธันวาคม",
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
   ];
 
   companyReportHeader = {
@@ -57,14 +57,14 @@ export class PayslipComponent implements OnDestroy, OnInit {
     private cacheService: CacheService,
     private spinner: SpinnerHelper
   ) {
-    document.body.style.backgroundColor = "#ffffff";
+    document.body.style.backgroundColor = '#ffffff';
     this.updateView();
   }
 
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
-      const payrollCycleId = Number(params["id"]);
-      const siteId = Number(params["siteid"]);
+      const payrollCycleId = Number(params['id']);
+      const siteId = Number(params['siteid']);
       this.spinner.showLoadingSpinner();
       const payrollCycle = this.cacheService.get(
         `payrollCycle_${payrollCycleId}`,
@@ -73,8 +73,8 @@ export class PayslipComponent implements OnDestroy, OnInit {
       );
       payrollCycle
         .pipe(
-          switchMap((payrollCycle) => {
-            this.payrollCycle = payrollCycle;
+          switchMap((cycle) => {
+            this.payrollCycle = cycle;
             return this.payrollService.getSitePayrollCycleSalaryPayslip(
               payrollCycleId,
               siteId
@@ -101,7 +101,7 @@ export class PayslipComponent implements OnDestroy, OnInit {
                   if (this.electronService.isElectronApp) {
                     setTimeout(
                       () =>
-                        this.electronService.ipcRenderer.send("print-to-pdf"),
+                        this.electronService.ipcRenderer.send('print-to-pdf'),
                       5000
                     );
                   }
@@ -154,8 +154,8 @@ export class PayslipComponent implements OnDestroy, OnInit {
   }
 
   convertToDateString(dateString: string): string {
-    if (dateString === "" || dateString === null || dateString === undefined) {
-      return "";
+    if (dateString === '' || dateString === null || dateString === undefined) {
+      return '';
     }
     const date = new Date(dateString);
     return `${date.getDate()} ${this.thaiMonth[date.getMonth()]} ${
@@ -165,14 +165,14 @@ export class PayslipComponent implements OnDestroy, OnInit {
 
   convertToStartEndDateString(start: string, end: string): string {
     if (
-      start === "" ||
+      start === '' ||
       start === null ||
       start === undefined ||
-      end === "" ||
+      end === '' ||
       end === null ||
       end === undefined
     ) {
-      return "";
+      return '';
     }
     const startDate = new Date(start);
     const endDate = new Date(end);

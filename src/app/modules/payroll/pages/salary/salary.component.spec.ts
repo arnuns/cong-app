@@ -51,7 +51,18 @@ describe('SalaryComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [SalaryComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -70,13 +81,37 @@ describe('SalaryComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: PayrollService, useValue: { addSalary: () => NEVER, deleteEmployeePayrollSalary: () => NEVER, getPayrollCycle: () => NEVER, getPayrollCycleSiteSalary: () => NEVER, getSitePayrollCycleSalary: () => NEVER, getSiteSalary: () => NEVER, getSocialSecurityRate: () => NEVER, previewEmployeeWelfareFund: () => NEVER, suspendEmployeePayrollSalary: () => NEVER, updateCompletePayrollSiteSalary: () => NEVER, updatePaydayPayrollSiteSalary: () => NEVER, updatePayrollDeduction: () => NEVER, updateSalary: () => NEVER } },
+        {
+          provide: PayrollService,
+          useValue: {
+            addSalary: () => NEVER,
+            deleteEmployeePayrollSalary: () => NEVER,
+            getPayrollCycle: () => NEVER,
+            getPayrollCycleSiteSalary: () => NEVER,
+            getSitePayrollCycleSalary: () => NEVER,
+            getSiteSalary: () => NEVER,
+            getSocialSecurityRate: () => NEVER,
+            previewEmployeeWelfareFund: () => NEVER,
+            suspendEmployeePayrollSalary: () => NEVER,
+            updateCompletePayrollSiteSalary: () => NEVER,
+            updatePaydayPayrollSiteSalary: () => NEVER,
+            updatePayrollDeduction: () => NEVER,
+            updateSalary: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
         { provide: SiteService, useValue: { getSite: () => NEVER, getSiteFilter: () => NEVER, getSites: () => NEVER } },
-        { provide: UserService, useValue: { getAvailableBanks: () => NEVER, getUserByIdCardNumber: () => NEVER, getUserFilter: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            getAvailableBanks: () => NEVER,
+            getUserByIdCardNumber: () => NEVER,
+            getUserFilter: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
