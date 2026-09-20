@@ -103,7 +103,14 @@ describe('SalaryComponent', () => {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: SiteService, useValue: { getSite: () => NEVER, getSiteFilter: () => NEVER, getSites: () => NEVER } },
+        {
+          provide: SiteService,
+          useValue: {
+            getSite: () => NEVER,
+            getSiteFilter: () => NEVER,
+            getSites: () => NEVER
+          }
+        },
         {
           provide: UserService,
           useValue: {
@@ -124,6 +131,7 @@ describe('SalaryComponent', () => {
   });
 
   afterEach(() => {
+    fixture.destroy();
     document.body.style.backgroundColor = originalBackgroundColor;
     (window as any).$ = originalJQuery;
     localStorage.clear();

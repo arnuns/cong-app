@@ -51,7 +51,18 @@ describe('EditSiteComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [EditSiteComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         { provide: DatePipe, useValue: { transform: () => '' } },
         {
@@ -71,12 +82,29 @@ describe('EditSiteComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: SiteService, useValue: { activateSite: () => NEVER, deactivateSite: () => NEVER, getAmphurs: () => NEVER, getDistricts: () => NEVER, getPostcodes: () => NEVER, getProvinces: () => NEVER, getSite: () => NEVER, updateSite: () => NEVER } },
+        {
+          provide: SiteService,
+          useValue: {
+            activateSite: () => NEVER,
+            deactivateSite: () => NEVER,
+            getAmphurs: () => NEVER,
+            getDistricts: () => NEVER,
+            getPostcodes: () => NEVER,
+            getProvinces: () => NEVER,
+            getSite: () => NEVER,
+            updateSite: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { getUserPositions: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            getUserPositions: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

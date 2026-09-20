@@ -45,7 +45,18 @@ describe('LoginComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [LoginComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: AuthService,

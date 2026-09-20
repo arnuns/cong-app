@@ -50,7 +50,18 @@ describe('EditEmployeeComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [EditEmployeeComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -69,12 +80,30 @@ describe('EditEmployeeComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: SiteService, useValue: { getSites: () => NEVER } },
+        {
+          provide: SiteService,
+          useValue: {
+            getSites: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { deleteDocument: () => NEVER, getAvailableBanks: () => NEVER, getHospitals: () => NEVER, getUser: () => NEVER, getUserCompanies: () => NEVER, getUserPositions: () => NEVER, updateUser: () => NEVER, updateUserBeginResign: () => NEVER, uploadImageProfile: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            deleteDocument: () => NEVER,
+            getAvailableBanks: () => NEVER,
+            getHospitals: () => NEVER,
+            getUser: () => NEVER,
+            getUserCompanies: () => NEVER,
+            getUserPositions: () => NEVER,
+            updateUser: () => NEVER,
+            updateUserBeginResign: () => NEVER,
+            uploadImageProfile: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

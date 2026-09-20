@@ -51,7 +51,18 @@ describe('EmployeeComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [EmployeeComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: AuthService,
@@ -68,13 +79,29 @@ describe('EmployeeComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: Papa, useValue: { unparse: () => NEVER } },
-        { provide: SiteService, useValue: { getSites: () => NEVER } },
+        {
+          provide: Papa,
+          useValue: {
+            unparse: () => NEVER
+          }
+        },
+        {
+          provide: SiteService,
+          useValue: {
+            getSites: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { downloadEmployeeCard: () => NEVER, getUsers: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            downloadEmployeeCard: () => NEVER,
+            getUsers: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

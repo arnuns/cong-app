@@ -47,7 +47,18 @@ describe('DocumentComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [DocumentComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -65,7 +76,12 @@ describe('DocumentComponent', () => {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { getDocument: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            getDocument: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

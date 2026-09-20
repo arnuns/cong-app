@@ -75,8 +75,19 @@ describe('PayslipComponent', () => {
           }
         },
         { provide: ElectronService, useValue: { isElectronApp: false } },
-        { provide: PayrollService, useValue: { getPayrollCycle: () => NEVER, getSitePayrollCycleSalaryPayslip: () => NEVER } },
-        { provide: CacheService, useValue: { get: () => NEVER } },
+        {
+          provide: PayrollService,
+          useValue: {
+            getPayrollCycle: () => NEVER,
+            getSitePayrollCycleSalaryPayslip: () => NEVER
+          }
+        },
+        {
+          provide: CacheService,
+          useValue: {
+            get: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }

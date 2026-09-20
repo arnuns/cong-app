@@ -51,7 +51,18 @@ describe('TimeAttendanceComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [TimeAttendanceComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ApplicationStateService,
@@ -67,13 +78,32 @@ describe('TimeAttendanceComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: Papa, useValue: { unparse: () => NEVER } },
+        {
+          provide: Papa,
+          useValue: {
+            unparse: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: TimeAttendanceService, useValue: { createTimeAttendance: () => NEVER, deleteTimeAttendance: () => NEVER, getSiteTimeAttendanceByDateRange: () => NEVER, getTimeAttendanceSites: () => NEVER, updateTimeAttendance: () => NEVER } },
-        { provide: UserService, useValue: { getUserFilter: () => NEVER } }
+        {
+          provide: TimeAttendanceService,
+          useValue: {
+            createTimeAttendance: () => NEVER,
+            deleteTimeAttendance: () => NEVER,
+            getSiteTimeAttendanceByDateRange: () => NEVER,
+            getTimeAttendanceSites: () => NEVER,
+            updateTimeAttendance: () => NEVER
+          }
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getUserFilter: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

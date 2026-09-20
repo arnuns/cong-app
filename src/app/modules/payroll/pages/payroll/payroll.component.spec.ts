@@ -70,14 +70,34 @@ describe('PayrollComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: Papa, useValue: { unparse: () => NEVER } },
-        { provide: PayrollService, useValue: { getPayrollCycles: () => NEVER } },
+        {
+          provide: Papa,
+          useValue: {
+            unparse: () => NEVER
+          }
+        },
+        {
+          provide: PayrollService,
+          useValue: {
+            getPayrollCycles: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: SiteService, useValue: { getSites: () => NEVER } },
-        { provide: UserService, useValue: { getAvailableBanks: () => NEVER } }
+        {
+          provide: SiteService,
+          useValue: {
+            getSites: () => NEVER
+          }
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getAvailableBanks: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -90,6 +110,7 @@ describe('PayrollComponent', () => {
   });
 
   afterEach(() => {
+    fixture.destroy();
     document.body.style.backgroundColor = originalBackgroundColor;
     (window as any).$ = originalJQuery;
     localStorage.clear();

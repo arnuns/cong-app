@@ -49,7 +49,18 @@ describe('AddSiteComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddSiteComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         { provide: DatePipe, useValue: { transform: () => '' } },
         {
@@ -61,12 +72,26 @@ describe('AddSiteComponent', () => {
           }
         },
         { provide: MomentHelper, useClass: MomentHelper },
-        { provide: SiteService, useValue: { addSite: () => NEVER, getAmphurs: () => NEVER, getDistricts: () => NEVER, getPostcodes: () => NEVER, getProvinces: () => NEVER } },
+        {
+          provide: SiteService,
+          useValue: {
+            addSite: () => NEVER,
+            getAmphurs: () => NEVER,
+            getDistricts: () => NEVER,
+            getPostcodes: () => NEVER,
+            getProvinces: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { getUserPositions: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            getUserPositions: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

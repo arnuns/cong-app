@@ -45,10 +45,33 @@ describe('HomeComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [HomeComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
-        { provide: SiteService, useValue: { getCountActiveSite: () => NEVER, getCountSite: () => NEVER } },
-        { provide: UserService, useValue: { getCountActiveUser: () => NEVER, getCountUser: () => NEVER } }
+        {
+          provide: SiteService,
+          useValue: {
+            getCountActiveSite: () => NEVER,
+            getCountSite: () => NEVER
+          }
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getCountActiveUser: () => NEVER,
+            getCountUser: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

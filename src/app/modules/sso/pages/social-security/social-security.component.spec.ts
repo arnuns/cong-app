@@ -51,7 +51,18 @@ describe('SocialSecurityComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [SocialSecurityComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ApplicationStateService,
@@ -66,14 +77,36 @@ describe('SocialSecurityComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: Papa, useValue: { unparse: () => NEVER } },
-        { provide: PayrollService, useValue: { getSocialSecurityHistories: () => NEVER, getSocialSecurityHistoryMonthName: () => NEVER, updateSocialSecurityHistory: () => NEVER } },
+        {
+          provide: Papa,
+          useValue: {
+            unparse: () => NEVER
+          }
+        },
+        {
+          provide: PayrollService,
+          useValue: {
+            getSocialSecurityHistories: () => NEVER,
+            getSocialSecurityHistoryMonthName: () => NEVER,
+            updateSocialSecurityHistory: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: SiteService, useValue: { getSites: () => NEVER } },
-        { provide: UserService, useValue: { getHospitals: () => NEVER } }
+        {
+          provide: SiteService,
+          useValue: {
+            getSites: () => NEVER
+          }
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getHospitals: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

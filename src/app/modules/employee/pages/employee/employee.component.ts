@@ -207,7 +207,7 @@ export class EmployeeComponent implements AfterViewInit, OnDestroy, OnInit {
 
   createUserPassword(empNo: string) {
     this.spinner.showLoadingSpinner();
-    this.authService.createDefaultUserPassword(empNo).subscribe(_ => {
+    this.authService.createDefaultUserPassword(empNo).subscribe(() => {
       this.ngxSmartModalService.getModal('confirmModal').setData(null, true);
       this.spinner.hideLoadingSpinner(0);
       this.ngxSmartModalService.getModal('successModal').setData('สร้างรหัสผู้ใช้งานสำเร็จ', true);

@@ -50,7 +50,18 @@ describe('AddEmployeeComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [AddEmployeeComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ApplicationStateService,
@@ -66,12 +77,27 @@ describe('AddEmployeeComponent', () => {
           useValue: { get: () => modal, getModal: () => modal }
         },
         { provide: MomentHelper, useClass: MomentHelper },
-        { provide: SiteService, useValue: { getSites: () => NEVER } },
+        {
+          provide: SiteService,
+          useValue: {
+            getSites: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: UserService, useValue: { createUser: () => NEVER, getAvailableBanks: () => NEVER, getHospitals: () => NEVER, getUserCompanies: () => NEVER, getUserPositions: () => NEVER, uploadImageProfile: () => NEVER } }
+        {
+          provide: UserService,
+          useValue: {
+            createUser: () => NEVER,
+            getAvailableBanks: () => NEVER,
+            getHospitals: () => NEVER,
+            getUserCompanies: () => NEVER,
+            getUserPositions: () => NEVER,
+            uploadImageProfile: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

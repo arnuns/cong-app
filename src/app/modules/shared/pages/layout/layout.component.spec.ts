@@ -49,7 +49,18 @@ describe('LayoutComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [LayoutComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ApplicationStateService,
@@ -73,7 +84,13 @@ describe('LayoutComponent', () => {
           provide: NgxSmartModalService,
           useValue: { get: () => modal, getModal: () => modal }
         },
-        { provide: UserService, useValue: { getUserByNfcRefId: () => NEVER, getUserFilter: () => NEVER } },
+        {
+          provide: UserService,
+          useValue: {
+            getUserByNfcRefId: () => NEVER,
+            getUserFilter: () => NEVER
+          }
+        },
         { provide: RoutingStateService, useValue: { getPreviousUrl: () => '/home' } }
       ],
       schemas: [NO_ERRORS_SCHEMA]

@@ -49,7 +49,18 @@ describe('WorkingSiteComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [WorkingSiteComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         {
           provide: ActivatedRoute,
@@ -68,8 +79,19 @@ describe('WorkingSiteComponent', () => {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: SiteService, useValue: { getSite: () => NEVER } },
-        { provide: TimeAttendanceService, useValue: { getWorkingDaySummary: () => NEVER, getWorkingSiteMonthlyTimeAttendances: () => NEVER } }
+        {
+          provide: SiteService,
+          useValue: {
+            getSite: () => NEVER
+          }
+        },
+        {
+          provide: TimeAttendanceService,
+          useValue: {
+            getWorkingDaySummary: () => NEVER,
+            getWorkingSiteMonthlyTimeAttendances: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();

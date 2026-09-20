@@ -49,17 +49,53 @@ describe('EmployeeReportComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [EmployeeReportComponent, StorageUrlPipeStub],
-      imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterTestingModule, NoopAnimationsModule, BsDatepickerModule.forRoot(), BsDropdownModule.forRoot(), ButtonsModule.forRoot(), TimepickerModule.forRoot(), NgSelectModule],
+      imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterTestingModule,
+        NoopAnimationsModule,
+        BsDatepickerModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        ButtonsModule.forRoot(),
+        TimepickerModule.forRoot(),
+        NgSelectModule
+      ],
       providers: [
         { provide: MomentHelper, useClass: MomentHelper },
-        { provide: Papa, useValue: { unparse: () => NEVER } },
-        { provide: PayrollService, useValue: { downloadEmployeeWelfareFundReport: () => NEVER, getEmployeeWelfareFundSummary: () => NEVER } },
+        {
+          provide: Papa,
+          useValue: {
+            unparse: () => NEVER
+          }
+        },
+        {
+          provide: PayrollService,
+          useValue: {
+            downloadEmployeeWelfareFundReport: () => NEVER,
+            getEmployeeWelfareFundSummary: () => NEVER
+          }
+        },
         {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
-        { provide: TimeAttendanceService, useValue: { getConsecutiveTimeAttendances: () => NEVER } },
-        { provide: UserService, useValue: { getCountUserByMonthYear: () => NEVER, getUserByDateRange: () => NEVER, getUserByMonthYear: () => NEVER, getUserCompanies: () => NEVER, getUserNotCheckedInByDateRange: () => NEVER } }
+        {
+          provide: TimeAttendanceService,
+          useValue: {
+            getConsecutiveTimeAttendances: () => NEVER
+          }
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getCountUserByMonthYear: () => NEVER,
+            getUserByDateRange: () => NEVER,
+            getUserByMonthYear: () => NEVER,
+            getUserCompanies: () => NEVER,
+            getUserNotCheckedInByDateRange: () => NEVER
+          }
+        }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
