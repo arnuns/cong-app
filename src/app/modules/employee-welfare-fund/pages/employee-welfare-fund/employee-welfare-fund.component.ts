@@ -56,12 +56,9 @@ export class EmployeeWelfareFundComponent implements OnInit {
   }
 
   onLoadEmployeeWelfareFund() {
-    if (this.employeeWelfareFundForm.invalid) { return; }
-    const period = this.employeeWelfareFundForm.get('month_year').value.split('-');
-    const companyId = this.employeeWelfareFundForm.get('company_id').value;
-    this.employeeWelfareFundProcessing = true;
-    this.employeeWelfareFundError = undefined;
-    this.payrollService.getEmployeeWelfareFundSummary(Number(period[0]), Number(period[1]), companyId)
+    const request = this.prepareRequest();
+    if (!request) { return; }
+    this.payrollService.getEmployeeWelfareFundSummary(request.year, request.month, request.companyId)
       .subscribe(rows => {
         this.employeeWelfareFundRows = rows;
         this.employeeWelfareFundProcessing = false;
@@ -73,21 +70,33 @@ export class EmployeeWelfareFundComponent implements OnInit {
   }
 
   onExportEmployeeWelfareFund() {
-    if (this.employeeWelfareFundForm.invalid) { return; }
-    const period = this.employeeWelfareFundForm.get('month_year').value.split('-');
-    const companyId = this.employeeWelfareFundForm.get('company_id').value;
+    const request = this.prepareRequest();
+    if (!request) { return; }
     const submissionDate = this.moment.format(
       this.employeeWelfareFundForm.get('submission_date').value, 'YYYY-MM-DD');
-    this.employeeWelfareFundProcessing = true;
-    this.employeeWelfareFundError = undefined;
     this.payrollService.downloadEmployeeWelfareFundReport(
-      Number(period[0]), Number(period[1]), companyId, submissionDate)
+      request.year, request.month, request.companyId, submissionDate)
       .subscribe(file => {
-        FileSaver.saveAs(file, `employee-welfare-fund-${companyId}-${period[0]}-${period[1]}.xlsx`);
+        FileSaver.saveAs(
+          file,
+          `employee-welfare-fund-${request.companyId}-${request.year}-${request.monthText}.xlsx`);
         this.employeeWelfareFundProcessing = false;
       }, _ => {
         this.employeeWelfareFundError = 'ไม่สามารถดาวน์โหลดไฟล์กองทุนได้ กรุณาตรวจข้อมูลพนักงานในรายงาน';
         this.employeeWelfareFundProcessing = false;
       });
+  }
+
+  private prepareRequest() {
+    if (this.employeeWelfareFundForm.invalid) { return undefined; }
+    const period = this.employeeWelfareFundForm.get('month_year').value.split('-');
+    this.employeeWelfareFundProcessing = true;
+    this.employeeWelfareFundError = undefined;
+    return {
+      year: Number(period[0]),
+      month: Number(period[1]),
+      monthText: period[1],
+      companyId: this.employeeWelfareFundForm.get('company_id').value
+    };
   }
 }
