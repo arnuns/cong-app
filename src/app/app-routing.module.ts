@@ -4,7 +4,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { AuthGuardService } from './core/services/auth/auth-guard.service';
 import { LayoutComponent } from './modules/shared/pages/layout/layout.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
@@ -43,6 +43,11 @@ const routes: Routes = [
         path: 'sso',
         canLoad: [AuthGuardService],
         loadChildren: './modules/sso/sso.module#SsoModule'
+      },
+      {
+        path: 'employee-welfare-fund',
+        canLoad: [AuthGuardService],
+        loadChildren: './modules/employee-welfare-fund/employee-welfare-fund.module#EmployeeWelfareFundModule'
       },
       {
         path: 'time-attendance',

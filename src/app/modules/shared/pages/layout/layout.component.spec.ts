@@ -113,4 +113,13 @@ describe('LayoutComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('shows Employee Welfare Fund beside Social Security in the sidebar', () => {
+    const menuLinks = Array.from(fixture.nativeElement.querySelectorAll('.nav-menu .nav-link')) as HTMLElement[];
+    const socialSecurityIndex = menuLinks.findIndex(link => link.textContent.includes('ประกันสังคม'));
+    const employeeWelfareFundLink = menuLinks[socialSecurityIndex + 1];
+
+    expect(employeeWelfareFundLink.textContent).toContain('กองทุนสงเคราะห์ลูกจ้าง');
+    expect(employeeWelfareFundLink.getAttribute('href')).toContain('/employee-welfare-fund');
+  });
 });

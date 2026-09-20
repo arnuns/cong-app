@@ -12,7 +12,7 @@ The payroll cycle snapshots the primary-site policy. Work at another site during
 
 ## Review and pay payroll
 
-- The payroll-cycle EWF column shows the employee deduction.
+- The payroll-cycle EWF column shows employee savings.
 - When income compensation is positive, enter the portion eligible for EWF. Enter `0` when none of the compensation is eligible.
 - The final cycle of a month recomputes the full-month target and subtracts amounts already posted in earlier paid cycles.
 - A warning icon indicates a negative adjustment. The system does not refund it automatically; HR must review the case.
@@ -20,7 +20,7 @@ The payroll cycle snapshots the primary-site policy. Work at another site during
 
 ## Internal report and official workbook
 
-Open **Reports > Employee Welfare Fund**, then select the pay month, company, and submission date.
+Open **Employee Welfare Fund (กองทุนสงเคราะห์ลูกจ้าง)** from the main sidebar, then select the pay month, company, and submission date.
 
 - **View summary** combines employees from every site of the selected company and shows both employee and employer amounts.
 - **Download official .xlsx** downloads one company per workbook using the official template.
