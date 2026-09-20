@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { BaseService, Paginate } from "./base.service";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { CacheService } from "./cache/cache.service";
-import { CookieService } from "ngx-cookie-service";
+import { Injectable } from '@angular/core';
+import { BaseService, Paginate } from './base.service';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { CacheService } from './cache/cache.service';
+import { CookieService } from 'ngx-cookie-service';
 import {
   PayrollCycle,
   SitePayrollCycleSalary,
@@ -14,12 +14,12 @@ import {
   SocialSecurityRate,
   EmployeeWelfareFundSummary,
   EmployeeWelfareFundPreview,
-} from "../models/payroll";
-import { MomentHelper } from "../helpers/moment.helper";
-import { UserIncomeTax } from "../models/user-income-tax.model";
+} from '../models/payroll';
+import { MomentHelper } from '../helpers/moment.helper';
+import { UserIncomeTax } from '../models/user-income-tax.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class PayrollService extends BaseService {
   constructor(
@@ -33,7 +33,7 @@ export class PayrollService extends BaseService {
 
   getPayrollCycles() {
     return this.cacheService.get(
-      "payroll_cycles",
+      'payroll_cycles',
       this.http.get<PayrollCycle[]>(`${this.serviceUrl}/payroll/all`)
     );
   }
@@ -229,18 +229,18 @@ export class PayrollService extends BaseService {
     page_size: number
   ) {
     const params = new HttpParams()
-      .set("search", !search ? "" : search)
-      .set("payroll_year", payroll_year ? String(payroll_year) : "")
-      .set("payroll_month", payroll_month ? String(payroll_month) : "")
+      .set('search', !search ? '' : search)
+      .set('payroll_year', payroll_year ? String(payroll_year) : '')
+      .set('payroll_month', payroll_month ? String(payroll_month) : '')
       .set(
-        "social_hospital_id",
-        !social_hospital_id ? "0" : `${social_hospital_id}`
+        'social_hospital_id',
+        !social_hospital_id ? '0' : `${social_hospital_id}`
       )
-      .set("site_id", !site_id ? "0" : `${site_id}`)
-      .set("sort_column", sort_column)
-      .set("sort_by", sort_by)
-      .set("page", String(page))
-      .set("page_size", String(page_size));
+      .set('site_id', !site_id ? '0' : `${site_id}`)
+      .set('sort_column', sort_column)
+      .set('sort_by', sort_by)
+      .set('page', String(page))
+      .set('page_size', String(page_size));
     return this.http.get<Paginate<SocialSecurityHistory[]>>(
       `${this.serviceUrl}/Payroll/SocialSecurity/Filter`,
       { params: params }
@@ -271,7 +271,7 @@ export class PayrollService extends BaseService {
     payrollMonth: number,
     siteId: number
   ) {
-    const siteIdValue = !siteId ? "0" : `${siteId}`;
+    const siteIdValue = !siteId ? '0' : `${siteId}`;
     // tslint:disable-next-line: max-line-length
     return this.http.get<SocialSecurityHistory[]>(
       `${this.serviceUrl}/Payroll/SocialSecurity/Year/${payrollYear}/Month/${payrollMonth}/Site/${siteIdValue}`
@@ -280,8 +280,8 @@ export class PayrollService extends BaseService {
 
   getSocialSecurityRate(year: number, month: number) {
     const params = new HttpParams()
-      .set("year", String(year))
-      .set("month", String(month));
+      .set('year', String(year))
+      .set('month', String(month));
     return this.cacheService.get(
       `sso_rate_y${year}_m${month}`,
       this.http.get<SocialSecurityRate>(
@@ -303,21 +303,21 @@ export class PayrollService extends BaseService {
     page_size: number
   ) {
     let params = new HttpParams()
-      .set("tax_type", tax_type)
-      .set("search", !search ? "" : search)
-      .set("sort_column", sort_column)
-      .set("sort_by", sort_by)
-      .set("page", String(page))
-      .set("page_size", String(page_size));
+      .set('tax_type', tax_type)
+      .set('search', !search ? '' : search)
+      .set('sort_column', sort_column)
+      .set('sort_by', sort_by)
+      .set('page', String(page))
+      .set('page_size', String(page_size));
 
     if (year) {
-      params = params.append("year", String(year));
+      params = params.append('year', String(year));
     }
     if (month) {
-      params = params.append("month", String(month));
+      params = params.append('month', String(month));
     }
     if (site_id) {
-      params = params.append("site_id", String(site_id));
+      params = params.append('site_id', String(site_id));
     }
 
     return this.http.get<Paginate<UserIncomeTax[]>>(
@@ -327,10 +327,10 @@ export class PayrollService extends BaseService {
   }
 
   getUserIncomeTaxSumByMonth(year: number, month: number, siteId: number) {
-    let params = new HttpParams()
-      .set("year", String(year))
-      .set("month", String(month))
-      .set("site_id", String(siteId));
+    const params = new HttpParams()
+      .set('year', String(year))
+      .set('month', String(month))
+      .set('site_id', String(siteId));
     return this.http.get<UserIncomeTax[]>(
       `${this.serviceUrl}/Payroll/UserIncomeTax/SummaryByMonth`,
       { params: params }
