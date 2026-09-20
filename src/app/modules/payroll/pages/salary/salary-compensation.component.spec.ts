@@ -9,6 +9,7 @@ describe('SalaryComponent EWF compensation classification', () => {
   let component: SalaryComponent;
   let payroll: any;
   let close: jasmine.Spy;
+  let modalEvents: {onOpen: Subject<Event>; onClose: Subject<Event>};
 
   beforeEach(() => {
     payroll = jasmine.createSpyObj('PayrollService', [
@@ -22,7 +23,7 @@ describe('SalaryComponent EWF compensation classification', () => {
       employeeSavings: 0, employerContribution: 0, requiresReview: false
     }));
     close = jasmine.createSpy('close');
-    const modalEvents = {onOpen: new Subject<Event>(), onClose: new Subject<Event>()};
+    modalEvents = {onOpen: new Subject<Event>(), onClose: new Subject<Event>()};
     const spinner = jasmine.createSpyObj('SpinnerHelper', ['showLoadingSpinner', 'hideLoadingSpinner']);
     component = new SalaryComponent(
       {params: of({id: 1, siteid: 1})} as any, {} as any, {} as any, new FormBuilder(),
@@ -37,6 +38,20 @@ describe('SalaryComponent EWF compensation classification', () => {
       bank_id: 1, bank_account: '123', income_compensation: '1000.00'
     });
   });
+
+  it('defaults eligible income compensation to zero for a new salary', () => {
+    expect(component.updateSalaryForm.get('ewf_eligible_income_compensation').value).toBe(0);
+  });
+
+  it('resets eligible income compensation to zero when the salary modal closes', fakeAsync(() => {
+    component.ngAfterViewInit();
+    component.updateSalaryForm.get('ewf_eligible_income_compensation').setValue(600);
+
+    modalEvents.onClose.next(new Event('close'));
+
+    expect(component.updateSalaryForm.get('ewf_eligible_income_compensation').value).toBe(0);
+    tick(1000);
+  }));
 
   ['-0.01', '1000.01', '0.001'].forEach(portion => {
     it('blocks saving an invalid/unclassified portion: ' + portion, () => {
