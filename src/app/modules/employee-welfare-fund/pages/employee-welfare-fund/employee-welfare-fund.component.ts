@@ -1,19 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as FileSaver from 'file-saver';
-import { Company } from 'src/app/core/models/company';
 import { EmployeeWelfareFundSummary } from 'src/app/core/models/payroll';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { PayrollService } from 'src/app/core/services/payroll.service';
-import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
   selector: 'app-employee-welfare-fund',
   templateUrl: './employee-welfare-fund.component.html',
   styleUrls: ['./employee-welfare-fund.component.scss']
 })
-export class EmployeeWelfareFundComponent implements OnInit {
-  companies: Company[] = [];
+export class EmployeeWelfareFundComponent {
+  private readonly companyId = 'GSF';
   employeeWelfareFundRows: EmployeeWelfareFundSummary[] = [];
   employeeWelfareFundProcessing = false;
   employeeWelfareFundError: string;
@@ -21,27 +19,16 @@ export class EmployeeWelfareFundComponent implements OnInit {
 
   employeeWelfareFundForm = this.fb.group({
     month_year: [undefined, [Validators.required]],
-    company_id: [undefined, [Validators.required]],
     submission_date: [new Date(), [Validators.required]]
   });
 
   constructor(
     private fb: FormBuilder,
     private moment: MomentHelper,
-    private payrollService: PayrollService,
-    private userService: UserService) {
+    private payrollService: PayrollService) {
     this.initializePayMonths(new Date());
     this.employeeWelfareFundForm.patchValue({
       month_year: this.monthYears[0].viewValue
-    });
-  }
-
-  ngOnInit() {
-    this.userService.getUserCompanies().subscribe(companies => {
-      this.companies = companies.filter(company => company.status);
-      if (this.companies.length > 0) {
-        this.employeeWelfareFundForm.patchValue({ company_id: this.companies[0].code });
-      }
     });
   }
 
@@ -96,7 +83,7 @@ export class EmployeeWelfareFundComponent implements OnInit {
       year: Number(period[0]),
       month: Number(period[1]),
       monthText: period[1],
-      companyId: this.employeeWelfareFundForm.get('company_id').value
+      companyId: this.companyId
     };
   }
 }

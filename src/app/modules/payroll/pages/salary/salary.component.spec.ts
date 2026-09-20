@@ -141,4 +141,13 @@ describe('SalaryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('shows backend welfare-fund errors for a nonparticipating employee', () => {
+    component.updateSalaryForm.patchValue({ is_employee_welfare_fund: false });
+    component.ewfPreviewError = 'Employee Welfare Fund rate schedule is empty.';
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('Employee Welfare Fund rate schedule is empty.');
+  });
 });
