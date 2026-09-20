@@ -12,7 +12,6 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { NEVER, of } from 'rxjs';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
 import { Papa } from 'ngx-papaparse';
-import { PayrollService } from 'src/app/core/services/payroll.service';
 import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
 import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
 import { UserService } from 'src/app/core/services/user.service';
@@ -70,13 +69,6 @@ describe('EmployeeReportComponent', () => {
           }
         },
         {
-          provide: PayrollService,
-          useValue: {
-            downloadEmployeeWelfareFundReport: () => NEVER,
-            getEmployeeWelfareFundSummary: () => NEVER
-          }
-        },
-        {
           provide: SpinnerHelper,
           useValue: { hideLoadingSpinner: () => undefined, showLoadingSpinner: () => undefined }
         },
@@ -92,7 +84,6 @@ describe('EmployeeReportComponent', () => {
             getCountUserByMonthYear: () => NEVER,
             getUserByDateRange: () => NEVER,
             getUserByMonthYear: () => NEVER,
-            getUserCompanies: () => NEVER,
             getUserNotCheckedInByDateRange: () => NEVER
           }
         }
@@ -116,5 +107,15 @@ describe('EmployeeReportComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('keeps the other reports after Employee Welfare Fund moves to its dedicated page', () => {
+    const pageText = fixture.nativeElement.textContent;
+
+    expect(pageText).not.toContain('กองทุนสงเคราะห์ลูกจ้าง');
+    expect(pageText).toContain('พนักงานในระบบ');
+    expect(pageText).toContain('พนักงานสมัคร/ลาออก');
+    expect(pageText).toContain('พนักงานไม่ทำงานติดต่อกัน 7 วัน');
+    expect(pageText).toContain('พนักงานควงกะ');
   });
 });
