@@ -2,8 +2,13 @@ const { app, BrowserWindow, Menu, ipcMain, shell } = require("electron");
 const { autoUpdater } = require("electron-updater");
 const fs = require("fs");
 const os = require("os");
-const url = require("url");
 const path = require("path");
+const {
+  buildRendererUrl,
+  isDevelopmentRenderer,
+} = require("./electron-renderer-url");
+
+const developmentRenderer = isDevelopmentRenderer(process.env);
 
 let win, winTwo, winThree, winReport, winCertificate;
 
@@ -27,9 +32,19 @@ const mainMenuTemplate = [
   },
 ];
 
+function createBrowserWindow(options) {
+  const windowOptions = Object.assign({}, options);
+  windowOptions.webPreferences = Object.assign({}, options.webPreferences);
+  if (developmentRenderer) {
+    windowOptions.webPreferences.webSecurity = false;
+    windowOptions.webPreferences.preload = path.join(__dirname, "electron-preload.js");
+  }
+  return new BrowserWindow(windowOptions);
+}
+
 function createWindow() {
   // Create the browser window
-  win = new BrowserWindow({
+  win = createBrowserWindow({
     width: 1280,
     height: 800,
     minWidth: 1280,
@@ -45,13 +60,7 @@ function createWindow() {
 
   // win.loadFile('dist/index.html')
 
-  win.loadURL(
-    url.format({
-      pathname: path.join(__dirname, `/dist/index.html`),
-      protocol: "file:",
-      slashes: true,
-    })
-  );
+  win.loadURL(buildRendererUrl());
 
   // Build menu from template
   const mainMenu = Menu.buildFromTemplate(mainMenuTemplate);
@@ -77,7 +86,9 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.on("ready", () => {
   createWindow();
-  autoUpdater.checkForUpdatesAndNotify();
+  if (!developmentRenderer) {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
 });
 
 // Quit when all windows are closed.
@@ -123,7 +134,7 @@ ipcMain.on("read-card", (event) => {
 });
 
 ipcMain.on("view-user", (event, empNo) => {
-  winTwo = new BrowserWindow({
+  winTwo = createBrowserWindow({
     width: 800,
     height: 1024,
     minWidth: 800,
@@ -137,9 +148,7 @@ ipcMain.on("view-user", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winTwo.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/detail/${empNo}`
-  );
+  winTwo.loadURL(buildRendererUrl(`/employee/detail/${empNo}`));
   winTwo.once("ready-to-show", () => {
     winTwo.show();
     // winTwo.webContents.openDevTools()
@@ -147,7 +156,7 @@ ipcMain.on("view-user", (event, empNo) => {
 });
 
 ipcMain.on("view-document", (event, empNo, documentId) => {
-  winThree = new BrowserWindow({
+  winThree = createBrowserWindow({
     width: 1024,
     height: 1024,
     minWidth: 1024,
@@ -161,9 +170,7 @@ ipcMain.on("view-document", (event, empNo, documentId) => {
       nodeIntegration: true,
     },
   });
-  winThree.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/document/${documentId}`
-  );
+  winThree.loadURL(buildRendererUrl(`/employee/${empNo}/document/${documentId}`));
   winThree.once("ready-to-show", () => {
     winThree.show();
     // winThree.webContents.openDevTools()
@@ -171,7 +178,7 @@ ipcMain.on("view-document", (event, empNo, documentId) => {
 });
 
 ipcMain.on("view-employee-transfer", (event, empNo) => {
-  winEmployeeTransfer = new BrowserWindow({
+  winEmployeeTransfer = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -185,9 +192,7 @@ ipcMain.on("view-employee-transfer", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winEmployeeTransfer.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-transfer`
-  );
+  winEmployeeTransfer.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-transfer`));
   winEmployeeTransfer.once("ready-to-show", () => {
     winEmployeeTransfer.show();
     // winEmployeeTransfer.webContents.openDevTools()
@@ -195,7 +200,7 @@ ipcMain.on("view-employee-transfer", (event, empNo) => {
 });
 
 ipcMain.on("view-payslip", (event, payrollCycleId, siteId) => {
-  winPayslip = new BrowserWindow({
+  winPayslip = createBrowserWindow({
     width: 826,
     height: 1169,
     minWidth: 826,
@@ -209,9 +214,7 @@ ipcMain.on("view-payslip", (event, payrollCycleId, siteId) => {
       nodeIntegration: true,
     },
   });
-  winPayslip.loadURL(
-    `file://${__dirname}/dist/index.html#/payroll/${payrollCycleId}/site/${siteId}/payslip`
-  );
+  winPayslip.loadURL(buildRendererUrl(`/payroll/${payrollCycleId}/site/${siteId}/payslip`));
   winPayslip.once("ready-to-show", () => {
     winPayslip.show();
     // winPayslip.webContents.openDevTools()
@@ -219,7 +222,7 @@ ipcMain.on("view-payslip", (event, payrollCycleId, siteId) => {
 });
 
 ipcMain.on("view-employee-profile", (event, empNo) => {
-  winEmployeeProfile = new BrowserWindow({
+  winEmployeeProfile = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -233,16 +236,14 @@ ipcMain.on("view-employee-profile", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winEmployeeProfile.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-profile`
-  );
+  winEmployeeProfile.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-profile`));
   winEmployeeProfile.once("ready-to-show", () => {
     winEmployeeProfile.show();
   });
 });
 
 ipcMain.on("view-employee-profile-mini", (event, empNo) => {
-  winEmployeeProfileMini = new BrowserWindow({
+  winEmployeeProfileMini = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -256,16 +257,14 @@ ipcMain.on("view-employee-profile-mini", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winEmployeeProfileMini.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-profile-mini`
-  );
+  winEmployeeProfileMini.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-profile-mini`));
   winEmployeeProfileMini.once("ready-to-show", () => {
     winEmployeeProfileMini.show();
   });
 });
 
 ipcMain.on("view-employee-license", (event, empNo) => {
-  winEmployeeLicense = new BrowserWindow({
+  winEmployeeLicense = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -279,16 +278,14 @@ ipcMain.on("view-employee-license", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winEmployeeLicense.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-license`
-  );
+  winEmployeeLicense.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-license`));
   winEmployeeLicense.once("ready-to-show", () => {
     winEmployeeLicense.show();
   });
 });
 
 ipcMain.on("view-employee-card", (event, empNo) => {
-  winEmployeeCard = new BrowserWindow({
+  winEmployeeCard = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -303,9 +300,7 @@ ipcMain.on("view-employee-card", (event, empNo) => {
     },
   });
 
-  winEmployeeCard.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-card`
-  );
+  winEmployeeCard.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-card`));
   winEmployeeCard.once("ready-to-show", () => {
     winEmployeeCard.show();
     // winEmployeeCard.webContents.openDevTools()
@@ -313,7 +308,7 @@ ipcMain.on("view-employee-card", (event, empNo) => {
 });
 
 ipcMain.on("view-working-site-report", (event, siteId, year, month) => {
-  winWorkingSiteReport = new BrowserWindow({
+  winWorkingSiteReport = createBrowserWindow({
     width: 1562,
     height: 1068,
     minWidth: 1562,
@@ -328,9 +323,9 @@ ipcMain.on("view-working-site-report", (event, siteId, year, month) => {
     },
   });
 
-  winWorkingSiteReport.loadURL(
-    `file://${__dirname}/dist/index.html#/time-attendance/working-site/${siteId}/year/${year}/month/${month}/report`
-  );
+  winWorkingSiteReport.loadURL(buildRendererUrl(
+    `/time-attendance/working-site/${siteId}/year/${year}/month/${month}/report`
+  ));
   winWorkingSiteReport.once("ready-to-show", () => {
     winWorkingSiteReport.show();
     // winWorkingSiteReport.webContents.openDevTools()
@@ -338,7 +333,7 @@ ipcMain.on("view-working-site-report", (event, siteId, year, month) => {
 });
 
 ipcMain.on("view-working-site-nolate-report", (event, siteId, year, month) => {
-  winWorkingSiteNolateReport = new BrowserWindow({
+  winWorkingSiteNolateReport = createBrowserWindow({
     width: 1562,
     height: 1068,
     minWidth: 1562,
@@ -353,9 +348,9 @@ ipcMain.on("view-working-site-nolate-report", (event, siteId, year, month) => {
     },
   });
 
-  winWorkingSiteNolateReport.loadURL(
-    `file://${__dirname}/dist/index.html#/time-attendance/working-site-nolate/${siteId}/year/${year}/month/${month}/report`
-  );
+  winWorkingSiteNolateReport.loadURL(buildRendererUrl(
+    `/time-attendance/working-site-nolate/${siteId}/year/${year}/month/${month}/report`
+  ));
   winWorkingSiteNolateReport.once("ready-to-show", () => {
     winWorkingSiteNolateReport.show();
     // winWorkingSiteNolateReport.webContents.openDevTools()
@@ -363,7 +358,7 @@ ipcMain.on("view-working-site-nolate-report", (event, siteId, year, month) => {
 });
 
 ipcMain.on("view-employee-application-form", (event, empNo) => {
-  let winEmployeeApplicationForm = new BrowserWindow({
+  let winEmployeeApplicationForm = createBrowserWindow({
     width: 1068,
     height: 1562,
     minWidth: 1068,
@@ -377,16 +372,16 @@ ipcMain.on("view-employee-application-form", (event, empNo) => {
       nodeIntegration: true,
     },
   });
-  winEmployeeApplicationForm.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-application-form`
-  );
+  winEmployeeApplicationForm.loadURL(buildRendererUrl(
+    `/employee/${empNo}/report/employee-application-form`
+  ));
   winEmployeeApplicationForm.once("ready-to-show", () => {
     winEmployeeApplicationForm.show();
   });
 });
 
 ipcMain.on("view-employee-certificate-report", (event, empNo) => {
-  winCertificate = new BrowserWindow({
+  winCertificate = createBrowserWindow({
     width: 1562,
     height: 1068,
     minWidth: 1562,
@@ -401,9 +396,7 @@ ipcMain.on("view-employee-certificate-report", (event, empNo) => {
     },
   });
 
-  winCertificate.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/${empNo}/report/employee-certificate`
-  );
+  winCertificate.loadURL(buildRendererUrl(`/employee/${empNo}/report/employee-certificate`));
   winCertificate.once("ready-to-show", () => {
     winCertificate.show();
     // winCertificate.webContents.openDevTools()
@@ -464,9 +457,7 @@ ipcMain.on("print-to-pdf-landscape", (event) => {
 
 ipcMain.on("navigate-main-to-edit-employee", (event, empNo) => {
   const employeeUrl = "/employee";
-  win.loadURL(
-    `file://${__dirname}/dist/index.html#/employee/edit/${empNo}?backUrl=${employeeUrl}`
-  );
+  win.loadURL(buildRendererUrl(`/employee/edit/${empNo}?backUrl=${employeeUrl}`));
   win.show();
 });
 

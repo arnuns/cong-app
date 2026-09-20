@@ -3,10 +3,20 @@
 
 const childProcess = require('child_process');
 const fs = require('fs');
+const http = require('http');
+const net = require('net');
 const path = require('path');
+
+const {
+  DEV_SERVER_ENV,
+  DEV_SERVER_URL
+} = require('../electron-renderer-url');
 
 const REQUIRED_NODE_VERSION = 'v12.22.12';
 const REQUIRED_NODE_ARCH = 'x64';
+const DEV_SERVER_HOST = '127.0.0.1';
+const DEV_SERVER_PORT = 4211;
+const DEV_SERVER_TIMEOUT_MS = 120000;
 
 function formatDuration(milliseconds) {
   return (milliseconds / 1000).toFixed(2) + 's';
@@ -27,6 +37,12 @@ function inspectElectron(repoRoot) {
 
   if (!executablePath || !fs.existsSync(executablePath)) {
     return { ok: false, reason: 'Electron executable is missing' };
+  }
+
+  try {
+    fs.accessSync(executablePath, fs.constants.X_OK);
+  } catch (error) {
+    return { ok: false, reason: 'Electron executable is not executable' };
   }
 
   const fileResult = childProcess.spawnSync('/usr/bin/file', [executablePath], {
@@ -66,6 +82,99 @@ function defaultChromeAvailable() {
   });
 }
 
+function defaultIsPortAvailable(host, port) {
+  return new Promise(function (resolve, reject) {
+    const server = net.createServer();
+    server.unref();
+    server.once('error', function (error) {
+      if (error.code === 'EADDRINUSE' || error.code === 'EACCES') {
+        resolve(false);
+        return;
+      }
+      reject(error);
+    });
+    server.listen({ host: host, port: port, exclusive: true }, function () {
+      server.close(function () {
+        resolve(true);
+      });
+    });
+  });
+}
+
+function defaultWaitForHttp(target, timeoutMs) {
+  const startedAt = Date.now();
+  let activeRequest = null;
+  let retryTimer = null;
+  let cancelled = false;
+  const promise = new Promise(function (resolve, reject) {
+    function attempt() {
+      if (cancelled) {
+        return;
+      }
+      let completed = false;
+      const request = http.get(target, function (response) {
+        if (activeRequest === request) {
+          activeRequest = null;
+        }
+        if (completed || cancelled) {
+          response.resume();
+          return;
+        }
+        completed = true;
+        response.resume();
+        if (response.statusCode === 200) {
+          resolve();
+          return;
+        }
+        retry();
+      });
+      activeRequest = request;
+
+      request.setTimeout(1000, function () {
+        request.destroy();
+      });
+      request.on('error', function () {
+        if (activeRequest === request) {
+          activeRequest = null;
+        }
+        if (completed || cancelled) {
+          return;
+        }
+        completed = true;
+        retry();
+      });
+    }
+
+    function retry() {
+      if (cancelled) {
+        return;
+      }
+      if (Date.now() - startedAt >= timeoutMs) {
+        reject(new Error('Angular dev server did not return HTTP 200 within 120 seconds.'));
+        return;
+      }
+      retryTimer = setTimeout(attempt, 250);
+    }
+
+    attempt();
+  });
+
+  return {
+    promise: promise,
+    cancel: function () {
+      cancelled = true;
+      if (retryTimer) {
+        clearTimeout(retryTimer);
+        retryTimer = null;
+      }
+      if (activeRequest) {
+        activeRequest.destroy();
+        activeRequest = null;
+      }
+    }
+  };
+}
+
 function createCli(overrides) {
   const supplied = overrides || {};
   const dependencies = {
@@ -79,7 +188,11 @@ function createCli(overrides) {
     angularAvailable: supplied.angularAvailable || defaultAngularAvailable,
     chromeAvailable: supplied.chromeAvailable || defaultChromeAvailable,
     inspectElectron: supplied.inspectElectron || inspectElectron,
-    runSync: supplied.runSync || childProcess.spawnSync
+    runSync: supplied.runSync || childProcess.spawnSync,
+    spawn: supplied.spawn || childProcess.spawn,
+    isPortAvailable: supplied.isPortAvailable || defaultIsPortAvailable,
+    waitForHttp: supplied.waitForHttp || defaultWaitForHttp,
+    processRef: supplied.processRef || process
   };
 
   function write(stream, message) {
@@ -95,6 +208,17 @@ function createCli(overrides) {
       NO_UPDATE_NOTIFIER: '1'
     }, childOptions.env || {});
     return dependencies.runSync(command, args, childOptions);
+  }
+
+  function spawnChild(command, args, options) {
+    const childOptions = Object.assign({
+      cwd: dependencies.repoRoot,
+      stdio: 'inherit'
+    }, options || {});
+    childOptions.env = Object.assign({}, dependencies.env, {
+      NO_UPDATE_NOTIFIER: '1'
+    }, childOptions.env || {});
+    return dependencies.spawn(command, args, childOptions);
   }
 
   function requireSuccessful(result, description) {
@@ -271,6 +395,193 @@ function createCli(overrides) {
     return 0;
   }
 
+  function stopProcess(child) {
+    if (child && child.exitCode === null && !child.killed) {
+      child.kill('SIGTERM');
+    }
+  }
+
+  function superviseDevProcesses(server, electron) {
+    return new Promise(function (resolve) {
+      let settled = false;
+
+      function cleanup() {
+        server.removeListener('exit', onServerExit);
+        server.removeListener('error', onServerError);
+        electron.removeListener('exit', onElectronExit);
+        electron.removeListener('error', onElectronError);
+      }
+
+      function finish(exitCode, sibling) {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        stopProcess(sibling);
+        cleanup();
+        resolve(exitCode);
+      }
+
+      function signalExitCode(signal) {
+        if (signal === 'SIGINT') {
+          return 130;
+        }
+        if (signal === 'SIGTERM') {
+          return 143;
+        }
+        return 1;
+      }
+
+      function onServerExit(code, signal) {
+        if (signal) {
+          finish(signalExitCode(signal), electron);
+          return;
+        }
+        finish(code && code !== 0 ? code : 1, electron);
+      }
+
+      function onElectronExit(code, signal) {
+        finish(signal ? signalExitCode(signal) : (typeof code === 'number' ? code : 1), server);
+      }
+
+      function onServerError() {
+        finish(1, electron);
+      }
+
+      function onElectronError() {
+        finish(1, server);
+      }
+
+      server.once('exit', onServerExit);
+      server.once('error', onServerError);
+      electron.once('exit', onElectronExit);
+      electron.once('error', onElectronError);
+    });
+  }
+
+  function createDevSignalController(getChildren) {
+    let settled = false;
+    let resolveSignal;
+    const promise = new Promise(function (resolve) {
+      resolveSignal = resolve;
+    });
+
+    function finish(exitCode) {
+      if (settled) {
+        return;
+      }
+      settled = true;
+      getChildren().forEach(stopProcess);
+      resolveSignal(exitCode);
+    }
+
+    function onSigint() {
+      finish(130);
+    }
+
+    function onSigterm() {
+      finish(143);
+    }
+
+    dependencies.processRef.once('SIGINT', onSigint);
+    dependencies.processRef.once('SIGTERM', onSigterm);
+
+    return {
+      promise: promise,
+      cleanup: function () {
+        dependencies.processRef.removeListener('SIGINT', onSigint);
+        dependencies.processRef.removeListener('SIGTERM', onSigterm);
+      }
+    };
+  }
+
+  async function waitForAngular(server, signalPromise) {
+    let onExit;
+    let onError;
+    const waitResult = dependencies.waitForHttp(DEV_SERVER_URL, DEV_SERVER_TIMEOUT_MS);
+    const readinessPromise = waitResult && waitResult.promise ? waitResult.promise : waitResult;
+    const cancelReadiness = waitResult && waitResult.cancel ? waitResult.cancel : function () {};
+    const earlyFailure = new Promise(function (resolve, reject) {
+      onExit = function (code) {
+        reject(new Error('Angular dev server exited before it became ready (code ' + code + ').'));
+      };
+      onError = function (error) {
+        reject(new Error('Angular dev server failed to start: ' + error.message));
+      };
+      server.once('exit', onExit);
+      server.once('error', onError);
+    });
+    const interruption = signalPromise.then(function (exitCode) {
+      const error = new Error('Development session interrupted.');
+      error.exitCode = exitCode;
+      throw error;
+    });
+
+    try {
+      await Promise.race([
+        readinessPromise,
+        earlyFailure,
+        interruption
+      ]);
+    } finally {
+      cancelReadiness();
+      server.removeListener('exit', onExit);
+      server.removeListener('error', onError);
+    }
+  }
+
+  async function runDev() {
+    verifyRuntime();
+    verifyAngular();
+    const electronHealth = ensureElectron();
+    const portAvailable = await dependencies.isPortAvailable(DEV_SERVER_HOST, DEV_SERVER_PORT);
+    if (!portAvailable) {
+      throw new Error(
+        DEV_SERVER_HOST + ':' + DEV_SERVER_PORT +
+        ' is already in use. Stop that process or choose the existing development session.'
+      );
+    }
+
+    const angularPath = path.join(dependencies.repoRoot, 'node_modules', '.bin', 'ng');
+    write(dependencies.stdout, 'Starting Angular development server at ' + DEV_SERVER_URL + '...');
+    const server = spawnChild(angularPath, [
+      'serve',
+      '--host', DEV_SERVER_HOST,
+      '--port', String(DEV_SERVER_PORT),
+      '--open=false',
+      '--progress=false'
+    ]);
+    let electron = null;
+    const signals = createDevSignalController(function () {
+      return [server, electron];
+    });
+
+    try {
+      try {
+        await waitForAngular(server, signals.promise);
+      } catch (error) {
+        stopProcess(server);
+        if (error.exitCode) {
+          return error.exitCode;
+        }
+        throw error;
+      }
+
+      write(dependencies.stdout, 'Angular is ready. Launching Electron...');
+      const electronEnvironment = {};
+      electronEnvironment[DEV_SERVER_ENV] = DEV_SERVER_URL;
+      electron = spawnChild(electronHealth.executablePath, ['.'], {
+        env: electronEnvironment
+      });
+      return await Promise.race([
+        superviseDevProcesses(server, electron),
+        signals.promise
+      ]);
+    } finally {
+      signals.cleanup();
+    }
+  }
+
   function runHelp() {
     write(dependencies.stdout, [
       'Usage: cong-app-legacy <command>',
@@ -279,12 +590,13 @@ function createCli(overrides) {
       '  doctor          Check the pinned runtime and project dependencies',
       '  setup           Install exact dependencies and verify Electron',
       '  start           Build once and launch Electron',
+      '  dev             Run Angular live reload with Electron',
       '  test            Run the Angular unit tests',
       '  lint            Run TSLint',
       '  build-web       Create the production web build',
-      '  build-electron  Create the Windows Electron installer',
+      '  build-electron  Create the relative production Electron build',
       '  package-mac     Create the macOS Electron package',
-      '  deploy          Publish a GitHub release (requires GH_TOKEN)',
+      '  deploy          Publish a GitHub release (requires a GitHub token)',
       '  shell           Open a shell with Node 12.22.12 x64 active',
       '  help            Show this help'
     ].join('\n'));
@@ -299,6 +611,8 @@ function createCli(overrides) {
         return runSetup();
       case 'start':
         return runStart();
+      case 'dev':
+        return runDev();
       case 'test':
         verifyRuntime();
         verifyAngular();
@@ -320,6 +634,8 @@ function createCli(overrides) {
       case 'build-electron':
         return runProductionElectronBuild();
       case 'package-mac':
+        verifyRuntime();
+        verifyAngular();
         ensureElectron();
         runProductionElectronBuild();
         requireSuccessful(runChild('npm', ['run', 'package-mac']), 'npm run package-mac');
@@ -332,7 +648,10 @@ function createCli(overrides) {
       case 'shell':
         verifyRuntime();
         requireSuccessful(
-          runChild(dependencies.env.SHELL || '/bin/bash', [], { stdio: 'inherit' }),
+          runChild('/bin/bash', ['--noprofile', '--norc', '-i'], {
+            env: { PS1: '[cong-app Node 12.22.12 x64] \\W \\$ ' },
+            stdio: 'inherit'
+          }),
           'Shell'
         );
         return 0;

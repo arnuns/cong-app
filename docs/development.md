@@ -56,6 +56,7 @@ The bootstrap rejects any runtime other than Node `v12.22.12` with architecture 
 | --- | --- |
 | `cong-app-legacy doctor` | checks the runtime and dependencies without changing them |
 | `cong-app-legacy start` | checks Electron, attempts one `npm rebuild electron` when needed, then builds and launches Electron |
+| `cong-app-legacy dev` | starts Angular live reload on `127.0.0.1:4211`, waits for HTTP 200, then launches Electron |
 | `cong-app-legacy test` | runs Karma once with ChromeHeadless |
 | `cong-app-legacy lint` | runs TSLint and Codelyzer |
 | `cong-app-legacy build-web` | creates the production web build in `dist/`; does not package or publish |
@@ -68,7 +69,11 @@ Never use `deploy` merely to check whether a build passes. It requires explicit 
 
 `build-web` and `build-electron` share `dist/`; do not run them concurrently. The project's `npm run build` creates a Windows installer and is not the web-build verification command.
 
-### Web development server and focused commands
+### Live Electron development and focused commands
+
+Use `cong-app-legacy dev` for normal UI work. It keeps Angular source maps enabled, rebuilds changed files through the development server, and points every Electron window at the same loopback URL. Closing Electron or pressing Ctrl-C also stops the Angular server. The command refuses to start when port 4211 is occupied, so it never kills an unrelated process.
+
+Use `cong-app-legacy start` when validating the packaged `file://` behavior. It performs a complete Angular build before launching Electron and remains the fallback when a workflow behaves differently outside the development server.
 
 The current CLI does not forward extra arguments to subcommands. For example, `cong-app-legacy test --include=...` does not apply the expected filter. Enter the legacy shell and invoke project commands directly:
 
@@ -77,7 +82,7 @@ cong-app-legacy shell
 npm start
 ```
 
-The web development server uses `angular.json` and currently listens on port 4211.
+The direct web development server uses `angular.json` and currently listens on port 4211. It does not launch Electron or provide the CLI's coupled cleanup.
 
 Run a focused test inside the shell, for example:
 
@@ -103,6 +108,8 @@ Record the exact commands and outcomes. If the baseline has failures, list their
 - **repository or NVM not found:** check `REPO_PATH` and `NVM_SCRIPT` in the CLI; do not move the repository as a workaround unless required.
 - **Node is not installed / dependencies are not installed:** run `cong-app-legacy setup`.
 - **Electron failed to install correctly:** retry `cong-app-legacy start`; it attempts one visible `npm rebuild electron` before any Angular build. If the repair still fails, run `cong-app-legacy setup`.
+- **Port 4211 is already in use:** stop the existing development session or continue using it. The CLI reports the conflict and leaves the existing process untouched.
+- **Angular dev server never becomes ready:** inspect the Angular output above the timeout message. Electron launches only after `http://127.0.0.1:4211/` returns HTTP 200.
 - **expected x64 / Bad CPU type:** verify Rosetta 2 and the x64 Node installation; do not silently substitute arm64 Node.
 - **ChromeHeadless launch failed:** verify Google Chrome installation and launch permission; this is not a passing test result.
 - **Unknown option:** run `./node_modules/.bin/ng test --help` inside the legacy shell; the old CLI may not support current Angular options.
