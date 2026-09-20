@@ -125,7 +125,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
           this.employees = [];
           this.searching = false;
         } else {
-          this.userService.getUserFilter(val, null, "true", 'name', 'asc', 1, 12).subscribe(results => {
+          this.userService.getUserFilter(val, null, 'true', 'name', 'asc', 1, 12).subscribe(results => {
             if (results.data.length > 0) {
               this.employees = results.data.splice(0, 10);
             }
@@ -328,7 +328,9 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       leave_date: leaveDate ? leaveDate : undefined,
       checkin_time: new Date(timeAttendance.checkInTime),
       leave_time: timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined,
-      site_checkpoint_id: timeAttendance.timeAttendanceSiteCheckpoint ? timeAttendance.timeAttendanceSiteCheckpoint.siteCheckpointId : undefined
+      site_checkpoint_id: timeAttendance.timeAttendanceSiteCheckpoint
+        ? timeAttendance.timeAttendanceSiteCheckpoint.siteCheckpointId
+        : undefined
     });
     this.editForm.get('site_id').disable();
     this.editForm.get('work_date').disable();
@@ -459,8 +461,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
         this.spinner.hideLoadingSpinner(0);
       }, error => {
-        if (error.error === "Employee is inactive!") {
-          this.createTimeAttendanceError = "พบข้อผิดพลาด: สถานะพนักงานลาออก";  
+        if (error.error === 'Employee is inactive!') {
+          this.createTimeAttendanceError = 'พบข้อผิดพลาด: สถานะพนักงานลาออก';
         }
         this.spinner.hideLoadingSpinner(0);
       });

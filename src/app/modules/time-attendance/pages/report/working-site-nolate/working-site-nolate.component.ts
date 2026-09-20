@@ -1,24 +1,24 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { SpinnerHelper } from "src/app/core/helpers/spinner.helper";
-import { ElectronService } from "ngx-electron";
-import { TimeAttendanceService } from "src/app/core/services/time-attendance.service";
-import { ActivatedRoute } from "@angular/router";
-import { ApplicationStateService } from "src/app/core/services/application-state.service";
-import { environment } from "src/environments/environment";
-import { Site } from "src/app/core/models/site";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { ElectronService } from 'ngx-electron';
+import { TimeAttendanceService } from 'src/app/core/services/time-attendance.service';
+import { ActivatedRoute } from '@angular/router';
+import { ApplicationStateService } from 'src/app/core/services/application-state.service';
+import { environment } from 'src/environments/environment';
+import { Site } from 'src/app/core/models/site';
 import {
   WorkingSitePeriod,
   WorkingSiteMonthly,
   WorkingDaySummary,
   WorkingDay,
-} from "src/app/core/models/timeattendance";
-import { SiteService } from "src/app/core/services/site.service";
-import { combineLatest } from "rxjs";
+} from 'src/app/core/models/timeattendance';
+import { SiteService } from 'src/app/core/services/site.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
-  selector: "app-working-site-nolate",
-  templateUrl: "./working-site-nolate.component.html",
-  styleUrls: ["./working-site-nolate.component.scss"],
+  selector: 'app-working-site-nolate',
+  templateUrl: './working-site-nolate.component.html',
+  styleUrls: ['./working-site-nolate.component.scss'],
 })
 export class WorkingSiteNolateComponent implements OnDestroy, OnInit {
   public baseImagePath = environment.basePath;
@@ -47,22 +47,22 @@ export class WorkingSiteNolateComponent implements OnDestroy, OnInit {
   summaryManday = 0;
 
   thaiMonth = [
-    "มกราคม",
-    "กุมภาพันธ์",
-    "มีนาคม",
-    "เมษายน",
-    "พฤษภาคม",
-    "มิถุนายน",
-    "กรกฎาคม",
-    "สิงหาคม",
-    "กันยายน",
-    "ตุลาคม",
-    "พฤศจิกายน",
-    "ธันวาคม",
+    'มกราคม',
+    'กุมภาพันธ์',
+    'มีนาคม',
+    'เมษายน',
+    'พฤษภาคม',
+    'มิถุนายน',
+    'กรกฎาคม',
+    'สิงหาคม',
+    'กันยายน',
+    'ตุลาคม',
+    'พฤศจิกายน',
+    'ธันวาคม',
   ];
 
-  displayMonth = "";
-  displayYear = "";
+  displayMonth = '';
+  displayYear = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -72,16 +72,16 @@ export class WorkingSiteNolateComponent implements OnDestroy, OnInit {
     private siteService: SiteService,
     private timeAttendanceService: TimeAttendanceService
   ) {
-    document.body.style.backgroundColor = "#ffffff";
+    document.body.style.backgroundColor = '#ffffff';
     this.updateView();
   }
 
   ngOnInit() {
     this.spinner.showLoadingSpinner();
     this.activatedRoute.params.subscribe((params) => {
-      this.siteId = Number(params["siteid"]);
-      this.year = Number(params["year"]);
-      this.month = Number(params["month"]) - 1;
+      this.siteId = Number(params['siteid']);
+      this.year = Number(params['year']);
+      this.month = Number(params['month']) - 1;
       const buddhaYear = this.year + 543;
       this.displayYear = `${buddhaYear}`;
       this.displayMonth = this.thaiMonth[this.month];
@@ -189,7 +189,7 @@ export class WorkingSiteNolateComponent implements OnDestroy, OnInit {
         if (this.electronService.isElectronApp) {
           setTimeout(
             () =>
-              this.electronService.ipcRenderer.send("print-to-pdf-landscape"),
+              this.electronService.ipcRenderer.send('print-to-pdf-landscape'),
             1000
           );
         }
@@ -216,6 +216,6 @@ export class WorkingSiteNolateComponent implements OnDestroy, OnInit {
   }
 
   padZeroLeft(value: number): string {
-    return (value < 10 ? "0" : "") + value;
+    return (value < 10 ? '0' : '') + value;
   }
 }

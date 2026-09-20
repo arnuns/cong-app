@@ -14,7 +14,7 @@ import {SiteService} from 'src/app/core/services/site.service';
 import {UserService} from 'src/app/core/services/user.service';
 import {combineLatest, Subscription} from 'rxjs';
 import {SpinnerHelper} from 'src/app/core/helpers/spinner.helper';
-import {NgxSmartModalService,NgxSmartModalComponent } from 'ngx-smart-modal';
+import {NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
 
 @Component({
   selector: 'app-edit-employee',
@@ -459,8 +459,8 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
           license_start_date: this.user.licenseStartDate ? this.convertToDate(this.user.licenseStartDate) : null,
           license_end_date: this.user.licenseEndDate ? this.convertToDate(this.user.licenseEndDate) : null,
           certificate_no: this.user.certificateNo ? this.user.certificateNo : '',
-          certificate_start_date: this.user.certificateStartDate ? this.convertToDate(this.user.certificateStartDate): null,
-          certificate_end_date: this.user.certificateEndDate ? this.convertToDate(this.user.certificateEndDate): null,
+          certificate_start_date: this.user.certificateStartDate ? this.convertToDate(this.user.certificateStartDate) : null,
+          certificate_end_date: this.user.certificateEndDate ? this.convertToDate(this.user.certificateEndDate) : null,
           register_date: this.user.registerOn ? this.convertToDate(this.user.registerOn) : new Date(),
           start_date: this.user.startDate ? this.convertToDate(this.user.startDate) : null,
           end_date: this.user.endDate ? this.convertToDate(this.user.endDate) : null,
@@ -892,7 +892,7 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   checkExistingDocument(docType: string) {
-    let isExist = false;
+    const isExist = false;
     if (this.user.documents.length > 0) {
       return this.user.documents.some(doc => doc.type.toLowerCase() === docType.toLowerCase());
     }
@@ -909,5 +909,5 @@ export class EditEmployeeComponent implements OnDestroy, OnInit, AfterViewInit {
       docType: docType
     }, true);
     this.ngxSmartModalService.getModal('confirmNewModal').open();
-  } 
+  }
 }

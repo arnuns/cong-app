@@ -16,7 +16,7 @@ import html2canvas from 'html2canvas';
 })
 export class EmployeeCertificateComponent implements OnInit {
   public baseImagePath = environment.basePath;
-  certificateNo: string = '๖๒๕๖๗๗๙';
+  certificateNo = '๖๒๕๖๗๗๙';
   empNo: number;
   user: User;
   imageProfile: string;
@@ -57,7 +57,7 @@ export class EmployeeCertificateComponent implements OnInit {
         this.spinner.hideLoadingSpinner(0);
       }, () => {
         const convertImage = (imgUrl, callBack) => {
-          let img = new Image();
+          const img = new Image();
           img.crossOrigin = 'anonymous';
           img.addEventListener('load', () => {
             const canvas = document.createElement('canvas');
@@ -66,7 +66,9 @@ export class EmployeeCertificateComponent implements OnInit {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             const dataUrl = canvas.toDataURL();
-            callBack && callBack(dataUrl);
+            if (callBack) {
+              callBack(dataUrl);
+            }
           });
           img.src = imgUrl;
         };
@@ -88,10 +90,10 @@ export class EmployeeCertificateComponent implements OnInit {
     const imageProfile = this.imageProfile;
     if (imageProfile) {
       html2canvas(document.querySelector('#certificate-employee')).then(canvas => {
-        const contentDataURL = canvas.toDataURL('image/png')
-        let pdf = new jsPDF('l', 'pt', 'a4');
-        var width = pdf.internal.pageSize.getWidth();
-        var height = pdf.internal.pageSize.getHeight();
+        const contentDataURL = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('l', 'pt', 'a4');
+        const width = pdf.internal.pageSize.getWidth();
+        const height = pdf.internal.pageSize.getHeight();
         pdf.addImage(contentDataURL, 'PNG', 0, 0, width, height);
         pdf.addImage(imageProfile, 'PNG', 95, 250, 100, 128);
         pdf.save(`cong_${this.empNo}_certificate_${+new Date()}.pdf`); // Generated PDF

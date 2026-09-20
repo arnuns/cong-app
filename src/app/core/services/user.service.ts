@@ -153,7 +153,7 @@ export class UserService extends BaseService {
   }
 
   getImageAsBlob(url: string): Observable<Blob> {
-    return this.http.get(url, { responseType: 'blob' })
+    return this.http.get(url, { responseType: 'blob' });
   }
 
   downloadEmployeeDocument(empNo: number, documentId: number, fileName: string) {

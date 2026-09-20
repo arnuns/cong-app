@@ -1,4 +1,4 @@
-import { PageFilter } from "./page-filter.model";
+import { PageFilter } from './page-filter.model';
 
 export interface UserIncomeTax {
     id: number;

@@ -21,7 +21,7 @@ import { NgxSmartModalService, NgxSmartModalComponent } from 'ngx-smart-modal';
   styleUrls: ['./edit-site.component.scss']
 })
 export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
-  isFirstLoad = true; 
+  isFirstLoad = true;
   public defaultImagePath = environment.basePath;
   siteId: number;
   site: Site;
@@ -210,7 +210,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
         } else {
           id = undefined;
         }
-  
+
         return {
           id: id,  // ใช้ค่าที่ตรวจสอบแล้ว
           siteId: undefined,
@@ -350,7 +350,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     const siteWorkRateForms = this.siteWorkRateForms.at(index);
 
     if (workerCountValue && workerCountValue <= 0) {
-      siteWorkRateForms.patchValue({ worker_count: 1 })
+      siteWorkRateForms.patchValue({ worker_count: 1 });
     }
   }
 
@@ -358,7 +358,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     if (!time) {
         return '';
     }
-    
+
     // ถ้า time เป็น string ในรูปแบบ HH:mm:ss ให้แปลงเป็น Date ที่ถูกต้องก่อน
     if (typeof time === 'string' && time.match(/^\d{2}:\d{2}:\d{2}$/)) {
         const [hours, minutes, seconds] = time.split(':').map(Number);
@@ -373,7 +373,7 @@ export class EditSiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
 
 addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
-  const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate => 
+  const timeRangeOptions = this.siteWorkRateForms.controls.map(workRate =>
       this.formatTime(workRate.get('start_time').value) + ' - ' + this.formatTime(workRate.get('end_time').value)
   );
 
@@ -417,7 +417,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
 
       // กำหนดค่า time range เริ่มต้นหากยังไม่มีข้อมูล siteWorkRate
       if (this.siteWorkRateForms.controls.length === 0) {
-          let d = new Date();
+          const d = new Date();
           siteCheckpointForm.patchValue({
               start_time: this.moment.format(d, 'HH:mm:ss'),
               end_time: this.moment.format(d, 'HH:mm:ss'),
@@ -457,7 +457,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     const siteCheckpointForms = this.siteCheckpointForms.at(index);
 
     if (workerCountValue && workerCountValue <= 0) {
-      siteCheckpointForms.patchValue({ worker_count: 1 })
+      siteCheckpointForms.patchValue({ worker_count: 1 });
     }
   }
 
@@ -501,8 +501,10 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
   get alertSiteCheckpoint(): boolean {
     let isAlert = false;
     if (this.siteCheckpointForms.controls.length > 0) {
-      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
-      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c =>
+        this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss'));
+      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c =>
+        this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss'));
       if (siteCheckpointTimes.filter(c => !siteWorkRateTimes.includes(c)).length > 0) {
         isAlert = true;
       }
@@ -513,11 +515,11 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
   get alertOverWorkerCountAtSiteCheckpoint(): boolean {
     let isAlert = false;
 
-    let siteWorkRateMapAndSumWorkerCount = {};
+    const siteWorkRateMapAndSumWorkerCount = {};
     if (this.siteWorkRateForms.controls.length > 0) {
       this.siteWorkRateForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
-        
+
         if (!siteWorkRateMapAndSumWorkerCount[key]) {
           siteWorkRateMapAndSumWorkerCount[key] = {
             startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
@@ -530,10 +532,10 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
     }
 
     if (this.siteCheckpointForms.controls.length > 0) {
-      let siteCheckpointMapAndSumWorkerCount = {};
+      const siteCheckpointMapAndSumWorkerCount = {};
       this.siteCheckpointForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
-        
+
         if (!siteCheckpointMapAndSumWorkerCount[key]) {
           siteCheckpointMapAndSumWorkerCount[key] = {
             startTime: this.moment.format(element.get('start_time').value, 'HH:mm:ss'),
@@ -547,13 +549,13 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
       // Validate worker counts
       for (const key in siteCheckpointMapAndSumWorkerCount) {
         if (siteCheckpointMapAndSumWorkerCount.hasOwnProperty(key)) {
-          if (this.isNullOrUndefined(key) || key === "Invalid date-Invalid date") {
+          if (this.isNullOrUndefined(key) || key === 'Invalid date-Invalid date') {
             continue;
           }
-      
+
           const checkpointData = siteCheckpointMapAndSumWorkerCount[key];
           const workRateData = siteWorkRateMapAndSumWorkerCount[key];
-      
+
           // If there's a matching work rate record, compare the worker counts
           if (workRateData && checkpointData.workerCount > workRateData.workerCount) {
             isAlert = true;
@@ -584,7 +586,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
       isSuccess: false,
     }, true);
     this.ngxSmartModalService.getModal('confirmNewModal').open();
-  }  
+  }
 
   onDeactivateClick() {
     this.deactivateError = false;
@@ -618,7 +620,7 @@ addSiteCheckpoint(siteCheckpoints: SiteCheckpoint[] = null) {
       this.spinner.hideLoadingSpinner(0);
     }, error => {
       this.ngxSmartModalService.getModal('confirmNewModal').setData(null, true);
-      if (error.error === "Site has active user!") {
+      if (error.error === 'Site has active user!') {
         this.deactivateError = true;
       }
       this.spinner.hideLoadingSpinner(0);

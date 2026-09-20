@@ -10,7 +10,9 @@ export class StorageUrlPipe implements PipeTransform {
         this.storageBucketUrl = environment.storageBucketUrl;
     }
     transform(value: string) {
-        if (value.includes(this.storageBucketUrl)) return value;
+        if (value.includes(this.storageBucketUrl)) {
+            return value;
+        }
         return `${this.storageBucketUrl}/${value}`;
     }
 

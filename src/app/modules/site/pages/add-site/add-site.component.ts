@@ -288,7 +288,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     const siteWorkRateForms = this.siteWorkRateForms.at(index);
 
     if (workerCountValue && workerCountValue <= 0) {
-      siteWorkRateForms.patchValue({ worker_count: 1 })
+      siteWorkRateForms.patchValue({ worker_count: 1 });
     }
   }
 
@@ -338,7 +338,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
 
       // หากไม่มีข้อมูลในฟอร์ม SiteWorkRate เลยให้กำหนดค่าเริ่มต้นเป็นปัจจุบัน
       if (this.siteWorkRateForms.controls.length === 0) {
-        let d = new Date();
+        const d = new Date();
         siteCheckpointForm.patchValue({
           start_time: this.moment.format(d, 'HH:mm:ss'),
           end_time: this.moment.format(d, 'HH:mm:ss'),
@@ -373,7 +373,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     const siteCheckpointForms = this.siteCheckpointForms.at(index);
 
     if (workerCountValue && workerCountValue <= 0) {
-      siteCheckpointForms.patchValue({ worker_count: 1 })
+      siteCheckpointForms.patchValue({ worker_count: 1 });
     }
   }
 
@@ -420,8 +420,10 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
   get alertSiteCheckpoint(): boolean {
     let isAlert = false;
     if (this.siteCheckpointForms.controls.length > 0) {
-      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
-      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c => (this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss')));
+      const siteWorkRateTimes = this.siteWorkRateForms.controls.map(c =>
+        this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss'));
+      const siteCheckpointTimes = this.siteCheckpointForms.controls.map(c =>
+        this.moment.format(c.get('start_time').value, 'HH:mm:ss') + this.moment.format(c.get('end_time').value, 'HH:mm:ss'));
       if (siteCheckpointTimes.filter(c => !siteWorkRateTimes.includes(c)).length > 0) {
         isAlert = true;
       }
@@ -432,7 +434,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
   get alertOverWorkerCountAtSiteCheckpoint(): boolean {
     let isAlert = false;
 
-    let siteWorkRateMapAndSumWorkerCount = {};
+    const siteWorkRateMapAndSumWorkerCount = {};
     if (this.siteWorkRateForms.controls.length > 0) {
       this.siteWorkRateForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
@@ -449,7 +451,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
     }
 
     if (this.siteCheckpointForms.controls.length > 0) {
-      let siteCheckpointMapAndSumWorkerCount = {};
+      const siteCheckpointMapAndSumWorkerCount = {};
       this.siteCheckpointForms.controls.forEach(element => {
         const key = `${this.moment.format(element.get('start_time').value, 'HH:mm:ss')}-${this.moment.format(element.get('end_time').value, 'HH:mm:ss')}`;
 
@@ -466,7 +468,7 @@ export class AddSiteComponent implements OnDestroy, OnInit, AfterViewInit {
       // Validate worker counts
       for (const key in siteCheckpointMapAndSumWorkerCount) {
         if (siteCheckpointMapAndSumWorkerCount.hasOwnProperty(key)) {
-          if (this.isNullOrUndefined(key) || key === "Invalid date-Invalid date") {
+          if (this.isNullOrUndefined(key) || key === 'Invalid date-Invalid date') {
             continue;
           }
 

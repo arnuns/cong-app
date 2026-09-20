@@ -4,31 +4,31 @@ import {
   OnDestroy,
   OnInit,
   ViewChild,
-} from "@angular/core";
-import { FormBuilder } from "@angular/forms";
-import { DataTableDirective } from "angular-datatables";
-import { Papa } from "ngx-papaparse";
-import { NgxSmartModalService } from "ngx-smart-modal";
-import { Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
-import { MomentHelper } from "src/app/core/helpers/moment.helper";
-import { SpinnerHelper } from "src/app/core/helpers/spinner.helper";
-import { Site } from "src/app/core/models/site";
+} from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+import { DataTableDirective } from 'angular-datatables';
+import { Papa } from 'ngx-papaparse';
+import { NgxSmartModalService } from 'ngx-smart-modal';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { MomentHelper } from 'src/app/core/helpers/moment.helper';
+import { SpinnerHelper } from 'src/app/core/helpers/spinner.helper';
+import { Site } from 'src/app/core/models/site';
 import {
   UserIncomTaxFilter,
   UserIncomeTax,
-} from "src/app/core/models/user-income-tax.model";
-import { ApplicationStateService } from "src/app/core/services/application-state.service";
-import { PayrollService } from "src/app/core/services/payroll.service";
-import { SiteService } from "src/app/core/services/site.service";
-import { UserService } from "src/app/core/services/user.service";
-import * as FileSaver from "file-saver";
-import { environment } from "src/environments/environment";
+} from 'src/app/core/models/user-income-tax.model';
+import { ApplicationStateService } from 'src/app/core/services/application-state.service';
+import { PayrollService } from 'src/app/core/services/payroll.service';
+import { SiteService } from 'src/app/core/services/site.service';
+import { UserService } from 'src/app/core/services/user.service';
+import * as FileSaver from 'file-saver';
+import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: "app-income-tax",
-  templateUrl: "./income-tax.component.html",
-  styleUrls: ["./income-tax.component.scss"],
+  selector: 'app-income-tax',
+  templateUrl: './income-tax.component.html',
+  styleUrls: ['./income-tax.component.scss'],
 })
 export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild(DataTableDirective, { static: false })
@@ -38,12 +38,12 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   sites: Site[] = [];
   userIncomeTaxes: UserIncomeTax[] = [];
   userIncomeTaxFilter: UserIncomTaxFilter;
-  filterSessionName = "userIncomeTaxFilter";
+  filterSessionName = 'userIncomeTaxFilter';
   incomeTaxForm = this.fb.group({
-    income_tax_type: ["ภงด1"],
+    income_tax_type: ['ภงด1'],
     month_name: [undefined],
     year_name: [undefined],
-    search: [""],
+    search: [''],
     site_id: [undefined],
   });
   dtTrigger = new Subject();
@@ -66,7 +66,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngAfterViewInit() {
     this.incomeTaxForm
-      .get("search")
+      .get('search')
       .valueChanges.pipe(debounceTime(400), distinctUntilChanged())
       .subscribe((val) => {
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -74,9 +74,9 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
         });
       });
 
-    this.incomeTaxForm.get("income_tax_type").valueChanges.subscribe((val) => {
-      if (String(val) === "ภงด1ก") {
-        this.incomeTaxForm.get("site_id").setValue(undefined);
+    this.incomeTaxForm.get('income_tax_type').valueChanges.subscribe((val) => {
+      if (String(val) === 'ภงด1ก') {
+        this.incomeTaxForm.get('site_id').setValue(undefined);
       }
     });
   }
@@ -117,10 +117,10 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   onExport() {
     this.spinner.showLoadingSpinner();
     const monthNameArray = this.userIncomeTaxFilter.monthName
-      ? this.userIncomeTaxFilter.monthName.split(",")
+      ? this.userIncomeTaxFilter.monthName.split(',')
       : undefined;
-    const isMonthly = this.userIncomeTaxFilter.incomeTaxType == "ภงด1";
-    let data = [];
+    const isMonthly = this.userIncomeTaxFilter.incomeTaxType === 'ภงด1';
+    const data = [];
     const payrollDate = isMonthly
       ? this.getLastDateOfMonth(
           Number(monthNameArray[0]),
@@ -159,44 +159,44 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
             .map((d, index) => ({
               fix01: this.padLeft(index + 1, 4),
               companyTax: environment.companyTax,
-              blank01: "401N",
-              blank02: "00000",
+              blank01: '401N',
+              blank02: '00000',
               employeeIdCardNumber: d.employeeIdCardNumber,
-              blank03: "",
+              blank03: '',
               title: d.employeeTitle,
               firstName: d.employeeFirstName,
               lastName: d.employeeLastName,
-              blank04: "",
-              blank05: "",
-              blank06: "",
-              dateOfMonth: this.moment.format(payrollDate, "MM"),
-              year: this.moment.format(payrollDate, "YYYY"),
-              fix02: "1",
-              payrollDate: this.moment.format(payrollDate, "DDMMYYYY"),
-              fix03: "100",
+              blank04: '',
+              blank05: '',
+              blank06: '',
+              dateOfMonth: this.moment.format(payrollDate, 'MM'),
+              year: this.moment.format(payrollDate, 'YYYY'),
+              fix02: '1',
+              payrollDate: this.moment.format(payrollDate, 'DDMMYYYY'),
+              fix03: '100',
               income: d.income.toFixed(2),
               tax: d.tax.toFixed(2),
-              fix04: "1",
-              address: d.employeeAddress ? d.employeeAddress : "",
-              road: d.employeeRoad ? d.employeeRoad : "",
-              subDistrict: d.employeeSubDistrict ? d.employeeSubDistrict : "",
-              district: d.employeeDistrict ? d.employeeDistrict : "",
-              province: d.employeeProvince ? d.employeeProvince : "",
-              zipCode: d.employeeZipCode ? d.employeeZipCode : "",
+              fix04: '1',
+              address: d.employeeAddress ? d.employeeAddress : '',
+              road: d.employeeRoad ? d.employeeRoad : '',
+              subDistrict: d.employeeSubDistrict ? d.employeeSubDistrict : '',
+              district: d.employeeDistrict ? d.employeeDistrict : '',
+              province: d.employeeProvince ? d.employeeProvince : '',
+              zipCode: d.employeeZipCode ? d.employeeZipCode : '',
             }));
           const csv = this.papa.unparse(csvData, {
-            delimiter: "|",
+            delimiter: '|',
             header: false,
           });
-          const BOM = "\uFEFF";
+          const BOM = '\uFEFF';
           const blob = new Blob([BOM + csv], {
-            type: "text/csv;charset=utf-8",
+            type: 'text/csv;charset=utf-8',
           });
           FileSaver.saveAs(
             blob,
             `income_tax_${
               this.userIncomeTaxFilter.incomeTaxType
-            }_${this.moment.format(new Date(), "YYYYMMDDHHmmss")}.csv`
+            }_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`
           );
           this.spinner.hideLoadingSpinner();
           // result.data;
@@ -218,45 +218,41 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
     const that = this;
     that.dtOptions = {
       autoWidth: false,
-      dom: "tr<'d-flex align-items-center w-100 mt-4'<l><'ml-auto pr-2'i><p>'>",
+      dom: 'tr<\'d-flex align-items-center w-100 mt-4\'<l><\'ml-auto pr-2\'i><p>\'>',
       lengthMenu: [50, 100, 200, 400],
       language: {
-        emptyTable: "<strong>0</strong> data(s) returned",
-        info: "Viewing <strong>_START_-_END_</strong> of <strong>_TOTAL_</strong>",
-        infoEmpty: "No data(s) to show",
-        infoFiltered: "",
-        infoPostFix: "",
-        lengthMenu: "_MENU_",
+        emptyTable: '<strong>0</strong> data(s) returned',
+        info: 'Viewing <strong>_START_-_END_</strong> of <strong>_TOTAL_</strong>',
+        infoEmpty: 'No data(s) to show',
+        infoFiltered: '',
+        infoPostFix: '',
+        lengthMenu: '_MENU_',
         paginate: {
-          first: "",
-          last: "",
-          next: "<img class='paging-arrow' src='assets/img/ico-arrow-right.png'>",
+          first: '',
+          last: '',
+          next: '<img class=\'paging-arrow\' src=\'assets/img/ico-arrow-right.png\'>',
           previous:
-            "<img class='paging-arrow' src='assets/img/ico-arrow-left.png'>",
+            '<img class=\'paging-arrow\' src=\'assets/img/ico-arrow-left.png\'>',
         },
       },
-      order: [[1, "asc"]],
+      order: [[1, 'asc']],
       pageLength: 50,
-      pagingType: "simple",
+      pagingType: 'simple',
       serverSide: true,
       processing: true,
       ajax: ({}: any, callback) => {
         this.datatableElement.dtInstance.then((dtInstance: DataTables.Api) => {
           const orders = Object.values(dtInstance.order()[0]);
           const sortBy = String(orders[1]);
-          let sortColumn = "name";
+          let sortColumn = 'name';
           if (orders[0] === 1) {
-            sortColumn = "name";
-          }
-          //  else if (orders[0] === 2) {
-          //   sortColumn = "payrollDate";
-          // }
-          else if (orders[0] === 2) {
-            sortColumn = "income";
+            sortColumn = 'name';
+          } else if (orders[0] === 2) {
+            sortColumn = 'income';
           } else if (orders[0] === 3) {
-            sortColumn = "tax";
+            sortColumn = 'tax';
           } else {
-            sortColumn = "idCardNo";
+            sortColumn = 'idCardNo';
           }
           const userIncomeTaxFilterString = localStorage.getItem(
             that.filterSessionName
@@ -276,28 +272,28 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
             dtInstance.page.len(storageUserIncomeTaxFillter.page_size);
             localStorage.removeItem(that.filterSessionName);
           }
-          const monthNameArray = that.incomeTaxForm.get("month_name").value
-            ? that.incomeTaxForm.get("month_name").value.split(",")
+          const monthNameArray = that.incomeTaxForm.get('month_name').value
+            ? that.incomeTaxForm.get('month_name').value.split(',')
             : undefined;
           that.userIncomeTaxFilter = {
-            incomeTaxType: that.incomeTaxForm.get("income_tax_type").value,
-            search: that.incomeTaxForm.get("search").value,
-            monthName: that.incomeTaxForm.get("month_name").value,
-            yearName: that.incomeTaxForm.get("year_name").value,
-            siteId: that.incomeTaxForm.get("site_id").value,
+            incomeTaxType: that.incomeTaxForm.get('income_tax_type').value,
+            search: that.incomeTaxForm.get('search').value,
+            monthName: that.incomeTaxForm.get('month_name').value,
+            yearName: that.incomeTaxForm.get('year_name').value,
+            siteId: that.incomeTaxForm.get('site_id').value,
             sort_column: sortColumn,
             sort_by: sortBy,
             page: dtInstance.page.info().page,
             page_size: dtInstance.page.info().length,
           };
-          const isMonthly = that.userIncomeTaxFilter.incomeTaxType == "ภงด1";
+          const isMonthly = that.userIncomeTaxFilter.incomeTaxType === 'ภงด1';
           that.payrollService
             .getUserIncomeTaxFilter(
               that.userIncomeTaxFilter.incomeTaxType,
               that.userIncomeTaxFilter.search,
               isMonthly
                 ? Number(monthNameArray[0])
-                : Number(that.incomeTaxForm.get("year_name").value),
+                : Number(that.incomeTaxForm.get('year_name').value),
               isMonthly ? Number(monthNameArray[1]) : undefined,
               that.userIncomeTaxFilter.siteId,
               that.userIncomeTaxFilter.sort_column,
@@ -328,11 +324,11 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
         });
       },
       columns: [
-        { width: "170px", orderable: false },
+        { width: '170px', orderable: false },
         null,
-        { width: "300px", orderable: false },
-        { width: "200px", orderable: false },
-        { width: "200px", orderable: false },
+        { width: '300px', orderable: false },
+        { width: '200px', orderable: false },
+        { width: '200px', orderable: false },
       ],
     };
   }
@@ -350,7 +346,7 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
           monthYear.year,
           monthYear.month - 1,
           1
-        ).toLocaleDateString("th-TH", { month: "long", year: "numeric" }),
+        ).toLocaleDateString('th-TH', { month: 'long', year: 'numeric' }),
         viewValue: `${monthYear.year},${monthYear.month}`,
       });
     });
@@ -367,22 +363,22 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   getMonthYearInLastNYears(date: Date, lastNYear: number) {
-    let months = [];
+    const months = [];
     const currentYear = date.getFullYear();
     const currentMonth = date.getMonth() + 1; // getMonth() returns 0-based month
-  
+
     // Add months of the current year up to the last month
     for (let i = currentMonth; i > 0; i--) {
       months.push({ month: i, year: currentYear });
     }
-  
+
     // Add months of the last 2 years
     for (let year = currentYear - 1; year >= currentYear - lastNYear; year--) {
       for (let month = 12; month > 0; month--) {
         months.push({ month, year });
       }
     }
-  
+
     return months;
   }
 
@@ -391,13 +387,13 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
     return nextMonthFirstDay;
   }
   getThaiDate(date) {
-    return new Date(date).toLocaleDateString("th-TH");
+    return new Date(date).toLocaleDateString('th-TH');
   }
 
   padLeft(
     value: string | number,
     desiredLength: number,
-    padCharacter: string = "0"
+    padCharacter: string = '0'
   ): string {
     let stringValue = String(value);
     while (stringValue.length < desiredLength) {
@@ -407,6 +403,6 @@ export class IncomeTaxComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   get IsMonthly() {
-    return this.incomeTaxForm.get("income_tax_type").value === "ภงด1";
+    return this.incomeTaxForm.get('income_tax_type').value === 'ภงด1';
   }
 }

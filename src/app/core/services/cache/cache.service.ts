@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Observable, of } from 'rxjs';
+import { Subject, Observable, of, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 interface CacheContent {
@@ -40,7 +40,7 @@ export class CacheService {
       console.log(`%c Calling api for ${key}`, 'color: purple');
       return fallback.pipe(tap((value) => { this.set(key, value, maxAge); }));
     } else {
-      return Observable.throw('Requested key is not available in Cache');
+      return throwError('Requested key is not available in Cache');
     }
 
   }

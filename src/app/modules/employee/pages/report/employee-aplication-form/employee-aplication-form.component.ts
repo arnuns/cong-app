@@ -212,7 +212,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
 
   getLanguageAbility(lang: string, ability: string): string {
     let result = '&nbsp;';
-    if (!this.user || this.user.languageAbilities.length <= 0) return result;
+    if (!this.user || this.user.languageAbilities.length <= 0) { return result; }
     const languageAbility = this.user.languageAbilities.filter(f => f.language === lang)[0];
     if (languageAbility) {
       switch (ability) {
@@ -243,12 +243,12 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
   }
 
   signatureName(user: User): string {
-    if (!user) return '';
+    if (!user) { return ''; }
     return `${user.title}${user.firstName} ${user.lastName}`;
   }
 
   getJobHistory(sequence: number): JobHistory {
-    if (!this.user || this.user.jobHistories.length <= 0) return null;
+    if (!this.user || this.user.jobHistories.length <= 0) { return null; }
     return this.user.jobHistories.filter(j => j.seq === sequence)[0];
   }
 
@@ -262,7 +262,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
    }
 
   toThaiDateString(date: Date): string {
-    if (!date) { return '' };
+    if (!date) { return ''; }
     date = new Date(date);
     return date ? `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear() + 543}` : '';
   }

@@ -65,7 +65,7 @@ export class EmployeeReportComponent implements OnInit {
     date_range: [null, [Validators.required]]
   });
   empNotCheckedIn7DaysReportProcessing = false;
-  empNotCheckedIn7DaysReportFormAlert = undefined
+  empNotCheckedIn7DaysReportFormAlert = undefined;
   empNotCheckedIn7DaysReport: {
     employeeCount: number,
     data: User[]
@@ -78,7 +78,7 @@ export class EmployeeReportComponent implements OnInit {
     date_range: [null, [Validators.required]]
   });
   empConsecutiveWorkingDaysReportProcessing = false;
-  empConsecutiveWorkingDaysReportFormAlert = undefined
+  empConsecutiveWorkingDaysReportFormAlert = undefined;
   empConsecutiveWorkingDaysReport: {
     employeeCount: number,
     data: ConsecutiveTimeAttendance[]
@@ -273,7 +273,7 @@ export class EmployeeReportComponent implements OnInit {
 
   getEmployeeConsecutiveWorkingDaysByDateRange(startDate: Date, endDate: Date) {
     this.empConsecutiveWorkingDaysReportProcessing = true;
-    var groupBy = function(xs, key) {
+    const groupBy = function(xs, key) {
       return xs.reduce(function(rv, x) {
         rv[x[key]] = rv[x[key]] || [];
         rv[x[key]].push(x);
@@ -370,10 +370,10 @@ export class EmployeeReportComponent implements OnInit {
         'วันที่ยื่นเข้าประกันสังคม': !u.socialSecurityStartDate ? '' : this.convertToDateString(u.socialSecurityStartDate),
         'วันที่ยื่นออกประกันสังคม': !u.socialSecurityEndDate ? '' : this.convertToDateString(u.socialSecurityEndDate),
         'สถานพยาบาลประกันสังคม': u.hospital ? u.hospital.name : '',
-        'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}`: '',
+        'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}` : '',
         'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
         'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
-        'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}`: '',
+        'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}` : '',
         'ฝึกอบรมเมื่อวันที่': !u.certificateStartDate ? '' : this.convertToDateString(u.certificateStartDate),
         'ฝึกอบรมถึงวันที่': !u.certificateEndDate ? '' : this.convertToDateString(u.certificateEndDate),
     }));
@@ -426,10 +426,10 @@ export class EmployeeReportComponent implements OnInit {
         'วันที่ยื่นเข้าประกันสังคม': !u.socialSecurityStartDate ? '' : this.convertToDateString(u.socialSecurityStartDate),
         'วันที่ยื่นออกประกันสังคม': !u.socialSecurityEndDate ? '' : this.convertToDateString(u.socialSecurityEndDate),
         'สถานพยาบาลประกันสังคม': u.hospital ? u.hospital.name : '',
-        'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}`: '',
+        'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}` : '',
         'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
         'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
-        'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}`: '',
+        'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}` : '',
         'ฝึกอบรมเมื่อวันที่': !u.certificateStartDate ? '' : this.convertToDateString(u.certificateStartDate),
         'ฝึกอบรมถึงวันที่': !u.certificateEndDate ? '' : this.convertToDateString(u.certificateEndDate),
       }));
@@ -488,10 +488,10 @@ export class EmployeeReportComponent implements OnInit {
       'วันที่ยื่นเข้าประกันสังคม': !u.socialSecurityStartDate ? '' : this.convertToDateString(u.socialSecurityStartDate),
       'วันที่ยื่นออกประกันสังคม': !u.socialSecurityEndDate ? '' : this.convertToDateString(u.socialSecurityEndDate),
       'สถานพยาบาลประกันสังคม': u.hospital ? u.hospital.name : '',
-      'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}`: '',
+      'เลขที่ใบอนุญาต': u.licenseNo ? `'${u.licenseNo}` : '',
       'วันเริ่มต้นใบอนุญาต': !u.licenseStartDate ? '' : this.convertToDateString(u.licenseStartDate),
       'วันที่สิ้นสุดใบอนุญาต': !u.licenseEndDate ? '' : this.convertToDateString(u.licenseEndDate),
-      'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}`: '',
+      'เลขที่หนังสือรับรองการฝึกอบรม': u.certificateNo ? `'${u.certificateNo}` : '',
       'ฝึกอบรมเมื่อวันที่': !u.certificateStartDate ? '' : this.convertToDateString(u.certificateStartDate),
       'ฝึกอบรมถึงวันที่': !u.certificateEndDate ? '' : this.convertToDateString(u.certificateEndDate),
     }));
@@ -520,7 +520,7 @@ export class EmployeeReportComponent implements OnInit {
       FileSaver.saveAs(blob, `employee_consecutive_working_days_${this.moment.format(new Date(), 'YYYYMMDDHHmmss')}.csv`);
       this.spinner.hideLoadingSpinner();
   }
-  
+
   onDateRangeMax31DaysChange(dates: Date[]) {
     if (dates && dates.length === 2) {
       const [startDate, endDate] = dates;

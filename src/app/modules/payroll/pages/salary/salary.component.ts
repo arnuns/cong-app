@@ -434,9 +434,11 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       if (!val || isNaN(number)) {
         this.updateSalaryForm.get('annual_holiday').setValue(0);
       } else {
-        const hiringRatePerday = this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value).length > 0
-          ? Number(this.site.siteUserPositions.filter(s =>  s.userPositionId == this.updateSalaryForm.get('user_position_id').value)[0].hiringRatePerDay)
-          : 0;
+        const userPositionId = Number(this.updateSalaryForm.get('user_position_id').value);
+        const siteUserPosition = this.site.siteUserPositions.find(
+          position => Number(position.userPositionId) === userPositionId
+        );
+        const hiringRatePerday = siteUserPosition ? Number(siteUserPosition.hiringRatePerDay) : 0;
         this.updateSalaryForm.get('annual_holiday').setValue(number * hiringRatePerday);
       }
     });
@@ -591,8 +593,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
               is_default: siteSalary.isDefault,
               is_replacement_wage: isReplacementWage
             }));
-          }
-          else {
+          } else {
             this.siteForms.push(this.fb.group({
               id: siteSalary.siteId,
               site_code: siteSalary.siteCode,
@@ -603,7 +604,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
               is_replacement_wage: isReplacementWage
             }));
           }
-          
+
         });
         this.ngxSmartModalService.getModal('salaryModal').open();
       } else {
@@ -879,7 +880,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         createBy: null,
         updateOn: null,
         updateBy: null
-      })))
+      })));
     }
 
     const salary: Salary = {
@@ -1177,7 +1178,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   get socialSecurity() {
-    if (!this.updateSalaryForm.get('is_social_security').value) {return 0;}
+    if (!this.updateSalaryForm.get('is_social_security').value) {return 0; }
     let result = 0;
     let resultWage = 0;
     let resultManday = 0;
@@ -1185,7 +1186,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       ? this.siteForms.controls.filter(c => Boolean(c.get('is_default').value)).map(s => s.get('manday').value)
         .reduce((prevVal, val) => prevVal + val)
       : 0;
-    if (!this.site) {return 0;}
+    if (!this.site) {return 0; }
     const siteUserPosition = this.site.siteUserPositions.filter(r => r.userPositionId
       === this.updateSalaryForm.get('user_position_id').value)[0];
     const minimumManday = siteUserPosition ? siteUserPosition.minimumManday : 26;
@@ -1208,7 +1209,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       }
     }
     resultWage = (minimumWage * resultManday);
-    let defaultRate = 0.05;
+    const defaultRate = 0.05;
     let defaultMinimumAmount = 83;
     let defaultMaximumAmount = 750;
     const currentDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
@@ -1275,12 +1276,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   get summaryTotalManday() {
-    if (!this.salaries || this.salaries.length <= 0) {return 0;}
+    if (!this.salaries || this.salaries.length <= 0) {return 0; }
     return this.salaries.map(s => s.manday).reduce((a, b) => a + b, 0);
   }
 
   get summaryTotalAmount() {
-    if (!this.salaries || this.salaries.length <= 0) {return 0;}
+    if (!this.salaries || this.salaries.length <= 0) {return 0; }
     return this.salaries.map(s => s.totalAmount).reduce((a, b) => a + b, 0);
   }
 

@@ -59,7 +59,7 @@ export interface SiteCheckpoint {
     id: number;
     siteId: number;
     startTime: string;
-    timeRange? : string;
+    timeRange?: string;
     endTime: string;
     checkpointName: string;
     pointValue: number;
