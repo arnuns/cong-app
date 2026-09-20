@@ -6,14 +6,16 @@ Use `cong-app-legacy` as the primary entry point for running this project with N
 
 ```sh
 cong-app-legacy setup
+cong-app-legacy doctor
+cong-app-legacy dev
 cong-app-legacy test
 cong-app-legacy lint
 cong-app-legacy build-web
 ```
 
-The CLI is an external tool and is not installed by this repository.
+The CLI core is versioned in `scripts/`; a small external launcher supplies the local checkout and NVM paths.
 Read the [CLI installation and development guide](docs/development.md) before using a new machine.
-`start` launches Electron; `deploy` publishes a real GitHub release and requires separate authorization.
+`dev` runs Electron with Angular live reload; `start` validates the complete `file://` build path. `deploy` publishes a real GitHub release and requires separate authorization.
 
 The Employee Welfare Fund user guide is at [docs/employee-welfare-fund.md](docs/employee-welfare-fund.md).
 
@@ -21,7 +23,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `npm start` inside `cong-app-legacy shell` for a dev server at `http://localhost:4211/`. The app will automatically reload if you change any of the source files.
+Run `cong-app-legacy dev` for an Angular development server at `http://127.0.0.1:4211/` plus Electron. The app automatically reloads when source files change, and stopping either process cleans up the other one.
 
 ## Code scaffolding
 
