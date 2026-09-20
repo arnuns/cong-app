@@ -1,6 +1,6 @@
 import {fakeAsync, tick} from '@angular/core/testing';
 import {FormBuilder} from '@angular/forms';
-import {EMPTY, of, Subject} from 'rxjs';
+import {EMPTY, of, Subject, throwError} from 'rxjs';
 import {SalaryComponent} from './salary.component';
 import {Salary, PayrollCycle} from 'src/app/core/models/payroll';
 import {Site} from 'src/app/core/models/site';
@@ -18,7 +18,8 @@ describe('SalaryComponent EWF compensation classification', () => {
     payroll.updateSalary.and.returnValue(EMPTY);
     payroll.getSiteSalary.and.returnValue(of([]));
     payroll.previewEmployeeWelfareFund.and.returnValue(of({
-      eligibleWage: 0, rate: 0.0025, employeeSavings: 0, employerContribution: 0, requiresReview: false
+      eligibleWage: 0, rate: 0.0025, employeeRate: 0.0025, employerRate: 0.0025,
+      employeeSavings: 0, employerContribution: 0, requiresReview: false
     }));
     close = jasmine.createSpy('close');
     const modalEvents = {onOpen: new Subject<Event>(), onClose: new Subject<Event>()};
@@ -37,12 +38,23 @@ describe('SalaryComponent EWF compensation classification', () => {
     });
   });
 
-  [null, '', '-0.01', '1000.01', '0.001'].forEach(portion => {
+  ['-0.01', '1000.01', '0.001'].forEach(portion => {
     it('blocks saving an invalid/unclassified portion: ' + portion, () => {
       component.updateSalaryForm.patchValue({ewf_eligible_income_compensation: portion});
       expect(component.updateSalaryForm.invalid).toBe(true);
       component.onSubmit();
       expect(payroll.addSalary).not.toHaveBeenCalled();
+    });
+  });
+
+  [null, ''].forEach(portion => {
+    it('does not hardcode the database activation schedule for an unclassified portion: ' + portion, () => {
+      component.payrollCycle.end = '2035-01-15T00:00:00';
+      component.updateSalaryForm.patchValue({ewf_eligible_income_compensation: portion});
+
+      expect(component.updateSalaryForm.valid).toBe(true);
+      component.onSubmit();
+      expect(payroll.addSalary).toHaveBeenCalled();
     });
   });
 
@@ -91,5 +103,33 @@ describe('SalaryComponent EWF compensation classification', () => {
     expect(payroll.previewEmployeeWelfareFund).toHaveBeenCalledTimes(1);
     const payload = payroll.previewEmployeeWelfareFund.calls.mostRecent().args[3];
     expect(payload.siteSalaries[0].manday).toBe(16);
+  }));
+
+  it('stores separate employee and employer rates from the authoritative preview', fakeAsync(() => {
+    payroll.previewEmployeeWelfareFund.and.returnValue(of({
+      eligibleWage: 6400, rate: 0.0025, employeeRate: 0.0025, employerRate: 0.005,
+      employeeSavings: 16, employerContribution: 32, requiresReview: false
+    }));
+    component.updateSalaryForm.patchValue({ewf_eligible_income_compensation: 0});
+    component.ngAfterViewInit();
+    component.addSite();
+    component.siteForms.at(0).get('manday').setValue(16);
+    tick(351);
+
+    expect(component.updateSalaryForm.get('ewf_employee_rate').value).toBe(0.0025);
+    expect(component.updateSalaryForm.get('ewf_employer_rate').value).toBe(0.005);
+  }));
+
+  it('surfaces backend schedule errors from the authoritative preview', fakeAsync(() => {
+    payroll.previewEmployeeWelfareFund.and.returnValue(throwError({
+      error: 'Employee Welfare Fund rate schedule is empty.'
+    }));
+    component.updateSalaryForm.patchValue({ewf_eligible_income_compensation: 0});
+    component.ngAfterViewInit();
+    component.addSite();
+    component.siteForms.at(0).get('manday').setValue(16);
+    tick(351);
+
+    expect(component.ewfPreviewError).toContain('rate schedule is empty');
   }));
 });

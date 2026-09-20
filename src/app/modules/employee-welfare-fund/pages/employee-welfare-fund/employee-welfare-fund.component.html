@@ -17,23 +17,18 @@
   <div class="card">
     <div class="card-body">
       <div class="row align-items-end">
-        <div class="col-md-3">
+        <div class="col-md-4">
           <label>เดือนที่จ่าย</label>
           <ng-select [clearable]="false" [items]="monthYears" bindLabel="view" bindValue="viewValue"
             formControlName="month_year"></ng-select>
         </div>
         <div class="col-md-4">
-          <label>บริษัท</label>
-          <ng-select [clearable]="false" [items]="companies" bindLabel="name" bindValue="code"
-            formControlName="company_id"></ng-select>
-        </div>
-        <div class="col-md-3">
           <label>วันที่นำส่ง</label>
           <input type="text" class="form-control" onkeydown="return false" bsDatepicker
             [bsConfig]="{dateInputFormat: 'DD-MM-YYYY', containerClass: 'theme-green'}"
             formControlName="submission_date" />
         </div>
-        <div class="col-md-2">
+        <div class="col-md-4">
           <button type="submit" class="btn btn-primary button__submit w-100"
             [disabled]="employeeWelfareFundForm.invalid || employeeWelfareFundProcessing">ดูสรุป</button>
         </div>
@@ -72,7 +67,7 @@
       </div>
 
       <div class="text-muted mt-3" *ngIf="!employeeWelfareFundProcessing && employeeWelfareFundRows.length === 0">
-        เลือกเดือนและบริษัทเพื่อดูข้อมูลที่จ่ายแล้วจากทุกไซต์
+        เลือกเดือนเพื่อดูข้อมูลที่จ่ายแล้วจากทุกไซต์
       </div>
     </div>
   </div>

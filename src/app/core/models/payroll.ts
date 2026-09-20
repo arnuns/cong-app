@@ -84,6 +84,8 @@ export interface Salary {
     ewfMinimumWage: number;
     ewfEligibleWage: number;
     ewfRate: number;
+    ewfEmployeeRate: number;
+    ewfEmployerRate: number;
     ewfEmployeeSavings: number;
     ewfEmployerContribution: number;
     ewfRequiresReview: boolean;
@@ -223,6 +225,8 @@ export interface EmployeeWelfareFundSummary {
 export interface EmployeeWelfareFundPreview {
     eligibleWage: number;
     rate: number;
+    employeeRate: number;
+    employerRate: number;
     employeeSavings: number;
     employerContribution: number;
     requiresReview: boolean;

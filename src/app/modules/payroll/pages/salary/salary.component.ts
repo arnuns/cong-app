@@ -31,6 +31,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
 
   searching = false;
   ewfPreviewLoading = false;
+  ewfPreviewError: string;
   private ewfPreviewRequestId = 0;
 
   payrollCycleId: number;
@@ -105,6 +106,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     ewf_eligible_income_compensation: [null],
     ewf_eligible_wage: [{value: 0, disabled: true}],
     ewf_rate: [{value: 0, disabled: true}],
+    ewf_employee_rate: [{value: 0, disabled: true}],
+    ewf_employer_rate: [{value: 0, disabled: true}],
     ewf_employee_savings: [{value: 0, disabled: true}],
     ewf_employer_contribution: [{value: 0, disabled: true}],
     ewf_requires_review: [{value: false, disabled: true}],
@@ -242,6 +245,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     });
 
     this.ngxSmartModalService.getModal('salaryModal').onClose.subscribe((event: Event) => {
+      this.ewfPreviewError = undefined;
       this.updateSalaryForm.reset({
         search: '',
         salary_id: undefined,
@@ -271,6 +275,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         ewf_eligible_income_compensation: null,
         ewf_eligible_wage: 0,
         ewf_rate: 0,
+        ewf_employee_rate: 0,
+        ewf_employer_rate: 0,
         ewf_employee_savings: 0,
         ewf_employer_contribution: 0,
         ewf_requires_review: false,
@@ -534,6 +540,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         ? null : salary.ewfEligibleIncomeCompensation.toFixed(2),
       ewf_eligible_wage: salary.ewfEligibleWage,
       ewf_rate: salary.ewfRate,
+      ewf_employee_rate: salary.ewfEmployeeRate == null ? salary.ewfRate : salary.ewfEmployeeRate,
+      ewf_employer_rate: salary.ewfEmployerRate == null ? salary.ewfRate : salary.ewfEmployerRate,
       ewf_employee_savings: salary.ewfEmployeeSavings,
       ewf_employer_contribution: salary.ewfEmployerContribution,
       ewf_requires_review: salary.ewfRequiresReview,
@@ -740,9 +748,6 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     const raw = form.get('ewf_eligible_income_compensation').value;
     const total = Number(form.get('income_compensation').value);
     if (raw === null || raw === undefined || raw === '') {
-      if (total > 0 && this.payrollCycle && this.payrollCycle.end.slice(0, 10) >= '2026-10-01') {
-        return {ewfIncomeCompensation: 'กรุณาระบุส่วนที่เข้าฐานกองทุน หรือระบุ 0 หากไม่มีส่วนที่เข้าเกณฑ์'};
-      }
       return null;
     }
     const portion = Number(raw);
@@ -792,6 +797,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     };
     const requestId = ++this.ewfPreviewRequestId;
     this.ewfPreviewLoading = true;
+    this.ewfPreviewError = undefined;
     this.payrollService.previewEmployeeWelfareFund(
       this.payrollCycleId,
       this.siteId,
@@ -805,14 +811,18 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       this.updateSalaryForm.patchValue({
         ewf_eligible_wage: preview.eligibleWage,
         ewf_rate: preview.rate,
+        ewf_employee_rate: preview.employeeRate == null ? preview.rate : preview.employeeRate,
+        ewf_employer_rate: preview.employerRate == null ? preview.rate : preview.employerRate,
         ewf_employee_savings: preview.employeeSavings,
         ewf_employer_contribution: preview.employerContribution,
         ewf_requires_review: preview.requiresReview
       }, {emitEvent: false});
-    }, () => {
+    }, error => {
       if (requestId === this.ewfPreviewRequestId) {
         this.ewfPreviewLoading = false;
         this.clearEmployeeWelfareFundPreview();
+        this.ewfPreviewError = typeof error.error === 'string'
+          ? error.error : 'ไม่สามารถคำนวณกองทุนสงเคราะห์ลูกจ้างได้';
       }
     });
   }
@@ -823,6 +833,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.updateSalaryForm.patchValue({
       ewf_eligible_wage: 0,
       ewf_rate: 0,
+      ewf_employee_rate: 0,
+      ewf_employer_rate: 0,
       ewf_employee_savings: 0,
       ewf_employer_contribution: 0,
       ewf_requires_review: false
@@ -957,6 +969,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       ewfMinimumWage: this.site.minimumWage,
       ewfEligibleWage: 0,
       ewfRate: 0,
+      ewfEmployeeRate: 0,
+      ewfEmployerRate: 0,
       ewfEmployeeSavings: 0,
       ewfEmployerContribution: 0,
       ewfRequiresReview: false,
@@ -976,6 +990,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         this.ngxSmartModalService.getModal('salaryModal').close();
         this.getSitePayrollCycleSalary(true);
       }, error => {
+        this.ewfPreviewError = typeof error.error === 'string'
+          ? error.error : 'ไม่สามารถบันทึกข้อมูลกองทุนสงเคราะห์ลูกจ้างได้';
         this.spinner.hideLoadingSpinner(0);
       });
     } else {
@@ -983,6 +999,8 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
         this.ngxSmartModalService.getModal('salaryModal').close();
         this.getSitePayrollCycleSalary(true);
       }, error => {
+        this.ewfPreviewError = typeof error.error === 'string'
+          ? error.error : 'ไม่สามารถบันทึกข้อมูลกองทุนสงเคราะห์ลูกจ้างได้';
         this.spinner.hideLoadingSpinner(0);
       });
     }
