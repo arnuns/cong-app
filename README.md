@@ -6,14 +6,15 @@ Use `cong-app-legacy` as the primary entry point for running this project with N
 
 ```sh
 cong-app-legacy setup
+cong-app-legacy doctor
 cong-app-legacy test
 cong-app-legacy lint
 cong-app-legacy build-web
 ```
 
-The CLI is an external tool and is not installed by this repository.
+The CLI core is versioned in `scripts/`; a small external launcher supplies the local checkout and NVM paths.
 Read the [CLI installation and development guide](docs/development.md) before using a new machine.
-`start` launches Electron; `deploy` publishes a real GitHub release and requires separate authorization.
+`start` validates and repairs Electron before building; `deploy` publishes a real GitHub release and requires separate authorization.
 
 The Employee Welfare Fund user guide is at [docs/employee-welfare-fund.md](docs/employee-welfare-fund.md).
 

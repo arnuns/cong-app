@@ -7,24 +7,33 @@ This guide covers the legacy CONG Angular 8 / Electron application. Use the CLI 
 - macOS and Bash; Apple Silicon requires Rosetta 2 for x64 execution
 - Git and NVM
 - Google Chrome for `ChromeHeadless`
-- a `cong-app` checkout and the external `cong-app-legacy` CLI
+- a `cong-app` checkout and a small `cong-app-legacy` launcher in your `PATH`
 
 This Node version is required for compatibility with the legacy project and is not a recommendation for new projects. Do not change Node or upgrade dependencies during unrelated work without separate verification.
 
 ## Installing the CLI on a new machine
 
-The CLI is **not committed to this repository** and is not available through `npm install -g cong-app-legacy`. Obtain the team-maintained script from its owner, inspect it before installation, and then:
+The CLI implementation is versioned in this repository. The machine-level launcher only supplies the checkout and NVM paths, so fixes to the CLI are reviewed with the application. It is not available through `npm install -g cong-app-legacy`.
 
-1. Create `$HOME/.local/bin` if necessary and copy the reviewed script to `$HOME/.local/bin/cong-app-legacy`.
-2. Update the three machine-specific constants: `REPO_PATH` for the checkout, `NVM_SCRIPT` for `nvm.sh`, and `SELF_PATH` for the installed CLI.
+1. Create `$HOME/.local/bin` if necessary.
+2. Save the launcher below as `$HOME/.local/bin/cong-app-legacy`, replacing the two paths for the local machine.
 3. Make it executable with `chmod +x "$HOME/.local/bin/cong-app-legacy"` and add `$HOME/.local/bin` to the shell `PATH`.
-4. Verify `command -v cong-app-legacy` and `cong-app-legacy help` before running `setup`.
+4. Verify `command -v cong-app-legacy`, `cong-app-legacy help`, and `cong-app-legacy doctor` before running `setup`.
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+export CONG_APP_REPO_PATH="/path/to/cong-app"
+export CONG_APP_NVM_SCRIPT="$HOME/.nvm/nvm.sh"
+exec "$CONG_APP_REPO_PATH/scripts/cong-app-legacy-bootstrap" "$@"
+```
 
 The CLI inspected for this guide points to:
 
 - checkout: `/Users/arnunsae/codes/ubk/cong-app`
 - NVM: `/Users/arnunsae/.nvm/nvm.sh`
-- CLI: `/Users/arnunsae/.local/bin/cong-app-legacy`
+- launcher: `/Users/arnunsae/.local/bin/cong-app-legacy`
 
 These paths belong to one machine and are not portable defaults. The CLI always changes to `REPO_PATH`, even when invoked from another directory or worktree. Confirm that it targets the checkout you intend to test.
 
@@ -32,19 +41,21 @@ These paths belong to one machine and are not portable defaults. The CLI always 
 
 ```sh
 cong-app-legacy help
+cong-app-legacy doctor
 cong-app-legacy setup
 cong-app-legacy start
 ```
 
-`setup` installs/selects Node 12.22.12 through NVM and runs `npm ci` from the lockfile. It requires network access and reinstalls dependencies in `node_modules`, including package install scripts. Review the repository and lockfile before running it. Run `setup` only for initial setup or when dependencies change.
+`doctor` is read-only and checks the repository, pinned Node runtime, Angular CLI, Electron x64 executable, and Chrome. `setup` installs/selects Node 12.22.12 through NVM, runs `npm ci` from the lockfile, and verifies Angular and Electron. It requires network access and reinstalls dependencies in `node_modules`, including package install scripts. Review the repository and lockfile before running it. Run `setup` only for initial setup or when dependencies change.
 
-Before test, build, or start commands, the CLI prints the Node version, npm version, and architecture. The expected runtime is Node `v12.22.12` with architecture `x64`.
+The bootstrap rejects any runtime other than Node `v12.22.12` with architecture `x64`. Each command reports its elapsed time and suppresses the npm update notifier.
 
 ## Daily commands
 
 | Command | Result / caution |
 | --- | --- |
-| `cong-app-legacy start` | builds and launches Electron; this is not the web development server |
+| `cong-app-legacy doctor` | checks the runtime and dependencies without changing them |
+| `cong-app-legacy start` | checks Electron, attempts one `npm rebuild electron` when needed, then builds and launches Electron |
 | `cong-app-legacy test` | runs Karma once with ChromeHeadless |
 | `cong-app-legacy lint` | runs TSLint and Codelyzer |
 | `cong-app-legacy build-web` | creates the production web build in `dist/`; does not package or publish |
@@ -91,6 +102,7 @@ Record the exact commands and outcomes. If the baseline has failures, list their
 - **command not found:** verify that the CLI exists, is executable, and its directory is in `PATH`.
 - **repository or NVM not found:** check `REPO_PATH` and `NVM_SCRIPT` in the CLI; do not move the repository as a workaround unless required.
 - **Node is not installed / dependencies are not installed:** run `cong-app-legacy setup`.
+- **Electron failed to install correctly:** retry `cong-app-legacy start`; it attempts one visible `npm rebuild electron` before any Angular build. If the repair still fails, run `cong-app-legacy setup`.
 - **expected x64 / Bad CPU type:** verify Rosetta 2 and the x64 Node installation; do not silently substitute arm64 Node.
 - **ChromeHeadless launch failed:** verify Google Chrome installation and launch permission; this is not a passing test result.
 - **Unknown option:** run `./node_modules/.bin/ng test --help` inside the legacy shell; the old CLI may not support current Angular options.
@@ -99,6 +111,6 @@ Record the exact commands and outcomes. If the baseline has failures, list their
 
 ## Scope
 
-This guide documents the external CLI as observed from `cong-app-legacy help` and the installed script. It does not install the CLI, change machine configuration, or run deployment automatically.
+This guide documents the versioned CLI core and its external path launcher. It does not install the launcher, change machine configuration, or run deployment automatically.
 
 See [AGENTS.md](../AGENTS.md) for additional repository instructions.

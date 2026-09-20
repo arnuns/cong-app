@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+NODE_VERSION="12.22.12"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_PATH="${CONG_APP_REPO_PATH:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
+NVM_SCRIPT="${CONG_APP_NVM_SCRIPT:-${HOME}/.nvm/nvm.sh}"
+COMMAND="${1:-help}"
+
+if [[ "$(uname -s)" == "Darwin" && "$(uname -m)" == "arm64" ]]; then
+  exec arch -x86_64 /bin/bash "$0" "$@"
+fi
+
+if [[ ! -s "${NVM_SCRIPT}" ]]; then
+  echo "Error: nvm was not found at ${NVM_SCRIPT}." >&2
+  echo "Install nvm or set CONG_APP_NVM_SCRIPT to its nvm.sh path." >&2
+  exit 1
+fi
+
+# nvm is a shell function and must be sourced in this bootstrap process.
+# shellcheck disable=SC1090
+source "${NVM_SCRIPT}"
+
+if [[ "${COMMAND}" == "setup" ]]; then
+  nvm install "${NODE_VERSION}" --arch=x64
+else
+  if ! nvm use "${NODE_VERSION}" --arch=x64 >/dev/null; then
+    echo "Error: Node ${NODE_VERSION} x64 is not installed." >&2
+    echo "Run cong-app-legacy setup first." >&2
+    exit 1
+  fi
+fi
+
+if [[ "$(node -p 'process.version')" != "v${NODE_VERSION}" ]]; then
+  echo "Error: expected Node v${NODE_VERSION}, found $(node -p 'process.version')." >&2
+  exit 1
+fi
+
+if [[ "$(node -p 'process.arch')" != "x64" ]]; then
+  echo "Error: expected x64 Node, found $(node -p 'process.arch')." >&2
+  echo "On Apple Silicon, run this command through Rosetta 2." >&2
+  exit 1
+fi
+
+export NO_UPDATE_NOTIFIER=1
+exec node "${REPO_PATH}/scripts/cong-app-legacy.js" "$@"
