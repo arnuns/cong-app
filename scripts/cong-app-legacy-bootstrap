@@ -21,10 +21,10 @@ fi
 # shellcheck disable=SC1090
 source "${NVM_SCRIPT}"
 
-if [[ "${COMMAND}" == "setup" ]]; then
-  nvm install "${NODE_VERSION}" --arch=x64
-else
-  if ! nvm use "${NODE_VERSION}" --arch=x64 >/dev/null; then
+if ! nvm use "${NODE_VERSION}" --arch=x64 >/dev/null 2>&1; then
+  if [[ "${COMMAND}" == "setup" ]]; then
+    nvm install "${NODE_VERSION}" --arch=x64
+  else
     echo "Error: Node ${NODE_VERSION} x64 is not installed." >&2
     echo "Run cong-app-legacy setup first." >&2
     exit 1

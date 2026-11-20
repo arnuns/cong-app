@@ -42,7 +42,10 @@
       "output": "release/"
     },
     "files": [
-      "!src/.env"
+      "dist/**/*",
+      "main.js",
+      "electron-renderer-url.js",
+      "electron-preload.js"
     ],
     "win": {
       "target": "nsis",

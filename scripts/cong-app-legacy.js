@@ -361,6 +361,25 @@ function createCli(overrides) {
     return 0;
   }
 
+  async function runTests() {
+    verifyRuntime();
+    verifyAngular();
+    let canListen;
+    try {
+      canListen = await dependencies.isPortAvailable('0.0.0.0', 0);
+    } catch (error) {
+      throw new Error('Karma cannot listen on a local port: ' + error.message);
+    }
+    if (!canListen) {
+      throw new Error('Karma cannot listen on a local port.');
+    }
+    requireSuccessful(
+      runChild('npm', ['test', '--', '--watch=false', '--browsers=ChromeHeadless']),
+      'Karma tests'
+    );
+    return 0;
+  }
+
   function runStart() {
     verifyRuntime();
     verifyAngular();
@@ -614,13 +633,7 @@ function createCli(overrides) {
       case 'dev':
         return runDev();
       case 'test':
-        verifyRuntime();
-        verifyAngular();
-        requireSuccessful(
-          runChild('npm', ['test', '--', '--watch=false', '--browsers=ChromeHeadless']),
-          'Karma tests'
-        );
-        return 0;
+        return runTests();
       case 'lint':
         return runNpmScript('lint', false);
       case 'build-web':
