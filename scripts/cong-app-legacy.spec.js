@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('assert');
+const { spawnSync } = require('child_process');
 const EventEmitter = require('events');
 const fs = require('fs');
 const os = require('os');
@@ -40,6 +41,7 @@ function createHarness(overrides) {
     now: function () { return 1000; },
     angularAvailable: function () { return true; },
     chromeAvailable: function () { return true; },
+    isPortAvailable: function () { return Promise.resolve(true); },
     inspectElectron: function () {
       electronChecks += 1;
       return { ok: true, executablePath: '/repo/node_modules/electron/dist/Electron.app' };
@@ -163,6 +165,49 @@ async function testSetupVerifiesFreshInstall() {
   assert.strictEqual(harness.electronChecks(), 1);
 }
 
+function testBootstrapSelectsInstalledNodeBeforeDownloading() {
+  const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'cong-bootstrap-'));
+  const nvm = path.join(fixture, 'nvm.sh');
+  const node = path.join(fixture, 'node');
+  const log = path.join(fixture, 'nvm.log');
+  fs.writeFileSync(nvm, [
+    'nvm() {',
+    '  echo "$*" >> "$CONG_TEST_NVM_LOG"',
+    '  if [[ "$1" == use && "$CONG_TEST_RUNTIME" == missing ]]; then return 1; fi',
+    '}'
+  ].join('\n'));
+  fs.writeFileSync(node, [
+    '#!/bin/sh',
+    'case "$2" in',
+    '  process.version) echo v12.22.12 ;;',
+    '  process.arch) echo x64 ;;',
+    '  *) echo "CLI command: $2" ;;',
+    'esac'
+  ].join('\n'), { mode: 0o755 });
+
+  try {
+    for (const runtime of ['installed', 'missing']) {
+      fs.writeFileSync(log, '');
+      const result = spawnSync(path.join(__dirname, 'cong-app-legacy-bootstrap'), ['setup'], {
+        encoding: 'utf8',
+        env: Object.assign({}, process.env, {
+          PATH: fixture + path.delimiter + process.env.PATH,
+          CONG_APP_NVM_SCRIPT: nvm,
+          CONG_TEST_NVM_LOG: log,
+          CONG_TEST_RUNTIME: runtime
+        })
+      });
+      assert.strictEqual(result.status, 0, result.stderr);
+      assert(result.stdout.includes('CLI command: setup'));
+      const expected = 'use 12.22.12 --arch=x64\n' + (runtime === 'missing' ? 'install 12.22.12 --arch=x64\n' : '');
+      assert.strictEqual(fs.readFileSync(log, 'utf8'), expected);
+    }
+  } finally {
+    [nvm, node, log].forEach(file => fs.unlinkSync(file));
+    fs.rmdirSync(fixture);
+  }
+}
+
 async function testChildProcessesDisableNpmUpdateNotifier() {
   const harness = createHarness();
 
@@ -172,7 +217,13 @@ async function testChildProcessesDisableNpmUpdateNotifier() {
 }
 
 async function testLegacyTestCommandRunsOnceInChromeHeadless() {
-  const harness = createHarness();
+  const harness = createHarness({
+    isPortAvailable: function (host, port) {
+      assert.strictEqual(host, '0.0.0.0');
+      assert.strictEqual(port, 0);
+      return Promise.resolve(true);
+    }
+  });
 
   const exitCode = await harness.cli.run(['test']);
 
@@ -180,6 +231,20 @@ async function testLegacyTestCommandRunsOnceInChromeHeadless() {
   assert.deepStrictEqual(harness.calls.map(function (call) {
     return [call.command].concat(call.args);
   }), [['npm', 'test', '--', '--watch=false', '--browsers=ChromeHeadless']]);
+}
+
+async function testLegacyTestCommandFailsWhenKarmaCannotBind() {
+  for (const denied of [false, Object.assign(new Error('listen EPERM'), { code: 'EPERM' })]) {
+    const harness = createHarness({
+      isPortAvailable: function () {
+        return denied ? Promise.reject(denied) : Promise.resolve(false);
+      }
+    });
+
+    assert.strictEqual(await harness.cli.run(['test']), 1);
+    assert.strictEqual(harness.calls.length, 0);
+    assert(/Karma cannot listen on a local port/.test(harness.stderr.value()));
+  }
 }
 
 async function testElectronBuildAndPackagingKeepRelativeProductionBuild() {
@@ -426,8 +491,10 @@ async function run() {
     testStartNeverBuildsWhenRepairFails,
     testDoctorIsReadOnlyAndReportsRemedies,
     testSetupVerifiesFreshInstall,
+    testBootstrapSelectsInstalledNodeBeforeDownloading,
     testChildProcessesDisableNpmUpdateNotifier,
     testLegacyTestCommandRunsOnceInChromeHeadless,
+    testLegacyTestCommandFailsWhenKarmaCannotBind,
     testElectronBuildAndPackagingKeepRelativeProductionBuild,
     testDevFailsBeforeSpawningWhenPortIsBusy,
     testDevWaitsForAngularThenCouplesProcessCleanup,
