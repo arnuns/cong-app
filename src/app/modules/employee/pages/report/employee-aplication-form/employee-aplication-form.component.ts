@@ -46,27 +46,27 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     {
       sort_no_left: 2, description_left: 'เสื้อยืดคอกลม สีขาว  ไซส์ ..............................',
       qty_left: null, price_left: 130, sort_no_right: 27, description_right: 'หมวกหม้อตาล ขาว ไซส์........................',
-      qty_right: null, price_right: 420
+      qty_right: null, price_right: 320
     },
     {
       sort_no_left: 3, description_left: 'เสื้อเชิ้ตแขนสั้น ไซส์ .......................................',
       qty_left: null, price_left: 520, sort_no_right: 28, description_right: 'หมวกหม้อตาล กรม ไซส์........................',
-      qty_right: null, price_right: 420
+      qty_right: null, price_right: 320
     },
     {
       sort_no_left: 4, description_left: 'เสื้อสูท HP / BOT ไซส์ ...................................',
       qty_left: null, price_left: 800, sort_no_right: 29, description_right: 'หมวกหม้อตาลมีช่อ ขาว ไซส์................',
-      qty_right: null, price_right: 500
+      qty_right: null, price_right: 400
     },
     {
       sort_no_left: 5, description_left: 'เสื้อโปโล สีเทาไซส์ .........................................',
-      qty_left: null, price_left: 400, sort_no_right: 30, description_right: 'หมวกหม้อตาลมีช่อ กรม ไซส์................',
-      qty_right: null, price_right: 500
+      qty_left: null, price_left: 380, sort_no_right: 30, description_right: 'หมวกหม้อตาลมีช่อ กรม ไซส์................',
+      qty_right: null, price_right: 400
     },
     {
       sort_no_left: 6, description_left: 'เสื้อโปโล สีกรม ไซส์ ......................................',
-      qty_left: null, price_left: 400, sort_no_right: 31, description_right: 'เสื้อเชิ้ตแขนยาว แสนสิริ ไซส์ ...............',
-      qty_right: null, price_right: 600
+      qty_left: null, price_left: 380, sort_no_right: 31, description_right: 'เสื้อเชิ้ตแขนยาว แสนสิริ ไซส์ ...............',
+      qty_right: null, price_right: 320
     },
     {
       sort_no_left: 7, description_left: 'เสื้อซาฟารี ไซส์ ................................................',
@@ -75,8 +75,8 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     },
     {
       sort_no_left: 8, description_left: 'เสื้อราชปะแตน สีขาว ไซส์ .............................',
-      qty_left: null, price_left: 680, sort_no_right: 33, description_right: 'เสื้อจราจร สีดำ',
-      qty_right: null, price_right: 300
+      qty_left: null, price_left: 680, sort_no_right: 33, description_right: 'เสื้อจราจร สีเขียว',
+      qty_right: null, price_right: 380
     },
     {
       sort_no_left: 9, description_left: 'เสื้อราชปะแตนมีอินธนู สีขาว ไซส์ ......................................',
@@ -86,7 +86,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     {
       sort_no_left: 10, description_left: 'กางเกงราชปะแตน สีขาว ไซส์ .......................',
       qty_left: null, price_left: 380, sort_no_right: 35, description_right: 'เสื้อกันฝนแบบแยกส่วน',
-      qty_right: null, price_right: 500
+      qty_right: null, price_right: 450
     },
     {
       sort_no_left: 11, description_left: 'เสื้อราชปะแตน สีกรม ไซส์ .............................',
@@ -100,7 +100,7 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     },
     {
       sort_no_left: 13, description_left: 'กางเกงขายาว สีดำ ไซส์ ..................................',
-      qty_left: null, price_left: 380, sort_no_right: 38, description_right: 'วิทยุ Zignal',
+      qty_left: null, price_left: 300, sort_no_right: 38, description_right: 'วิทยุ Zignal',
       qty_right: null, price_right: 1700
     },
     {
@@ -120,12 +120,12 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     },
     {
       sort_no_left: 17, description_left: 'เนคไท',
-      qty_left: null, price_left: 200, sort_no_right: 42, description_right: 'ป้ายชื่อ',
+      qty_left: null, price_left: 150, sort_no_right: 42, description_right: 'ป้ายชื่อ',
       qty_right: null, price_right: 200
     },
     {
       sort_no_left: 18, description_left: 'อินธนู',
-      qty_left: null, price_left: 165, sort_no_right: 43, description_right: 'ป้าย Security',
+      qty_left: null, price_left: 80, sort_no_right: 43, description_right: 'ป้าย Security',
       qty_right: null, price_right: 200
     },
     {
@@ -140,22 +140,22 @@ export class EmployeeAplicationFormComponent implements OnDestroy, OnInit {
     },
     {
       sort_no_left: 21, description_left: 'รองเท้าจังเกิ้ล ไซส์...........................................',
-      qty_left: null, price_left: 700, sort_no_right: 46, description_right: 'เข็มกลัดใบอนุญาต',
-      qty_right: null, price_right: 200
+      qty_left: null, price_left: 550, sort_no_right: 46, description_right: 'สายคล้องบัตรพนักงาน',
+      qty_right: null, price_right: 70
     },
     {
       sort_no_left: 22, description_left: 'รองเท้าบูท',
-      qty_left: null, price_left: 200, sort_no_right: 47, description_right: 'ชุดตรวจสารเสพติด',
-      qty_right: null, price_right: 0
+      qty_left: null, price_left: 200, sort_no_right: 47, description_right: 'เข็มกลัดใบอนุญาต',
+      qty_right: null, price_right: 200
     },
     {
       sort_no_left: 23, description_left: 'รองเท้าเซฟตี้ ไซส์...........................................',
-      qty_left: null, price_left: 700, sort_no_right: 48, description_right: '',
+      qty_left: null, price_left: 550, sort_no_right: 48, description_right: 'ชุดตรวจสารเสพติด',
       qty_right: null, price_right: 0
     },
     {
       sort_no_left: 24, description_left: 'รองเท้าหนัง ไซส์..............................................',
-      qty_left: null, price_left: 700, sort_no_right: 49, description_right: '',
+      qty_left: null, price_left: 500, sort_no_right: 49, description_right: '',
       qty_right: null, price_right: 0
     },
     {
