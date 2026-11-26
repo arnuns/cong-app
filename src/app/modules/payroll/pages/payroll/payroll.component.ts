@@ -70,6 +70,8 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   selectedSiteItems = [];
   deleteSiteId = 0;
   deleteSiteName = '';
+  createPayrollError = '';
+  payrollExportError = '';
 
   payrollFilter: PayrollFilter;
   filterSessionName = 'payrollFilter';
@@ -173,6 +175,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
     this.ngxSmartModalService
       .getModal('newPayrollModal')
       .onClose.subscribe((event: Event) => {
+        this.createPayrollError = '';
         this.createPayrollForm.reset({
           payrollDateRange: [],
           isMonthly: false,
@@ -364,6 +367,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onCreatePayroll() {
+    this.createPayrollError = '';
     this.spinner.showLoadingSpinner();
     const dateRange: Date[] =
       this.createPayrollForm.get('payrollDateRange').value;
@@ -395,17 +399,32 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
           this.ngxSmartModalService.getModal('newPayrollModal').close();
         },
         (error) => {
+          this.createPayrollError = typeof error.error === 'string' ? error.error : 'ไม่สามารถสร้างรอบเงินเดือนได้';
           this.spinner.hideLoadingSpinner(0);
         }
       );
   }
 
+  private canExportEmployeePayroll(salaries: Salary[]) {
+    if (salaries.some(salary => !salary.isPaid && salary.manday < 0)) {
+      this.payrollExportError = 'พบรายการเงินเดือนที่มีจำนวนแรงติดลบ กรุณาแก้ไขก่อนดาวน์โหลด';
+      this.spinner.hideLoadingSpinner(0);
+      return false;
+    }
+    return true;
+  }
+
   onExportAllSalaryToCsv() {
+    this.payrollExportError = '';
     this.spinner.showLoadingSpinner();
     this.payrollService
       .getPayrollCycleSalary(this.payrollForm.get('payroll_cycle_id').value)
       .subscribe(
         (salaries) => {
+          if (!this.canExportEmployeePayroll(salaries)) {
+            return;
+          }
+
           let summary = {
             siteName: '',
             totalManday: 0,
@@ -811,6 +830,7 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
   }
 
   onExportSiteSalaryToCsv(siteId: number) {
+    this.payrollExportError = '';
     this.spinner.showLoadingSpinner();
     this.payrollService
       .getSitePayrollCycleSalary(
@@ -819,6 +839,10 @@ export class PayrollComponent implements OnDestroy, OnInit, AfterViewInit {
       )
       .subscribe(
         (salaries) => {
+          if (!this.canExportEmployeePayroll(salaries)) {
+            return;
+          }
+
           const data = salaries.map((s) => {
             const bankName =
               s.bankId === 0 || !this.banks.filter((b) => b.id === s.bankId)[0]

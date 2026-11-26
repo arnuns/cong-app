@@ -9,6 +9,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
+import * as FileSaver from 'file-saver';
 import { NEVER, of } from 'rxjs';
 import { ElectronService } from 'ngx-electron';
 import { MomentHelper } from 'src/app/core/helpers/moment.helper';
@@ -119,5 +120,32 @@ describe('PayrollComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('blocks both employee CSVs until the unpaid work units are corrected', () => {
+    const payroll = TestBed.get(PayrollService);
+    const csv = spyOn(TestBed.get(Papa), 'unparse').and.returnValue('');
+    const save = spyOn(FileSaver, 'saveAs');
+    const row = {manday: -47, isPaid: false, bankId: 0, userPosition: {}, user: {}};
+    component.payrollCycle = {
+      id: 1, start: '2026-11-01', end: '2026-11-15', isMonthly: false, createOn: new Date(), createBy: 'Test'
+    };
+    payroll.getPayrollCycleSalary = () => of([row]);
+    payroll.getSitePayrollCycleSalary = () => of([row]);
+
+    component.onExportAllSalaryToCsv();
+    component.onExportSiteSalaryToCsv(1);
+
+    expect(csv).not.toHaveBeenCalled();
+    expect(save).not.toHaveBeenCalled();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('จำนวนแรงติดลบ');
+
+    row.manday = 15;
+    component.onExportAllSalaryToCsv();
+    component.onExportSiteSalaryToCsv(1);
+
+    expect(csv).toHaveBeenCalledTimes(2);
+    expect(save).toHaveBeenCalledTimes(2);
   });
 });

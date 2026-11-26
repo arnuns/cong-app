@@ -33,6 +33,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
   ewfPreviewLoading = false;
   ewfPreviewError: string;
   private ewfPreviewRequestId = 0;
+  payrollActionError = '';
 
   payrollCycleId: number;
   siteId: number;
@@ -596,7 +597,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
               id: siteSalary.siteId,
               site_code: siteSalary.siteCode,
               site_name: siteSalary.siteName,
-              manday: siteSalary.manday,
+              manday: [siteSalary.manday, Validators.min(0)],
               hiringRatePerDay:  siteSalary.hiringRatePerDay,
               is_default: siteSalary.isDefault,
               is_replacement_wage: isReplacementWage
@@ -606,7 +607,7 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
               id: siteSalary.siteId,
               site_code: siteSalary.siteCode,
               site_name: siteSalary.siteName,
-              manday: siteSalary.manday,
+              manday: [siteSalary.manday, Validators.min(0)],
               hiringRatePerDay:  siteSalary.hiringRatePerDay,
               is_default: siteSalary.isDefault,
               is_replacement_wage: isReplacementWage
@@ -772,7 +773,12 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
       return;
     }
 
-    const siteSalaries = this.siteForms.controls.concat(this.replacementWageForms.controls).map(control => ({
+    const wageRows = this.siteForms.controls.concat(this.replacementWageForms.controls);
+    if (wageRows.some(row => Number(row.get('manday').value) < 0)) {
+      this.clearEmployeeWelfareFundPreview();
+      return;
+    }
+    const siteSalaries = wageRows.map(control => ({
       siteId: Number(control.get('id').value),
       siteCode: control.get('site_code').value,
       siteName: control.get('site_name').value,
@@ -1081,27 +1087,37 @@ export class SalaryComponent implements OnDestroy, OnInit, AfterViewInit {
     this.siteForms.removeAt(index);
   }
 
+  openPaidDialog() {
+    this.payrollActionError = '';
+    this.ngxSmartModalService.getModal('paidModal').open();
+  }
+
   onPaid() {
+    this.payrollActionError = '';
     this.spinner.showLoadingSpinner();
     this.payrollService.updatePaydayPayrollSiteSalary(
       this.payrollCycleId, this.siteId, this.paidForm.get('payday').value).subscribe(salaries => {
         this.ngxSmartModalService.getModal('paidModal').close();
         this.getSitePayrollCycleSalary(true);
       }, error => {
+        this.payrollActionError = typeof error.error === 'string' ? error.error : 'ไม่สามารถสั่งจ่ายเงินเดือนได้';
         this.spinner.hideLoadingSpinner(0);
       });
   }
 
   openCompleteDialog() {
+    this.payrollActionError = '';
     this.ngxSmartModalService.getModal('completeModal').open();
   }
 
   onComplete() {
+    this.payrollActionError = '';
     this.spinner.showLoadingSpinner();
     this.payrollService.updateCompletePayrollSiteSalary(this.payrollCycleId, this.siteId).subscribe(salaries => {
       this.ngxSmartModalService.getModal('completeModal').close();
       this.getSitePayrollCycleSalary(true);
     }, error => {
+      this.payrollActionError = typeof error.error === 'string' ? error.error : 'ไม่สามารถยืนยันการตรวจสอบเงินเดือนได้';
       this.spinner.hideLoadingSpinner(0);
     });
 
