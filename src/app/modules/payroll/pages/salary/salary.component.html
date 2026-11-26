@@ -179,7 +179,7 @@
                     <i class="fa fa-circle text-white" aria-hidden="true"></i> ตรวจสอบข้อมูลแล้ว</button>
                 </ng-container>
                 <ng-container *ngIf="sitePayrollCycleSalary?.status === 'complete'">
-                  <button class="btn btn-primary button__paid" (click)="paidModal.open()">สั่งจ่าย</button>
+                  <button class="btn btn-primary button__paid" (click)="openPaidDialog()">สั่งจ่าย</button>
                 </ng-container>
               </div>
             </div>
@@ -301,6 +301,7 @@
         <p>คุณได้ตรวจสอบรายการเงินเดือนเรียบร้อยแล้ว นี้ใช่หรือไม่?</p>
       </div>
     </div>
+    <div *ngIf="payrollActionError" class="text-danger px-3" role="alert">{{ payrollActionError }}</div>
     <div class="d-flex justify-content-center w-100 p-3">
       <div><button type="button" class="btn btn-primary button_modal" (click)="onComplete()">ยืนยัน</button></div>
       <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
@@ -346,6 +347,7 @@
           </div>
         </div>
       </div>
+      <div *ngIf="payrollActionError" class="text-danger px-3" role="alert">{{ payrollActionError }}</div>
       <div class="d-flex justify-content-center w-100 p-3">
         <div><button class="btn btn-primary button_modal" [disabled]="!pf.form.valid">ยืนยัน</button></div>
         <div class="ml-2"><button type="button" class="btn btn-outline-dark button_modal"
@@ -504,6 +506,8 @@
                       จำนวนวัน
                     </label>
                     <input type="number" class="form-control" formControlName="manday">
+                    <small *ngIf="siteForm.get('manday').hasError('min') && siteForm.get('manday').value < 0"
+                      class="text-danger" role="alert">จำนวนแรงต้องไม่ติดลบ</small>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -676,6 +680,8 @@
                       จำนวนวันที่สแปร์
                     </label>
                     <input type="number" class="form-control" formControlName="manday">
+                    <small *ngIf="siteForm.get('manday').hasError('min') && siteForm.get('manday').value < 0"
+                      class="text-danger" role="alert">จำนวนแรงต้องไม่ติดลบ</small>
                   </div>
                 </div>
                 <div class="col-md-6">

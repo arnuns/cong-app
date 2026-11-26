@@ -103,6 +103,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
     });
 
     this.ngxSmartModalService.getModal('newTimeAttendanceModal').onClose.subscribe((event: Event) => {
+      this.createTimeAttendanceError = undefined;
       this.editForm.reset({
         id: 0,
         site_id: undefined,
@@ -326,7 +327,8 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
       emp_no: timeAttendance.empNo,
       name: timeAttendance.employeeName,
       leave_date: leaveDate ? leaveDate : undefined,
-      checkin_time: new Date(timeAttendance.checkInTime),
+      checkin_date: timeAttendance.checkInTime ? new Date(timeAttendance.checkInTime) : workDate,
+      checkin_time: timeAttendance.checkInTime ? new Date(timeAttendance.checkInTime) : undefined,
       leave_time: timeAttendance.leaveTime ? new Date(timeAttendance.leaveTime) : undefined,
       site_checkpoint_id: timeAttendance.timeAttendanceSiteCheckpoint
         ? timeAttendance.timeAttendanceSiteCheckpoint.siteCheckpointId
@@ -461,10 +463,7 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
         this.spinner.hideLoadingSpinner(0);
       }, error => {
-        if (error.error === 'Employee is inactive!') {
-          this.createTimeAttendanceError = 'พบข้อผิดพลาด: สถานะพนักงานลาออก';
-        }
-        this.spinner.hideLoadingSpinner(0);
+        this.showAttendanceSaveError(error);
       });
     } else {
       const timeAttendance: TimeAttendance = {
@@ -497,8 +496,17 @@ export class TimeAttendanceComponent implements OnDestroy, OnInit, AfterViewInit
         this.refreshTable();
         this.ngxSmartModalService.getModal('newTimeAttendanceModal').close();
         this.spinner.hideLoadingSpinner(0);
+      }, error => {
+        this.showAttendanceSaveError(error);
       });
     }
+  }
+
+  private showAttendanceSaveError(error) {
+    this.createTimeAttendanceError = error.error === 'Employee is inactive!'
+      ? 'พบข้อผิดพลาด: สถานะพนักงานลาออก'
+      : typeof error.error === 'string' ? error.error : 'ไม่สามารถบันทึกข้อมูลลงเวลาได้';
+    this.spinner.hideLoadingSpinner(0);
   }
 
   refreshTable() {

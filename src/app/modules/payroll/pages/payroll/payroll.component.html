@@ -58,6 +58,7 @@
           </div>
         </div>
       </div>
+      <div *ngIf="payrollExportError" class="text-danger mb-2" role="alert">{{ payrollExportError }}</div>
       <table datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover payroll-table">
         <thead>
           <tr>
@@ -232,6 +233,7 @@
             </label>
           </div>
         </div>
+        <div *ngIf="createPayrollError" class="text-danger" role="alert">{{ createPayrollError }}</div>
         <div class="d-flex justify-content-end w-100 p-3">
           <div><button type="submit" class="btn btn-primary button_modal" [disabled]="!f.form.valid">สร้าง</button>
           </div>
